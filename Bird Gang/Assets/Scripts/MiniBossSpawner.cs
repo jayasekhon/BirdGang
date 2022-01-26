@@ -13,8 +13,8 @@ public class MiniBossSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      NumberOfMiniBossTotal = 5;
-      spawnDelay = 5f;
+      NumberOfMiniBossTotal = 5; //this can be changed for however mini bosses we want
+      spawnDelay = 5f; //this can be changed from 5 seconds to maybe 120 - so a mini boss appears at the start of every new "wave".
     }
 
     // Update is called once per frame
