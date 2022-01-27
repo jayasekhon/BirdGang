@@ -30,11 +30,18 @@ public class PlayerMovement : MonoBehaviour
     {
         player.velocity = new Vector3(horizontalInput * 2, player.velocity.y, verticalInput * 2);
         // Check if space key is pressed down
+
         if (jumpKeyWasPressed)
         {
-            float jumpPower = 5f;
-            player.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
+            //TODO: smooth transition up
+            //movement based on camera direction
+            
+            float jumpPower = 1f;
+            transform.position = transform.position + new Vector3(horizontalInput * 2, 5 , verticalInput * 2);
+            // player.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
+            // player.useGravity = false;
             jumpKeyWasPressed = false;
         }
+
     }
 }
