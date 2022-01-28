@@ -27,11 +27,9 @@ public class Player2Movement : MonoBehaviour
     void Update()
     {
       if (Input.GetMouseButtonDown(1)){
-        Debug.Log("right mouse pressed");
         RightMouseButtonPressed = true;
       }
       else if (Input.GetMouseButtonUp(1)){
-        Debug.Log("right mouse released");
         RightMouseButtonPressed = false;
       }
 
