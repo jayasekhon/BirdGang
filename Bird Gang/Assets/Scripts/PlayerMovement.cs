@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
             //TODO: smooth transition up
             //movement based on camera direction
             
-            float jumpPower = 1f;
+            // float jumpPower = 1f;
             transform.position = transform.position + new Vector3(horizontalInput * 2, 5 , verticalInput * 2);
             // player.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
             // player.useGravity = false;
