@@ -13,6 +13,8 @@ public class Player2Movement : MonoBehaviour
     private float rollInput;
     public float rollSpeed = 90f, rollAcceleration = 3.5f;
     private bool RightMouseButtonPressed;
+    private float mouseSensitivity = 50f;
+    private float xRotation, yRotation;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,28 @@ public class Player2Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      Look();
+    }
+
+    void FixedUpdate()
+    {
+      Movement();
+    }
+
+    void Look()
+    {
+      if (!RightMouseButtonPressed) {
+        xRotation -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        xRotation = Mathf.Clamp(xRotation, -45f, 45f);
+        yRotation += Input.GetAxisRaw("Mouse X") * mouseSensitivity;
+        yRotation = Mathf.Clamp(yRotation, -60f, 60f);
+        Camera.main.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
+      }
+    }
+
+    void Movement()
+    {
+      // code to navigate using right mouse button
       if (Input.GetMouseButtonDown(1)){
         RightMouseButtonPressed = true;
       }
