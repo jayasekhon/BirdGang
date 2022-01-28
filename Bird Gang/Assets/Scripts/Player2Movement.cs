@@ -12,22 +12,33 @@ public class Player2Movement : MonoBehaviour
     private float forwardAcceleration = 2.5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
     private float rollInput;
     public float rollSpeed = 90f, rollAcceleration = 3.5f;
+    private bool RightMouseButtonPressed;
 
     // Start is called before the first frame update
     void Start()
     {
         screenCenter.x = Screen.width * .5f;
         screenCenter.y = Screen.height * .5f;
-        
-        Cursor.lockState = CursorLockMode.Confined; 
+
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     // Update is called once per frame
     void Update()
     {
+      if (Input.GetMouseButtonDown(1)){
+        Debug.Log("right mouse pressed");
+        RightMouseButtonPressed = true;
+      }
+      else if (Input.GetMouseButtonUp(1)){
+        Debug.Log("right mouse released");
+        RightMouseButtonPressed = false;
+      }
+
+      if (RightMouseButtonPressed) {
         lookInput.x = Input.mousePosition.x;
         lookInput.y = Input.mousePosition.y;
-        
+
         mouseDistance.x = (lookInput.x - screenCenter.x) / screenCenter.y;
         mouseDistance.y = (lookInput.y - screenCenter.y) / screenCenter.y;
 
@@ -36,6 +47,7 @@ public class Player2Movement : MonoBehaviour
         rollInput = Mathf.Lerp(rollInput, Input.GetAxisRaw("Roll"), rollAcceleration * Time.deltaTime);
 
         transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, mouseDistance.x * lookRateSpeed * Time.deltaTime, rollInput * rollSpeed * Time.deltaTime, Space.Self);
+      }
 
         activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.deltaTime);
         activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
