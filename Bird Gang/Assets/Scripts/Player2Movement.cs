@@ -16,6 +16,10 @@ public class Player2Movement : MonoBehaviour
     private float mouseSensitivity = 50f;
     private float xRotation, yRotation;
 
+    private float scalingFactor = 1f;
+    private Quaternion Origin;
+    // private Transform currentRotation;
+
     private Rigidbody player;
 
     // Start is called before the first frame update
@@ -26,6 +30,7 @@ public class Player2Movement : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Confined;
         player = GetComponent<Rigidbody>();
+
     }
 
     // Update is called once per frame
@@ -100,6 +105,11 @@ public class Player2Movement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.E)) {
           transform.Rotate(Vector3.right * 50f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.R)) {
+          Origin = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0f);
+          // currentRotation.rotation = new Vector3(player.rotation.x, player.rotation.y, player.rotation.z);
+          transform.rotation = Quaternion.Slerp(transform.rotation, Origin, Time.deltaTime/scalingFactor);
         }
     }
 }
