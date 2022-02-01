@@ -90,8 +90,16 @@ public class Player2Movement : MonoBehaviour
     void Turning()
     {
         if (Input.GetKey(KeyCode.A)) {
-          transform.Rotate(Vector3.down * 10f * Time.deltaTime);
+          transform.Rotate(Vector3.down * 50f * Time.deltaTime);
         }
-        
+        if (Input.GetKey(KeyCode.D)) {
+          transform.Rotate(Vector3.up * 50f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.Q)) {
+          transform.Rotate(Vector3.left * 50f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.E)) {
+          transform.Rotate(Vector3.right * 50f * Time.deltaTime);
+        }
     }
 }
