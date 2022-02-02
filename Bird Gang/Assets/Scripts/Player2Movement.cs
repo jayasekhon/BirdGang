@@ -12,7 +12,7 @@ public class Player2Movement : MonoBehaviour
     private float forwardAcceleration = 2.5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
     private float rollInput;
     public float rollSpeed = 90f, rollAcceleration = 3.5f;
-    private bool RightMouseButtonPressed;
+    private bool RightMouseButtonPressed = false;
     private float mouseSensitivity = 50f;
     private float xRotation, yRotation;
 
