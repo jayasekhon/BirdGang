@@ -21,6 +21,7 @@ public class Player2Movement : MonoBehaviour
     // private Transform currentRotation;
 
     private Rigidbody player;
+    private Camera Camera;
 
     // Start is called before the first frame update
     void Start()
@@ -96,6 +97,7 @@ public class Player2Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A)) {
           transform.Rotate(Vector3.down * 50f * Time.deltaTime);
+          // transform.RotateAround(player.centerOfMass-Camera.transform.position, Vector3.down, 50f * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.D)) {
           transform.Rotate(Vector3.up * 50f * Time.deltaTime);
