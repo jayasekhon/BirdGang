@@ -16,7 +16,7 @@ public class Player2Movement : MonoBehaviour
     private float mouseSensitivity = 50f;
     private float xRotation, yRotation;
 
-    private float scalingFactor = 1f;
+    private float speed = 1.5f;
     private Quaternion Origin;
     // private Transform currentRotation;
 
@@ -107,9 +107,14 @@ public class Player2Movement : MonoBehaviour
           transform.Rotate(Vector3.right * 50f * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.R)) {
-          Origin = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0f);
-          // currentRotation.rotation = new Vector3(player.rotation.x, player.rotation.y, player.rotation.z);
-          transform.rotation = Quaternion.Slerp(transform.rotation, Origin, Time.deltaTime/scalingFactor);
-        }
+          // Debug.Log(transform.rotation.x);
+          // Debug.Log(transform.rotation.y);
+          // Origin = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0f);
+          // // currentRotation.rotation = new Vector3(player.rotation.x, player.rotation.y, player.rotation.z);
+          // transform.rotation = Quaternion.RotateTowards(transform.rotation, Origin, Time.deltaTime *10f);
+
+          Quaternion q = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
+          transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * speed);
     }
+}
 }
