@@ -42,7 +42,7 @@ jobs:
             Library-
       - uses: game-ci/unity-builder@v2
         with:
-          projectPath: ./
+          projectPath: ./Bird\ Gang
           targetPlatform: WebGL
 
       - uses: actions/upload-artifact@v2
