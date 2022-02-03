@@ -42,6 +42,7 @@ jobs:
             Library-
       - uses: game-ci/unity-builder@v2
         with:
+          path: ./BirdGang
           targetPlatform: WebGL
 
       - uses: actions/upload-artifact@v2
