@@ -9,6 +9,8 @@ jobs:
   testAllModes:
       name: Test in ${{ matrix.testMode }}
       runs-on: ubuntu-latest
+      env:
+        working-directory: BirdGang
       strategy:
         fail-fast: false
         matrix:
