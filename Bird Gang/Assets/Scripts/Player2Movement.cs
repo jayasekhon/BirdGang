@@ -38,7 +38,7 @@ public class Player2Movement : MonoBehaviour
     void Update()
     {
       // Controls the paning of the camera, it does not affect the direction of the object.
-      // Look();
+      Look();
       Turning();
     }
 
