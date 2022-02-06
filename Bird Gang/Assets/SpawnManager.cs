@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 [System.Serializable]
 public class SpawnManager : MonoBehaviour
@@ -10,6 +11,9 @@ public class SpawnManager : MonoBehaviour
     private float spawnDelay;
     private float nextSpawnTime;
     Spawner[] spawners;
+    public static SpawnManager Instance;
+
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -23,19 +27,21 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         foreach (var spawner in spawners)
         {
-            spawner.fillMaxGoodPeople(15);
+            spawner.fillMaxGoodPeople(300);
             spawner.fillMaxBadPeople(15);
 
         }
 
-        if (Time.time >= nextSpawnTime)
-        {
-            int index = Random.Range(0, spawners.Length);
-            spawners[index].fillMaxMiniBoss(NumberOfMiniBossTotal);
-            nextSpawnTime = Time.time + spawnDelay;
+    if (Time.time >= nextSpawnTime)
+    {
+        int index = Random.Range(0, spawners.Length);
+        spawners[index].fillMaxMiniBoss(NumberOfMiniBossTotal);
+        nextSpawnTime = Time.time + spawnDelay;
 
-        }
+    }
+    
     }
 }
