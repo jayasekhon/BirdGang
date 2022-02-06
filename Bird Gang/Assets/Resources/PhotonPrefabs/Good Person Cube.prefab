@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -713253790497324575}
   - component: {fileID: 7516258786448797057}
   - component: {fileID: 6394995250060496481}
+  - component: {fileID: 1794046738428517749}
   m_Layer: 0
   m_Name: Good Person Cube
   m_TagString: bird_target
@@ -131,7 +132,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 0
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 1794046738428517749}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -169,3 +170,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b43c56067a134ac79c3a37955aa639b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1794046738428517749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9198111749603487451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 0
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
