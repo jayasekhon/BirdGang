@@ -14,7 +14,7 @@ public class Player2Movement : MonoBehaviour
 
     // private bool WPressedDown;
     // private bool SPressedDown;
-    // private bool SpacePressedDown;
+    // private bool SpacePressedDown;   
 
     private float speed = 1.5f;
     private Quaternion rotationReset;
