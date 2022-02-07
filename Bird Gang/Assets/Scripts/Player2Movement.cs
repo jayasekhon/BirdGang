@@ -84,7 +84,7 @@ public class Player2Movement : MonoBehaviour
 
       // If w key is pressed down the user should move forward.
 
-      // Add check for s being pressed to slow down
+      // Add check for s being pressed to slow down  
     }
 
     void Movement()
