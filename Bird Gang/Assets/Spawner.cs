@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
-
+using System.IO;
 
 
 public class Spawner : MonoBehaviour
@@ -10,9 +11,6 @@ public class Spawner : MonoBehaviour
     public int NumberOfGoodPeople;
     public int NumberOfBadPeople;
     public int NumberOfMiniBoss;
-    public GameObject badPersonPrefab;
-    public GameObject goodPersonPrefab;
-    public GameObject miniBossPrefab;
     public Renderer renderer;
 
     private int NumberGoodPeopleSpawned;
@@ -44,24 +42,25 @@ public class Spawner : MonoBehaviour
 
     private void SpawnGoodPerson()
     {
-        GameObject newGoodPerson = Instantiate(goodPersonPrefab);
+        Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
+
+        GameObject newGoodPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs","Good Person Cube"),position,Quaternion.identity);
         newGoodPerson.transform.parent = this.transform;
-        newGoodPerson.transform.position = centerPosition + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         NumberGoodPeopleSpawned++;
     }
 
     private void SpawnBadPerson()
     {
-        GameObject newBadPerson = Instantiate(badPersonPrefab);
+        Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
+        GameObject newBadPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bad Person Cube"), position, Quaternion.identity);
         newBadPerson.transform.parent = this.transform;
-        newBadPerson.transform.position = centerPosition + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         NumberBadPeopleSpawned++;
     }
     private void SpawnMiniBoss()
     {
-        GameObject newMiniBoss = Instantiate(miniBossPrefab);
+        Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
+        GameObject newMiniBoss = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "MiniBoss Cube"), position, Quaternion.identity);
         newMiniBoss.transform.parent = this.transform;
-        newMiniBoss.transform.position = centerPosition + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         NumberMiniBossSpawned++;
 
     }
