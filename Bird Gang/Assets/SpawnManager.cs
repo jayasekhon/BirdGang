@@ -24,7 +24,7 @@ public class SpawnManager : MonoBehaviour
             return;
         } 
         spawners = GetComponentsInChildren<Spawner>();
-        NumberOfMiniBossTotal = 2; //this can be changed for however mini bosses we want
+        NumberOfMiniBossTotal = 1; //this can be changed for however mini bosses we want
         spawnDelay = 5f; //this can be changed from 5 seconds to maybe 120 - so a mini boss appears at the start of every new "wave".
         nextSpawnTime = Time.time + spawnDelay;
 
@@ -40,8 +40,8 @@ public class SpawnManager : MonoBehaviour
 
         foreach (var spawner in spawners)
         {
-            spawner.fillMaxGoodPeople(20);
-            spawner.fillMaxBadPeople(4);
+            spawner.fillMaxGoodPeople(10);
+            spawner.fillMaxBadPeople(2);
 
         }
 
