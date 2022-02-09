@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 
 public class AiController : MonoBehaviour
@@ -12,6 +13,7 @@ public class AiController : MonoBehaviour
     float speedMult;
     float detectionRadius = 30;
     float fleeRadius = 10;
+  
 
     void ResetAgent()
     {
@@ -75,6 +77,7 @@ public class AiController : MonoBehaviour
 
     private void Update()
     {
+
         if (agent.remainingDistance < 2)
         {
             ResetAgent();

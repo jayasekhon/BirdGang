@@ -20,10 +20,18 @@ public class Spawner : MonoBehaviour
     private Vector3 maxPosition;
     private Vector3 centerPosition;
 
+    PhotonView PV;
+
+    void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
+
         NumberOfPeopleTotal = 50;
 
         minPosition = renderer.bounds.min;
@@ -45,7 +53,6 @@ public class Spawner : MonoBehaviour
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
 
         GameObject newGoodPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs","Good Person Cube"),position,Quaternion.identity);
-        newGoodPerson.transform.parent = this.transform;
         NumberGoodPeopleSpawned++;
     }
 
@@ -53,14 +60,12 @@ public class Spawner : MonoBehaviour
     {
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         GameObject newBadPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bad Person Cube"), position, Quaternion.identity);
-        newBadPerson.transform.parent = this.transform;
         NumberBadPeopleSpawned++;
     }
     private void SpawnMiniBoss()
     {
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         GameObject newMiniBoss = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "MiniBoss Cube"), position, Quaternion.identity);
-        newMiniBoss.transform.parent = this.transform;
         NumberMiniBossSpawned++;
 
     }
@@ -74,25 +79,31 @@ public class Spawner : MonoBehaviour
             SpawnGoodPerson();
         }
 
+
     }
 
     public void fillMaxBadPeople(int numOfPeople)
     {
         NumberOfBadPeople = numOfPeople;
+
         while (NumberBadPeopleSpawned < NumberOfBadPeople)
         {
             SpawnBadPerson();
         }
+        
     }
 
     public void fillMaxMiniBoss(int numOfPeople)
     {
         NumberOfMiniBoss = numOfPeople;
+
         while (NumberMiniBossSpawned < NumberOfMiniBoss)
         {
             SpawnMiniBoss();
         }
+        
     }
+
     public int GetNumberOfMiniBoss(int numOfPeople)
     {
         return NumberOfMiniBoss;
