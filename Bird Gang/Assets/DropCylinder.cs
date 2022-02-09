@@ -13,7 +13,6 @@ public class DropCylinder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // agents = GameObject.FindGameObjectsWithTag("bird_target");
 
     }
 
