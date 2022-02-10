@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     PhotonView PV;
 
     public GameObject targetObj;
+    public GameObject Birdpoo; 
     
     void Awake()
     {
@@ -63,9 +64,11 @@ public class PlayerController : MonoBehaviour
          if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
          {
              targetObj.transform.position = hit.point + Vector3.up * 0.01f;
-             if (Input.GetKeyDown("x") && hit.collider != null && hit.collider.CompareTag("bird_target"))
+             if (Input.GetKeyDown("x"))
              {
-                     hit.collider.gameObject.GetComponent<BaseBirdTarget>().OnHitByPoo();
+                GameObject Birdpoo1=Instantiate(Birdpoo);
+                Birdpoo1.transform.position = rb.transform.position + Vector3.down * 0.5f;
+                hit.collider.gameObject.GetComponent<BaseBirdTarget>().OnHitByPoo();
              }
          }
     }
