@@ -11,6 +11,7 @@ public class BaseBirdTarget : MonoBehaviour
     public void OnHitByPoo()
     {
         Debug.Log(isGood ? "Got good cube (i.e. take points)" : "God bad cube (i.e. give points)");
+
         Destroy(gameObject);
     }
 }

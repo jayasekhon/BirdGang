@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using System.IO;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour
     PhotonView PV;
 
     public GameObject targetObj;
+    public GameObject Birdpoo; 
+    GameObject[] agents;
     
     void Awake()
     {
@@ -51,7 +54,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        Look();
+        //Look();
         Turning();
         // Move();
         // Jump();
@@ -59,15 +62,25 @@ public class PlayerController : MonoBehaviour
           * For now, take angle from camera. Also take pos from camera to be less confusing.
           * Obviously this needs to change.
           */
-         RaycastHit hit;
-         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
-         {
-             targetObj.transform.position = hit.point + Vector3.up * 0.01f;
-             if (Input.GetKeyDown("x") && hit.collider != null && hit.collider.CompareTag("bird_target"))
-             {
-                     hit.collider.gameObject.GetComponent<BaseBirdTarget>().OnHitByPoo();
-             }
-         }
+
+        RaycastHit hitInfo;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
+        {
+            targetObj.transform.position = hitInfo.point + Vector3.up * 0.01f;
+
+            if(Input.GetMouseButtonDown(0)){
+                agents = GameObject.FindGameObjectsWithTag("bird_target");
+                Vector3 splatterPoint = hitInfo.point + Vector3.up * 0.01f;
+                PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), splatterPoint, Quaternion.identity);
+                foreach(GameObject a in agents)
+                {
+                    a.GetComponent<AiController>().DetectNewObstacle(hitInfo.point);
+                }
+                hitInfo.collider.gameObject.GetComponent<BaseBirdTarget>().OnHitByPoo();
+            }
+            
+        }
     }
 
     void FixedUpdate()
