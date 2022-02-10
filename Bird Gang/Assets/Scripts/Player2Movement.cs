@@ -14,7 +14,7 @@ public class Player2Movement : MonoBehaviour
 
     // private bool WPressedDown;
     // private bool SPressedDown;
-    // private bool SpacePressedDown;
+    // private bool SpacePressedDown;   
 
     private float speed = 1.5f;
     private Quaternion rotationReset;
@@ -84,7 +84,7 @@ public class Player2Movement : MonoBehaviour
 
       // If w key is pressed down the user should move forward.
 
-      // Add check for s being pressed to slow down
+      // Add check for s being pressed to slow down  
     }
 
     void Movement()

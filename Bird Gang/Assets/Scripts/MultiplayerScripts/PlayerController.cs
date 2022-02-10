@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using System.IO;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private float forwardSpeed = 25f, hoverSpeed = 5f;
     private float activeForwardSpeed, activeHoverSpeed;
     private float forwardAcceleration = 2.5f, hoverAcceleration = 2f;
-    // private float mouseSensitivity = 50f;
+    private float mouseSensitivity = 50f;
     private float xRotation, yRotation;
 
     private float speed = 1.5f;
@@ -24,6 +25,10 @@ public class PlayerController : MonoBehaviour
     
     Rigidbody rb;
     PhotonView PV;
+
+    public GameObject targetObj;
+    public GameObject Birdpoo; 
+    GameObject[] agents;
     
     void Awake()
     {
@@ -40,6 +45,7 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.position = new Vector3(0,5,0); // TEMP FIX: preventing players spawning below the map if there are >1.
+        targetObj = Instantiate(targetObj);
     }
 
     void Update()
@@ -48,10 +54,33 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        // Look();
+        //Look();
         Turning();
         // Move();
         // Jump();
+        /*
+          * For now, take angle from camera. Also take pos from camera to be less confusing.
+          * Obviously this needs to change.
+          */
+
+        RaycastHit hitInfo;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
+        {
+            targetObj.transform.position = hitInfo.point + Vector3.up * 0.01f;
+
+            if(Input.GetMouseButtonDown(0)){
+                agents = GameObject.FindGameObjectsWithTag("bird_target");
+                Vector3 splatterPoint = hitInfo.point + Vector3.up * 0.01f;
+                PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), splatterPoint, Quaternion.identity);
+                foreach(GameObject a in agents)
+                {
+                    a.GetComponent<AiController>().DetectNewObstacle(hitInfo.point);
+                }
+                hitInfo.collider.gameObject.GetComponent<BaseBirdTarget>().OnHitByPoo();
+            }
+            
+        }
     }
 
     void FixedUpdate()
@@ -65,14 +94,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    // void Look()
-    // {
-    //     transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
-    //     verticalLookRoation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
-    //     verticalLookRoation = Mathf.Clamp(verticalLookRoation, -90f, 90f);
+    void Look()
+    {
+        transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
+        verticalLookRoation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        verticalLookRoation = Mathf.Clamp(verticalLookRoation, -90f, 90f);
 
-    //     cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRoation;
-    // }
+        cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRoation;
+    }
 
     void Turning()
     {
