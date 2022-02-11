@@ -8,7 +8,7 @@ using UnityEngine;
 public class BaseBirdTarget : MonoBehaviour
 {
     public bool isGood;
-    public void OnHitByPoo()
+    public void OnHit()
     {
         Debug.Log(isGood ? "Got good cube (i.e. take points)" : "God bad cube (i.e. give points)");
 

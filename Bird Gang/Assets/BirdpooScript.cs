@@ -1,18 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BirdpooScript: MonoBehaviour
-{
-        Rigidbody m_Rigidbody;
-        void OnCollisionEnter(Collision collision)
-        {
+{ 
+	Rigidbody rb;
+	private Collider col;
 
-            m_Rigidbody = GetComponent<Rigidbody>();
-            //This locks the RigidBody so that it does not move or rotate in the Z axis.
-            m_Rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationZ;
-            m_Rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationY;
-            m_Rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationX;
+	public Vector3 acc;
+	private Vector3 start;
 
-    }
+	private void Start()
+	{
+		rb = GetComponent<Rigidbody>();
+		col = GetComponent<Collider>();
+		start = rb.position;
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		if (Physics.Raycast(rb.position, Vector3.down, 1f, 1 << 8))
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+	}
+
+	private void Update()
+	{
+		if ((start - rb.position).magnitude > 0.5f)
+			col.enabled = true;
+	}
+
+	private void FixedUpdate()
+	{
+		rb.AddForce(acc, ForceMode.Acceleration);
+	}
 }
