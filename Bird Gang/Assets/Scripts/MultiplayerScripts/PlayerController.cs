@@ -5,6 +5,7 @@ using Photon.Pun;
 using UnityEngine;
 using System.IO;
 using ExitGames.Client.Photon.StructWrapping;
+using Photon.Pun.UtilityScripts;
 using UnityEditor;
 using UnityEditor.SearchService;
 
@@ -63,7 +64,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            rb.position = new Vector3(0, 5, 0); // TEMP FIX: preventing players spawning below the map if there are >1.
+            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber, 5f, 0f); // TEMP FIX: preventing players spawning below the map if there are >1.
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
@@ -110,7 +111,15 @@ public class PlayerController : MonoBehaviour
         }
 
         hit.point += hit.normal * 0.25f;
-
+        /*
+         * Fix time to hit as (distance to target) / constant,
+         * then assume constant velocity on x, z,
+         * and choose a and u for y axis (as in s = ut + 1/2at^2).
+         * targetParabolaProfile controls balance of u, a.
+         * of 0 gives u = 0 (i.e. z = z0 - 1/2at^2),
+         * of 1 gives u = dist / time, (z = z0 - ut).
+         * Somewhere in-between gives nice parabola with u =/= 0 =/= a.
+         */
         Vector3 pos = rb.position;
         Vector3 dist = hit.point - pos;
         float timeToHit = dist.magnitude / targetFixedVelocity;
@@ -118,11 +127,6 @@ public class PlayerController : MonoBehaviour
         float v = -(dist.y / timeToHit) * targetParabolaProfile;
         float g = -(dist.y + (v * timeToHit)) / (0.5f * timeToHit * timeToHit);
 
-        //float g = Mathf.Lerp(projGravityMax, projGravityMin, (dist.x + dist.z) / 100f);
-        //float v = g * projInitialVelMult;
-        /* Fix a, v, solve quadratic for t. */
-        //float timeToHit = (-v + Mathf.Sqrt(v*v - 4f * (.5f * g) * dist.y)) / g;
-        
         Vector3 step = dist / targetLineRes;
         step.y = 0f;
         float timeStep = timeToHit / targetLineRes;
@@ -139,14 +143,6 @@ public class PlayerController : MonoBehaviour
         targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
         if (Input.GetMouseButtonDown(0))
         {
-            /* FIXME: Ideally we should keep a central store of agents e.g. in the spawner.
-             * Plus, we may want non-agent targets. */
-            GameObject[] agents = GameObject.FindGameObjectsWithTag("bird_target");
-            foreach(GameObject a in agents)
-            {
-                a.GetComponent<AiController>().DetectNewObstacle(hit.point);
-            }
-
             Vector3 acc = new Vector3(0f, -g, 0f);
             Vector3 vel = dist / timeToHit;
             vel.y = -v;
@@ -156,67 +152,7 @@ public class PlayerController : MonoBehaviour
 
             proj.GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
             proj.GetComponent<BirdpooScript>().acc = acc;
-
-            if (hit.collider.CompareTag("bird_target"))
-                hit.collider.gameObject.GetComponent<BaseBirdTarget>().OnHit();
         }
-
-        /* 
-        const float timeStep = .5f;
-        /* SimplifiedWorldCollisions layer. FIXME: Layer.NameToLayer seems broken? * /
-        const int LAYER_COLLISION = 1 << 8;
-        Vector3 pos = rb.position,
-            vel = rb.velocity + mouseVec * projControlInfluence;
-        if (vel.y > 0f)
-            vel.y = 0f;
-
-        projLineRenderer.positionCount = projMaxLineSegments + 1;
-        bool didHit = false;
-        RaycastHit hit = default;
-        /* Parabolic ray trace, in simplified scene. * /
-        for (int i = 0; i < projMaxLineSegments; i++)
-        {
-            vel += Vector3.down * projGravity * timeStep;
-            vel *= projVelocityDecay;
-            projLineRenderer.SetPosition(i, pos);
-
-            if (Physics.Raycast(pos, vel, out hit, maxDistance: vel.magnitude * timeStep,
-            layerMask: LAYER_COLLISION))
-            {
-                didHit = true;
-                projLineRenderer.positionCount = i + 2;
-                hit.point += hit.normal * 0.25f;
-                projLineRenderer.SetPosition(i + 1, hit.point);
-                break;
-            }
-
-            pos += vel * timeStep;
-        }
-        
-        if (didHit)
-        {
-            targetObj.transform.position = hit.point;
-            targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
-            if(Input.GetMouseButtonDown(0))
-            {
-                /* FIXME: Ideally we should keep a central store of agents e.g. in the spawner.
-                 * Plus, we may want non-agent targets. * /
-                GameObject[] agents = GameObject.FindGameObjectsWithTag("bird_target");
-                foreach(GameObject a in agents)
-                {
-                    a.GetComponent<AiController>().DetectNewObstacle(hit.point);
-                }
-
-                PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), hit.point, Quaternion.identity);
-                if (hit.collider.CompareTag("bird_target"))
-                    hit.collider.gameObject.GetComponent<BaseBirdTarget>().OnHit();
-            }    
-        }
-        else
-        {
-            targetObj.transform.position = new Vector3(0, -10, 0);
-            projLineRenderer.positionCount = projMaxLineSegments;
-        } */
     }
 
     void Look()

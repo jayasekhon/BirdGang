@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class BirdpooScript: MonoBehaviour
 { 
-	Rigidbody rb;
+	private Rigidbody rb;
 	private Collider col;
 
 	public Vector3 acc;
 	private Vector3 start;
+
+	private bool active = true;
+	private bool preFlight = true;
 
 	private void Start()
 	{
@@ -20,18 +23,47 @@ public class BirdpooScript: MonoBehaviour
 
 	void OnCollisionEnter(Collision collision)
 	{
+		bool flee = false;
+		if (collision.collider.CompareTag("bird_target"))
+		{
+			collision.collider.gameObject.GetComponent<BaseBirdTarget>().OnHit();
+			flee = true;
+		}
+		/* Freeze and cease collision when we collide with something, and we're just above world geometry. */
 		if (Physics.Raycast(rb.position, Vector3.down, 1f, 1 << 8))
-			rb.constraints = RigidbodyConstraints.FreezeAll;
+		{
+			Destroy(rb);
+			Destroy(col);
+			flee = true;
+			active = false;
+		}
+
+		if (flee)
+		{
+			/* FIXME: Ideally we should keep a central store of agents e.g. in the spawner.
+			 * Plus, we may want non-agent targets. */
+			GameObject[] agents = GameObject.FindGameObjectsWithTag("bird_target");
+			foreach (GameObject a in agents)
+			{
+				if (a != collision.collider.gameObject)
+					a.GetComponent<AiController>().DetectNewObstacle(rb.position);
+			}
+		}
 	}
 
 	private void Update()
 	{
-		if ((start - rb.position).magnitude > 0.5f)
+		/* Wait for a little while before enabling collision, otherwise we hit the player. */
+		if (preFlight && (start - rb.position).magnitude > 0.5f)
+		{
 			col.enabled = true;
+			preFlight = false;
+		}
 	}
 
 	private void FixedUpdate()
 	{
-		rb.AddForce(acc, ForceMode.Acceleration);
+		if (active)
+			rb.AddForce(acc, ForceMode.Acceleration);
 	}
 }
