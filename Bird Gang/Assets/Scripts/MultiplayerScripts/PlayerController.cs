@@ -1,14 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using System.IO;
+using ExitGames.Client.Photon.StructWrapping;
+using Photon.Pun.UtilityScripts;
+using UnityEditor;
+using UnityEditor.SearchService;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] GameObject cameraHolder;
     // [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
-
+    
+    /* Flight Control */
     private float forwardSpeed = 25f, hoverSpeed = 5f;
     private float activeForwardSpeed, activeHoverSpeed;
     private float forwardAcceleration = 2.5f, hoverAcceleration = 2f;
@@ -23,29 +29,47 @@ public class PlayerController : MonoBehaviour
     Vector3 smoothMoveVelocity;
     Vector3 moveAmount;
     
-    Rigidbody rb;
-    PhotonView PV;
-
-    public GameObject targetObj;
-    public GameObject Birdpoo; 
-    GameObject[] agents;
+    private Rigidbody rb;
+    private PhotonView PV;
+    private Camera cam;
     
+    /* Targeting */
+    public GameObject targetObj;
+    public GameObject Birdpoo;
+    
+    [Range(0f, 1f)]
+    public float targetParabolaProfile = 0.8f;
+    [Min(.1f)]
+    public float targetFixedVelocity = 60f;
+    [Range(0, 100)]
+    public int targetLineRes = 20;
+
+    public Material projLineMat;
+
+    private LineRenderer projLineRenderer;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
+        cam = GetComponentInChildren<Camera>();
     }
 
     void Start()
     {
         if (!PV.IsMine)
         {
-            Destroy(GetComponentInChildren<Camera>().gameObject);
+            Destroy(cam.gameObject);
             Destroy(rb);
         }
-
-        rb.position = new Vector3(0,5,0); // TEMP FIX: preventing players spawning below the map if there are >1.
-        targetObj = Instantiate(targetObj);
+        else
+        {
+            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber, 5f, 0f); // TEMP FIX: preventing players spawning below the map if there are >1.
+            targetObj = Instantiate(targetObj);
+            projLineRenderer = gameObject.AddComponent<LineRenderer>();
+            projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
+            projLineRenderer.material = projLineMat;
+        }
     }
 
     void Update()
@@ -58,29 +82,8 @@ public class PlayerController : MonoBehaviour
         Turning();
         // Move();
         // Jump();
-        /*
-          * For now, take angle from camera. Also take pos from camera to be less confusing.
-          * Obviously this needs to change.
-          */
 
-        RaycastHit hitInfo;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
-        {
-            targetObj.transform.position = hitInfo.point + Vector3.up * 0.01f;
-
-            if(Input.GetMouseButtonDown(0)){
-                agents = GameObject.FindGameObjectsWithTag("bird_target");
-                Vector3 splatterPoint = hitInfo.point + Vector3.up * 0.01f;
-                PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), splatterPoint, Quaternion.identity);
-                foreach(GameObject a in agents)
-                {
-                    a.GetComponent<AiController>().DetectNewObstacle(hitInfo.point);
-                }
-                hitInfo.collider.gameObject.GetComponent<BaseBirdTarget>().OnHitByPoo();
-            }
-            
-        }
+        Targeting();
     }
 
     void FixedUpdate()
@@ -93,6 +96,64 @@ public class PlayerController : MonoBehaviour
         // rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
+    void Targeting()
+    {
+        Vector3 ndc = cam.ScreenToViewportPoint(Input.mousePosition);
+        Vector3 mouseRay = cam.ViewportPointToRay(ndc).direction.normalized;
+        
+        /* Find target pos in terms of world geometry */
+        RaycastHit hit;
+        if (!Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, float.MaxValue, 1 << 8))
+        {
+            targetObj.transform.position = new Vector3(0, -10, 0);
+            projLineRenderer.positionCount = 0;
+            return;
+        }
+
+        hit.point += hit.normal * 0.25f;
+        /*
+         * Fix time to hit as (distance to target) / constant,
+         * then assume constant velocity on x, z,
+         * and choose a and u for y axis (as in s = ut + 1/2at^2).
+         * targetParabolaProfile controls balance of u, a.
+         * of 0 gives u = 0 (i.e. z = z0 - 1/2at^2),
+         * of 1 gives u = dist / time, (z = z0 - ut).
+         * Somewhere in-between gives nice parabola with u =/= 0 =/= a.
+         */
+        Vector3 pos = rb.position;
+        Vector3 dist = hit.point - pos;
+        float timeToHit = dist.magnitude / targetFixedVelocity;
+        
+        float v = -(dist.y / timeToHit) * targetParabolaProfile;
+        float g = -(dist.y + (v * timeToHit)) / (0.5f * timeToHit * timeToHit);
+
+        Vector3 step = dist / targetLineRes;
+        step.y = 0f;
+        float timeStep = timeToHit / targetLineRes;
+        projLineRenderer.positionCount = targetLineRes + 1;
+        for (int i = 0; i < targetLineRes; i++)
+        {
+            pos.y = (rb.position.y - (0.5f * g * Mathf.Pow(i*timeStep, 2))) - v * (float)(i) * timeStep;
+            projLineRenderer.SetPosition(i, pos);
+            pos += step;
+        }
+        projLineRenderer.SetPosition(targetLineRes, hit.point);
+
+        targetObj.transform.position = hit.point;
+        targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 acc = new Vector3(0f, -g, 0f);
+            Vector3 vel = dist / timeToHit;
+            vel.y = -v;
+
+            GameObject proj = PhotonNetwork
+                .Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity);
+
+            proj.GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
+            proj.GetComponent<BirdpooScript>().acc = acc;
+        }
+    }
 
     void Look()
     {
@@ -154,8 +215,8 @@ public class PlayerController : MonoBehaviour
     //     }
     // }
 
-    public void SetGroundedState(bool _grounded)
+    public void SetGroundedState(bool grounded)
     {
-        grounded = _grounded;
+        this.grounded = grounded;
     }
 }
