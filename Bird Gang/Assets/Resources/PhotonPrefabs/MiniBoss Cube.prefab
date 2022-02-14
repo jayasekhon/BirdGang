@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6468603954502226040}
   - component: {fileID: -8319193220200637547}
   - component: {fileID: -5536076198914430531}
+  - component: {fileID: 9074304536035104093}
   m_Layer: 0
   m_Name: MiniBoss Cube
   m_TagString: bird_target
@@ -172,3 +173,16 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &9074304536035104093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9198111749603487451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51217cf63ddfb3ef1af1e0abe81ae9c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGood: 0
