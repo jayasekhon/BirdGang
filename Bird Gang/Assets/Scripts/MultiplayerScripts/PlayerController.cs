@@ -6,8 +6,7 @@ using UnityEngine;
 using System.IO;
 using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun.UtilityScripts;
-using UnityEditor;
-using UnityEditor.SearchService;  
+using UnityEngine.SearchService;  
 
 public class PlayerController : MonoBehaviour
 {
