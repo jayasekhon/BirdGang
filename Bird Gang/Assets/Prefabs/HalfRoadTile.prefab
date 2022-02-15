@@ -104,7 +104,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9062311379879217018}
-  m_Layer: 0
+  - component: {fileID: 4619053361849004996}
+  m_Layer: 8
   m_Name: HalfRoadTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,6 +129,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4619053361849004996
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6577042039150209252}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 1.2, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8283556936070072122
 GameObject:
   m_ObjectHideFlags: 0
