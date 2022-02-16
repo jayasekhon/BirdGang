@@ -46,8 +46,18 @@ public class SpawnManager : MonoBehaviour
         } 
         foreach (var spawner in spawners)
         {
-            spawner.fillMaxGoodPeople(10);
-            spawner.fillMaxBadPeople(2);
+            if (spawner == spawners[20] || spawner == spawners[21] || spawner == spawners[22] ){
+                spawner.fillMaxGoodPeople(3);
+                int chanceOfBad = Random.Range(0, 2);
+                if (chanceOfBad == 1){
+                    spawner.fillMaxBadPeople(1);
+                }
+            }
+            else{
+                spawner.fillMaxGoodPeople(10);
+                spawner.fillMaxBadPeople(2);
+            }
+
 
         }
 
