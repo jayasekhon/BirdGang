@@ -61,25 +61,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
-        screenCenter.x = Screen.width * 0.5f;
-        screenCenter.y = Screen.height * 0.5f;
-
-        // camerasInGame = Camera.allCameras;
-    // Find("MainCamera");
-        camerasInGame = GameObject.FindGameObjectsWithTag("MainCamera").GetComponent<Camera>;
-        for (int c = 0; c < camerasInGame.Length; c++)
-        {
-            checkLocal = camerasInGame[c].GetComponent<PhotonView>();
-            if (!checkLocal.IsMine)
-            {
-                Destroy(camerasInGame[c]);
-            }
-            else
-            {
-                Debug.Log("Local camera");
-                cam = camerasInGame[c];
-            }
-        }
     }
 
     void Start()
@@ -97,6 +78,26 @@ public class PlayerController : MonoBehaviour
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
             projLineRenderer.material = projLineMat;
         }
+
+        screenCenter.x = Screen.width * 0.5f;
+        screenCenter.y = Screen.height * 0.5f;
+
+        // Get the local camera component for targetting
+        camerasInGame = Camera.allCameras;
+        for (int c = 0; c < camerasInGame.Length; c++)
+        {
+            checkLocal = camerasInGame[c].GetComponentInParent<PhotonView>(); // CameraHolder
+            if (!checkLocal.IsMine)
+            {
+                Destroy(camerasInGame[c].GetComponent<Camera>().gameObject);
+            }
+            else
+            {
+                Debug.Log("Local camera");
+                cam = camerasInGame[c].GetComponent<Camera>();
+            }
+        }
+
     }
 
     void Update()
