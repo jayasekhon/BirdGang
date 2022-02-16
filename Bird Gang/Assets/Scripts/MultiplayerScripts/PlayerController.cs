@@ -189,11 +189,12 @@ public class PlayerController : MonoBehaviour
             Vector3 vel = dist / timeToHit;
             vel.y = -v;
 
+            object[] insertAcc = new object[] {acc, vel};
             GameObject proj = PhotonNetwork
-                .Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity);
+                .Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
 
-            proj.GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
-            proj.GetComponent<BirdpooScript>().acc = acc;
+            // proj.GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
+            // proj.GetComponent<BirdpooScript>().acc = acc;
         }
     }
 
