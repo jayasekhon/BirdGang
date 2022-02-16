@@ -25,6 +25,5 @@ public class PlayerManager : MonoBehaviour
     {
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), new Vector3(0,10,0), Quaternion.identity);
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "CameraHolder"), new Vector3(0,10,-2), Quaternion.identity);
-
     }
 }

@@ -33,11 +33,7 @@ public class CameraController : MonoBehaviour
         for (int p = 0; p < playersInGame.Length; p++)
         {
             checkLocal = playersInGame[p].GetComponent<PhotonView>();
-            if (!checkLocal.IsMine)
-            {
-                Destroy(playersInGame[p]);
-            }
-            else
+            if (checkLocal.IsMine)
             {
                 Debug.Log("Local player");
                 m_player = playersInGame[p];

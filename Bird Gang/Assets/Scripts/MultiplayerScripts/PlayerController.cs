@@ -61,18 +61,19 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
+        // cam = GetComponentInChildren<Camera>();
     }
 
     void Start()
     {
         if (!PV.IsMine)
         {
+            // Destroy(cam.gameObject);
             Destroy(rb);
             // Destroy(GetComponentInChildren<Camera>().gameObject);
         }
         else
         {
-            // rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber, 5f, 0f); // TEMP FIX: preventing players spawning below the map if there are >1.
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
