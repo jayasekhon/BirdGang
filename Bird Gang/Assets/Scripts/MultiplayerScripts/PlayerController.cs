@@ -14,9 +14,9 @@ public class PlayerController : MonoBehaviour
     // [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
     
     /* Flight Control */
-    private float forwardSpeed = 25f, strafeSpeed = 7.5f, hoverSpeed = 5f;
+    private float forwardSpeed = 50f, strafeSpeed = 7.5f, hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
-    private float forwardAcceleration = 2.5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
+    private float forwardAcceleration = 5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
     
     private float lookRateSpeed = 90f;
     private Vector2 lookInput, screenCenter, mouseDistance;
@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
 
     private LineRenderer projLineRenderer;
 
+    // private CameraController cameraController;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -83,7 +85,7 @@ public class PlayerController : MonoBehaviour
         screenCenter.x = Screen.width * 0.5f;
         screenCenter.y = Screen.height * 0.5f;
 
-        // Get the local camera component for targetting
+        // Get the local camera component for targeting
         camerasInGame = Camera.allCameras;
         for (int c = 0; c < camerasInGame.Length; c++)
         {
@@ -96,6 +98,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Local camera");
                 cam = camerasInGame[c].GetComponent<Camera>();
+                // cameraController = camerasInGame[c].GetComponent<CameraController>();
             }
         }
 
@@ -131,6 +134,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         Movement();
+        // cameraController.UpdatePosition();
         // rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
@@ -204,20 +208,20 @@ public class PlayerController : MonoBehaviour
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
-            // Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
-            
-            // float angle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) -90;
-            // rollInput = Mathf.Lerp(rollInput, angle, hoverAcceleration * Time.deltaTime);
-            // if (Vector2.SqrMagnitude(mouseDistance) < 0.5f)
-            // {
-            //     mouseDistance.x = 0f;
-            //     mouseDistance.y = 0f;
-            // }
+            Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
 
-            // transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, 0f, 0f, Space.Self);
-            // transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, mouseDistance.x * lookRateSpeed * Time.deltaTime, 0f, Space.Self);
-            transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, 0f, 0f, Space.Self);
-            transform.Rotate(0f, mouseDistance.x * lookRateSpeed * Time.deltaTime, 0f, Space.World);
+            float angle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) - 90;
+            rollInput = Mathf.Lerp(rollInput, angle, hoverAcceleration * Time.deltaTime);
+
+            if (Vector2.SqrMagnitude(mouseDistance) < 0.5f)
+            {
+                mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
+                mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
+            }
+
+            float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
+            float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
+            transform.rotation = Quaternion.Euler(x, y, rollInput);
         }
     }
 
@@ -227,9 +231,10 @@ public class PlayerController : MonoBehaviour
         activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
         activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
-        transform.position += (transform.forward * activeForwardSpeed * Time.deltaTime)
-                            + (transform.right * activeStrafeSpeed * Time.deltaTime)
-                            + (transform.up * activeStrafeSpeed * Time.deltaTime);        
+        Vector3 position = (transform.forward * activeForwardSpeed * Time.deltaTime)
+            + (transform.right * activeStrafeSpeed * Time.deltaTime)
+            + (transform.up * activeStrafeSpeed * Time.deltaTime);
+        rb.AddForce(position, ForceMode.Impulse);    
     }
 
     public void SetGroundedState(bool grounded)
