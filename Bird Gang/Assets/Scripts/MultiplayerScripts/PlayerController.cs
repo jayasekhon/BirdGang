@@ -14,9 +14,14 @@ public class PlayerController : MonoBehaviour
     // [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
     
     /* Flight Control */
-    private float forwardSpeed = 25f, hoverSpeed = 5f;
-    private float activeForwardSpeed, activeHoverSpeed;
-    private float forwardAcceleration = 2.5f, hoverAcceleration = 2f;
+    private float forwardSpeed = 50f, strafeSpeed = 7.5f, hoverSpeed = 5f;
+    private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
+    private float forwardAcceleration = 5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
+    
+    private float lookRateSpeed = 90f;
+    private Vector2 lookInput, screenCenter, mouseDistance;
+    private float rollInput;
+    private float rollSpeed = 1.5f, rollAcceleration = 2f;
     private float mouseSensitivity = 50f;
     private float xRotation, yRotation;
 
@@ -24,17 +29,22 @@ public class PlayerController : MonoBehaviour
     private Quaternion rotationReset;
 
     float verticalLookRoation;    
-    bool grounded;
     Vector3 smoothMoveVelocity;
     Vector3 moveAmount;
     
+    bool grounded; 
+    private bool move; 
+
     private Rigidbody rb;
     private PhotonView PV;
     private Camera cam;
+    private Camera[] camerasInGame;
+    private PhotonView checkLocal;
     
     /* Targeting */
     public GameObject targetObj;
     public GameObject Birdpoo;
+    GameObject[] agents;
     
     [Range(0f, 1f)]
     public float targetParabolaProfile = 0.8f;
@@ -47,28 +57,51 @@ public class PlayerController : MonoBehaviour
 
     private LineRenderer projLineRenderer;
 
+    // private CameraController cameraController;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
-        cam = GetComponentInChildren<Camera>();
+        // cam = GetComponentInChildren<Camera>();
     }
 
     void Start()
     {
         if (!PV.IsMine)
         {
-            Destroy(cam.gameObject);
+            // Destroy(cam.gameObject);
             Destroy(rb);
+            // Destroy(GetComponentInChildren<Camera>().gameObject);
         }
         else
         {
-            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber, 5f, 0f); // TEMP FIX: preventing players spawning below the map if there are >1.
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
             projLineRenderer.material = projLineMat;
         }
+
+        screenCenter.x = Screen.width * 0.5f;
+        screenCenter.y = Screen.height * 0.5f;
+
+        // Get the local camera component for targeting
+        camerasInGame = Camera.allCameras;
+        for (int c = 0; c < camerasInGame.Length; c++)
+        {
+            checkLocal = camerasInGame[c].GetComponentInParent<PhotonView>(); // CameraHolder
+            if (!checkLocal.IsMine)
+            {
+                Destroy(camerasInGame[c].GetComponent<Camera>().gameObject);
+            }
+            else
+            {
+                Debug.Log("Local camera");
+                cam = camerasInGame[c].GetComponent<Camera>();
+                // cameraController = camerasInGame[c].GetComponent<CameraController>();
+            }
+        }
+
     }
 
     void Update()
@@ -77,12 +110,21 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        //Look();
-        Turning();
+        
+        if (Input.GetAxisRaw("Vertical") == 1)
+        {
+            move = true;
+        }
+        else
+        {
+            move = false;
+        }
+
+        Look();
+        Targeting();
+        // Turning();
         // Move();
         // Jump();
-
-        Targeting();
     }
 
     void FixedUpdate()
@@ -92,6 +134,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         Movement();
+        // cameraController.UpdatePosition();
         // rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
@@ -146,73 +189,54 @@ public class PlayerController : MonoBehaviour
             Vector3 vel = dist / timeToHit;
             vel.y = -v;
 
+            object[] insertAcc = new object[] {acc, vel};
             GameObject proj = PhotonNetwork
-                .Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity);
+                .Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
 
-            proj.GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
-            proj.GetComponent<BirdpooScript>().acc = acc;
+            // proj.GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
+            // proj.GetComponent<BirdpooScript>().acc = acc;
         }
     }
 
     void Look()
     {
-        transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
-        verticalLookRoation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
-        verticalLookRoation = Mathf.Clamp(verticalLookRoation, -90f, 90f);
+        if (move)
+        {
+            lookInput.x = Input.mousePosition.x;
+            lookInput.y = Input.mousePosition.y;
+            mouseDistance.x = (lookInput.x - screenCenter.x) / screenCenter.y;
+            mouseDistance.y = (lookInput.y - screenCenter.y) / screenCenter.y;
 
-        cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRoation;
-    }
+            mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
-    void Turning()
-    {
-        if (Input.GetKey(KeyCode.A)) 
-        {
-          transform.Rotate(Vector3.down * 50f * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D)) 
-        {
-          transform.Rotate(Vector3.up * 50f * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.E)) 
-        {
-          transform.Rotate(Vector3.left * 50f * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.Q)) 
-        {
-          transform.Rotate(Vector3.right * 50f * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.R)) 
-        {
-          rotationReset = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
-          transform.rotation = Quaternion.Slerp(transform.rotation, rotationReset, Time.deltaTime * speed);
+            Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
+
+            float angle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) - 90;
+            rollInput = Mathf.Lerp(rollInput, angle, hoverAcceleration * Time.deltaTime);
+
+            if (Vector2.SqrMagnitude(mouseDistance) < 0.5f)
+            {
+                mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
+                mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
+            }
+
+            float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
+            float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
+            transform.rotation = Quaternion.Euler(x, y, rollInput);
         }
     }
 
     void Movement()
     {
-      activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.deltaTime);
-      activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration * Time.deltaTime);
-      rb.velocity = (transform.forward * activeForwardSpeed * Input.GetAxisRaw("Vertical")) + (transform.up * activeHoverSpeed * Input.GetAxisRaw("Hover"));
+        activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.deltaTime);
+        activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
+        activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
+
+        Vector3 position = (transform.forward * activeForwardSpeed * Time.deltaTime)
+            + (transform.right * activeStrafeSpeed * Time.deltaTime)
+            + (transform.up * activeStrafeSpeed * Time.deltaTime);
+        rb.AddForce(position, ForceMode.Impulse);    
     }
-
-
-    // void Move()
-    // {
-    //     Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-
-    //     moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed), ref smoothMoveVelocity, smoothTime);
-
-    //     // (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed)
-    //     // Compact if statement saying "if left shift pressed down, use sprint speed, otherwise use walk speed.
-    // }
-
-    // void Jump()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.Space) && grounded)
-    //     {
-    //         rb.AddForce(transform.up * jumpForce);
-    //     }
-    // }
 
     public void SetGroundedState(bool grounded)
     {

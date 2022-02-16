@@ -44,8 +44,6 @@ public class SpawnManager : MonoBehaviour
         {
             return;
         } 
-
-
         foreach (var spawner in spawners)
         {
             spawner.fillMaxGoodPeople(10);
@@ -60,8 +58,5 @@ public class SpawnManager : MonoBehaviour
             nextSpawnTime = Time.time + spawnDelay;
 
         }
-        
-
-
     }
 }
