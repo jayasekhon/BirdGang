@@ -49,10 +49,6 @@ public class CameraController : MonoBehaviour
         float bias = 0.75f;
         transform.position = transform.position * bias + desiredLocation * (1f - bias);    
         transform.LookAt(targetPos.position + transform.forward * 30f);
-        // Vector3 desiredLocation = targetPos.position - targetPos.forward * 10f + Vector3.up * 5f;
-        // float bias = 0.75f;
-        // transform.position = transform.position * bias + desiredLocation * (1f - bias);    
-        // transform.LookAt(targetPos.position + transform.forward * 30f);
     }
 
     // void FixedUpdate()
