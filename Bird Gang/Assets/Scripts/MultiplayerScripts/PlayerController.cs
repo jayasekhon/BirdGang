@@ -209,7 +209,7 @@ public class PlayerController : MonoBehaviour
             lookInput.y = Input.mousePosition.y;
             mouseDistance.x = (lookInput.x - screenCenter.x) / screenCenter.y;
             mouseDistance.y = (lookInput.y - screenCenter.y) / screenCenter.y;
-            // Debug.Log(lookInput.x);
+            // Debug.Log(lookInput.x - screenCenter.x);
             // Debug.Log("x above, y below");
             // Debug.Log(lookInput.y);
 
@@ -230,8 +230,8 @@ public class PlayerController : MonoBehaviour
             float rollAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(1, 0, 0)) -90;
             rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
 
-            float pitchAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0));
-            pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
+            // float pitchAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0));
+            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
 
             // float pitchAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 1, 0));
             // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
@@ -239,23 +239,54 @@ public class PlayerController : MonoBehaviour
             // float yawAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 0, 1));
             // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
 
+            // float yawAngle = Vector2.Angle(temp.normalized, new Vector3(1,0));
+            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
+
             // transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, mouseDistance.x * lookRateSpeed * Time.deltaTime, 0f, Space.Self);
             float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
-            // float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
-            transform.rotation = Quaternion.Euler(x, -pitchInput, rollInput);
+            float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
+            // Debug.Log(x);
+
+            if (x > 270) {
+                x = Mathf.Clamp(x, 275, 380);
+            }
+            if (x < 90) {
+                x = Mathf.Clamp(x, -10, 80);
+            }           
+
+            // if (x < 280 && x > 80) {
+            //     x = 350;
+            // }
+            
+            // if (x < 280 && x > 80) {
+            //     x = 350;
+            // }
+
+            Debug.Log(x);
+            // Debug.Log("unclamped, clamped");
+            // x = Mathf.Clamp(x%270, 0, 89);
+            // Debug.Log(x);
+
+            // x = Mathf.Clamp(x, -100, 50);
+            // transform.rotation = Quaternion.Euler(-yawInput, -pitchInput, rollInput);
+            transform.rotation = Quaternion.Euler(x, y, rollInput);
         }
     }
 
     void Movement()
     {
         activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.deltaTime);
-        // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
-        // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
+        // // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
+        // // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
         Vector3 position = (transform.forward * activeForwardSpeed * Time.deltaTime);
-            // + (transform.right * activeStrafeSpeed * Time.deltaTime)
-            // + (transform.up * activeStrafeSpeed * Time.deltaTime);
-        rb.AddForce(position, ForceMode.Impulse);    
+        //     // + (transform.right * activeStrafeSpeed * Time.deltaTime)
+        //     // + (transform.up * activeStrafeSpeed * Time.deltaTime);
+        rb.AddForce(position, ForceMode.Impulse);   
+        
+        // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
+        // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
+       
     }
 
     public void SetGroundedState(bool grounded)
