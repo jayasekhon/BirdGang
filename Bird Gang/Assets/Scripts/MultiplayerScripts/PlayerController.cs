@@ -1,18 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using System.IO;
-using ExitGames.Client.Photon.StructWrapping;
-using Photon.Pun.UtilityScripts;
-using UnityEngine.SearchService;  
 
 public class PlayerController : MonoBehaviour
-{
-    [SerializeField] GameObject cameraHolder;
-    // [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
-    
+{    
     /* Flight Control */
     private float forwardSpeed = 50f, strafeSpeed = 7.5f, hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
@@ -23,30 +14,15 @@ public class PlayerController : MonoBehaviour
     private float rollInput;
     private float pitchInput;
     private float yawInput;
-    private float rollSpeed = 1.5f, rollAcceleration = 2f;
+    
     private float mouseSensitivity = 50f;
     private float xRotation, yRotation;
-
-    private float speed = 1.5f;
-    private Quaternion rotationReset;
-
-    float verticalLookRoation;    
-    Vector3 smoothMoveVelocity;
-    Vector3 moveAmount;
     
     bool grounded; 
     private bool move; 
 
-    private Rigidbody rb;
-    private PhotonView PV;
-    private Camera cam;
-    private Camera[] camerasInGame;
-    private PhotonView checkLocal;
-    
     /* Targeting */
     public GameObject targetObj;
-    public GameObject Birdpoo;
-    GameObject[] agents;
     
     [Range(0f, 1f)]
     public float targetParabolaProfile = 0.8f;
@@ -54,30 +30,33 @@ public class PlayerController : MonoBehaviour
     public float targetFixedVelocity = 60f;
     [Range(0, 100)]
     public int targetLineRes = 20;
+    public bool limitAimAngles = false;
 
     public Material projLineMat;
-
     private LineRenderer projLineRenderer;
-
-    // private CameraController cameraController;
+    
+    private Rigidbody rb;
+    private PhotonView PV;
+    private Camera cam;
+    private Camera[] camerasInGame;
+    private PhotonView checkLocal;
+    [SerializeField] GameObject cameraHolder;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
-        // cam = GetComponentInChildren<Camera>();
     }
 
     void Start()
     {
         if (!PV.IsMine)
         {
-            // Destroy(cam.gameObject);
             Destroy(rb);
-            // Destroy(GetComponentInChildren<Camera>().gameObject);
         }
         else
         {
+            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber * 2f, 5f, 0f); // TEMP FIX: preventing players spawning below the map if there are >1.
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
@@ -88,22 +67,19 @@ public class PlayerController : MonoBehaviour
         screenCenter.y = Screen.height * 0.5f;
 
         // Get the local camera component for targeting
-        camerasInGame = Camera.allCameras;
-        for (int c = 0; c < camerasInGame.Length; c++)
+        foreach (Camera c in Camera.allCameras)
         {
-            checkLocal = camerasInGame[c].GetComponentInParent<PhotonView>(); // CameraHolder
+            checkLocal = c.GetComponentInParent<PhotonView>(); // CameraHolder
             if (!checkLocal.IsMine)
             {
-                Destroy(camerasInGame[c].GetComponent<Camera>().gameObject);
+                Destroy(c.gameObject);
             }
             else
             {
                 Debug.Log("Local camera");
-                cam = camerasInGame[c].GetComponent<Camera>();
-                // cameraController = camerasInGame[c].GetComponent<CameraController>();
+                cam = c;
             }
         }
-
     }
 
     void Update()
@@ -144,16 +120,23 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 ndc = cam.ScreenToViewportPoint(Input.mousePosition);
         Vector3 mouseRay = cam.ViewportPointToRay(ndc).direction.normalized;
-        
+
+        if (limitAimAngles)
+        {
+            float d = Mathf.Sqrt(mouseRay.x * mouseRay.x + mouseRay.z * mouseRay.z);
+            if (mouseRay.y / d > -0.1f)
+            {
+                mouseRay.y = d * -0.1f;
+            }
+        }
         /* Find target pos in terms of world geometry */
         RaycastHit hit;
-        if (!Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, float.MaxValue, 1 << 8))
+        if (!Physics.Raycast(cam.transform.position, mouseRay, out hit, float.MaxValue, 1 << 8))
         {
             targetObj.transform.position = new Vector3(0, -10, 0);
             projLineRenderer.positionCount = 0;
             return;
         }
-
         hit.point += hit.normal * 0.25f;
         /*
          * Fix time to hit as (distance to target) / constant,
@@ -181,8 +164,8 @@ public class PlayerController : MonoBehaviour
             projLineRenderer.SetPosition(i, pos);
             pos += step;
         }
-        projLineRenderer.SetPosition(targetLineRes, hit.point);
 
+        projLineRenderer.SetPosition(targetLineRes, hit.point);
         targetObj.transform.position = hit.point;
         targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
         if (Input.GetMouseButtonDown(0))
@@ -194,10 +177,6 @@ public class PlayerController : MonoBehaviour
             object[] insertAcc = new object[] {acc, vel};
             GameObject proj = PhotonNetwork
                 .Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
-            
-
-            // proj.GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
-            // proj.GetComponent<BirdpooScript>().acc = acc;
         }
     }
 
