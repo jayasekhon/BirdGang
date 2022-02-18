@@ -5,14 +5,18 @@ using System.IO;
 public class PlayerController : MonoBehaviour
 {    
     /* Flight Control */
-    // [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
     private float forwardSpeed = 50f, strafeSpeed = 7.5f, hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
     private float forwardAcceleration = 5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
     
-    private float lookRateSpeed = 90f;
+    private float lookRateSpeed = 60f;
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
+    private float pitchInput;
+    private float yawInput;
+    
+    private float mouseSensitivity = 50f;
+    private float xRotation, yRotation;
     
     bool grounded; 
     private bool move; 
@@ -187,33 +191,64 @@ public class PlayerController : MonoBehaviour
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
-            Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
-
-            float angle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) - 90;
-            rollInput = Mathf.Lerp(rollInput, angle, hoverAcceleration * Time.deltaTime);
-
-            if (Vector2.SqrMagnitude(mouseDistance) < 0.5f)
+            if (Vector2.SqrMagnitude(mouseDistance) < 0.5f) //for the sensitivity
             {
                 mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
                 mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
             }
 
+            Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
+            Vector3 temp_threeD = new Vector3(lookInput.x - screenCenter.x, lookInput.y - screenCenter.y, 50f);
+
+            // (0,0 is the bottom left corner)
+            
+            // float rollAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) -90;
+            // rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
+
+            float rollAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(1, 0, 0)) -90;
+            rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
+
+            // float pitchAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0));
+            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
+
+            // float pitchAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 0, 1)) -90;
+            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
+
+            // float yawAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 1, 0));
+            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
+
+            // float yawAngle = Vector2.Angle(temp.normalized, new Vector3(1,0));
+            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
+
+            // transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, mouseDistance.x * lookRateSpeed * Time.deltaTime, 0f, Space.Self);
             float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
+
+            if (x > 270) {
+                x = Mathf.Clamp(x, 275, 380);
+            }
+            if (x < 90) {
+                x = Mathf.Clamp(x, -10, 80);
+            }           
+
             transform.rotation = Quaternion.Euler(x, y, rollInput);
+            // transform.rotation = Quaternion.Euler(pitch, yaw, rollInput);
         }
     }
 
     void Movement()
     {
         activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.deltaTime);
-        activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
-        activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
+        // // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
+        // // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
-        Vector3 position = (transform.forward * activeForwardSpeed * Time.deltaTime)
-            + (transform.right * activeStrafeSpeed * Time.deltaTime)
-            + (transform.up * activeStrafeSpeed * Time.deltaTime);
-        rb.AddForce(position, ForceMode.Impulse);    
+        Vector3 position = (transform.forward * activeForwardSpeed * Time.deltaTime);
+        //     // + (transform.right * activeStrafeSpeed * Time.deltaTime)
+        //     // + (transform.up * activeStrafeSpeed * Time.deltaTime);
+        rb.AddForce(position, ForceMode.Impulse);   
+        
+        // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
+        // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
     }
 
     public void SetGroundedState(bool grounded)
