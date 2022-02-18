@@ -38,11 +38,12 @@ public class CameraController : MonoBehaviour
         {
             return;
         }
-        MoveToTarget();
+        // MoveToTarget();
     }
 
-    void MoveToTarget()
+    public void MoveToTarget()
     {
+        // Debug.Log(targetPos.position);
         Vector3 desiredLocation = targetPos.position - targetPos.forward * 10f + Vector3.up * 5f;
         float bias = 0.75f;
         Vector3 newPosition = transform.position * bias + desiredLocation * (1f - bias);
@@ -53,5 +54,8 @@ public class CameraController : MonoBehaviour
         }
         transform.position = newPosition;    
         transform.LookAt(targetPos.position + transform.forward * 30f);
+
+
+
     }
 }

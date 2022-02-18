@@ -5,9 +5,9 @@ using System.IO;
 public class PlayerController : MonoBehaviour
 {    
     /* Flight Control */
-    private float forwardSpeed = 50f, strafeSpeed = 7.5f, hoverSpeed = 5f;
-    private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
-    private float forwardAcceleration = 5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
+    private float forwardSpeed = 85f; //strafeSpeed = 7.5f, hoverSpeed = 5f;
+    private float activeForwardSpeed; // activeStrafeSpeed, activeHoverSpeed;
+    private float forwardAcceleration = 5f, hoverAcceleration = 2f;
     
     private float lookRateSpeed = 60f;
     private Vector2 lookInput, screenCenter, mouseDistance;
@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private float pitchInput;
     private float yawInput;
     
-    private float mouseSensitivity = 50f;
+    // private float mouseSensitivity = 50f;
     private float xRotation, yRotation;
     
     bool grounded; 
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private Camera cam;
     private Camera[] camerasInGame;
     private PhotonView checkLocal;
+    private CameraController cameraController;
     [SerializeField] GameObject cameraHolder;
 
     void Awake()
@@ -78,6 +79,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Local camera");
                 cam = c;
+                cameraController = c.GetComponentInParent<CameraController>();
             }
         }
     }
@@ -98,11 +100,7 @@ public class PlayerController : MonoBehaviour
             move = false;
         }
 
-        Look();
         Targeting();
-        // Turning();
-        // Move();
-        // Jump();
     }
 
     void FixedUpdate()
@@ -111,8 +109,10 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        Look();
         Movement();
-        // cameraController.UpdatePosition();
+        cameraController.MoveToTarget();
+        // Targeting();
         // rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
@@ -175,8 +175,7 @@ public class PlayerController : MonoBehaviour
             vel.y = -v;
 
             object[] insertAcc = new object[] {acc, vel};
-            GameObject proj = PhotonNetwork
-                .Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
+            GameObject proj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
         }
     }
 
@@ -202,11 +201,11 @@ public class PlayerController : MonoBehaviour
 
             // (0,0 is the bottom left corner)
             
-            // float rollAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) -90;
-            // rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
-
-            float rollAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(1, 0, 0)) -90;
+            float rollAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) -90;
             rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
+
+            // float rollAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(1, 0, 0)) -90;
+            // rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
 
             // float pitchAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0));
             // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
@@ -238,14 +237,15 @@ public class PlayerController : MonoBehaviour
 
     void Movement()
     {
-        activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.deltaTime);
-        // // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
-        // // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
+        activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.fixedDeltaTime);
+        // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
+        // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
-        Vector3 position = (transform.forward * activeForwardSpeed * Time.deltaTime);
-        //     // + (transform.right * activeStrafeSpeed * Time.deltaTime)
-        //     // + (transform.up * activeStrafeSpeed * Time.deltaTime);
-        rb.AddForce(position, ForceMode.Impulse);   
+        Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
+            // + (transform.right * activeStrafeSpeed * Time.deltaTime)
+            // + (transform.up * activeStrafeSpeed * Time.deltaTime);
+        // transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
+        rb.AddForce(position, ForceMode.Impulse);  
         
         // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
         // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
