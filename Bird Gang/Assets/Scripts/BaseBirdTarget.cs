@@ -16,6 +16,10 @@ public class BaseBirdTarget : MonoBehaviour
     {
         Debug.Log(isGood ? "Got good cube (i.e. take points)" : "God bad cube (i.e. give points)");
 
+        Score.instance.AddScore(isGood);
+        //gameObject.GetComponent<Score>().status = isGood;
+        //gameObject.GetComponent<Score>().UpdateScore();
+
         Destroy(gameObject);
 
     }
