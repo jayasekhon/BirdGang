@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class InstructionsLoad : MonoBehaviour
 {
-    float time = 8f;
+    float time = 25f;
     public Text instructions;
     public static InstructionsLoad instance;
 

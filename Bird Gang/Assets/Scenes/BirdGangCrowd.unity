@@ -9953,7 +9953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.64705884, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9962,10 +9962,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 495c9e2a934bcc640a8d7427b13cb680, type: 3}
-    m_FontSize: 14
+    m_FontSize: 16
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -9998,8 +9998,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.3, y: -1.5829}
-  m_SizeDelta: {x: 250.3665, y: 103.8478}
+  m_AnchoredPosition: {x: 235, y: -141.71}
+  m_SizeDelta: {x: 351.7031, y: 166.7464}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &512675228
 PrefabInstance:
@@ -24918,7 +24918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.35190633, g: 0.8301887, b: 0.105731584, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -44195,6 +44195,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 7100202035372176296, guid: 8d1b433eef3e44dc7a7002217bdf3db1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e153208cfe6b643a6ba52609ec8f3969, type: 2}
     - target: {fileID: 8042025447905099917, guid: 8d1b433eef3e44dc7a7002217bdf3db1, type: 3}
       propertyPath: m_RootOrder
       value: 1

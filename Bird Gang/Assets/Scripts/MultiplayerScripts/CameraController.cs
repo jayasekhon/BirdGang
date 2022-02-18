@@ -14,10 +14,7 @@ public class CameraController : MonoBehaviour
     void Awake()
     {
         PV = GetComponent<PhotonView>();
-    }
-
-    void Start()
-    {
+        
         // Find the local player for this local camera to follow.
         playersInGame = GameObject.FindGameObjectsWithTag("Player");
         for (int p = 0; p < playersInGame.Length; p++)
@@ -31,6 +28,11 @@ public class CameraController : MonoBehaviour
         }
         targetPos = m_player.GetComponent<Transform>();
     }
+
+    // void Start()
+    // {
+
+    // }
 
     void LateUpdate()
     {

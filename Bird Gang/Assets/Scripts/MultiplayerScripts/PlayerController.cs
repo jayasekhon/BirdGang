@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
     private float pitchInput;
     private float yawInput;
     
-    // private float mouseSensitivity = 50f;
     private float xRotation, yRotation;
     
     bool grounded; 
@@ -58,7 +57,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber * 2f, 5f, 0f); // TEMP FIX: preventing players spawning below the map if there are >1.
+            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber * -2f -180f, 115f, 115f); // TEMP FIX: preventing players spawning below the map if there are >1.
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
