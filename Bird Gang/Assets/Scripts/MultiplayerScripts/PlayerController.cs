@@ -209,9 +209,6 @@ public class PlayerController : MonoBehaviour
             lookInput.y = Input.mousePosition.y;
             mouseDistance.x = (lookInput.x - screenCenter.x) / screenCenter.y;
             mouseDistance.y = (lookInput.y - screenCenter.y) / screenCenter.y;
-            // Debug.Log(lookInput.x - screenCenter.x);
-            // Debug.Log("x above, y below");
-            // Debug.Log(lookInput.y);
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
@@ -222,8 +219,10 @@ public class PlayerController : MonoBehaviour
             }
 
             Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
-            Vector3 temp_threeD = new Vector3(lookInput.x - screenCenter.x, lookInput.y, 200f);
+            Vector3 temp_threeD = new Vector3(lookInput.x - screenCenter.x, lookInput.y - screenCenter.y, 50f);
 
+            // (0,0 is the bottom left corner)
+            
             // float rollAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) -90;
             // rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
 
@@ -233,10 +232,10 @@ public class PlayerController : MonoBehaviour
             // float pitchAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0));
             // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
 
-            // float pitchAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 1, 0));
+            // float pitchAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 0, 1)) -90;
             // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
 
-            // float yawAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 0, 1));
+            // float yawAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 1, 0));
             // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
 
             // float yawAngle = Vector2.Angle(temp.normalized, new Vector3(1,0));
@@ -245,7 +244,6 @@ public class PlayerController : MonoBehaviour
             // transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, mouseDistance.x * lookRateSpeed * Time.deltaTime, 0f, Space.Self);
             float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
-            // Debug.Log(x);
 
             if (x > 270) {
                 x = Mathf.Clamp(x, 275, 380);
@@ -254,22 +252,8 @@ public class PlayerController : MonoBehaviour
                 x = Mathf.Clamp(x, -10, 80);
             }           
 
-            // if (x < 280 && x > 80) {
-            //     x = 350;
-            // }
-            
-            // if (x < 280 && x > 80) {
-            //     x = 350;
-            // }
-
-            Debug.Log(x);
-            // Debug.Log("unclamped, clamped");
-            // x = Mathf.Clamp(x%270, 0, 89);
-            // Debug.Log(x);
-
-            // x = Mathf.Clamp(x, -100, 50);
-            // transform.rotation = Quaternion.Euler(-yawInput, -pitchInput, rollInput);
             transform.rotation = Quaternion.Euler(x, y, rollInput);
+            // transform.rotation = Quaternion.Euler(pitch, yaw, rollInput);
         }
     }
 
@@ -286,7 +270,6 @@ public class PlayerController : MonoBehaviour
         
         // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
         // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
-       
     }
 
     public void SetGroundedState(bool grounded)
