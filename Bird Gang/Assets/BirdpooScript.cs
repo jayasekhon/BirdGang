@@ -40,6 +40,9 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		if (!active)
+			return;
+
 		bool flee = false;
 		if ( collision.collider.CompareTag("bird_target"))
 		{
