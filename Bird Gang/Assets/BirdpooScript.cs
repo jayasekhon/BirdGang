@@ -1,32 +1,56 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
+using Photon.Realtime;
+using System.IO;
 
-public class BirdpooScript: MonoBehaviour
+public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 { 
 	private Rigidbody rb;
 	private Collider col;
 
 	public Vector3 acc;
 	private Vector3 start;
+	PhotonView PV;
 
 	private bool active = true;
 	private bool preFlight = true;
+	bool flee = false;
+
+	PlayerManager playerManager;
+
+	void Awake(){
+		PV = GetComponent<PhotonView>();
+	}
 
 	private void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		col = GetComponent<Collider>();
+		//PV = GetComponent<PhotonView>();
+		
 		start = rb.position;
 	}
 
+	public void OnPhotonInstantiate(PhotonMessageInfo info){
+		object[] instantiationData = info.photonView.InstantiationData;
+		acc = (Vector3) instantiationData[0];
+		GetComponent<Rigidbody>().AddForce((Vector3) instantiationData[1], ForceMode.VelocityChange);
+	}
+
+
 	void OnCollisionEnter(Collision collision)
 	{
-		bool flee = false;
-		if (collision.collider.CompareTag("bird_target"))
-		{
-			collision.collider.gameObject.GetComponent<BaseBirdTarget>().OnHit();
+	
+		if (collision.collider.CompareTag("bird_target")){
+
+			if(!PV.IsMine){
+				return;
+			}
+
+			collision.collider.gameObject.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
 			flee = true;
 		}
 		/* Freeze and cease collision when we collide with something, and we're just above world geometry. */
@@ -63,7 +87,9 @@ public class BirdpooScript: MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (active)
+		if (active){
 			rb.AddForce(acc, ForceMode.Acceleration);
+		}
+			
 	}
 }
