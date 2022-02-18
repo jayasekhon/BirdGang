@@ -34,11 +34,11 @@ public class Score : MonoBehaviour
             scoreText.text = "Score: " + score.ToString();
         }
 
-        if (streakFlag == 2){
+        if (streakFlag == 5){
             targetReached.text = "5 HIT STREAK";
             Invoke("Hide", time);
         }
-        else if (streakFlag == 4){
+        else if (streakFlag == 10){
             targetReached.text = "10 HIT STREAK";
             Invoke("Hide", time);
         }

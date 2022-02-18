@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        InstructionsLoad.instance.InstructionsText();
         if (!PV.IsMine)
         {
             Destroy(rb);
@@ -80,6 +81,8 @@ public class PlayerController : MonoBehaviour
                 cam = c;
             }
         }
+
+        
     }
 
     void Update()
