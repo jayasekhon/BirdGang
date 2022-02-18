@@ -3,15 +3,9 @@ using Photon.Pun;
 
 public class CameraController : MonoBehaviour
 {
-    // public Transform target;
-    public float smoothSpeed = 0.3f;
-    public Vector3 offset;
-    private Vector3 velocity = Vector3.zero;
-
     private PhotonView PV;
     private Transform targetPos;
 
-    private GameObject m_camera;
     private GameObject[] playersInGame;
     private GameObject m_player;
 
@@ -24,11 +18,7 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        if (!PV.IsMine)
-        {
-            Destroy(targetPos);
-        }
-
+        // Find the local player for this local camera to follow.
         playersInGame = GameObject.FindGameObjectsWithTag("Player");
         for (int p = 0; p < playersInGame.Length; p++)
         {
@@ -40,30 +30,28 @@ public class CameraController : MonoBehaviour
             }
         }
         targetPos = m_player.GetComponent<Transform>();
-
     }
 
-    void Update()
+    void LateUpdate()
     {
-        Vector3 desiredLocation = targetPos.position - targetPos.forward * 10f;
-        float bias = 0.75f;
-        transform.position = transform.position * bias + desiredLocation * (1f - bias);    
-        transform.LookAt(targetPos.position + transform.forward * 30f);
-        // Vector3 desiredLocation = targetPos.position - targetPos.forward * 10f + Vector3.up * 5f;
-        // float bias = 0.75f;
-        // transform.position = transform.position * bias + desiredLocation * (1f - bias);    
-        // transform.LookAt(targetPos.position + transform.forward * 30f);
+        if (!PV.IsMine)
+        {
+            return;
+        }
+        MoveToTarget();
     }
 
-    // void FixedUpdate()
-    // {
-    //     if (!PV.IsMine)
-    //     {
-    //         return;
-    //     }
-    //     // Vector3 desiredPosition = targetPos.position + offset;
-    //     // Vector3 smoothPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothSpeed);
-    //     // // Vector3 smoothPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-    //     // transform.position = smoothPosition;
-    // }
+    void MoveToTarget()
+    {
+        Vector3 desiredLocation = targetPos.position - targetPos.forward * 10f + Vector3.up * 5f;
+        float bias = 0.75f;
+        Vector3 newPosition = transform.position * bias + desiredLocation * (1f - bias);
+        // Stop the camera from going below the floor.
+        if (newPosition.y < 1.5f)
+        {
+            newPosition.y = 1.5f;
+        }
+        transform.position = newPosition;    
+        transform.LookAt(targetPos.position + transform.forward * 30f);
+    }
 }
