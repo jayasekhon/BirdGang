@@ -9,10 +9,7 @@ using Photon.Pun.UtilityScripts;
 using UnityEngine.SearchService;  
 
 public class PlayerController : MonoBehaviour
-{
-    [SerializeField] GameObject cameraHolder;
-    // [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
-    
+{    
     /* Flight Control */
     private float forwardSpeed = 50f, strafeSpeed = 7.5f, hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
@@ -21,16 +18,6 @@ public class PlayerController : MonoBehaviour
     private float lookRateSpeed = 90f;
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
-    private float rollSpeed = 1.5f, rollAcceleration = 2f;
-    private float mouseSensitivity = 50f;
-    private float xRotation, yRotation;
-
-    private float speed = 1.5f;
-    private Quaternion rotationReset;
-
-    float verticalLookRoation;    
-    Vector3 smoothMoveVelocity;
-    Vector3 moveAmount;
     
     bool grounded; 
     private bool move; 
@@ -43,8 +30,6 @@ public class PlayerController : MonoBehaviour
     
     /* Targeting */
     public GameObject targetObj;
-    public GameObject Birdpoo;
-    GameObject[] agents;
     
     [Range(0f, 1f)]
     public float targetParabolaProfile = 0.8f;
