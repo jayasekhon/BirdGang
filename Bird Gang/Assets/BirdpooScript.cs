@@ -14,13 +14,12 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
+		rb = GetComponent<Rigidbody>();
+		col = GetComponent<Collider>();
 	}
 
 	private void Start()
 	{
-		rb = GetComponent<Rigidbody>();
-		col = GetComponent<Collider>();
-
 		/* FIXME: faster way of finding player. */
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
 		{
