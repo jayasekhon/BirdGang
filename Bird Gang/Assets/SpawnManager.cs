@@ -46,8 +46,20 @@ public class SpawnManager : MonoBehaviour
         } 
         foreach (var spawner in spawners)
         {
-            spawner.fillMaxGoodPeople(10);
-            spawner.fillMaxBadPeople(2);
+            // spawn fewer agents inside garden areas
+            if (spawner == spawners[20] || spawner == spawners[21] || spawner == spawners[22] ){
+                spawner.fillMaxGoodPeople(3);
+                //20% chance of a bad person being spawned in a garden - NOT WORKING
+                int chanceOfBad = Random.Range(0, 4);
+                if (chanceOfBad == 1){
+                    spawner.fillMaxBadPeople(1);
+                }
+            }
+            else{
+                spawner.fillMaxGoodPeople(10);
+                spawner.fillMaxBadPeople(2);
+            }
+
 
         }
 

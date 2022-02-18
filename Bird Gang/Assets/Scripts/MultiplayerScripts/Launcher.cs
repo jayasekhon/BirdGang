@@ -94,7 +94,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void StartGame()
     {
         // We use 1 as the parameter because 1 is the build index of our game scene, as we set it in the build settings
-        PhotonNetwork.LoadLevel(1); 
+        PhotonNetwork.LoadLevel(1);
+        
     }
 
     public void LeaveRoom()
