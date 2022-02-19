@@ -16,11 +16,6 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		pv = GetComponent<PhotonView>();
 		rb = GetComponent<Rigidbody>();
 		col = GetComponent<Collider>();
-	}
-
-	private void Start()
-	{
-		/* FIXME: faster way of finding player. */
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
 		{
 			if ((g.transform.position - transform.position).sqrMagnitude < 0.4f)
@@ -28,6 +23,12 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 				Physics.IgnoreCollision(g.GetComponent<Collider>(), this.col, true);
 			}
 		}
+	}
+
+	private void Start()
+	{
+		/* NB: don't use start here, onCollisionEnter can be called before this. */
+		return;
 	}
 
 	public void OnPhotonInstantiate(PhotonMessageInfo info)
