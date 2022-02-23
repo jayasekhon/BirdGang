@@ -47,5 +47,10 @@ MonoBehaviour:
   numBirds: 20
   allBirds: []
   flyLimits: {x: 5, y: 5, z: 5}
+  worldLimits: {x: 500, y: 500, z: 500}
+  goalPos: {x: 0, y: 0, z: 0}
   minSpeed: 0
   maxSpeed: 0
+  neighbourDistance: 0
+  neighbourAngle: 0
+  rotationSpeed: 0
