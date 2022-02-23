@@ -11,11 +11,15 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 
 	private bool active = true;
 
+	private const float Lifetime = 50f;
+	private float endTime;
+
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
 		rb = GetComponent<Rigidbody>();
 		col = GetComponent<Collider>();
+		endTime = Time.time + Lifetime;
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
 		{
 			if ((g.transform.position - transform.position).sqrMagnitude < 0.4f)
@@ -28,7 +32,6 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 	private void Start()
 	{
 		/* NB: don't use start here, onCollisionEnter can be called before this. */
-		return;
 	}
 
 	public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -78,6 +81,15 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 				if (a != collision.collider.gameObject)
 					a.GetComponent<AiController>().DetectNewObstacle(rb.position);
 			}
+		}
+	}
+
+	private void Update()
+	{
+		if (Time.time > endTime)
+		{
+			active = false;
+			Destroy(this.gameObject);
 		}
 	}
 
