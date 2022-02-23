@@ -45,7 +45,7 @@ public class FlockManager : MonoBehaviour
         transform.position = new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
                                             Random.Range(0, worldLimits.y),                                                            
                                             Random.Range(-worldLimits.z, worldLimits.z));
-        players = GameObject.FindGameObjectsWithTag("Player");
+        
     }
 
     // Update is called once per frame
@@ -67,14 +67,13 @@ public class FlockManager : MonoBehaviour
     public void AttackPlayer(GameObject player){
         attacking = true;
         transform.LookAt(player.transform);
-        StartCoroutine(ExecuteAfterTime(5));
-        attacking = false;
     }
 
-    IEnumerator ExecuteAfterTime (float time)
+    public void StopAttackPlayer()
     {
-        yield return new WaitForSeconds(time);
+        attacking = false;
     }
+    
 }
 
 // get a list of all the players
