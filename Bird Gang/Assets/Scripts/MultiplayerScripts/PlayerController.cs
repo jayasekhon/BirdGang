@@ -1,50 +1,27 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using System.IO;
-using ExitGames.Client.Photon.StructWrapping;
-using Photon.Pun.UtilityScripts;
-using UnityEngine.SearchService;  
 
 public class PlayerController : MonoBehaviour
-{
-    [SerializeField] GameObject cameraHolder;
-    // [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
-    
+{    
     /* Flight Control */
-    private float forwardSpeed = 50f, strafeSpeed = 7.5f, hoverSpeed = 5f;
-    private float activeForwardSpeed, activeStrafeSpeed, activeHoverSpeed;
-    private float forwardAcceleration = 5f, strafeAcceleration = 2f, hoverAcceleration = 2f;
+    private float forwardSpeed = 85f; //strafeSpeed = 7.5f, hoverSpeed = 5f;
+    private float activeForwardSpeed; // activeStrafeSpeed, activeHoverSpeed;
+    private float forwardAcceleration = 5f, hoverAcceleration = 2f;
     
-    private float lookRateSpeed = 90f;
+    private float lookRateSpeed = 60f;
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
-    private float rollSpeed = 1.5f, rollAcceleration = 2f;
-    private float mouseSensitivity = 50f;
+    private float pitchInput;
+    private float yawInput;
+    
     private float xRotation, yRotation;
-
-    private float speed = 1.5f;
-    private Quaternion rotationReset;
-
-    float verticalLookRoation;    
-    Vector3 smoothMoveVelocity;
-    Vector3 moveAmount;
     
     bool grounded; 
     private bool move; 
 
-    private Rigidbody rb;
-    private PhotonView PV;
-    private Camera cam;
-    private Camera[] camerasInGame;
-    private PhotonView checkLocal;
-    
     /* Targeting */
     public GameObject targetObj;
-    public GameObject Birdpoo;
-    GameObject[] agents;
     
     [Range(0f, 1f)]
     public float targetParabolaProfile = 0.8f;
@@ -52,30 +29,35 @@ public class PlayerController : MonoBehaviour
     public float targetFixedVelocity = 60f;
     [Range(0, 100)]
     public int targetLineRes = 20;
+    public bool limitAimAngles = false;
 
     public Material projLineMat;
-
     private LineRenderer projLineRenderer;
-
-    // private CameraController cameraController;
+    
+    private Rigidbody rb;
+    private PhotonView PV;
+    private Camera cam;
+    private Camera[] camerasInGame;
+    private PhotonView checkLocal;
+    private CameraController cameraController;
+    [SerializeField] GameObject cameraHolder;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
-        // cam = GetComponentInChildren<Camera>();
     }
 
     void Start()
     {
+        InstructionsLoad.instance.InstructionsText();
         if (!PV.IsMine)
         {
-            // Destroy(cam.gameObject);
             Destroy(rb);
-            // Destroy(GetComponentInChildren<Camera>().gameObject);
         }
         else
         {
+            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber * -2f -180f, 115f, 115f); // TEMP FIX: preventing players spawning below the map if there are >1.
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
@@ -86,22 +68,22 @@ public class PlayerController : MonoBehaviour
         screenCenter.y = Screen.height * 0.5f;
 
         // Get the local camera component for targeting
-        camerasInGame = Camera.allCameras;
-        for (int c = 0; c < camerasInGame.Length; c++)
+        foreach (Camera c in Camera.allCameras)
         {
-            checkLocal = camerasInGame[c].GetComponentInParent<PhotonView>(); // CameraHolder
+            checkLocal = c.GetComponentInParent<PhotonView>(); // CameraHolder
             if (!checkLocal.IsMine)
             {
-                Destroy(camerasInGame[c].GetComponent<Camera>().gameObject);
+                Destroy(c.gameObject);
             }
             else
             {
                 Debug.Log("Local camera");
-                cam = camerasInGame[c].GetComponent<Camera>();
-                // cameraController = camerasInGame[c].GetComponent<CameraController>();
+                cam = c;
+                cameraController = c.GetComponentInParent<CameraController>();
             }
         }
 
+        
     }
 
     void Update()
@@ -120,11 +102,7 @@ public class PlayerController : MonoBehaviour
             move = false;
         }
 
-        Look();
         Targeting();
-        // Turning();
-        // Move();
-        // Jump();
     }
 
     void FixedUpdate()
@@ -133,8 +111,10 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        Look();
         Movement();
-        // cameraController.UpdatePosition();
+        cameraController.MoveToTarget();
+        // Targeting();
         // rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
@@ -142,16 +122,23 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 ndc = cam.ScreenToViewportPoint(Input.mousePosition);
         Vector3 mouseRay = cam.ViewportPointToRay(ndc).direction.normalized;
-        
+
+        if (limitAimAngles)
+        {
+            float d = Mathf.Sqrt(mouseRay.x * mouseRay.x + mouseRay.z * mouseRay.z);
+            if (mouseRay.y / d > -0.1f)
+            {
+                mouseRay.y = d * -0.1f;
+            }
+        }
         /* Find target pos in terms of world geometry */
         RaycastHit hit;
-        if (!Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, float.MaxValue, 1 << 8))
+        if (!Physics.Raycast(cam.transform.position, mouseRay, out hit, float.MaxValue, 1 << 8))
         {
             targetObj.transform.position = new Vector3(0, -10, 0);
             projLineRenderer.positionCount = 0;
             return;
         }
-
         hit.point += hit.normal * 0.25f;
         /*
          * Fix time to hit as (distance to target) / constant,
@@ -179,8 +166,8 @@ public class PlayerController : MonoBehaviour
             projLineRenderer.SetPosition(i, pos);
             pos += step;
         }
-        projLineRenderer.SetPosition(targetLineRes, hit.point);
 
+        projLineRenderer.SetPosition(targetLineRes, hit.point);
         targetObj.transform.position = hit.point;
         targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
         if (Input.GetMouseButtonDown(0))
@@ -190,12 +177,7 @@ public class PlayerController : MonoBehaviour
             vel.y = -v;
 
             object[] insertAcc = new object[] {acc, vel};
-            GameObject proj = PhotonNetwork
-                .Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
-            
-
-            // proj.GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
-            // proj.GetComponent<BirdpooScript>().acc = acc;
+            GameObject proj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
         }
     }
 
@@ -210,33 +192,65 @@ public class PlayerController : MonoBehaviour
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
-            Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
-
-            float angle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) - 90;
-            rollInput = Mathf.Lerp(rollInput, angle, hoverAcceleration * Time.deltaTime);
-
-            if (Vector2.SqrMagnitude(mouseDistance) < 0.5f)
+            if (Vector2.SqrMagnitude(mouseDistance) < 0.5f) //for the sensitivity
             {
                 mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
                 mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
             }
 
+            Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
+            Vector3 temp_threeD = new Vector3(lookInput.x - screenCenter.x, lookInput.y - screenCenter.y, 50f);
+
+            // (0,0 is the bottom left corner)
+            
+            float rollAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) -90;
+            rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
+
+            // float rollAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(1, 0, 0)) -90;
+            // rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
+
+            // float pitchAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0));
+            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
+
+            // float pitchAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 0, 1)) -90;
+            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
+
+            // float yawAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 1, 0));
+            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
+
+            // float yawAngle = Vector2.Angle(temp.normalized, new Vector3(1,0));
+            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
+
+            // transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, mouseDistance.x * lookRateSpeed * Time.deltaTime, 0f, Space.Self);
             float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
+
+            if (x > 270) {
+                x = Mathf.Clamp(x, 275, 380);
+            }
+            if (x < 90) {
+                x = Mathf.Clamp(x, -10, 80);
+            }           
+
             transform.rotation = Quaternion.Euler(x, y, rollInput);
+            // transform.rotation = Quaternion.Euler(pitch, yaw, rollInput);
         }
     }
 
     void Movement()
     {
-        activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.deltaTime);
-        activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
-        activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
+        activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.fixedDeltaTime);
+        // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
+        // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
-        Vector3 position = (transform.forward * activeForwardSpeed * Time.deltaTime)
-            + (transform.right * activeStrafeSpeed * Time.deltaTime)
-            + (transform.up * activeStrafeSpeed * Time.deltaTime);
-        rb.AddForce(position, ForceMode.Impulse);    
+        Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
+            // + (transform.right * activeStrafeSpeed * Time.deltaTime)
+            // + (transform.up * activeStrafeSpeed * Time.deltaTime);
+        // transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
+        rb.AddForce(position, ForceMode.Impulse);  
+        
+        // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
+        // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
     }
 
     public void SetGroundedState(bool grounded)

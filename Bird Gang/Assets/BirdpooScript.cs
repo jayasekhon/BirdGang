@@ -1,71 +1,76 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
-using Photon.Realtime;
-using System.IO;
 
 public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 { 
 	private Rigidbody rb;
 	private Collider col;
+	private PhotonView pv;
 
-	public Vector3 acc;
-	private Vector3 start;
-	PhotonView PV;
+	private Vector3 acc;
 
 	private bool active = true;
-	private bool preFlight = true;
-	bool flee = false;
 
-	PlayerManager playerManager;
-
-	void Awake(){
-		PV = GetComponent<PhotonView>();
+	private void Awake()
+	{
+		pv = GetComponent<PhotonView>();
+		rb = GetComponent<Rigidbody>();
+		col = GetComponent<Collider>();
 	}
 
 	private void Start()
 	{
-		rb = GetComponent<Rigidbody>();
-		col = GetComponent<Collider>();
-		//PV = GetComponent<PhotonView>();
-		
-		start = rb.position;
+		/* FIXME: faster way of finding player. */
+		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+		{
+			if ((g.transform.position - transform.position).sqrMagnitude < 0.4f)
+			{
+				Physics.IgnoreCollision(g.GetComponent<Collider>(), this.col, true);
+			}
+		}
 	}
 
-	public void OnPhotonInstantiate(PhotonMessageInfo info){
+	public void OnPhotonInstantiate(PhotonMessageInfo info)
+	{
 		object[] instantiationData = info.photonView.InstantiationData;
 		acc = (Vector3) instantiationData[0];
 		GetComponent<Rigidbody>().AddForce((Vector3) instantiationData[1], ForceMode.VelocityChange);
 	}
 
-
-	void OnCollisionEnter(Collision collision)
+	private void OnCollisionEnter(Collision collision)
 	{
-	
-		if (collision.collider.CompareTag("bird_target")){
+		if (!active)
+			return;
 
-			if(!PV.IsMine){
-				return;
-			}
+		bool flee = false;
+		if ( collision.collider.CompareTag("bird_target"))
+		{
+			if (pv.IsMine)
+				collision.collider.gameObject.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
 
-			collision.collider.gameObject.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
 			flee = true;
 		}
+
 		/* Freeze and cease collision when we collide with something, and we're just above world geometry. */
-		if (Physics.Raycast(rb.position, Vector3.down, 1f, 1 << 8))
+		if (Physics.Raycast(rb.position + Vector3.up, Vector3.down, out RaycastHit hit, flee ? 6f : 2f, 1 << 8))
 		{
 			Destroy(rb);
 			Destroy(col);
+			if (flee)
+				transform.position = hit.point + new Vector3(0f, 0.1f, 0f);
 			flee = true;
 			active = false;
 		}
-
-		if (flee)
+		/* On any collision, increase gravity to a reasonable value, so that we fall to the ground in a timely manner */
+		else
 		{
-			/* FIXME: Ideally we should keep a central store of agents e.g. in the spawner.
-			 * Plus, we may want non-agent targets. */
+			rb.drag = 0.5f;
+			if (acc.y > -19.81f)
+				acc.y = -19.81f;
+		}
+
+		if (flee && PhotonNetwork.IsMasterClient)
+		{
 			GameObject[] agents = GameObject.FindGameObjectsWithTag("bird_target");
 			foreach (GameObject a in agents)
 			{
@@ -75,21 +80,9 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		}
 	}
 
-	private void Update()
-	{
-		/* Wait for a little while before enabling collision, otherwise we hit the player. */
-		if (preFlight && (start - rb.position).magnitude > 0.5f)
-		{
-			col.enabled = true;
-			preFlight = false;
-		}
-	}
-
 	private void FixedUpdate()
 	{
-		if (active){
+		if (active)
 			rb.AddForce(acc, ForceMode.Acceleration);
-		}
-			
 	}
 }

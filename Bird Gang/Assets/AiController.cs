@@ -12,13 +12,20 @@ public class AiController : MonoBehaviour
     float speedMult;
     float detectionRadius = 30;
     float fleeRadius = 10;
+    PhotonView PV;
+
+    //FixMe : Need to tidy this up later 
+    public bool isGood;
 
     void ResetAgent()
     {
         speedMult = Random.Range(0.1f, 1.5f);
         agent.speed = 2;
         agent.angularSpeed = 120;
-        agent.SetDestination(goalLocations[Random.Range(0, goalLocations.Length)].transform.position);
+        int index = Random.Range(0, goalLocations.Length);
+        //Debug.Log(index);
+          
+        agent.SetDestination(goalLocations[index].transform.position);
     }
 
     public void DetectNewObstacle(Vector3 position){
@@ -67,20 +74,39 @@ public class AiController : MonoBehaviour
     void Start()
     {
         goalLocations = GameObject.FindGameObjectsWithTag("goal");
-            
+        PV = GetComponent<PhotonView>();
         // Access the agents NavMesh
         agent = this.GetComponent<NavMeshAgent>();
         // Instruct the agent where it has to go
-        agent.SetDestination(goalLocations[Random.Range(0,goalLocations.Length)].transform.position);
+        int index = Random.Range(0, goalLocations.Length);
+        //Debug.Log(index);
+        agent.SetDestination(goalLocations[index].transform.position);
         agent.speed *= Random.Range(0.2f, 1.5f);
+
     }
 
     private void Update()
     {
-        if (agent.remainingDistance < 2)
+        if (PhotonNetwork.IsMasterClient)
         {
-            ResetAgent();
+            if (agent.remainingDistance < 2)
+            {
+                ResetAgent();
+            }
         }
+        else
+        {
+                            
+
+             UpdateNetworkPositon();
+            
+
+        }
+    }
+
+    void UpdateNetworkPositon()
+    {
+        agent.SetDestination(this.GetComponent<SyncManager>().GetNetworkPosition());
     }
 }
 

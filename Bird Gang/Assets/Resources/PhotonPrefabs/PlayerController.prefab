@@ -154,7 +154,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0279d4bd334e44230b1db672b8ce5fe6, type: 2}
+  - {fileID: 2100000, guid: b190fa3df96cb8f4a8193aa0f7ab3387, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -217,13 +217,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22fa394824521e245aebe89cbd144c47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraHolder: {fileID: 3382825401900669776}
   targetObj: {fileID: 8782284789153274189, guid: ba7ff9ee558523a4e9b19bbf29d4b4a5, type: 3}
-  Birdpoo: {fileID: 2816176556030323033, guid: eae0f95263276a14dada10a2009cdc63, type: 3}
   targetParabolaProfile: 0.8
   targetFixedVelocity: 60
   targetLineRes: 20
+  limitAimAngles: 0
   projLineMat: {fileID: 2100000, guid: 327ff9cc15846363e8e2e1393bc9a106, type: 2}
+  cameraHolder: {fileID: 0}
 --- !u!114 &4451007937520389362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
