@@ -11,7 +11,8 @@ public class FlockManager : MonoBehaviour
     public Vector3 worldLimits = new Vector3(250,50,250);
     public Vector3 goalPos;
 
-   
+    public Renderer flockingBorder;
+    bool turning = false;
 
     [Range(0.0f, 20.0f)]
     public float minSpeed;
@@ -51,11 +52,32 @@ public class FlockManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!attacking){
-            if(Random.Range(0,100) < 1) {
-                r =  Quaternion.Euler(Random.Range(-180,180)+transform.rotation.x,Random.Range(-180,180)+transform.rotation.y,Random.Range(-180,180)+transform.rotation.z);
+        Vector3 direction = Vector3.zero;
+        Vector3 noise = new Vector3 (Random.Range(-50, 50),Random.Range(-30, 30),Random.Range(-50, 50));
+        
+        Bounds b = flockingBorder.bounds;
+        if (!b.Contains(transform.position))
+        {
+            turning = true;
+            direction = b.center - transform.position;
+        } 
+        else {
+            turning = false;
+        }
+
+        if(turning)
+        {
+            // transform.rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction+noise), rotationSpeed * Time.deltaTime);
+       
+        }
+        else{
+            if(!attacking){
+                if(Random.Range(0,100) < 1) {
+                    r =  Quaternion.Euler(Random.Range(-180,180)+transform.rotation.x,Random.Range(-180,180)+transform.rotation.y,Random.Range(-180,180)+transform.rotation.z);
+                }
+                transform.rotation = Quaternion.Slerp(transform.rotation, r,  Time.deltaTime*5);
             }
-            transform.rotation = Quaternion.Slerp(transform.rotation, r,  Time.deltaTime*5);
         }
         // this.transform.position  = Vector3.Lerp(this.transform.position,goalPos,Time.deltaTime);
         this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, -worldLimits.x, worldLimits.x),

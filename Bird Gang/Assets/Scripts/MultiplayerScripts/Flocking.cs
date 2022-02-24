@@ -33,7 +33,7 @@ public class Flocking : MonoBehaviour
         {
             turning = true;
             direction = Vector3.Reflect(this.transform.forward, hit.normal);
-            Debug.DrawRay(this.transform.position, this.transform.forward * 30, Color.red);
+            // Debug.DrawRay(this.transform.position, this.transform.forward * 30, Color.red);
         }
         else 
             turning = false;
@@ -80,7 +80,7 @@ public class Flocking : MonoBehaviour
                     vCentre += go.transform.position;
                     groupSize++;
 
-                    if(nDistance < 3.0f) 
+                    if(nDistance < 1.0f) 
                     {
                         vAvoid = vAvoid + (this.transform.position - go.transform.position);
                     }

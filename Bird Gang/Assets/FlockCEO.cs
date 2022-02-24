@@ -7,11 +7,11 @@ public class FlockCEO : MonoBehaviour
 
     public PlayerController[] players;
     public List<GameObject>stillPlayers = new List<GameObject>();
-    public FlockManager[] flockManagers;
+    public List<FlockManager> flockManagers;
     public List<FlockManager> freeflockManagers;
 
 
-    private float[] attackTimes;
+    public List<float> attackTimes;
     private float attackDelay =10f;
     // Start is called before the first frame update
     void Start()
@@ -25,10 +25,10 @@ public class FlockCEO : MonoBehaviour
         for (int i = 0; i < flockManagerObjects.Length; i++)
         {
             FlockManager flockManager = flockManagerObjects[i].GetComponent<FlockManager>();
-            flockManagers[i] = flockManager;
+            flockManagers.Add(flockManager);
             freeflockManagers.Add(flockManager);
+            attackTimes.Add(0f);            
         }
-
     }
 
     // Update is called once per frame
@@ -45,7 +45,7 @@ public class FlockCEO : MonoBehaviour
             {
             int r = Random.Range(0, freeflockManagers.Count);
             int index = 0;
-            for (int i = 0; i < flockManagers.Length; i++)
+            for (int i = 0; i < flockManagers.Count; i++)
             {
                 if (flockManagers[i] == freeflockManagers[r])
                 {
@@ -58,7 +58,7 @@ public class FlockCEO : MonoBehaviour
             attackTimes[index] = Time.time;
             
         }
-        for(int index = 0;index< attackTimes.Length;index++  )
+        for(int index = 0;index< attackTimes.Count;index++  )
         {
             if (Time.time >=attackTimes[index] +attackDelay)
             {

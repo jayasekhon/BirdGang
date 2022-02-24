@@ -197,7 +197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &100503142
 AudioListener:
   m_ObjectHideFlags: 0
@@ -892,49 +892,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dcb5e4656e954f0e97f9b0a6ec55320, type: 3}
---- !u!1 &1814133973
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1814133975}
-  - component: {fileID: 1814133974}
-  m_Layer: 0
-  m_Name: FlockCEO
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1814133974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1814133973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4edfcba4b364a4e6880e84f20990cc86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1814133975
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1814133973}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -61.97232, y: 25.082977, z: 8.029121}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2125911546 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7165233957488281812, guid: 7dcb5e4656e954f0e97f9b0a6ec55320, type: 3}
@@ -984,3 +941,60 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7165233957488281814, guid: 7dcb5e4656e954f0e97f9b0a6ec55320, type: 3}
   m_PrefabInstance: {fileID: 1735070902}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4058280382384048649
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4058280383791331036, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_Name
+      value: FlockCEO
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -61.97232
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 25.082977
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.029121
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058280383791331038, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e6e4a18b4e92e4f83acdc4856282196b, type: 3}
