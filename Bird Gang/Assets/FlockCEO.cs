@@ -19,7 +19,7 @@ public class FlockCEO : MonoBehaviour
     public List<float> attackTimes;
     private float attackDelay =10f;
 
-    public int numFlocks = 7;
+    public int numFlocks = 7; 
     // Start is called before the first frame update
     void Start()
     {
