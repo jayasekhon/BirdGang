@@ -288,6 +288,10 @@ public class PlayerController : MonoBehaviour
         if (move && accelerate)
         {
             increasedAcceleration += 0.25f;
+            if (increasedAcceleration > 2f)
+            {
+                increasedAcceleration = 2f;
+            }
             accelerate = false;
         }
 
