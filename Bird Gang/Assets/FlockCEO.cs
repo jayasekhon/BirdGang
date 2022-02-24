@@ -24,6 +24,9 @@ public class FlockCEO : MonoBehaviour
     void Start()
     {
         // Debug.Log("flockCEO");
+        if (!PhotonNetwork.IsMasterClient) {
+            return ;
+        }
         for (int i=0; i< numFlocks; i++) {
             Debug.Log(i);
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "FlockManager"), new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
@@ -45,6 +48,9 @@ public class FlockCEO : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient) {
+            return ;
+        }
         players = new List<PlayerController>();
         GameObject[] playersObjects = GameObject.FindGameObjectsWithTag("Player");
         // Debug.Log(playersObjects.Length);
