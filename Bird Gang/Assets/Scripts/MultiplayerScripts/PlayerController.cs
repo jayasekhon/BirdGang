@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Local camera");
                 cam = c;
                 cameraController = c.GetComponentInParent<CameraController>();
             }
@@ -267,7 +266,6 @@ public class PlayerController : MonoBehaviour
         // In an IF now to prevent S moving the bird backwards.      
         if (move)
         {
-            Debug.Log(increasedAcceleration);
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed * increasedAcceleration, forwardAcceleration * Time.fixedDeltaTime);
             // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
             // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
@@ -282,21 +280,25 @@ public class PlayerController : MonoBehaviour
             // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
         } 
 
-        
     }
 
     void KeyboardTurning()
     {
-        if (Input.GetKey(KeyCode.A)) {
-          transform.Rotate(Vector3.down * 50f * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D)) {
-          transform.Rotate(Vector3.up * 50f * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.R)) {
-          Quaternion q = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
-          transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 1.5f);
-        }
+        // if (Input.GetKey(KeyCode.A)) {
+        //   transform.Rotate(Vector3.down * 50f * Time.deltaTime);
+        // }
+        // if (Input.GetKey(KeyCode.D)) {
+        //   transform.Rotate(Vector3.up * 50f * Time.deltaTime);
+        // }
+        // if (Input.GetKey(KeyCode.R)) {
+        //   Quaternion q = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
+        //   transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 1.5f);
+        // }
+        float h = Input.GetAxis("Horizontal") * 10f * Time.deltaTime;
+        // float v = Input.GetAxis("Vertical") * 10f * Time.deltaTime;
+
+        rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
+        // rb.AddTorque(transform.right * v, ForceMode.VelocityChange);
     }
 
     void Acceleration()
