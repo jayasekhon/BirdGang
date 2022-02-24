@@ -31,6 +31,8 @@ public class FlockManager : MonoBehaviour
     Quaternion r = Quaternion.identity ;
     private bool attacking;
 
+    private Transform playerToAttack;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,19 +66,25 @@ public class FlockManager : MonoBehaviour
         else {
             turning = false;
         }
-
-        if(turning)
-        {
-            // transform.rotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction+noise), rotationSpeed * Time.deltaTime);
-       
+        if(attacking){
+            transform.LookAt(playerToAttack);
+            Debug.Log("looking at player" + this.gameObject.name);
         }
-        else{
-            if(!attacking){
-                if(Random.Range(0,100) < 1) {
-                    r =  Quaternion.Euler(Random.Range(-180,180)+transform.rotation.x,Random.Range(-180,180)+transform.rotation.y,Random.Range(-180,180)+transform.rotation.z);
-                }
-                transform.rotation = Quaternion.Slerp(transform.rotation, r,  Time.deltaTime*5);
+        else
+        {
+            if(turning)
+            {
+                // transform.rotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction+noise), rotationSpeed * Time.deltaTime);
+        
+            }
+            else{
+                
+                    if(Random.Range(0,100) < 1) {
+                        r =  Quaternion.Euler(Random.Range(-180,180)+transform.rotation.x,Random.Range(-180,180)+transform.rotation.y,Random.Range(-180,180)+transform.rotation.z);
+                    }
+                    transform.rotation = Quaternion.Slerp(transform.rotation, r,  Time.deltaTime*5);
+                
             }
         }
         // this.transform.position  = Vector3.Lerp(this.transform.position,goalPos,Time.deltaTime);
@@ -87,8 +95,10 @@ public class FlockManager : MonoBehaviour
 
     }
     public void AttackPlayer(GameObject player){
+        Debug.Log("starting attack");
         attacking = true;
-        transform.LookAt(player.transform);
+        playerToAttack = player.transform;
+        
     }
 
     public void StopAttackPlayer()

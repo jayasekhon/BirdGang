@@ -5,10 +5,12 @@ using UnityEngine;
 public class FlockCEO : MonoBehaviour
 {
 
-    public PlayerController[] players;
+    public List<PlayerController> players;
     public List<GameObject>stillPlayers = new List<GameObject>();
+    public List<GameObject>attackedPlayers = new List<GameObject>();
     public List<FlockManager> flockManagers;
     public List<FlockManager> freeflockManagers;
+    public List<FlockManager> usedFlockManagers;
 
 
     public List<float> attackTimes;
@@ -16,55 +18,68 @@ public class FlockCEO : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject[] playersObjects = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < playersObjects.Length; i++)
-        {
-            players[i] = playersObjects[i].GetComponent<PlayerController>();
-        }
+        usedFlockManagers = new List<FlockManager>();
         GameObject[] flockManagerObjects = GameObject.FindGameObjectsWithTag("FlockManager");
         for (int i = 0; i < flockManagerObjects.Length; i++)
         {
             FlockManager flockManager = flockManagerObjects[i].GetComponent<FlockManager>();
             flockManagers.Add(flockManager);
             freeflockManagers.Add(flockManager);
-            attackTimes.Add(0f);            
+            //attackTimes.Add(0f);            
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        players = new List<PlayerController>();
+        GameObject[] playersObjects = GameObject.FindGameObjectsWithTag("Player");
+        // Debug.Log(playersObjects.Length);
+        for (int i = 0; i < playersObjects.Length; i++)
+        {
+            players.Add(playersObjects[i].GetComponent<PlayerController>());
+        }        
+        // Debug.Log(players.Count);
+        // stillPlayers = new List<GameObject>();
         foreach (PlayerController player in players)
         {
-            if (!player.move) {
+            if (!player.move && !stillPlayers.Contains(player.gameObject) && !attackedPlayers.Contains(player.gameObject)) {
                 stillPlayers.Add(player.gameObject);
+                Debug.Log(stillPlayers.Count);
+
             }
-            
         }
+        
+
         while(stillPlayers.Count > 0)
             {
             int r = Random.Range(0, freeflockManagers.Count);
-            int index = 0;
-            for (int i = 0; i < flockManagers.Count; i++)
-            {
-                if (flockManagers[i] == freeflockManagers[r])
-                {
-                    index = i;
-                }
-            }
-            flockManagers[index].AttackPlayer(stillPlayers[0]);
+ 
+            freeflockManagers[r].AttackPlayer(stillPlayers[0]);
+            usedFlockManagers.Add(freeflockManagers[r]);
+            attackedPlayers.Add(stillPlayers[0]);
+            attackTimes.Add(Time.time);
+
             freeflockManagers.RemoveAt(r);
             stillPlayers.Remove(stillPlayers[0]);
-            attackTimes[index] = Time.time;
+            // Debug.Log("Still player"+stillPlayers.Count);
+            // Debug.Log("Attacked player"+attackedPlayers.Count);
+         
             
         }
-        for(int index = 0;index< attackTimes.Count;index++  )
+        List<float> clonedAttackTimes = new List<float>(attackTimes);
+        // Debug.Log(clonedAttackTimes.Count);
+       Debug.Log(attackTimes.Count);
+        for(int t=0;t <attackTimes.Count;t++)
         {
-            if (Time.time >=attackTimes[index] +attackDelay)
+            if (Time.time >=clonedAttackTimes[t] +attackDelay)
             {
           
-                flockManagers[index].StopAttackPlayer();
-                freeflockManagers.Add(flockManagers[index]);
+                usedFlockManagers[t].StopAttackPlayer();
+                freeflockManagers.Add(usedFlockManagers[t]);
+                attackedPlayers.RemoveAt(t);
+                attackTimes.RemoveAt(t);
+                usedFlockManagers.RemoveAt(t);
             }
         }
     
