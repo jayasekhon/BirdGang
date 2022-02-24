@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using Photon.Pun;
 
 public class FlockCEO : MonoBehaviour
 {
+
+    public Vector3 worldLimits = new Vector3(250,50,250);
 
     public List<PlayerController> players;
     public List<GameObject>stillPlayers = new List<GameObject>();
@@ -12,12 +16,21 @@ public class FlockCEO : MonoBehaviour
     public List<FlockManager> freeflockManagers;
     public List<FlockManager> usedFlockManagers;
 
-
     public List<float> attackTimes;
     private float attackDelay =10f;
+
+    public int numFlocks = 7;
     // Start is called before the first frame update
     void Start()
     {
+        // Debug.Log("flockCEO");
+        for (int i=0; i< numFlocks; i++) {
+            Debug.Log(i);
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "FlockManager"), new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
+                                            Random.Range(0, worldLimits.y),                                                            
+                                            Random.Range(-worldLimits.z, worldLimits.z)), Quaternion.identity);
+        }
+
         usedFlockManagers = new List<FlockManager>();
         GameObject[] flockManagerObjects = GameObject.FindGameObjectsWithTag("FlockManager");
         for (int i = 0; i < flockManagerObjects.Length; i++)
@@ -69,7 +82,7 @@ public class FlockCEO : MonoBehaviour
         }
         List<float> clonedAttackTimes = new List<float>(attackTimes);
         // Debug.Log(clonedAttackTimes.Count);
-       Debug.Log(attackTimes.Count);
+        Debug.Log(attackTimes.Count);
         for(int t=0;t <attackTimes.Count;t++)
         {
             if (Time.time >=clonedAttackTimes[t] +attackDelay)
