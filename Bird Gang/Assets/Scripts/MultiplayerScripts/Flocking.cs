@@ -29,16 +29,21 @@ public class Flocking : MonoBehaviour
             direction = flockManager.transform.position - transform.position;
         } 
 
-        else if (Physics.Raycast(transform.position, this.transform.forward * 30, out hit))
+        else if (Physics.Raycast(transform.position, this.transform.forward * 20f, out hit))
         {
+            // Debug.Log("inside the raycast");
             turning = true;
+            // Debug.Log(direction + "1");
             direction = Vector3.Reflect(this.transform.forward, hit.normal);
-            // Debug.DrawRay(this.transform.position, this.transform.forward * 30, Color.red);
+            // Debug.Log(direction + "2");
+            Debug.DrawRay(this.transform.position, this.transform.forward * 20f, Color.red);
+            Debug.Log("draw rays");
         }
         else 
             turning = false;
 
-        if(turning) {
+        if(turning) 
+        {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), flockManager.rotationSpeed * Time.deltaTime);
         }
         else
