@@ -219,7 +219,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   move: 0
   targetObj: {fileID: 8782284789153274189, guid: ba7ff9ee558523a4e9b19bbf29d4b4a5, type: 3}
-  targetParabolaProfile: 0.8
+  targetProfileNear: 150
+  targetProfileNearFac: -0.8
+  targetProfileFar: 600
+  targetProfileFarFac: 0.6
   targetFixedVelocity: 60
   targetLineRes: 20
   limitAimAngles: 0
