@@ -5,9 +5,11 @@ using System.IO;
 public class PlayerController : MonoBehaviour
 {    
     /* Flight Control */
-    private float forwardSpeed = 85f; //strafeSpeed = 7.5f, hoverSpeed = 5f;
-    private float activeForwardSpeed; // activeStrafeSpeed, activeHoverSpeed;
-    private float forwardAcceleration = 5f, hoverAcceleration = 2f;
+    private float forwardSpeed = 85f, strafeSpeed = 7.5f; // hoverSpeed = 5f;
+    private float activeForwardSpeed, activeStrafeSpeed; // activeHoverSpeed;
+    private float forwardAcceleration = 5f, hoverAcceleration = 2f, strafeAcceleration = 2f;
+    private float increasedAcceleration = 1f;
+    private bool slowDown;
     
     private float lookRateSpeed = 60f;
     private Vector2 lookInput, screenCenter, mouseDistance;
@@ -20,11 +22,17 @@ public class PlayerController : MonoBehaviour
     bool grounded; 
     public bool move; 
 
+    private bool accelerate;
+
     /* Targeting */
     public GameObject targetObj;
     
-    [Range(0f, 1f)]
-    public float targetParabolaProfile = 0.8f;
+    public float targetProfileNear = 150f;
+    [Range(-1f, 1f)]
+    public float targetProfileNearFac = -0.8f;
+    public float targetProfileFar = 600f;
+    [Range(-1f, 1f)]
+    public float targetProfileFarFac = .6f;
     [Min(.1f)]
     public float targetFixedVelocity = 60f;
     [Range(0, 100)]
@@ -77,13 +85,10 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Local camera");
                 cam = c;
                 cameraController = c.GetComponentInParent<CameraController>();
             }
         }
-
-        
     }
 
     void Update()
@@ -93,14 +98,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         
-        if (Input.GetAxisRaw("Vertical") == 1)
-        {
-            move = true;
-        }
-        else
-        {
-            move = false;
-        }
+        GetInput();
 
         Targeting();
     }
@@ -113,9 +111,38 @@ public class PlayerController : MonoBehaviour
         }
         Look();
         Movement();
+        KeyboardTurning();
         cameraController.MoveToTarget();
-        // Targeting();
-        // rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+    }
+
+    void GetInput()
+    {
+
+        // Forward movement
+        if (Input.GetAxisRaw("Vertical") == 1)
+        {
+            move = true;
+        }
+        else
+        {
+            move = false;
+        }
+
+        // Acceleration
+        if (Input.GetKeyDown("space"))
+        {
+            accelerate = true;
+        }
+
+        // Slow down
+        if (Input.GetKey("s"))
+        {
+            slowDown = true;
+        }
+        else
+        {
+            slowDown = false;
+        }
     }
 
     void Targeting()
@@ -152,8 +179,19 @@ public class PlayerController : MonoBehaviour
         Vector3 pos = rb.position;
         Vector3 dist = hit.point - pos;
         float timeToHit = dist.magnitude / targetFixedVelocity;
-        
-        float v = -(dist.y / timeToHit) * targetParabolaProfile;
+
+        float v;
+        {
+            Vector3 distFloor = dist * (pos.y / dist.y);
+            distFloor.y = 0f;
+
+            float profile = Mathf.Lerp
+            (
+                targetProfileFarFac, targetProfileNearFac,
+                (distFloor.magnitude - targetProfileNear) / targetProfileFar
+            );
+            v = -(dist.y / timeToHit) * profile;
+        }
         float g = -(dist.y + (v * timeToHit)) / (0.5f * timeToHit * timeToHit);
 
         Vector3 step = dist / targetLineRes;
@@ -176,8 +214,8 @@ public class PlayerController : MonoBehaviour
             Vector3 vel = dist / timeToHit;
             vel.y = -v;
 
-            object[] insertAcc = new object[] {acc, vel};
-            GameObject proj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
+            object[] args = new object[] {acc, vel};
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
         }
     }
 
@@ -239,18 +277,79 @@ public class PlayerController : MonoBehaviour
 
     void Movement()
     {
-        activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAcceleration * Time.fixedDeltaTime);
-        // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
-        // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
+        Acceleration();  
+        // In an IF now to prevent S moving the bird backwards.      
+        if (move)
+        {
+            activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed * increasedAcceleration, forwardAcceleration * Time.fixedDeltaTime);
+            // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
+            // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
-        Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
-            // + (transform.right * activeStrafeSpeed * Time.deltaTime)
-            // + (transform.up * activeStrafeSpeed * Time.deltaTime);
-        // transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
-        rb.AddForce(position, ForceMode.Impulse);  
+            Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
+                // + (transform.right * activeStrafeSpeed * Time.deltaTime);
+                // + (transform.up * activeStrafeSpeed * Time.deltaTime);
+            // transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
+            rb.AddForce(position, ForceMode.Impulse);  
+            
+            // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
+            // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
+            // KeyboardTurning();
+        } 
+
+    }
+
+    void KeyboardTurning()
+    {
+        if (move)
+        {
+            float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
+            rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
+        } 
+        else 
+        {
+            float h = Input.GetAxis("Horizontal") * 5f * Time.fixedDeltaTime;
+            rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
+        }
         
-        // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
-        // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
+    }
+
+    void Acceleration()
+    {
+        // When the user presses space the birds acceleration should increase
+        if (move && accelerate)
+        {
+            increasedAcceleration += 0.25f;
+            if (increasedAcceleration > 2f)
+            {
+                increasedAcceleration = 2f;
+            }
+            accelerate = false;
+        }
+
+        // When the user presses s the bird should gradually slow down to a min accleration of 1
+        if (slowDown && increasedAcceleration > 1)
+        {
+            if (increasedAcceleration > 1.05)
+            {
+                increasedAcceleration -= 0.05f;      
+            } 
+            else
+            {
+                increasedAcceleration = 1;
+            }        
+        }
+
+        // When the bird starts moving it should always start from minimum acceleration
+        if (!move && increasedAcceleration > 1)
+        {
+            increasedAcceleration = 1f;
+        }
+
+        // Check that increased acceleration does not go below 1.
+        if(increasedAcceleration < 1)
+        {
+            Debug.LogWarning("increasedAcceleration below 1");
+        }
     }
 
     public void SetGroundedState(bool grounded)
