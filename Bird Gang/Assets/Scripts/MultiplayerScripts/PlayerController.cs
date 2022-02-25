@@ -97,7 +97,6 @@ public class PlayerController : MonoBehaviour
         
         GetInput();
         Targeting();
-        KeyboardTurning();
     }
 
     void FixedUpdate()
@@ -108,6 +107,7 @@ public class PlayerController : MonoBehaviour
         }
         Look();
         Movement();
+        KeyboardTurning();
         cameraController.MoveToTarget();
     }
 
@@ -278,27 +278,15 @@ public class PlayerController : MonoBehaviour
             
             // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
             // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
+            // KeyboardTurning();
         } 
 
     }
 
     void KeyboardTurning()
     {
-        // if (Input.GetKey(KeyCode.A)) {
-        //   transform.Rotate(Vector3.down * 50f * Time.deltaTime);
-        // }
-        // if (Input.GetKey(KeyCode.D)) {
-        //   transform.Rotate(Vector3.up * 50f * Time.deltaTime);
-        // }
-        // if (Input.GetKey(KeyCode.R)) {
-        //   Quaternion q = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
-        //   transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 1.5f);
-        // }
-        float h = Input.GetAxis("Horizontal") * 10f * Time.deltaTime;
-        // float v = Input.GetAxis("Vertical") * 10f * Time.deltaTime;
-
-        rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
-        // rb.AddTorque(transform.right * v, ForceMode.VelocityChange);
+        float h = Input.GetAxis("Horizontal") * 10f * Time.fixedDeltaTime;
+        rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
     }
 
     void Acceleration()
