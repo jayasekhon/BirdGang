@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour
     private float xRotation, yRotation;
     
     bool grounded; 
-    private bool move; 
+    public bool move; 
+
     private bool accelerate;
 
     /* Targeting */
