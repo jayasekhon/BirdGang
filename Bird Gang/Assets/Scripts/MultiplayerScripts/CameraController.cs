@@ -56,8 +56,5 @@ public class CameraController : MonoBehaviour
         }
         transform.position = newPosition;    
         transform.LookAt(targetPos.position + transform.forward * 30f);
-
-
-
     }
 }
