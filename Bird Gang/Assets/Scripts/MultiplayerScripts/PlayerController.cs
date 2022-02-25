@@ -26,8 +26,12 @@ public class PlayerController : MonoBehaviour
     /* Targeting */
     public GameObject targetObj;
     
-    [Range(0f, 1f)]
-    public float targetParabolaProfile = 0.8f;
+    public float targetProfileNear = 150f;
+    [Range(-1f, 1f)]
+    public float targetProfileNearFac = -0.8f;
+    public float targetProfileFar = 600f;
+    [Range(-1f, 1f)]
+    public float targetProfileFarFac = .6f;
     [Min(.1f)]
     public float targetFixedVelocity = 60f;
     [Range(0, 100)]
@@ -84,8 +88,6 @@ public class PlayerController : MonoBehaviour
                 cameraController = c.GetComponentInParent<CameraController>();
             }
         }
-
-        
     }
 
     void Update()
@@ -96,6 +98,7 @@ public class PlayerController : MonoBehaviour
         }
         
         GetInput();
+
         Targeting();
     }
 
@@ -175,8 +178,19 @@ public class PlayerController : MonoBehaviour
         Vector3 pos = rb.position;
         Vector3 dist = hit.point - pos;
         float timeToHit = dist.magnitude / targetFixedVelocity;
-        
-        float v = -(dist.y / timeToHit) * targetParabolaProfile;
+
+        float v;
+        {
+            Vector3 distFloor = dist * (pos.y / dist.y);
+            distFloor.y = 0f;
+
+            float profile = Mathf.Lerp
+            (
+                targetProfileFarFac, targetProfileNearFac,
+                (distFloor.magnitude - targetProfileNear) / targetProfileFar
+            );
+            v = -(dist.y / timeToHit) * profile;
+        }
         float g = -(dist.y + (v * timeToHit)) / (0.5f * timeToHit * timeToHit);
 
         Vector3 step = dist / targetLineRes;
@@ -199,8 +213,8 @@ public class PlayerController : MonoBehaviour
             Vector3 vel = dist / timeToHit;
             vel.y = -v;
 
-            object[] insertAcc = new object[] {acc, vel};
-            GameObject proj = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, insertAcc);
+            object[] args = new object[] {acc, vel};
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
         }
     }
 
