@@ -5,9 +5,9 @@ using System.IO;
 public class PlayerController : MonoBehaviour
 {    
     /* Flight Control */
-    private float forwardSpeed = 85f; //strafeSpeed = 7.5f, hoverSpeed = 5f;
-    private float activeForwardSpeed; // activeStrafeSpeed, activeHoverSpeed;
-    private float forwardAcceleration = 5f, hoverAcceleration = 2f;
+    private float forwardSpeed = 85f, strafeSpeed = 7.5f; // hoverSpeed = 5f;
+    private float activeForwardSpeed, activeStrafeSpeed; // activeHoverSpeed;
+    private float forwardAcceleration = 5f, hoverAcceleration = 2f, strafeAcceleration = 2f;
     private float increasedAcceleration = 1f;
     private bool slowDown;
     
@@ -271,7 +271,7 @@ public class PlayerController : MonoBehaviour
             // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
             Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
-                // + (transform.right * activeStrafeSpeed * Time.deltaTime)
+                // + (transform.right * activeStrafeSpeed * Time.deltaTime);
                 // + (transform.up * activeStrafeSpeed * Time.deltaTime);
             // transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
             rb.AddForce(position, ForceMode.Impulse);  
@@ -285,8 +285,17 @@ public class PlayerController : MonoBehaviour
 
     void KeyboardTurning()
     {
-        float h = Input.GetAxis("Horizontal") * 10f * Time.fixedDeltaTime;
-        rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
+        if (move)
+        {
+            float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
+            rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
+        } 
+        else 
+        {
+            float h = Input.GetAxis("Horizontal") * 5f * Time.fixedDeltaTime;
+            rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
+        }
+        
     }
 
     void Acceleration()
