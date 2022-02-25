@@ -300,6 +300,7 @@ public class PlayerController : MonoBehaviour
 
     void Acceleration()
     {
+        Debug.Log("Increased acceleration: "+increasedAcceleration);
         // When the user presses space the birds acceleration should increase
         if (move && accelerate)
         {
@@ -309,6 +310,21 @@ public class PlayerController : MonoBehaviour
                 increasedAcceleration = 2f;
             }
             accelerate = false;
+        }
+
+        // Gradually slow down the birds acceleration when it is flying along (without pressing s) 
+        // Simulates real world drag.
+        if (move && increasedAcceleration > 1)
+        {
+            if (increasedAcceleration < 1.002f)
+            {
+                increasedAcceleration = 1f;
+            }
+            else
+            {
+                increasedAcceleration -= 0.002f;
+            }
+
         }
 
         // When the user presses s the bird should gradually slow down to a min accleration of 1
