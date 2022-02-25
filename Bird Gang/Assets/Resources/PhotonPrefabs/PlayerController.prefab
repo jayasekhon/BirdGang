@@ -199,8 +199,8 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 2
   m_Drag: 2
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_AngularDrag: 3.2
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -217,8 +217,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22fa394824521e245aebe89cbd144c47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  move: 0
   targetObj: {fileID: 8782284789153274189, guid: ba7ff9ee558523a4e9b19bbf29d4b4a5, type: 3}
-  targetParabolaProfile: 0.8
+  targetProfileNear: 150
+  targetProfileNearFac: -0.8
+  targetProfileFar: 600
+  targetProfileFarFac: 0.6
   targetFixedVelocity: 60
   targetLineRes: 20
   limitAimAngles: 0
