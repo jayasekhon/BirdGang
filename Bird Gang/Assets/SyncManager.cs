@@ -7,11 +7,14 @@ using Photon.Pun;
 public class SyncManager : MonoBehaviour,IPunObservable
 {
     NavMeshAgent agent;
+    AiController aiController;
     private Vector3 networkGoal;
     private Vector3 networkPosition;
+    private bool networkIsFleeing;
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        aiController = GetComponent<AiController>();
         
     }
     
@@ -28,12 +31,14 @@ public class SyncManager : MonoBehaviour,IPunObservable
             //Debug.Log(agent.destination);
           
             stream.SendNext(agent.nextPosition);
+            stream.SendNext(aiController.isFleeing);
         }
         else
         {
 
             
             networkPosition = (Vector3)stream.ReceiveNext();
+            networkIsFleeing = (bool)stream.ReceiveNext();
 
             
  
@@ -47,5 +52,10 @@ public class SyncManager : MonoBehaviour,IPunObservable
     public Vector3 GetNetworkPosition()
     {
         return this.networkPosition;
+    }
+    public bool GetNetworkIsFleeing()
+    {
+        return this.networkIsFleeing;
+
     }
 }
