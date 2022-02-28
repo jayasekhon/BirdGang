@@ -17,11 +17,17 @@ public class AiController : MonoBehaviour
     //FixMe : Need to tidy this up later 
     public bool isGood;
 
+    public bool isFleeing;
+    private int normalSpeed = 2;
+    private int fleeingSpeed = 20;
+    private int normalAngularSpeed = 120;
+    private int fleeingAngularSpeed = 500;
+
     void ResetAgent()
     {
         speedMult = Random.Range(0.1f, 1.5f);
-        agent.speed = 2;
-        agent.angularSpeed = 120;
+        agent.speed = normalSpeed;
+        agent.angularSpeed = normalAngularSpeed;
         int index = Random.Range(0, goalLocations.Length);
         //Debug.Log(index);
           
@@ -53,8 +59,9 @@ public class AiController : MonoBehaviour
             if(path.status != NavMeshPathStatus.PathInvalid)
             {
                 agent.SetDestination(path.corners[path.corners.Length - 1]);
-                agent.speed = 10;
-                agent.angularSpeed = 500;
+                agent.speed = fleeingSpeed;
+                agent.angularSpeed = fleeingAngularSpeed;
+                isFleeing = true;
             } else {
                 NavMeshHit hit;
                 NavMeshPath newPath = new NavMeshPath();
@@ -63,10 +70,15 @@ public class AiController : MonoBehaviour
                 if(NavMesh.SamplePosition(newgoal, out hit, newRadius, NavMesh.AllAreas)){
                     agent.CalculatePath(hit.position, newPath);
                     agent.SetDestination(newPath.corners[newPath.corners.Length - 1]);
-                    agent.speed = 10;
-                    agent.angularSpeed = 500;
+                    agent.speed = fleeingSpeed;
+                    agent.angularSpeed = fleeingAngularSpeed;
+                    isFleeing = true;
                 }
             }
+        }
+        else
+        {
+            isFleeing = false;
         }
     }
 
@@ -99,7 +111,9 @@ public class AiController : MonoBehaviour
                             
 
              UpdateNetworkPositon();
-            
+             UpdateNetworkIsFleeing();
+
+
 
         }
     }
@@ -107,6 +121,19 @@ public class AiController : MonoBehaviour
     void UpdateNetworkPositon()
     {
         agent.SetDestination(this.GetComponent<SyncManager>().GetNetworkPosition());
+    }
+    void UpdateNetworkIsFleeing()
+    {
+        if (this.GetComponent<SyncManager>().GetNetworkIsFleeing())
+        {
+            agent.speed = fleeingSpeed;
+            agent.angularSpeed = fleeingAngularSpeed;
+        }
+        else
+        {
+            agent.speed = normalSpeed;
+            agent.angularSpeed = normalAngularSpeed;
+        }
     }
 }
 
