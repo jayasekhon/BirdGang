@@ -303,23 +303,23 @@ public class PlayerController : MonoBehaviour
 
     void FoVChanges()
     {
-        Debug.Log(transform.forward.y);
+        Debug.Log(cam.fieldOfView);
         // When the player is moving up (so the player is facing up - positive) decrease FoV.
-        if(transform.forward.y > 0.1f)
+        if(transform.forward.y > 0.05f)
         {
             // Stopping the FoV getting too small
-            if (!(cam.fieldOfView <= 45))
+            if (!(cam.fieldOfView <= 50))
             {
-                cam.fieldOfView -= 0.18f;
+                cam.fieldOfView -= 0.18f * Mathf.Abs(transform.forward.y);
             }
         }
         // When the player is moving down (so the player is facing down - negative) increase FoV.
-        else if (transform.forward.y < -0.1f)
+        else if (transform.forward.y < -0.05f)
         {
             // Stopping the FoV getting too large
             if (!(cam.fieldOfView >= 75))
             {
-                cam.fieldOfView += 0.18f;
+                cam.fieldOfView += 0.2f * Mathf.Abs(transform.forward.y);
             }
             
         } 
@@ -342,7 +342,6 @@ public class PlayerController : MonoBehaviour
 
     void Acceleration()
     {
-        Debug.Log("Increased acceleration: "+increasedAcceleration);
         // When the user presses space the birds acceleration should increase
         if (move && accelerate)
         {
