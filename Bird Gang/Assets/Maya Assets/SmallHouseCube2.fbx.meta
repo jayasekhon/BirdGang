@@ -1,9 +1,24 @@
 fileFormatVersion: 2
-guid: fe96ff2381af14246b6a537acb7695fc
+guid: 72714abb654cd774fb079ce3555f23f7
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: shadingMap2
+    second: {fileID: 2100000, guid: 4e1a4e79a3548164da24123dbb0f3566, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standardSurface4
+    second: {fileID: 2100000, guid: dba8728d427874424ab2332b0d9d219a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader3
+    second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
