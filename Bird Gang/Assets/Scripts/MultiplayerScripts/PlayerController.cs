@@ -310,7 +310,7 @@ public class PlayerController : MonoBehaviour
             // Stopping the FoV getting too small
             if (!(cam.fieldOfView <= 50))
             {
-                cam.fieldOfView -= 0.18f * Mathf.Abs(transform.forward.y);
+                cam.fieldOfView -= 0.2f * Mathf.Abs(transform.forward.y);
             }
         }
         // When the player is moving down (so the player is facing down - negative) increase FoV.
@@ -319,7 +319,7 @@ public class PlayerController : MonoBehaviour
             // Stopping the FoV getting too large
             if (!(cam.fieldOfView >= 75))
             {
-                cam.fieldOfView += 0.2f * Mathf.Abs(transform.forward.y);
+                cam.fieldOfView += 0.25f * Mathf.Abs(transform.forward.y);
             }
             
         } 
