@@ -345,7 +345,7 @@ public class PlayerController : MonoBehaviour
         // When the user presses space the birds acceleration should increase
         if (move && accelerate)
         {
-            increasedAcceleration += 0.25f;
+            increasedAcceleration += 0.35f;
             if (increasedAcceleration > 2f)
             {
                 increasedAcceleration = 2f;
