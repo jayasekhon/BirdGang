@@ -281,6 +281,23 @@ public class PlayerController : MonoBehaviour
         // In an IF now to prevent S moving the bird backwards.      
         if (move)
         {
+            Debug.Log(transform.forward.y);
+            if(transform.forward.y > 0.1f)
+            {
+                if (!(cam.fieldOfView <= 45))
+                {
+                    cam.fieldOfView -= 0.18f;
+                }
+            }
+            else if (transform.forward.y < -0.1f)
+            {
+                if (!(cam.fieldOfView >= 75))
+                {
+                    cam.fieldOfView += 0.18f;
+                }
+                
+            } 
+
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed * increasedAcceleration, forwardAcceleration * Time.fixedDeltaTime);
             // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
             // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
