@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
     private bool accelerate;
 
+    private float fovScaler = 1;
+
     /* Targeting */
     public GameObject targetObj;
     
@@ -281,23 +283,7 @@ public class PlayerController : MonoBehaviour
         // In an IF now to prevent S moving the bird backwards.      
         if (move)
         {
-            Debug.Log(transform.forward.y);
-            if(transform.forward.y > 0.1f)
-            {
-                if (!(cam.fieldOfView <= 45))
-                {
-                    cam.fieldOfView -= 0.18f;
-                }
-            }
-            else if (transform.forward.y < -0.1f)
-            {
-                if (!(cam.fieldOfView >= 75))
-                {
-                    cam.fieldOfView += 0.18f;
-                }
-                
-            } 
-
+            FoVChanges();
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed * increasedAcceleration, forwardAcceleration * Time.fixedDeltaTime);
             // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
             // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
@@ -313,6 +299,30 @@ public class PlayerController : MonoBehaviour
             // KeyboardTurning();
         } 
 
+    }
+
+    void FoVChanges()
+    {
+        Debug.Log(transform.forward.y);
+        // When the player is moving up (so the player is facing up - positive) decrease FoV.
+        if(transform.forward.y > 0.1f)
+        {
+            // Stopping the FoV getting too small
+            if (!(cam.fieldOfView <= 45))
+            {
+                cam.fieldOfView -= 0.18f;
+            }
+        }
+        // When the player is moving down (so the player is facing down - negative) increase FoV.
+        else if (transform.forward.y < -0.1f)
+        {
+            // Stopping the FoV getting too large
+            if (!(cam.fieldOfView >= 75))
+            {
+                cam.fieldOfView += 0.18f;
+            }
+            
+        } 
     }
 
     void KeyboardTurning()
