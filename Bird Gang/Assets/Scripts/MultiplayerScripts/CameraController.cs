@@ -22,7 +22,6 @@ public class CameraController : MonoBehaviour
             checkLocal = playersInGame[p].GetComponent<PhotonView>();
             if (checkLocal.IsMine)
             {
-                Debug.Log("Local player");
                 m_player = playersInGame[p];
             }
         }

@@ -5,9 +5,9 @@ using System.IO;
 public class PlayerController : MonoBehaviour
 {    
     /* Flight Control */
-    private float forwardSpeed = 85f, strafeSpeed = 7.5f; // hoverSpeed = 5f;
+    private float forwardSpeed = 85f; //strafeSpeed = 7.5f;  hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed; // activeHoverSpeed;
-    private float forwardAcceleration = 5f, hoverAcceleration = 2f, strafeAcceleration = 2f;
+    private float forwardAcceleration = 5f, hoverAcceleration = 2f; //strafeAcceleration = 2f;
     private float increasedAcceleration = 1f;
     private bool slowDown;
     
@@ -23,8 +23,6 @@ public class PlayerController : MonoBehaviour
     public bool move; 
 
     private bool accelerate;
-
-    private float fovScaler = 1;
 
     /* Targeting */
     public GameObject targetObj;
@@ -303,7 +301,6 @@ public class PlayerController : MonoBehaviour
 
     void FoVChanges()
     {
-        Debug.Log(cam.fieldOfView);
         // When the player is moving up (so the player is facing up - positive) decrease FoV.
         if(transform.forward.y > 0.05f)
         {
