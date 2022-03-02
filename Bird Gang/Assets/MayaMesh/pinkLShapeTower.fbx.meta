@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 816f22cdd4f904bfb8880b96a80c3a41
+guid: 40a34dac158fe40a68ce1969585340ba
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,38 +7,33 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: cityHallDoor
+    second: {fileID: 2100000, guid: 4e1a4e79a3548164da24123dbb0f3566, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: doorHandle
+    second: {fileID: 2100000, guid: c14837dfa515883428e5652d93e80c72, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lambert1
-    second: {fileID: 2100000, guid: 6a042921f6e794710846249928420c59, type: 2}
+    second: {fileID: 2100000, guid: e914ae168a3d94f6eb4b21359329bf20, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: shopHighlights
-    second: {fileID: 2100000, guid: e914ae168a3d94f6eb4b21359329bf20, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shopWindow
-    second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shoppingOutParts
-    second: {fileID: 2100000, guid: e914ae168a3d94f6eb4b21359329bf20, type: 2}
+    second: {fileID: 2100000, guid: 6a042921f6e794710846249928420c59, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: towerTopParts
-    second: {fileID: 2100000, guid: 294f02eac9561704ebe4baa5b1bc4163, type: 2}
+    second: {fileID: 2100000, guid: 4e1a4e79a3548164da24123dbb0f3566, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: typeBlinn5
-    second: {fileID: 2100000, guid: 6ed7ce28db75d40c2a208ee0a8022eeb, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: typeBlinn6
-    second: {fileID: 2100000, guid: 6ed7ce28db75d40c2a208ee0a8022eeb, type: 2}
+      name: towerWindow
+    second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
