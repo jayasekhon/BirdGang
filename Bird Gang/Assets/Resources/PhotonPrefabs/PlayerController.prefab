@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 6564805079043700170}
   - component: {fileID: 4451007937520389362}
   - component: {fileID: 8185354134089930703}
+  - component: {fileID: 827514141032798297}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -268,6 +269,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!75 &827514141032798297
+ConstantForce:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716701025068079662}
+  m_Enabled: 1
+  m_Force: {x: 0, y: 0, z: 0}
+  m_RelativeForce: {x: 0, y: 0, z: 0}
+  m_Torque: {x: 0, y: 0, z: 0}
+  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1 &5054865259955276068
 GameObject:
   m_ObjectHideFlags: 0

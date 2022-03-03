@@ -14,13 +14,10 @@ public class PlayerController : MonoBehaviour
     private float lookRateSpeed = 60f;
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
-    private float pitchInput;
-    private float yawInput;
-    
-    private float xRotation, yRotation;
-    
+
     bool grounded; 
-    public bool move; 
+    public bool move;
+    public bool cameraUpdate;
 
     private bool accelerate;
 
@@ -89,6 +86,7 @@ public class PlayerController : MonoBehaviour
                 cameraController = c.GetComponentInParent<CameraController>();
             }
         }
+        cameraUpdate = true;
     }
 
     void Update()
@@ -112,7 +110,7 @@ public class PlayerController : MonoBehaviour
         Look();
         Movement();
         KeyboardTurning();
-        cameraController.MoveToTarget();
+        cameraController.MoveToTarget(cameraUpdate);
     }
 
     void GetInput()
@@ -122,12 +120,16 @@ public class PlayerController : MonoBehaviour
         if (Input.GetAxisRaw("Vertical") == 1)
         {
             move = true;
+            cameraUpdate = true;
         }
         else
         {
             move = false;
         }
-
+        if (Input.GetKeyUp("w"))
+        {
+            cameraUpdate = false;
+        }
         // Acceleration
         if (Input.GetKeyDown("space"))
         {
@@ -236,30 +238,12 @@ public class PlayerController : MonoBehaviour
                 mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
             }
 
-            Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
-            Vector3 temp_threeD = new Vector3(lookInput.x - screenCenter.x, lookInput.y - screenCenter.y, 50f);
+            Vector2 unitVec = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
 
-            // (0,0 is the bottom left corner)
-            
-            float rollAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) -90;
-            rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
+            float rollAngle = Vector2.Angle(unitVec.normalized, new Vector2(1, 0));
+            rollAngle = Mathf.Clamp(rollAngle, 50, 130); //change values depending on how much we want bird to rotate sideways.
+            rollInput = Mathf.Lerp(rollInput, rollAngle-90, hoverAcceleration * Time.deltaTime);
 
-            // float rollAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(1, 0, 0)) -90;
-            // rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
-
-            // float pitchAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0));
-            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
-
-            // float pitchAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 0, 1)) -90;
-            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
-
-            // float yawAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 1, 0));
-            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
-
-            // float yawAngle = Vector2.Angle(temp.normalized, new Vector3(1,0));
-            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
-
-            // transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, mouseDistance.x * lookRateSpeed * Time.deltaTime, 0f, Space.Self);
             float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
 
@@ -283,20 +267,39 @@ public class PlayerController : MonoBehaviour
         {
             FoVChanges();
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed * increasedAcceleration, forwardAcceleration * Time.fixedDeltaTime);
-            // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
-            // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
             Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
-                // + (transform.right * activeStrafeSpeed * Time.deltaTime);
-                // + (transform.up * activeStrafeSpeed * Time.deltaTime);
-            // transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
+
             rb.AddForce(position, ForceMode.Impulse);  
-            
-            // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
-            // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
-            // KeyboardTurning();
+        }
+        
+        else if (!grounded && !move)
+        {
+            Hovering();
+        } 
+    }
+
+    void Hovering() {
+        upForce = GetComponent<ConstantForce>();
+
+        if (timePassed < 0.6)
+        {   
+            //UP
+            upForce.force = new Vector3(0, 30, 0);
+            timePassed += Time.fixedDeltaTime;
+        }
+
+        if (timePassed > 0.6 && timePassed < 1.04)
+        {
+            //DOWN
+            upForce.force = new Vector3(0, 0, 0);
+            timePassed += Time.fixedDeltaTime;
         } 
 
+        if (timePassed > 1.04)
+        {
+            timePassed = 0f;
+        }
     }
 
     void FoVChanges()
