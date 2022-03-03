@@ -28,11 +28,6 @@ public class CameraController : MonoBehaviour
         targetPos = m_player.GetComponent<Transform>();
     }
 
-    // void Start()
-    // {
-
-    // }
-
     void LateUpdate()
     {
         if (!PV.IsMine)
@@ -42,7 +37,7 @@ public class CameraController : MonoBehaviour
         // MoveToTarget();
     }
 
-    public void MoveToTarget()
+    public void MoveToTarget(bool cameraUpdate)
     {
         // Debug.Log(targetPos.position);
         Vector3 desiredLocation = targetPos.position - targetPos.forward * 10f + Vector3.up * 5f;
@@ -53,7 +48,12 @@ public class CameraController : MonoBehaviour
         {
             newPosition.y = 1.5f;
         }
-        transform.position = newPosition;    
-        transform.LookAt(targetPos.position + transform.forward * 30f);
+        transform.position = newPosition;   
+         
+        if (cameraUpdate)
+        {
+            transform.LookAt(targetPos.position + transform.forward * 30f);
+            // else camera falls with gravity at same rate as player
+        }
     }
 }

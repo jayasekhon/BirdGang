@@ -20,7 +20,7 @@ public class PlayerGroundCheck : MonoBehaviour
         playerController.SetGroundedState(true);
     }
 
-    void OnTriggeredExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (other.gameObject == playerController.gameObject)
         {

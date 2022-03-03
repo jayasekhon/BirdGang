@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     public bool cameraUpdate;
 
     private bool accelerate;
+    private ConstantForce upForce;
+    float timePassed = 0f;
 
     /* Targeting */
     public GameObject targetObj;
