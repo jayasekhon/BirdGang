@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     bool grounded; 
     public bool move;
     public bool cameraUpdate;
+    private float xPos;
+    private float zPos;
+
 
     private bool accelerate;
     private ConstantForce upForce;
@@ -117,12 +120,13 @@ public class PlayerController : MonoBehaviour
 
     void GetInput()
     {
-
         // Forward movement
         if (Input.GetAxisRaw("Vertical") == 1)
         {
             move = true;
             cameraUpdate = true;
+            xPos = transform.position.x;
+            zPos = transform.position.z;
         }
         else
         {
@@ -130,8 +134,16 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyUp("w"))
         {
-            cameraUpdate = false;
+            if (transform.position.x - xPos < 0.002 || transform.position.z - zPos < 0.002) {
+                Debug.Log("hovering!!!");
+                cameraUpdate = false;
+            }
+            else {
+                xPos = transform.position.x;
+                zPos = transform.position.z;
+            }
         }
+        
         // Acceleration
         if (Input.GetKeyDown("space"))
         {

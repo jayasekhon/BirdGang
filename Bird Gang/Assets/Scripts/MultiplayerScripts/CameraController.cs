@@ -10,7 +10,8 @@ public class CameraController : MonoBehaviour
     private GameObject m_player;
 
     private PhotonView checkLocal;
-    private float yPos;
+    private float xRot;
+    private float zPos;
 
     void Awake()
     {
@@ -55,15 +56,31 @@ public class CameraController : MonoBehaviour
         {
             // transform.position = Vector3.Lerp(transform.position, targetPos.position + transform.forward * 30f, Time.deltaTime * 10);
             transform.LookAt(targetPos.position + transform.forward * 30f);
-            // yPos = targetPos.position.y;
+            xRot = transform.rotation.x;
+            // xPos = targetPos.position.x;
+            // zPos = targetPos.position.z;
             // else camera falls with gravity at same rate as player
         }
-        // else  //when hovering
-        // {
-        //     Vector3 tempPos = new Vector3(targetPos.position.x, yPos, targetPos.position.z);
-        //     transform.LookAt(tempPos + transform.forward * 30f);
-        //     // Vector3 rotation = targetPos.rotation;
-        //     // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotation), Time.deltaTime);
-        // }
+        else  //when hovering
+        {
+            // Debug.Log("hi");
+            // Quaternion rot = Quaternion.Euler(xRot, transform.rotation.y, transform.rotation.z);
+            // transform.rotation = Quaternion.Slerp(transform.rotation, rot, 1);
+        //     if (targetPos.position.x - xPos != 0 || targetPos.position.z - zPos != 0) {
+        //         transform.LookAt(targetPos.position + transform.forward * 30f);
+        //         xPos = targetPos.position.x;
+        //         zPos = targetPos.position.z;
+        //     }
+        //     else 
+        //     {
+        //         Debug.Log("freeze!!!");
+        //     }
+        //     // Vector3 hoverPos = new Vector3(targetPos.position);
+        //     // Debug.Log(targetPos.position);
+        //     // Vector3 tempPos = new Vector3(targetPos.position.x, yPos, targetPos.position.z);
+        //     // transform.LookAt(tempPos + transform.forward * 30f);
+        // //     // Vector3 rotation = targetPos.rotation;
+        // //     // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotation), Time.deltaTime);
+        }
     }
 }
