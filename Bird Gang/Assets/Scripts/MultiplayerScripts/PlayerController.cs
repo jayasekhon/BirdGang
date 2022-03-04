@@ -40,6 +40,11 @@ public class PlayerController : MonoBehaviour
     [Range(0, 100)]
     public int targetLineRes = 20;
     public bool limitAimAngles = false;
+    const int targetingMaxShots = 3;
+    const float targetingDelay = 2f;
+
+    private int targetingShotCount = 0;
+    private float targetingLastShot = 0;
 
     public Material projLineMat;
     private LineRenderer projLineRenderer;
@@ -47,10 +52,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private PhotonView PV;
     private Camera cam;
-    private Camera[] camerasInGame;
-    private PhotonView checkLocal;
     private CameraController cameraController;
-    [SerializeField] GameObject cameraHolder;
 
     void Awake()
     {
@@ -61,6 +63,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         InstructionsLoad.instance.InstructionsText();
+
+        AmmoCount.instance.maxAmmo = targetingMaxShots;
+        AmmoCount.instance.SetAmmo(targetingMaxShots);
+
         if (!PV.IsMine)
         {
             Destroy(rb);
@@ -80,8 +86,7 @@ public class PlayerController : MonoBehaviour
         // Get the local camera component for targeting
         foreach (Camera c in Camera.allCameras)
         {
-            checkLocal = c.GetComponentInParent<PhotonView>(); // CameraHolder
-            if (!checkLocal.IsMine)
+            if (!c.GetComponentInParent<PhotonView>().IsMine)
             {
                 Destroy(c.gameObject);
             }
@@ -224,8 +229,22 @@ public class PlayerController : MonoBehaviour
         projLineRenderer.SetPosition(targetLineRes, hit.point);
         targetObj.transform.position = hit.point;
         targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
+
+        if (targetingShotCount != 0 && Time.time >= targetingLastShot + targetingDelay)
+        {
+            targetingShotCount = 0;
+            AmmoCount.instance.SetAmmo(targetingMaxShots);
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
+            if (targetingShotCount == targetingMaxShots)
+                goto fire_skip;
+
+            targetingShotCount++;
+            targetingLastShot = Time.time;
+            AmmoCount.instance.SetAmmo(targetingMaxShots - targetingShotCount);
+
             Vector3 acc = new Vector3(0f, -g, 0f);
             Vector3 vel = dist / timeToHit;
             vel.y = -v;
@@ -233,6 +252,7 @@ public class PlayerController : MonoBehaviour
             object[] args = new object[] {acc, vel};
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
         }
+fire_skip: ;
     }
 
     void Look()
