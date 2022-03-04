@@ -14,7 +14,7 @@ public class BaseBirdTarget : MonoBehaviour
     [PunRPC]
     public virtual void OnHit()
     {
-        Debug.Log(isGood ? "Got good cube (i.e. take points)" : "God bad cube (i.e. give points)");
+        Debug.Log(isGood ? "Got good cube (i.e. take points)" : "Got bad cube (i.e. give points)");
 
         Score.instance.AddScore(isGood);
         //gameObject.GetComponent<Score>().status = isGood;

@@ -5,24 +5,26 @@ using System.IO;
 public class PlayerController : MonoBehaviour
 {    
     /* Flight Control */
-    private float forwardSpeed = 85f, strafeSpeed = 7.5f; // hoverSpeed = 5f;
+    private float forwardSpeed = 85f; //strafeSpeed = 7.5f;  hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed; // activeHoverSpeed;
-    private float forwardAcceleration = 5f, hoverAcceleration = 2f, strafeAcceleration = 2f;
+    private float forwardAcceleration = 5f, hoverAcceleration = 2f; //strafeAcceleration = 2f;
     private float increasedAcceleration = 1f;
     private bool slowDown;
     
     private float lookRateSpeed = 60f;
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
-    private float pitchInput;
-    private float yawInput;
-    
-    private float xRotation, yRotation;
-    
+
     bool grounded; 
-    public bool move; 
+    public bool move;
+    public bool cameraUpdate;
+    private float xPos;
+    private float zPos;
+
 
     private bool accelerate;
+    private ConstantForce upForce;
+    float timePassed = 0f;
 
     /* Targeting */
     public GameObject targetObj;
@@ -89,6 +91,7 @@ public class PlayerController : MonoBehaviour
                 cameraController = c.GetComponentInParent<CameraController>();
             }
         }
+        cameraUpdate = true;
     }
 
     void Update()
@@ -112,22 +115,35 @@ public class PlayerController : MonoBehaviour
         Look();
         Movement();
         KeyboardTurning();
-        cameraController.MoveToTarget();
+        cameraController.MoveToTarget(cameraUpdate);
     }
 
     void GetInput()
     {
-
         // Forward movement
         if (Input.GetAxisRaw("Vertical") == 1)
         {
             move = true;
+            cameraUpdate = true;
+            xPos = transform.position.x;
+            zPos = transform.position.z;
         }
         else
         {
             move = false;
         }
-
+        if (Input.GetKeyUp("w"))
+        {
+            if (transform.position.x - xPos < 0.002 || transform.position.z - zPos < 0.002) {
+                Debug.Log("hovering!!!");
+                cameraUpdate = false;
+            }
+            else {
+                xPos = transform.position.x;
+                zPos = transform.position.z;
+            }
+        }
+        
         // Acceleration
         if (Input.GetKeyDown("space"))
         {
@@ -236,30 +252,12 @@ public class PlayerController : MonoBehaviour
                 mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
             }
 
-            Vector2 temp = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
-            Vector3 temp_threeD = new Vector3(lookInput.x - screenCenter.x, lookInput.y - screenCenter.y, 50f);
+            Vector2 unitVec = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
 
-            // (0,0 is the bottom left corner)
-            
-            float rollAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0)) -90;
-            rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
+            float rollAngle = Vector2.Angle(unitVec.normalized, new Vector2(1, 0));
+            rollAngle = Mathf.Clamp(rollAngle, 50, 130); //change values depending on how much we want bird to rotate sideways.
+            rollInput = Mathf.Lerp(rollInput, rollAngle-90, hoverAcceleration * Time.deltaTime);
 
-            // float rollAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(1, 0, 0)) -90;
-            // rollInput = Mathf.Lerp(rollInput, rollAngle, hoverAcceleration * Time.deltaTime);
-
-            // float pitchAngle = Vector2.Angle(temp.normalized, new Vector2(1, 0));
-            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
-
-            // float pitchAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 0, 1)) -90;
-            // pitchInput = Mathf.Lerp(pitchInput, pitchAngle, hoverAcceleration * Time.deltaTime);
-
-            // float yawAngle = Vector3.Angle(temp_threeD.normalized, new Vector3(0, 1, 0));
-            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
-
-            // float yawAngle = Vector2.Angle(temp.normalized, new Vector3(1,0));
-            // yawInput = Mathf.Lerp(yawInput, yawAngle, hoverAcceleration * Time.deltaTime);
-
-            // transform.Rotate(-mouseDistance.y * lookRateSpeed * Time.deltaTime, mouseDistance.x * lookRateSpeed * Time.deltaTime, 0f, Space.Self);
             float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
 
@@ -281,21 +279,64 @@ public class PlayerController : MonoBehaviour
         // In an IF now to prevent S moving the bird backwards.      
         if (move)
         {
+            FoVChanges();
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed * increasedAcceleration, forwardAcceleration * Time.fixedDeltaTime);
-            // activeStrafeSpeed = Mathf.Lerp(activeStrafeSpeed, Input.GetAxisRaw("Horizontal") * strafeSpeed, strafeAcceleration * Time.deltaTime);
-            // activeHoverSpeed = Mathf.Lerp(activeHoverSpeed, Input.GetAxisRaw("Hover") * hoverSpeed, hoverAcceleration);
 
             Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
-                // + (transform.right * activeStrafeSpeed * Time.deltaTime);
-                // + (transform.up * activeStrafeSpeed * Time.deltaTime);
-            // transform.position += transform.forward * activeForwardSpeed * Time.deltaTime;
+
             rb.AddForce(position, ForceMode.Impulse);  
-            
-            // rb.AddTorque(transform.up * Input.GetAxis("Mouse X") * 100f * Time.deltaTime); 
-            // rb.AddTorque(transform.right * Input.GetAxis("Mouse Y") * 100f * Time.deltaTime); 
-            // KeyboardTurning();
+        }
+        
+        else if (!grounded && !move)
+        {
+            Hovering();
+        } 
+    }
+
+    void Hovering() {
+        upForce = GetComponent<ConstantForce>();
+
+        if (timePassed < 0.6)
+        {   
+            //UP
+            upForce.force = new Vector3(0, 30, 0);
+            timePassed += Time.fixedDeltaTime;
+        }
+
+        if (timePassed > 0.6 && timePassed < 1.04)
+        {
+            //DOWN
+            upForce.force = new Vector3(0, 0, 0);
+            timePassed += Time.fixedDeltaTime;
         } 
 
+        if (timePassed > 1.04)
+        {
+            timePassed = 0f;
+        }
+    }
+
+    void FoVChanges()
+    {
+        // When the player is moving up (so the player is facing up - positive) decrease FoV.
+        if(transform.forward.y > 0.05f)
+        {
+            // Stopping the FoV getting too small
+            if (!(cam.fieldOfView <= 50))
+            {
+                cam.fieldOfView -= 0.2f * Mathf.Abs(transform.forward.y);
+            }
+        }
+        // When the player is moving down (so the player is facing down - negative) increase FoV.
+        else if (transform.forward.y < -0.05f)
+        {
+            // Stopping the FoV getting too large
+            if (!(cam.fieldOfView >= 75))
+            {
+                cam.fieldOfView += 0.25f * Mathf.Abs(transform.forward.y);
+            }
+            
+        } 
     }
 
     void KeyboardTurning()
@@ -315,11 +356,10 @@ public class PlayerController : MonoBehaviour
 
     void Acceleration()
     {
-        Debug.Log("Increased acceleration: "+increasedAcceleration);
         // When the user presses space the birds acceleration should increase
         if (move && accelerate)
         {
-            increasedAcceleration += 0.25f;
+            increasedAcceleration += 0.35f;
             if (increasedAcceleration > 2f)
             {
                 increasedAcceleration = 2f;
