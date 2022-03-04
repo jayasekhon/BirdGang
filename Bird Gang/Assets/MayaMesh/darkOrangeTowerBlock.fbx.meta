@@ -1,9 +1,34 @@
 fileFormatVersion: 2
-guid: 3369d018709360f4f8e9176d8e88b11d
+guid: f9b12cbe6cc424628b18bcfd0292ae66
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: brownDoor
+    second: {fileID: 2100000, guid: 4e1a4e79a3548164da24123dbb0f3566, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: doorHandle
+    second: {fileID: 2100000, guid: c14837dfa515883428e5652d93e80c72, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: purpleTowerBlock1
+    second: {fileID: 2100000, guid: 7fd798ad09c894049ad2bc1c543333a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: towerTopParts
+    second: {fileID: 2100000, guid: 4e1a4e79a3548164da24123dbb0f3566, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: towerWindows
+    second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

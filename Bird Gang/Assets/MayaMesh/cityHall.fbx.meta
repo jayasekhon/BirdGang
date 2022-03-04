@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c2459ce0603c65845b60406855126f82
+guid: edd2ee8a39a384d9f9ba97e5f2d7bd4b
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,38 +7,48 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: shadingMap4
+      name: CityHallColour
+    second: {fileID: 2100000, guid: dba8728d427874424ab2332b0d9d219a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ClockTowerColour
+    second: {fileID: 2100000, guid: e914ae168a3d94f6eb4b21359329bf20, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cityHallDoor
     second: {fileID: 2100000, guid: 4e1a4e79a3548164da24123dbb0f3566, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: standardSurface11
-    second: {fileID: 2100000, guid: da15376ea569c4b26a3ed9fca07f517d, type: 2}
+      name: cityHallHighlights
+    second: {fileID: 2100000, guid: e914ae168a3d94f6eb4b21359329bf20, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: standardSurface12
-    second: {fileID: 2100000, guid: da15376ea569c4b26a3ed9fca07f517d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: standardSurface13
-    second: {fileID: 2100000, guid: da15376ea569c4b26a3ed9fca07f517d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: standardSurface14
-    second: {fileID: 2100000, guid: da15376ea569c4b26a3ed9fca07f517d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: standardSurface15
-    second: {fileID: 2100000, guid: da15376ea569c4b26a3ed9fca07f517d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: surfaceShader6
+      name: cityHallWindows
     second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: clockFace1
+    second: {fileID: 2100000, guid: 56a7b2606335e4350bff47e2799d6cd2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: domeColour
+    second: {fileID: 2100000, guid: 6a042921f6e794710846249928420c59, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: doorHandle
+    second: {fileID: 2100000, guid: 5bc6ae160e8d7456e8b5f209fe49b5c7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pillars
+    second: {fileID: 2100000, guid: 56a7b2606335e4350bff47e2799d6cd2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
