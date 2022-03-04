@@ -63,6 +63,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         InstructionsLoad.instance.InstructionsText();
+
+        AmmoCount.instance.maxAmmo = targetingMaxShots;
+        AmmoCount.instance.SetAmmo(targetingMaxShots);
+
         if (!PV.IsMine)
         {
             Destroy(rb);
@@ -225,15 +229,22 @@ public class PlayerController : MonoBehaviour
         projLineRenderer.SetPosition(targetLineRes, hit.point);
         targetObj.transform.position = hit.point;
         targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
+
+        if (targetingShotCount != 0 && Time.time >= targetingLastShot + targetingDelay)
+        {
+            targetingShotCount = 0;
+            AmmoCount.instance.SetAmmo(targetingMaxShots);
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
-            if (Time.time >= targetingLastShot + targetingDelay)
-                targetingShotCount = 0;
-            else if (targetingShotCount == targetingMaxShots)
+            if (targetingShotCount == targetingMaxShots)
                 goto fire_skip;
 
             targetingShotCount++;
             targetingLastShot = Time.time;
+            AmmoCount.instance.SetAmmo(targetingMaxShots - targetingShotCount);
+
             Vector3 acc = new Vector3(0f, -g, 0f);
             Vector3 vel = dist / timeToHit;
             vel.y = -v;
