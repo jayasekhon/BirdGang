@@ -28,7 +28,6 @@ public class FlockCEO : MonoBehaviour
             return ;
         }
         for (int i=0; i< numFlocks; i++) {
-            Debug.Log(i);
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "FlockManager"), new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
                                             Random.Range(0, worldLimits.y),                                                            
                                             Random.Range(-worldLimits.z, worldLimits.z)), Quaternion.identity);
@@ -64,8 +63,6 @@ public class FlockCEO : MonoBehaviour
         {
             if (!player.move && !stillPlayers.Contains(player.gameObject) && !attackedPlayers.Contains(player.gameObject)) {
                 stillPlayers.Add(player.gameObject);
-                Debug.Log(stillPlayers.Count);
-
             }
         }
         
@@ -88,7 +85,6 @@ public class FlockCEO : MonoBehaviour
         }
         List<float> clonedAttackTimes = new List<float>(attackTimes);
         // Debug.Log(clonedAttackTimes.Count);
-        Debug.Log(attackTimes.Count);
         for(int t=0;t <attackTimes.Count;t++)
         {
             if (Time.time >=clonedAttackTimes[t] +attackDelay)

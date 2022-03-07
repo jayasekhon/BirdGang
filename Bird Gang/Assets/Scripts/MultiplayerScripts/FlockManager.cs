@@ -68,7 +68,6 @@ public class FlockManager : MonoBehaviour
         }
         if(attacking){
             transform.LookAt(playerToAttack);
-            Debug.Log("looking at player" + this.gameObject.name);
         }
         else
         {
@@ -95,7 +94,6 @@ public class FlockManager : MonoBehaviour
 
     }
     public void AttackPlayer(GameObject player){
-        Debug.Log("starting attack");
         attacking = true;
         playerToAttack = player.transform;
         

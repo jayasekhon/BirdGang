@@ -4,7 +4,7 @@ using UnityEngine;
 public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 { 
 	private Rigidbody rb;
-	private Collider col;
+	private Collider collider;
 	private PhotonView pv;
 
 	private Vector3 acc;
@@ -14,17 +14,19 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 	private const float Lifetime = 50f;
 	private float endTime;
 
+	private const int LAYER_WORLD = 8;
+
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
 		rb = GetComponent<Rigidbody>();
-		col = GetComponent<Collider>();
+		collider = GetComponent<Collider>();
 		endTime = Time.time + Lifetime;
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
 		{
 			if ((g.transform.position - transform.position).sqrMagnitude < 0.4f)
 			{
-				Physics.IgnoreCollision(g.GetComponent<Collider>(), this.col, true);
+				Physics.IgnoreCollision(g.GetComponent<Collider>(), collider, true);
 			}
 		}
 	}
@@ -47,25 +49,31 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 			return;
 
 		bool flee = false;
-		if ( collision.collider.CompareTag("bird_target"))
+		if (collision.collider.CompareTag("bird_target"))
 		{
 			if (pv.IsMine)
 				collision.collider.gameObject.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
 
 			flee = true;
+			/* Stick to floor, if we've just hit a person (prevents skimming) */
+			if (Physics.Raycast(collision.transform.position, Vector3.down, out RaycastHit hit,
+				1.5f, 1 << LAYER_WORLD))
+			{
+				Destroy(rb);
+				Destroy(collider);
+				active = false;
+				transform.position = hit.point + new Vector3(0f, 0.1f, 0f);
+			}
 		}
-
-		/* Freeze and cease collision when we collide with something, and we're just above world geometry. */
-		if (Physics.Raycast(rb.position + Vector3.up, Vector3.down, out RaycastHit hit, flee ? 6f : 2f, 1 << 8))
+		/* Freeze and cease collision when we collide with world geometry */
+		else if (collision.collider.gameObject.layer == LAYER_WORLD)
 		{
 			Destroy(rb);
-			Destroy(col);
-			if (flee)
-				transform.position = hit.point + new Vector3(0f, 0.1f, 0f);
-			flee = true;
+			Destroy(collider);
 			active = false;
+			flee = true;
 		}
-		/* On any collision, increase gravity to a reasonable value, so that we fall to the ground in a timely manner */
+		/* On any other collision (god knows what), increase gravity to a reasonable value, so that we fall to the ground in a timely manner */
 		else
 		{
 			rb.drag = 0.5f;

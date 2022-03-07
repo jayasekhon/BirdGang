@@ -21,14 +21,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RoadMaterial
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 78fc7e62954783f46b2abe76b90a9abe, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -90,6 +89,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_22806748ca2b4894a31c32b42454b89b: 2
+    - Vector1_320353ad36694a11af7578b3b2287766: 0.4
+    - Vector1_40c261597b6d409caa6a8083af728b91: 0.4
+    - Vector1_4d1da3d0a5de49fe95f432e2d1798160: 0.01
+    - Vector1_d06a1af2f3ff4a8e85a467015dc3d987: 0
+    - Vector1_ea4c181a55de40b6bb2b5bf47963cf32: 2
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -119,6 +124,10 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_8d04ba12cbe2471bb0554bcc963e39ab: {r: 0.9622642, g: 0.9622642, b: 0.9501602, a: 0}
+    - Color_8d188b6584ca4183a8e52f0dfcca652b: {r: 0, g: 0, b: 0, a: 0}
+    - Color_c2bb9053da454ca9aa551b19458a9d49: {r: 0, g: 0, b: 0, a: 1}
+    - Vector2_d029805f26e44413a80c703ad9c96e90: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
