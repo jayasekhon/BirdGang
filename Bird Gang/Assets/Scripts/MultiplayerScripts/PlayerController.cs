@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp("w"))
         {
             if (transform.position.x - xPos < 0.002 || transform.position.z - zPos < 0.002) {
-                Debug.Log("hovering!!!");
+                // Debug.Log("hovering!!!");
                 cameraUpdate = false;
             }
             else {
