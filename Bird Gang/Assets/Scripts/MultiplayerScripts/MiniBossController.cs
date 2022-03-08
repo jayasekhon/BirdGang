@@ -25,7 +25,7 @@ public class MiniBossController : MonoBehaviour
     void Start()
     {
         playersInGame = GameObject.FindGameObjectsWithTag("Player");
-    }
+    } 
 
     // Update is called once per frame
     void Update()
