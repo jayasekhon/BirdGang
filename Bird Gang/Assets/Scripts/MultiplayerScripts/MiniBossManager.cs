@@ -17,7 +17,10 @@ public class MiniBossManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         Instance = this;
-        CreateController();
+
+        // if (PhotonNetwork.IsMasterClient) {
+        CreateController();         
+        // }
     }
 
     void CreateController()
