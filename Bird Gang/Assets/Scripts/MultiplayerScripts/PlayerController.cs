@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
 
         if (!PV.IsMine)
         {
-            Destroy(rb);
+            // Destroy(rb); Causes issue with constant force component.
         }
         else
         {
