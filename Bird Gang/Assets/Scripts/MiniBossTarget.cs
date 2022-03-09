@@ -14,9 +14,9 @@ public class MiniBossTarget : BaseBirdTarget
 		numHits += 1;
 		Debug.Log("I've been hit!!" + numHits);
 		
-
 		if (numHits == 3)
 		{
+			Score.instance.AddScore(isGood, true);
 			Destroy(gameObject);
 		}
 		// Do something exciting.

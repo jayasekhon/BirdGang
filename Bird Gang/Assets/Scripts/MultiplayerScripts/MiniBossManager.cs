@@ -27,6 +27,6 @@ public class MiniBossManager : MonoBehaviour
     void CreateController()
     {
         Debug.Log("Spawn BigBadBoss");
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BigBadBoss"), new Vector3(-8, 5, 1), Quaternion.identity);
+        // PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BigBadBoss"), new Vector3(-8, 5, 1), Quaternion.identity);
     }
 }
