@@ -10,7 +10,7 @@ public class MiniBossController : MonoBehaviour
 
     private GameObject[] playersInGame;
     private bool playerInRange = false;
-    private int ctr = 0;
+    private int counter = 0;
 
     private float distance;
 
@@ -24,18 +24,21 @@ public class MiniBossController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playersInGame = GameObject.FindGameObjectsWithTag("Player");
+
     } 
 
     // Update is called once per frame
     void Update()
     {   
+        playersInGame = GameObject.FindGameObjectsWithTag("Player"); //this line shouldn't really be here but also doesn't work in start atm
+
         if (!PV.IsMine)
         {
             return;
         }
+
         // Loop through the distance of each player to the miniboss until a player is within range
-        for (int p = 0; p <playersInGame.Length; p++)
+        for (int p = 0; p < playersInGame.Length; p++)
         {
             Vector3 playerPosition = playersInGame[p].transform.position;
             distance = Vector3.Distance(playerPosition, transform.position);
@@ -43,18 +46,19 @@ public class MiniBossController : MonoBehaviour
             {
                 playerInRange = true;
                 break;
-            } else
+            } 
+            else
             {
-                ctr += 1;
+                counter += 1;
             }
         }
 
         // If no player in the game is within range of miniboss
-        if (ctr == playersInGame.Length)
+        if (counter == playersInGame.Length)
         {
             Debug.Log("Reset playerInRange bool");
             playerInRange = false;
-            ctr = 0;
+            counter = 0;
         } 
 
         if (playerInRange)
