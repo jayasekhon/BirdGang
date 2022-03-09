@@ -50,6 +50,7 @@ public class AiController : MonoBehaviour
 
         if (Vector3.Distance(position, this.transform.position) < detectionRadius)
         {
+            Debug.Log("entering radius");
             Vector3 fleeDirection = (this.transform.position - position).normalized;
             Vector3 newgoal = this.transform.position + fleeDirection * fleeRadius;
 
@@ -62,7 +63,9 @@ public class AiController : MonoBehaviour
                 agent.speed = fleeingSpeed;
                 agent.angularSpeed = fleeingAngularSpeed;
                 isFleeing = true;
-            } else {
+            } 
+            else 
+            {
                 NavMeshHit hit;
                 NavMeshPath newPath = new NavMeshPath();
                 float newRadius = Mathf.Infinity;
