@@ -18,6 +18,10 @@ public class Flocking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (flockManager == null)
+        {
+            return;
+        }
         Bounds b = new Bounds(flockManager.transform.position, flockManager.flyLimits*2);
 
         RaycastHit hit = new RaycastHit();
