@@ -50,6 +50,10 @@ public class FlockCEO : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient) {
             return ;
         }
+        if (freeflockManagers.Count <= 0)
+        {
+            return;
+        }
         players = new List<PlayerController>();
         GameObject[] playersObjects = GameObject.FindGameObjectsWithTag("Player");
         // Debug.Log(playersObjects.Length);
@@ -68,9 +72,10 @@ public class FlockCEO : MonoBehaviour
         
 
         while(stillPlayers.Count > 0)
-            {
+        {
+
             int r = Random.Range(0, freeflockManagers.Count);
- 
+
             freeflockManagers[r].AttackPlayer(stillPlayers[0]);
             usedFlockManagers.Add(freeflockManagers[r]);
             attackedPlayers.Add(stillPlayers[0]);
@@ -80,8 +85,7 @@ public class FlockCEO : MonoBehaviour
             stillPlayers.Remove(stillPlayers[0]);
             // Debug.Log("Still player"+stillPlayers.Count);
             // Debug.Log("Attacked player"+attackedPlayers.Count);
-         
-            
+
         }
         List<float> clonedAttackTimes = new List<float>(attackTimes);
         // Debug.Log(clonedAttackTimes.Count);

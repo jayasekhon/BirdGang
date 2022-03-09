@@ -44,6 +44,10 @@ public class SpawnManager : MonoBehaviour
         {
             return;
         } 
+        if (spawners == null)
+        {
+            return;
+        }
         foreach (var spawner in spawners)
         {
             // spawn fewer agents inside garden areas
