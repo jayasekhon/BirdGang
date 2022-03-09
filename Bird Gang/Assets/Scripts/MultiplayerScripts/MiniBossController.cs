@@ -56,7 +56,7 @@ public class MiniBossController : MonoBehaviour
         // If no player in the game is within range of miniboss
         if (counter == playersInGame.Length)
         {
-            Debug.Log("Reset playerInRange bool");
+            // Debug.Log("Reset playerInRange bool");
             playerInRange = false;
             counter = 0;
         } 

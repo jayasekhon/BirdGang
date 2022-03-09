@@ -12,11 +12,14 @@ GameObject:
   - component: {fileID: 1703986618523279956}
   - component: {fileID: 7291305478851927000}
   - component: {fileID: 1080354020340922376}
+  - component: {fileID: -3535783997127975822}
   - component: {fileID: 5795042293435900424}
   - component: {fileID: 6468603954502226040}
+  - component: {fileID: -743929873807681119}
   - component: {fileID: -8319193220200637547}
   - component: {fileID: 9074304536035104093}
   - component: {fileID: 4215051877344867547}
+  - component: {fileID: -2763146054821162086}
   m_Layer: 0
   m_Name: MiniBoss Cube
   m_TagString: bird_target
@@ -100,6 +103,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &-3535783997127975822
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9198111749603487451}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: de1bc5a8250c5ae40b83cfb4ce136533, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &5795042293435900424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +142,7 @@ MonoBehaviour:
   observableSearch: 0
   ObservedComponents:
   - {fileID: 4215051877344867547}
+  - {fileID: -743929873807681119}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -137,6 +160,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGood: 0
   isFleeing: 0
+--- !u!114 &-743929873807681119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9198111749603487451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: Attack
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
 --- !u!195 &-8319193220200637547
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -182,5 +226,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ce82e08083a149bda094b59870d6874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-2763146054821162086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9198111749603487451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc62060be05148c6b560550208b08d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
