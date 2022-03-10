@@ -15,10 +15,10 @@ public class MiniBossTarget : BaseBirdTarget
 	{
 		timePassed += Time.fixedDeltaTime;
 
-		// if (timePassed >= 15f) {
-		// 	attackers.Clear();
-		// 	timePassed = 0f; 
-		// }
+		if (timePassed >= 300f) {
+			attackers.Clear();
+			timePassed = 0f; 
+		}
 	}
 
 	[PunRPC]
@@ -36,14 +36,9 @@ public class MiniBossTarget : BaseBirdTarget
 		if (attackers.Count == targetNum)
 		{
 			Score.instance.AddScore(isGood, true);
-			Destroy(gameObject);
+			PhotonNetwork.Destroy(gameObject);
 			attackers.Clear();
 		}
 		// Do something exciting.
 	}
 }
-
-// Still left to-do
-// - add fleeing once miniboss hit once or twice
-// - add timer functionality, so after 15 seconds the list empties - DONE
-// - test it on multiple devices and fix any bugs from there
