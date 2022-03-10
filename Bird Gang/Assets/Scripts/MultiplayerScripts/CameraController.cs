@@ -13,6 +13,10 @@ public class CameraController : MonoBehaviour
     private float xRot;
     private float zPos;
 
+    private int delay = 0;
+    float current_x_rot;
+    float current_y_rot;
+
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -30,21 +34,12 @@ public class CameraController : MonoBehaviour
         targetPos = m_player.GetComponent<Transform>();
     }
 
-    void LateUpdate()
-    {
-        if (!PV.IsMine)
-        {
-            return;
-        }
-        // MoveToTarget();
-    }
-
     public void MoveToTarget(bool cameraUpdate)
     {
-        // Debug.Log(targetPos.position);
         Vector3 desiredLocation = targetPos.position - targetPos.forward * 10f + Vector3.up * 5f;
         float bias = 0.75f;
         Vector3 newPosition = transform.position * bias + desiredLocation * (1f - bias);
+
         // Stop the camera from going below the floor.
         if (newPosition.y < 1.5f)
         {
@@ -54,33 +49,25 @@ public class CameraController : MonoBehaviour
          
         if (cameraUpdate)
         {
-            // transform.position = Vector3.Lerp(transform.position, targetPos.position + transform.forward * 30f, Time.deltaTime * 10);
             transform.LookAt(targetPos.position + transform.forward * 30f);
-            xRot = transform.rotation.x;
-            // xPos = targetPos.position.x;
-            // zPos = targetPos.position.z;
-            // else camera falls with gravity at same rate as player
+            delay = 0;
         }
         else  //when hovering
         {
-            // Debug.Log("hi");
-            // Quaternion rot = Quaternion.Euler(xRot, transform.rotation.y, transform.rotation.z);
-            // transform.rotation = Quaternion.Slerp(transform.rotation, rot, 1);
-        //     if (targetPos.position.x - xPos != 0 || targetPos.position.z - zPos != 0) {
-        //         transform.LookAt(targetPos.position + transform.forward * 30f);
-        //         xPos = targetPos.position.x;
-        //         zPos = targetPos.position.z;
-        //     }
-        //     else 
-        //     {
-        //         Debug.Log("freeze!!!");
-        //     }
-        //     // Vector3 hoverPos = new Vector3(targetPos.position);
-        //     // Debug.Log(targetPos.position);
-        //     // Vector3 tempPos = new Vector3(targetPos.position.x, yPos, targetPos.position.z);
-        //     // transform.LookAt(tempPos + transform.forward * 30f);
-        // //     // Vector3 rotation = targetPos.rotation;
-        // //     // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotation), Time.deltaTime);
+
+            current_x_rot = this.transform.eulerAngles.x;
+            current_y_rot = this.transform.eulerAngles.y;
+            // Quaternion q = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
+            // transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.fixedDeltaTime * 10f);
+            // transform.rotation = Quaternion.Euler(current_x_rot, current_y_rot, 0);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(current_x_rot, current_y_rot, 0), 60f * Time.fixedDeltaTime);
+
+            // Just to ensure that the playercontroller remains in the center of the screen.
+            if (delay <= 10)
+            {
+                transform.LookAt(targetPos.position + transform.forward * 30f);
+                delay += 1;
+            } 
         }
     }
 }
