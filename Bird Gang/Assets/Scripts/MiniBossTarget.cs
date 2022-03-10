@@ -6,9 +6,44 @@ using UnityEngine;
 
 public class MiniBossTarget : BaseBirdTarget
 {
-	[PunRPC]
-	public override void OnHit()
+	// private int numHits = 0;
+	public List<String> attackers = new List<string>();
+	private int targetNum;
+	float timePassed = 0f;
+
+	private void Update() 
 	{
+		timePassed += Time.fixedDeltaTime;
+
+		// if (timePassed >= 15f) {
+		// 	attackers.Clear();
+		// 	timePassed = 0f; 
+		// }
+	}
+
+	[PunRPC]
+	public override void OnHit(int numPlayers, PhotonMessageInfo info)
+	{
+		targetNum = Mathf.Min(3, numPlayers);
+		Debug.Log("num players needed " + targetNum);
+		// numHits += 1;
+		// Debug.Log("I've been hit!!" + numHits);
+		// Debug.Log(info.Sender.NickName);
+		if (!attackers.Contains(info.Sender.NickName)) {
+			attackers.Add(info.Sender.NickName);
+		}
+ 
+		if (attackers.Count == targetNum)
+		{
+			Score.instance.AddScore(isGood, true);
+			Destroy(gameObject);
+			attackers.Clear();
+		}
 		// Do something exciting.
 	}
 }
+
+// Still left to-do
+// - add fleeing once miniboss hit once or twice
+// - add timer functionality, so after 15 seconds the list empties - DONE
+// - test it on multiple devices and fix any bugs from there
