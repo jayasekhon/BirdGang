@@ -69,7 +69,8 @@ public class PlayerController : MonoBehaviour
 
         if (!PV.IsMine)
         {
-            Destroy(rb);
+            // Destroy(rb);
+
         }
         else
         {
@@ -104,6 +105,12 @@ public class PlayerController : MonoBehaviour
         if (!PV.IsMine)
         {
             return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            PV.RPC("OnKeyPress", RpcTarget.All);
+
         }
         
         GetInput();
