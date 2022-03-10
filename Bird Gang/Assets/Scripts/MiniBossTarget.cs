@@ -9,6 +9,17 @@ public class MiniBossTarget : BaseBirdTarget
 	// private int numHits = 0;
 	public List<String> attackers = new List<string>();
 	private int targetNum;
+	float timePassed = 0f;
+
+	private void Update() 
+	{
+		timePassed += Time.fixedDeltaTime;
+
+		if (timePassed >= 15f) {
+			attackers.Clear();
+			timePassed = 0f;
+		}
+	}
 
 	[PunRPC]
 	public override void OnHit(int numPlayers, PhotonMessageInfo info)
@@ -31,3 +42,8 @@ public class MiniBossTarget : BaseBirdTarget
 		// Do something exciting.
 	}
 }
+
+// Still left to-do
+// - add fleeing once miniboss hit once or twice
+// - add timer functionality, so after 15 seconds the list empties - DONE
+// - test it on multiple devices and fix any bugs from there
