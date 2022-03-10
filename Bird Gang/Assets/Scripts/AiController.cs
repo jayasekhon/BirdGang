@@ -50,7 +50,6 @@ public class AiController : MonoBehaviour
 
         if (Vector3.Distance(position, this.transform.position) < detectionRadius)
         {
-            Debug.Log("entering radius");
             Vector3 fleeDirection = (this.transform.position - position).normalized;
             Vector3 newgoal = this.transform.position + fleeDirection * fleeRadius;
 
