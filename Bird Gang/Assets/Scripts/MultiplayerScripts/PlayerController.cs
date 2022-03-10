@@ -105,6 +105,12 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            PV.RPC("OnKeyPress", RpcTarget.All);
+
+        }
         
         GetInput();
 
