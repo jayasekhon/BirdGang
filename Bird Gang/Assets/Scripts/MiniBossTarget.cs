@@ -15,10 +15,10 @@ public class MiniBossTarget : BaseBirdTarget
 	{
 		timePassed += Time.fixedDeltaTime;
 
-		if (timePassed >= 15f) {
-			attackers.Clear();
-			timePassed = 0f;
-		}
+		// if (timePassed >= 15f) {
+		// 	attackers.Clear();
+		// 	timePassed = 0f; 
+		// }
 	}
 
 	[PunRPC]
