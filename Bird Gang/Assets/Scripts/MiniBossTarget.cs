@@ -7,6 +7,7 @@ using UnityEngine;
 public class MiniBossTarget : BaseBirdTarget
 {
 	private int numHits = 0;
+	public List<String> attackers = new List<string>();
 
 	[PunRPC]
 	public override void OnHit(PhotonMessageInfo info)
@@ -14,12 +15,16 @@ public class MiniBossTarget : BaseBirdTarget
 		numHits += 1;
 		Debug.Log("I've been hit!!" + numHits);
 		Debug.Log(info.Sender.NickName);
-		// String name = info.Sender.NickName;
-		
-		if (numHits == 5)
+		if (!attackers.Contains(info.Sender.NickName)) {
+			attackers.Add(info.Sender.NickName);
+		}
+
+	// the minimum of 3 or number of players. 
+		if (attackers.Count == 2)
 		{
 			Score.instance.AddScore(isGood, true);
 			Destroy(gameObject);
+			attackers.Clear();
 		}
 		// Do something exciting.
 	}
