@@ -9,10 +9,12 @@ public class MiniBossTarget : BaseBirdTarget
 	private int numHits = 0;
 
 	[PunRPC]
-	public override void OnHit()
+	public override void OnHit(PhotonMessageInfo info)
 	{
 		numHits += 1;
 		Debug.Log("I've been hit!!" + numHits);
+		Debug.Log(info.Sender.NickName);
+		// String name = info.Sender.NickName;
 		
 		if (numHits == 5)
 		{
