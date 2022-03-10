@@ -8,6 +8,7 @@ public class Flocking : MonoBehaviour
     public FlockManager flockManager;
     float speed;
     bool turning = false;
+    
 
     // Start is called before the first frame update
     void Start()
