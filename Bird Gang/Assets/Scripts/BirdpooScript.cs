@@ -52,7 +52,10 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		if (collision.collider.CompareTag("bird_target"))
 		{
 			if (pv.IsMine)
+			{
 				collision.collider.gameObject.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
+				
+			}
 
 			flee = true;
 			/* Stick to floor, if we've just hit a person (prevents skimming) */
