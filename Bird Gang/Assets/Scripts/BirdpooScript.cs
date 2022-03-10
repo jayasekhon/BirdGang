@@ -16,6 +16,9 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 
 	private const int LAYER_WORLD = 8;
 
+	private GameObject agent;
+	public int playerCount = 0;
+
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
@@ -24,6 +27,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		endTime = Time.time + Lifetime;
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
 		{
+			playerCount ++;
 			if ((g.transform.position - transform.position).sqrMagnitude < 0.4f)
 			{
 				Physics.IgnoreCollision(g.GetComponent<Collider>(), collider, true);
@@ -51,8 +55,10 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		bool flee = false;
 		if (collision.collider.CompareTag("bird_target"))
 		{
-			if (pv.IsMine)
-				collision.collider.gameObject.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
+			if (pv.IsMine) {
+				agent = collision.collider.gameObject;
+				agent.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All, playerCount);
+			}
 
 			flee = true;
 			/* Stick to floor, if we've just hit a person (prevents skimming) */

@@ -21,7 +21,7 @@ public class Score : MonoBehaviour
         scoreText.text = "Score: " + score.ToString();
     }
 
-    public void AddScore(bool status)
+    public void AddScore(bool status, bool miniboss)
     {
         if (status == true){
             score -= 10;
@@ -32,6 +32,15 @@ public class Score : MonoBehaviour
             score += 10;
             streakFlag++;
             scoreText.text = "Score: " + score.ToString();
+        }
+
+        if (miniboss) 
+        {
+            score += 40; //the score will acc increase by 50 bc the 10 from the else stmt above will also be added. 
+            streakFlag++;
+            scoreText.text = "Score: " + score.ToString();
+            targetReached.text = "NICE TEAMWORK";
+            Invoke("Hide", time);
         }
 
         if (streakFlag == 5){
@@ -58,7 +67,6 @@ public class Score : MonoBehaviour
     void Hide(){
         FadeOutRoutine(targetReached);
         targetReached.text = "";
-        
     }
     
  

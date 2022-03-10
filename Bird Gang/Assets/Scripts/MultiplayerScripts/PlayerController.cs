@@ -70,7 +70,6 @@ public class PlayerController : MonoBehaviour
         if (!PV.IsMine)
         {
             // Destroy(rb);
-
         }
         else
         {
