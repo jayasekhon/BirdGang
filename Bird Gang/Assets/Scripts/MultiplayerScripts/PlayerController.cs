@@ -119,7 +119,10 @@ public class PlayerController : MonoBehaviour
         }
         Look();
         Movement();
-        KeyboardTurning();
+        if (move)
+        {
+            KeyboardTurning();
+        }
         cameraController.MoveToTarget(cameraUpdate);
     }
 
