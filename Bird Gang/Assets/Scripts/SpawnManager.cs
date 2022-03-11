@@ -12,7 +12,7 @@ public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
     public int NumberOfMiniBossTotal;
     private float spawnDelay;
     private float nextSpawnTime;
-    Spawner[] spawners;
+    public Spawner[] spawners;
     public static SpawnManager Instance;
     PhotonView PV;
 
@@ -45,21 +45,26 @@ public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
         {
             return;
         } 
+        
         if (spawners == null)
         {
             return;
         }
+
         foreach (var spawner in spawners)
         {
             // spawn fewer agents inside garden areas
-            if (spawner == spawners[20] || spawner == spawners[21] || spawner == spawners[22] ){
+            if (spawner == spawners[20] || spawner == spawners[21] || spawner == spawners[22])
+            {
                 spawner.fillMaxGoodPeople(3);
                 //20% chance of a bad person being spawned in a garden - NOT WORKING
                 int chanceOfBad = Random.Range(0, 4);
-                if (chanceOfBad == 1){
+                if (chanceOfBad == 1)
+                {
                     spawner.fillMaxBadPeople(1);
                 }
-            } else {
+            } else 
+            {
                 spawner.fillMaxGoodPeople(10);
                 spawner.fillMaxBadPeople(2);
             }
@@ -84,5 +89,6 @@ public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
 
     public void OnStageProgress(GameEventManager.Stage stage, float progress)
     {
+    
     }
 }
