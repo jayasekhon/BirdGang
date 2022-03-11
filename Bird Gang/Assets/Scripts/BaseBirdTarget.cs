@@ -37,8 +37,9 @@ public class BaseBirdTarget : MonoBehaviour
         {
             PhotonNetwork.Destroy(gameObject);
         }
-
-
-
+        else
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 }
