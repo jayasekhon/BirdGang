@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour
             // Just to ensure that the playercontroller remains in the center of the screen.
             if (delay <= 8)
             {
-                Debug.Log("Running");
+                // Debug.Log("Running"); 
                 transform.LookAt(targetPos.position + transform.forward * 30f);
                 delay += 1;
             } 
