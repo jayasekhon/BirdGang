@@ -11,6 +11,9 @@ public class MiniBossTarget : BaseBirdTarget
 	private int targetNum;
 	float timePassed = 0f;
 
+	// Update is called once per frame
+	// 60 frames per second = 0.02 * 60 = 1.2f
+	// so to reach 300f = 250 seconds = 4 minutes
 	private void Update() 
 	{
 		timePassed += Time.fixedDeltaTime;
