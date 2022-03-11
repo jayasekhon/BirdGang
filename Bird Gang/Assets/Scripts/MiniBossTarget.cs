@@ -42,7 +42,11 @@ public class MiniBossTarget : BaseBirdTarget
 			if (PhotonNetwork.IsMasterClient)
 			{
 				PhotonNetwork.Destroy(gameObject);
-			}
+			}        
+			else
+        	{
+            	gameObject.GetComponent<MeshRenderer>().enabled = false;
+       		}
 			attackers.Clear();
 		}
 		// Do something exciting.
