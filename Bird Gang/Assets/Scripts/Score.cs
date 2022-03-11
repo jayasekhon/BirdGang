@@ -28,7 +28,7 @@ public class Score : MonoBehaviour
             streakFlag = 0;
             scoreText.text = "Score: " + score.ToString();
         }
-        else{
+        else if (status == false && !miniboss){
             score += 10;
             streakFlag++;
             scoreText.text = "Score: " + score.ToString();
@@ -36,7 +36,7 @@ public class Score : MonoBehaviour
 
         if (miniboss) 
         {
-            score += 40; //the score will acc increase by 50 bc the 10 from the else stmt above will also be added. 
+            score += 50; //the score will acc increase by 50 bc the 10 from the else stmt above will also be added. 
             streakFlag++;
             scoreText.text = "Score: " + score.ToString();
             targetReached.text = "NICE TEAMWORK";

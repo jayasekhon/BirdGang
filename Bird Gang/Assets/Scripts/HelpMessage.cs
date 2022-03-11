@@ -22,7 +22,7 @@ public class HelpMessage : MonoBehaviour
     }
 
     public void Display(string nickname) {
-            message.text = nickname + " needs Help!!";
+            message.text = nickname + " needs help!!";
             Invoke("Hide", time);
     }
 
