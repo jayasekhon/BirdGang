@@ -19,20 +19,24 @@ public class BaseBirdTarget : MonoBehaviour
         Score.instance.AddScore(isGood, false);
         //gameObject.GetComponent<Score>().status = isGood;
         //gameObject.GetComponent<Score>().UpdateScore();
-        
-        
-        SpawnManager spawnManager = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>();
-        Spawner spawner = spawnManager.spawners[Random.Range(0, spawnManager.spawners.Length)];
-        if (isGood)
+
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    SpawnManager spawnManager = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>();
+        //    Spawner spawner = spawnManager.spawners[Random.Range(0, spawnManager.spawners.Length)];
+        //    if (isGood)
+        //    {
+        //        spawner.DecrementGoodPeople();
+        //    }
+        //    else
+        //    {
+        //        spawner.DecrementBadPeople();
+        //    }
+        //}
+        if (PhotonNetwork.IsMasterClient)
         {
-            spawner.DecrementGoodPeople();
+            PhotonNetwork.Destroy(gameObject);
         }
-        else
-        {
-            spawner.DecrementBadPeople();
-        }
-        
-        Destroy(gameObject);
 
 
 
