@@ -45,11 +45,11 @@ public class FlockManager : MonoBehaviour
             allBirds[i] = (GameObject) Instantiate(bird, pos, Quaternion.identity);       
             allBirds[i].GetComponent<Flocking>().flockManager = this;
            
-            Animator anim = allBirds[i].GetComponentInChildren<Animator>();
-            //if (anim != null)
-            //{
-            anim.Play("Base Layer.FlappingAnimation", 0, Random.Range(1, 120f));
-            //}
+            Animator anim = allBirds[i].GetComponent<Animator>();
+            if (anim != null)
+            {
+                anim.Play("Base Layer.FlappingAnimation", 0, Random.Range(0, 1.0f));
+            }
                                 
         }
         transform.position = new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
