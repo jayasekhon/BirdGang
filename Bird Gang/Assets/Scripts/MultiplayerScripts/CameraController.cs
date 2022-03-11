@@ -23,6 +23,7 @@ public class CameraController : MonoBehaviour
         
         // Find the local player for this local camera to follow.
         playersInGame = GameObject.FindGameObjectsWithTag("Player");
+        // Debug.Log("num players:" + playersInGame.Length + "cameracontroller" + PV.ViewID);
         for (int p = 0; p < playersInGame.Length; p++)
         {
             checkLocal = playersInGame[p].GetComponent<PhotonView>();

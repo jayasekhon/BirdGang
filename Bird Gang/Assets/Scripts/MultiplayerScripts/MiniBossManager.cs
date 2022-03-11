@@ -17,11 +17,15 @@ public class MiniBossManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         Instance = this;
-        CreateController();
+
+        if (PhotonNetwork.IsMasterClient) //this means only one gets created
+        {
+            CreateController();         
+        }
     }
 
     void CreateController()
     {
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BigBadBoss"), new Vector3(-8, 5, 1), Quaternion.identity);
+//         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BigBadBoss"), new Vector3(-8, 5, 1), Quaternion.identity);
     }
 }
