@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
+        upForce = GetComponent<ConstantForce>();
     }
 
     void Start()
@@ -72,7 +73,8 @@ public class PlayerController : MonoBehaviour
 
         if (!PV.IsMine)
         {
-            // Destroy(rb); Causes issue with constant force component.
+            Destroy(upForce);
+            Destroy(rb); //Causes issue with constant force component.
         }
         else
         {
