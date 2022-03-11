@@ -21,17 +21,26 @@ public class Score : MonoBehaviour
         scoreText.text = "Score: " + score.ToString();
     }
 
-    public void AddScore(bool status)
+    public void AddScore(bool status, bool miniboss)
     {
         if (status == true){
             score -= 10;
             streakFlag = 0;
             scoreText.text = "Score: " + score.ToString();
         }
-        else{
+        else if (status == false && !miniboss){
             score += 10;
             streakFlag++;
             scoreText.text = "Score: " + score.ToString();
+        }
+
+        if (miniboss) 
+        {
+            score += 50; 
+            streakFlag++;
+            scoreText.text = "Score: " + score.ToString();
+            targetReached.text = "NICE TEAMWORK";
+            Invoke("Hide", time);
         }
 
         if (streakFlag == 5){
@@ -58,7 +67,6 @@ public class Score : MonoBehaviour
     void Hide(){
         FadeOutRoutine(targetReached);
         targetReached.text = "";
-        
     }
     
  

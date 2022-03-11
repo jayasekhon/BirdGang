@@ -12,11 +12,11 @@ public class BaseBirdTarget : MonoBehaviour
     public bool isGood;
 
     [PunRPC]
-    public virtual void OnHit()
+    public virtual void OnHit(int numPlayers, PhotonMessageInfo info)
     {
         Debug.Log(isGood ? "Got good cube (i.e. take points)" : "Got bad cube (i.e. give points)");
 
-        Score.instance.AddScore(isGood);
+        Score.instance.AddScore(isGood, false);
         //gameObject.GetComponent<Score>().status = isGood;
         //gameObject.GetComponent<Score>().UpdateScore();
         

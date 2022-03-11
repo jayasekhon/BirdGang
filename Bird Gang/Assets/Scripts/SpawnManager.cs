@@ -7,7 +7,7 @@ using System.IO;
 using Photon.Realtime;
 
 [System.Serializable]
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
 {
     public int NumberOfMiniBossTotal;
     private float spawnDelay;
@@ -27,25 +27,30 @@ public class SpawnManager : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient)
         {
             return;
-        } 
+        }
 
         spawners = GetComponentsInChildren<Spawner>();
-        NumberOfMiniBossTotal = 1; //this can be changed for however mini bosses we want
+        NumberOfMiniBossTotal = 10; //this can be changed for however mini bosses we want
         spawnDelay = 5f; //this can be changed from 5 seconds to maybe 120 - so a mini boss appears at the start of every new "wave".
         nextSpawnTime = Time.time + spawnDelay;
-        
+
+        GameEventManager.instance.RegisterCallbacks(this, ~GameEventManager.STAGE.BREAK,
+            GameEventManager.CALLBACK_TYPE.BEGIN | GameEventManager.CALLBACK_TYPE.END);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if (!PhotonNetwork.IsMasterClient)
+        {
+            return;
+        } 
+        
+        if (spawners == null)
         {
             return;
         }
 
-        int count = 0;
         foreach (var spawner in spawners)
         {
             // spawn fewer agents inside garden areas
@@ -58,24 +63,32 @@ public class SpawnManager : MonoBehaviour
                 {
                     spawner.fillMaxBadPeople(1);
                 }
-            }
-            else
+            } else 
             {
                 spawner.fillMaxGoodPeople(10);
                 spawner.fillMaxBadPeople(2);
             }
-            count +=spawner.NumberOfPeopleTotal;
-
-
         }
-        //Debug.Log(count);
+    }
 
-        if (Time.time >= nextSpawnTime)
+    public void OnStageBegin(GameEventManager.Stage stage)
+    {
+        Debug.Log("New stage, spawned miniboss");
+        int index = Random.Range(0, spawners.Length);
+        spawners[index].fillMaxMiniBoss(NumberOfMiniBossTotal);
+    }
+
+    public void OnStageEnd(GameEventManager.Stage stage)
+    {
+        Debug.Log("Stage end, destroyed miniboss");
+        foreach (Spawner s in spawners)
         {
-            int index = Random.Range(0, spawners.Length);
-            spawners[index].fillMaxMiniBoss(NumberOfMiniBossTotal);
-            nextSpawnTime = Time.time + spawnDelay;
-
+            s.destroyMiniBosses();
         }
+    }
+
+    public void OnStageProgress(GameEventManager.Stage stage, float progress)
+    {
+    
     }
 }

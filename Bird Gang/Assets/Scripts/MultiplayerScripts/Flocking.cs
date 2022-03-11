@@ -8,6 +8,7 @@ public class Flocking : MonoBehaviour
     public FlockManager flockManager;
     float speed;
     bool turning = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,10 @@ public class Flocking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (flockManager == null)
+        {
+            return;
+        }
         Bounds b = new Bounds(flockManager.transform.position, flockManager.flyLimits*2);
 
         RaycastHit hit = new RaycastHit();
