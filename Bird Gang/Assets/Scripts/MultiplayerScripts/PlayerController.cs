@@ -334,7 +334,6 @@ fire_skip: ;
     }
 
     void Hovering() {
-        upForce = GetComponent<ConstantForce>();
 
         if (timePassed < 0.6)
         {   
