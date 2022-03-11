@@ -1,3 +1,4 @@
+using Photon.Pun.Demo.PunBasics;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
@@ -7,9 +8,11 @@ public class StageProgressUI : MonoBehaviour, GameEventManager.GameEventCallback
 	private RawImage uiImage;
 	private Texture2D tex;
 
-	private float timeElapsed = 0;
 	private float totalTime;
+	private float timeElapsed;
 	private int currPixel = 0;
+
+	private bool isStarted = false;
 
 	private void Awake()
 	{
@@ -20,6 +23,10 @@ public class StageProgressUI : MonoBehaviour, GameEventManager.GameEventCallback
 
 	void Start()
 	{
+		if (!GameEventManager.instance)
+			return;
+		isStarted = true;
+
 		Color32[] pixels = tex.GetPixels32();
 		GameEventManager.instance.RegisterCallbacks(this, GameEventManager.STAGE.ALL, GameEventManager.CALLBACK_TYPE.ALL);
 		foreach (GameEventManager.Stage s in GameEventManager.instance.agenda)
@@ -49,15 +56,22 @@ exit:
 
 	void Update()
 	{
+		if (!isStarted)
+			Start();
 	}
 
 	public void OnStageBegin(GameEventManager.Stage stage)
 	{
+		timeElapsed = 0;
+		for (int i = 0; GameEventManager.instance.agenda[i].id != stage.id; i++)
+		{
+			timeElapsed += GameEventManager.instance.agenda[i].maxDuration;
+		}
 	}
 
 	public void OnStageEnd(GameEventManager.Stage stage)
 	{
-		timeElapsed += stage.maxDuration;
+
 	}
 
 	public void OnStageProgress(GameEventManager.Stage stage, float progress)

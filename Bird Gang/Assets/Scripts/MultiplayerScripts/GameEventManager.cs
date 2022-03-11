@@ -43,15 +43,6 @@ public class GameEventManager : MonoBehaviour
 		public readonly int id;
 	}
 
-	public readonly Stage[] agenda =
-	{
-		new Stage(STAGE.BREAK, 20f),
-		new Stage(STAGE.FIRST, 60f),
-		new Stage(STAGE.BREAK, 10f),
-		new Stage(STAGE.SECOND, 30f),
-		new Stage(STAGE.BREAK, 10f),
-	};
-
 	private readonly struct CallbackHolder
 	{
 		public CallbackHolder(GameEventCallbacks h, STAGE s, CALLBACK_TYPE t)
@@ -68,13 +59,49 @@ public class GameEventManager : MonoBehaviour
 
 	private List<CallbackHolder> holders = new List<CallbackHolder>();
 
-	private void EmitCallback(CALLBACK_TYPE t)
+	public readonly Stage[] agenda =
 	{
+		new Stage(STAGE.BREAK, 20f),
+		new Stage(STAGE.FIRST, 60f),
+		new Stage(STAGE.BREAK, 10f),
+		new Stage(STAGE.SECOND, 30f),
+		new Stage(STAGE.BREAK, 10f),
+	};
+
+	private int stageIndex;
+	private Stage currStage;
+	private bool finished;
+
+	private float lastProgress;
+	private float lastProgressTime;
+
+	private PhotonView pv;
+
+	[PunRPC]
+	private void EmitCallback(object[] data)
+	{
+		CALLBACK_TYPE t = (CALLBACK_TYPE)data[0];
 		float p = 0;
 		if (t == CALLBACK_TYPE.PROGRESS)
+		{
 			p = GetProgress();
+		}
 		else
+		{
+			if (t == CALLBACK_TYPE.BEGIN)
+			{
+				stageIndex = (int) data[1];
+				if (stageIndex == agenda.Length)
+				{
+					finished = true;
+					return;
+				}
+				currStage = agenda[stageIndex];
+				lastProgressTime = Time.time;
+				lastProgress = 0;
+			}
 			Debug.Log("Event callback: " + t.ToString() + " on " + currStage.stage.ToString());
+		}
 
 		foreach (CallbackHolder h in holders)
 		{
@@ -95,13 +122,6 @@ public class GameEventManager : MonoBehaviour
 			}
 		}
 	}
-
-	private int stageIndex;
-	private Stage currStage;
-	private bool finished;
-
-	private float lastProgress;
-	private float lastProgressTime;
 
 	float GetProgress()
 	{
@@ -124,26 +144,23 @@ public class GameEventManager : MonoBehaviour
 	{
 		if (finished)
 			return;
-		lastProgress = progress;
+		pv.RPC("SetProgressRPC", RpcTarget.All, progress);
+	}
+
+	[PunRPC]
+	private void SetProgressRPC(object[] progress)
+	{
+		lastProgress = (float)progress[0];
 		lastProgressTime = Time.time;
-		EmitCallback(CALLBACK_TYPE.PROGRESS);
+		EmitCallback(new object[]{ CALLBACK_TYPE.PROGRESS });
 	}
 
 	void ToNextStage()
 	{
 		if (finished)
 			return;
-		EmitCallback(CALLBACK_TYPE.END);
-		if (++stageIndex == agenda.Length)
-		{
-			finished = true;
-			return;
-		}
-
-		currStage = agenda[stageIndex];
-		lastProgressTime = Time.time;
-		lastProgress = 0;
-		EmitCallback(CALLBACK_TYPE.BEGIN);
+		pv.RPC("EmitCallback", RpcTarget.All, new object[]{CALLBACK_TYPE.END, 0});
+		pv.RPC("EmitCallback", RpcTarget.All, new object[]{CALLBACK_TYPE.BEGIN, stageIndex + 1});
 	}
 
 	void Awake()
@@ -151,32 +168,23 @@ public class GameEventManager : MonoBehaviour
 		if (instance)
 			Debug.LogError("oops");
 
-		if (!PhotonNetwork.IsMasterClient)
-		{
-			Destroy(gameObject);
-			return;
-		}
-
+		pv = GetComponent<PhotonView>();
 		instance = this;
 	}
 
 	void Start()
 	{
-		currStage = agenda[0];
-		stageIndex = 0;
-		lastProgressTime = Time.time;
-		lastProgress = 0;
-		EmitCallback(CALLBACK_TYPE.BEGIN);
+		if (PhotonNetwork.IsMasterClient)
+		{
+			pv.RPC("EmitCallback", RpcTarget.All, CALLBACK_TYPE.BEGIN, 0);
+		}
 	}
 
 	void Update()
 	{
-		if (!PhotonNetwork.IsMasterClient || finished)
-			return;
-
-		if (GetProgress() > 1f)
+		if (GetProgress() > 1f && PhotonNetwork.IsMasterClient)
 			ToNextStage();
 		else
-			EmitCallback(CALLBACK_TYPE.PROGRESS);
+			EmitCallback(new object[]{ CALLBACK_TYPE.PROGRESS });
 	}
 }
