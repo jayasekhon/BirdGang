@@ -56,13 +56,15 @@ public class AiController : MonoBehaviour
             NavMeshPath path = new NavMeshPath();
             agent.CalculatePath(newgoal, path);
 
-            if(path.status != NavMeshPathStatus.PathInvalid)
+            if (path.status != NavMeshPathStatus.PathInvalid)
             {
                 agent.SetDestination(path.corners[path.corners.Length - 1]);
                 agent.speed = fleeingSpeed;
                 agent.angularSpeed = fleeingAngularSpeed;
                 isFleeing = true;
-            } else {
+            } 
+            else 
+            {
                 NavMeshHit hit;
                 NavMeshPath newPath = new NavMeshPath();
                 float newRadius = Mathf.Infinity;
@@ -94,7 +96,6 @@ public class AiController : MonoBehaviour
         //Debug.Log(index);
         agent.SetDestination(goalLocations[index].transform.position);
         agent.speed *= Random.Range(0.2f, 1.5f);
-
     }
 
     private void Update()
@@ -107,18 +108,13 @@ public class AiController : MonoBehaviour
             }
         }
         else
-        {
-                            
-
-             UpdateNetworkPositon();
-             UpdateNetworkIsFleeing();
-
-
-
+        {                      
+            UpdateNetworkPosition();
+            UpdateNetworkIsFleeing();
         }
     }
 
-    void UpdateNetworkPositon()
+    void UpdateNetworkPosition()
     {
         agent.SetDestination(this.GetComponent<SyncManager>().GetNetworkPosition());
     }

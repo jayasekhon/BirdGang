@@ -10,8 +10,8 @@ public class FlockCEO : MonoBehaviour
     public Vector3 worldLimits = new Vector3(250,50,250);
 
     public List<PlayerController> players;
-    public List<GameObject>stillPlayers = new List<GameObject>();
-    public List<GameObject>attackedPlayers = new List<GameObject>();
+    public List<GameObject> stillPlayers = new List<GameObject>();
+    public List<GameObject> attackedPlayers = new List<GameObject>();
     public List<FlockManager> flockManagers;
     public List<FlockManager> freeflockManagers;
     public List<FlockManager> usedFlockManagers;
