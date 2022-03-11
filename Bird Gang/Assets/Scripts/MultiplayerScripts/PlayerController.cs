@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
 
+    float current_x_rot;
+    float current_y_rot;
+
     bool grounded; 
     public bool move;
     public bool cameraUpdate;
@@ -69,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
         if (!PV.IsMine)
         {
-            // Destroy(rb);
+            // Destroy(rb); Causes issue with constant force component.
         }
         else
         {
@@ -125,7 +128,10 @@ public class PlayerController : MonoBehaviour
         }
         Look();
         Movement();
-        KeyboardTurning();
+        if (move)
+        {
+            KeyboardTurning();
+        }
         cameraController.MoveToTarget(cameraUpdate);
     }
 
@@ -296,6 +302,12 @@ fire_skip: ;
 
             transform.rotation = Quaternion.Euler(x, y, rollInput);
             // transform.rotation = Quaternion.Euler(pitch, yaw, rollInput);
+        } else
+        {
+            // Make sure bird is straightend up
+            current_x_rot = this.transform.eulerAngles.x;
+            current_y_rot = this.transform.eulerAngles.y;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(current_x_rot, current_y_rot, 0), 60f * Time.fixedDeltaTime);
         }
     }
 

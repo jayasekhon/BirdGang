@@ -45,6 +45,10 @@ public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
         {
             return;
         } 
+        if (spawners == null)
+        {
+            return;
+        }
         foreach (var spawner in spawners)
         {
             // spawn fewer agents inside garden areas
