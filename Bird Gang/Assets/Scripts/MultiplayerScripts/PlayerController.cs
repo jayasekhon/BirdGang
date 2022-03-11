@@ -299,13 +299,8 @@ fire_skip: ;
         } else
         {
             // Make sure bird is straightend up
-            // transform.rotation = Quaternion.Euler(0,transform.rotation.y,0);
-            // Quaternion q = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
             current_x_rot = this.transform.eulerAngles.x;
             current_y_rot = this.transform.eulerAngles.y;
-            // Quaternion q = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
-            // transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.fixedDeltaTime * 10f);
-            // transform.rotation = Quaternion.Euler(current_x_rot, current_y_rot, 0);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(current_x_rot, current_y_rot, 0), 60f * Time.fixedDeltaTime);
         }
     }

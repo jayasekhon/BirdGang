@@ -55,16 +55,14 @@ public class CameraController : MonoBehaviour
         else  //when hovering
         {
 
-            current_x_rot = this.transform.eulerAngles.x;
-            current_y_rot = this.transform.eulerAngles.y;
-            // Quaternion q = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
-            // transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.fixedDeltaTime * 10f);
-            // transform.rotation = Quaternion.Euler(current_x_rot, current_y_rot, 0);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(current_x_rot, current_y_rot, 0), 60f * Time.fixedDeltaTime);
+            // current_x_rot = this.transform.eulerAngles.x;
+            // current_y_rot = this.transform.eulerAngles.y;
+            // transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(current_x_rot, current_y_rot, 0), 60f * Time.fixedDeltaTime);
 
             // Just to ensure that the playercontroller remains in the center of the screen.
-            if (delay <= 10)
+            if (delay <= 8)
             {
+                Debug.Log("Running");
                 transform.LookAt(targetPos.position + transform.forward * 30f);
                 delay += 1;
             } 
