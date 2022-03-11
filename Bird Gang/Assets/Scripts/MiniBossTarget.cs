@@ -39,7 +39,14 @@ public class MiniBossTarget : BaseBirdTarget
 		if (attackers.Count == targetNum)
 		{
 			Score.instance.AddScore(isGood, true);
-			PhotonNetwork.Destroy(gameObject);
+			if (PhotonNetwork.IsMasterClient)
+			{
+				PhotonNetwork.Destroy(gameObject);
+			}        
+			else
+        	{
+            	gameObject.GetComponent<MeshRenderer>().enabled = false;
+       		}
 			attackers.Clear();
 		}
 		// Do something exciting.
