@@ -20,6 +20,8 @@ public class Spawner : MonoBehaviour
     private Vector3 maxPosition;
     private Vector3 centerPosition;
 
+    private List<GameObject> miniBosses = new List<GameObject>();
+
     PhotonView PV;
 
     void Awake()
@@ -32,7 +34,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
 
-        NumberOfPeopleTotal = 50;
+        NumberOfPeopleTotal = NumberGoodPeopleSpawned + NumberBadPeopleSpawned;
 
         minPosition = renderer.bounds.min;
         maxPosition = renderer.bounds.max;
@@ -44,7 +46,7 @@ public class Spawner : MonoBehaviour
     void Update()
     {
 
-
+        NumberOfPeopleTotal = NumberGoodPeopleSpawned + NumberBadPeopleSpawned;
 
     }
 
@@ -61,13 +63,14 @@ public class Spawner : MonoBehaviour
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         GameObject newBadPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bad Person Cube"), position, Quaternion.identity);
         NumberBadPeopleSpawned++;
+        
     }
     private void SpawnMiniBoss()
     {
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         GameObject newMiniBoss = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "MiniBoss Cube"), position, Quaternion.identity);
+        miniBosses.Add(newMiniBoss);
         NumberMiniBossSpawned++;
-
     }
 
     public void fillMaxGoodPeople(int numOfPeople)
@@ -85,9 +88,9 @@ public class Spawner : MonoBehaviour
     public void fillMaxBadPeople(int numOfPeople)
     {
         NumberOfBadPeople = numOfPeople;
-
+        
         while (NumberBadPeopleSpawned < NumberOfBadPeople)
-        {
+        { 
             SpawnBadPerson();
         }
         
@@ -101,7 +104,16 @@ public class Spawner : MonoBehaviour
         {
             SpawnMiniBoss();
         }
-        
+    }
+
+    public void destroyMiniBosses()
+    {
+        foreach (GameObject mb in miniBosses)
+        {
+            if (mb)
+                PhotonNetwork.Destroy(mb);
+        }
+        miniBosses.Clear();
     }
 
     public int GetNumberOfMiniBoss(int numOfPeople)
@@ -115,5 +127,14 @@ public class Spawner : MonoBehaviour
     public int GetNumberOfBadPeople(int numOfPeople)
     {
         return NumberOfBadPeople;
+    }
+    public void DecrementGoodPeople()
+    {
+        NumberGoodPeopleSpawned--;
+    }
+    public void DecrementBadPeople()
+    {
+        NumberBadPeopleSpawned--;
+    
     }
 }

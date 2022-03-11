@@ -43,17 +43,25 @@ public class FlockManager : MonoBehaviour
                                                                 Random.Range(0, flyLimits.y),                                                            
                                                                 Random.Range(-flyLimits.z, flyLimits.z));
             allBirds[i] = (GameObject) Instantiate(bird, pos, Quaternion.identity);       
-            allBirds[i].GetComponent<Flocking>().flockManager = this;                                          
+            allBirds[i].GetComponent<Flocking>().flockManager = this;
+           
+            Animator anim = allBirds[i].GetComponent<Animator>();
+            if (anim != null)
+            {
+                anim.Play("Base Layer.FlappingAnimation", 0, Random.Range(0, 1.0f));
+            }
+                                
         }
         transform.position = new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
                                             Random.Range(0, worldLimits.y),                                                            
                                             Random.Range(-worldLimits.z, worldLimits.z));
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
         Vector3 direction = Vector3.zero;
         Vector3 noise = new Vector3 (Random.Range(-50, 50),Random.Range(-30, 30),Random.Range(-50, 50));
         

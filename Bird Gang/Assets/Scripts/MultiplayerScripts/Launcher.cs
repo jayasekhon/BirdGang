@@ -29,8 +29,11 @@ public class Launcher : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Connecting to Master");
-        PhotonNetwork.ConnectUsingSettings();
+        if (!PhotonNetwork.IsConnected)
+        {
+            Debug.Log("Connecting to Master");
+            PhotonNetwork.ConnectUsingSettings();
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -52,7 +55,9 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             return;
         }
-        PhotonNetwork.CreateRoom(roomNameInputField.text);
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 6;
+        PhotonNetwork.CreateRoom(roomNameInputField.text, options);
         MenuManager.Instance.OpenMenu("loading");
     }
 
@@ -79,9 +84,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     // Accounting for host migration so that if the host player leaves another player automatically becomes the host
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
+        Debug.Log("Master client switched");
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-        
-
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -93,8 +97,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void StartGame()
     {
         // We use 1 as the parameter because 1 is the build index of our game scene, as we set it in the build settings
-        PhotonNetwork.LoadLevel(1);
-        
+        PhotonNetwork.LoadLevel(2);
     }
 
     public void LeaveRoom()
@@ -123,6 +126,9 @@ public class Launcher : MonoBehaviourPunCallbacks
         for (int i = 0; i < roomList.Count; i++)
         {
             if(roomList[i].RemovedFromList)
+            {
+                continue;
+            } if (roomList[i].PlayerCount == roomList[i].MaxPlayers)
             {
                 continue;
             }

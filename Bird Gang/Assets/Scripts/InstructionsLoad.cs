@@ -15,7 +15,8 @@ public class InstructionsLoad : MonoBehaviour
 
     public void InstructionsText()
     {
-        instructions.text = "Press + Hold W to move forward \n\n Move your mouse to turn \n\n Left-Click to fire ";
+        string accelerationText = " \n\n Press SPACE to increase movement speed and S to slow down";
+        instructions.text = ("Press + Hold W to move forward \n\n Move your mouse to turn \n\n Left-Click to fire") + accelerationText;
         Invoke("Hide", time);
         
     }
