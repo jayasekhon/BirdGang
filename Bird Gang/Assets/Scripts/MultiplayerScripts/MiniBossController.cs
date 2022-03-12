@@ -64,14 +64,14 @@ public class MiniBossController : MonoBehaviour
 
         if (playerInRange)
         {
-            Debug.Log("A player is within range");
+            // Debug.Log("A player is within range");
             _animator.SetBool("Attack", true);
         }
 
         // If there are no players within range and the miniboss has been attacking then reset
         if ((!playerInRange) && _animator.GetBool("Attack"))
         {
-            Debug.Log("No players within range");
+            // Debug.Log("No players within range");
             _animator.SetBool("Attack", false);
         }
     }

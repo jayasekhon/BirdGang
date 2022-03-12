@@ -22,6 +22,7 @@ public class MiniBossTarget : BaseBirdTarget
 	// i don't think this works bc it is just clearing the list every 5 minutes
 	// not actually starting the timer when onHit is called. 
 	// probably need a boolean if ?
+	// also in here set the animation to be false again.
 
 	// void Update() 
 	// {
@@ -40,8 +41,10 @@ public class MiniBossTarget : BaseBirdTarget
 		Debug.Log("num players needed " + targetNum);
 		// numHits += 1;
 		// Debug.Log("I've been hit!!" + numHits);
-		_animator.SetBool("Hit", true);
-		// Debug.Log(PhotonNetwork.NickName);
+
+		if (PhotonNetwork.NickName == info.Sender.NickName) {
+			_animator.SetBool("Hit", true);
+		}
 
 		if (!attackers.Contains(info.Sender.NickName)) {
 			attackers.Add(info.Sender.NickName);
