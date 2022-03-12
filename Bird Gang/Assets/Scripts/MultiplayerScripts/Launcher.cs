@@ -55,9 +55,10 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             return;
         }
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 6;
-        PhotonNetwork.CreateRoom(roomNameInputField.text, options);
+        // RoomOptions options = new RoomOptions();
+        // options.MaxPlayers = 6;
+        // PhotonNetwork.CreateRoom(roomNameInputField.text, options);
+        PhotonNetwork.CreateRoom(roomNameInputField.text);
         MenuManager.Instance.OpenMenu("loading");
     }
 
@@ -128,10 +129,11 @@ public class Launcher : MonoBehaviourPunCallbacks
             if(roomList[i].RemovedFromList)
             {
                 continue;
-            } if (roomList[i].PlayerCount == roomList[i].MaxPlayers)
-            {
-                continue;
-            }
+            } 
+            // if (roomList[i].PlayerCount == roomList[i].MaxPlayers)
+            // {
+            //     continue;
+            // }
             Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
         }
     }
