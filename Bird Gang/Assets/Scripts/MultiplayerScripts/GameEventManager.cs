@@ -61,8 +61,8 @@ public class GameEventManager : MonoBehaviour
 
 	public readonly Stage[] agenda =
 	{
-		new Stage(STAGE.BREAK, 20f),
-		new Stage(STAGE.FIRST, 60f),
+		new Stage(STAGE.BREAK, 5f), //20
+		new Stage(STAGE.FIRST, 360f), //60
 		new Stage(STAGE.BREAK, 10f),
 		new Stage(STAGE.SECOND, 30f),
 		new Stage(STAGE.BREAK, 10f),

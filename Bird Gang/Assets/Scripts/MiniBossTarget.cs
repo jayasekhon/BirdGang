@@ -11,33 +11,35 @@ public class MiniBossTarget : BaseBirdTarget
 	public List<String> attackers = new List<string>();
 	private int targetNum;
 	float timePassed = 0f;
+	private bool startTimer = false;
 
 	void Awake() {
 		_animator = GetComponent<Animator>();
 	}
+
 	// Update is called once per frame
 	// 60 frames per second = 0.02 * 60 = 1.2f
 	// so to reach 300f = 250 seconds = 4 minutes
+	void Update() 
+	{
+		if(startTimer) {
+			timePassed += Time.fixedDeltaTime;
 
-	// i don't think this works bc it is just clearing the list every 5 minutes
-	// not actually starting the timer when onHit is called. 
-	// probably need a boolean if ?
-	// also in here set the animation to be false again.
-
-	// void Update() 
-	// {
-	// 	timePassed += Time.fixedDeltaTime;
-
-	// 	if (timePassed >= 300f) {
-	// 		attackers.Clear();
-	// 		timePassed = 0f; 
-	// 	}
-	// }
+			if (timePassed >= 300f) {
+				_animator.SetBool("Hit", false);
+				attackers.Clear();
+				timePassed = 0f; 
+				startTimer = false;
+			}
+		}
+	}
 
 	[PunRPC]
 	public override void OnHit(int numPlayers, PhotonMessageInfo info)
 	{
+		startTimer = true;
 		targetNum = Mathf.Min(3, numPlayers);
+		// targetNum = 2;
 		Debug.Log("num players needed " + targetNum);
 		// numHits += 1;
 		// Debug.Log("I've been hit!!" + numHits);
@@ -65,3 +67,12 @@ public class MiniBossTarget : BaseBirdTarget
 		}
 	}
 }
+
+// change ammo text -- DONE
+// add animation/colour change -- DONE
+// add text between each round?
+// understand somewhat how the event manager code works
+// add hearts/similar text to cubes
+// re-add in a timer that actually works -- DONE
+// add in transition from colourChange to spinning? - no.
+//  -- no so if you've hit them they can't attack you and also if they're attacking you you can't hit them
