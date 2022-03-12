@@ -56,7 +56,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			return;
 		}
-		PhotonNetwork.CreateRoom(roomNameInputField.text);
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 2;
+		PhotonNetwork.CreateRoom(roomNameInputField.text, options);
 		MenuManager.Instance.OpenMenu("loading");
 	}
 
@@ -137,6 +139,11 @@ public class Launcher : MonoBehaviourPunCallbacks
             if (info.RemovedFromList)
             {
                 cachedRoomList.Remove(info.Name);
+            }
+            else if (info.PlayerCount == info.MaxPlayers)
+            {
+                cachedRoomList.Remove(info.Name);
+                //continue;
             }
             else
             {
