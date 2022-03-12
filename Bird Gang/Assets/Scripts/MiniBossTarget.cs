@@ -12,13 +12,17 @@ public class MiniBossTarget : BaseBirdTarget
 	private int targetNum;
 	float timePassed = 0f;
 
-	// Update is called once per frame
-	// 60 frames per second = 0.02 * 60 = 1.2f
-	// so to reach 300f = 250 seconds = 4 minutes
 	void Awake() {
 		_animator = GetComponent<Animator>();
 	}
-	
+	// Update is called once per frame
+	// 60 frames per second = 0.02 * 60 = 1.2f
+	// so to reach 300f = 250 seconds = 4 minutes
+
+	// i don't think this works bc it is just clearing the list every 5 minutes
+	// not actually starting the timer when onHit is called. 
+	// probably need a boolean if ?
+
 	// void Update() 
 	// {
 	// 	timePassed += Time.fixedDeltaTime;
