@@ -57,7 +57,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 			return;
 		}
         RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 2;
+        options.MaxPlayers = 6;
 		PhotonNetwork.CreateRoom(roomNameInputField.text, options);
 		MenuManager.Instance.OpenMenu("loading");
 	}
@@ -98,6 +98,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 	public void StartGame()
 	{
 		PhotonNetwork.LoadLevel(2);
+        PhotonNetwork.CurrentRoom.IsVisible = false;
 	}
 
 	public void LeaveRoom()
@@ -144,6 +145,10 @@ public class Launcher : MonoBehaviourPunCallbacks
             {
                 cachedRoomList.Remove(info.Name);
                 //continue;
+            } 
+            else if (!info.IsVisible)
+            {
+                cachedRoomList.Remove(info.Name);
             }
             else
             {
