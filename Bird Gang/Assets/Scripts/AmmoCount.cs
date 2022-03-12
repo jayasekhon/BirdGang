@@ -17,7 +17,8 @@ public class AmmoCount : MonoBehaviour
 
 	public void SetAmmo(int ammo)
 	{
-		text.text = "Ammo: " + new String('○', maxAmmo - ammo) + new String('●', ammo) ;
+		text.text = "Ammo: " + new String('x', maxAmmo - ammo) + new String('o', ammo) ;
 	}
-
 }
+
+// note to future ambika: once the merge is done pls change the default text.
