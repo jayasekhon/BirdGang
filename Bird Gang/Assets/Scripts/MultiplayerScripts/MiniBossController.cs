@@ -21,6 +21,7 @@ public class MiniBossController : MonoBehaviour
         PV = GetComponent<PhotonView>();
         _animator = GetComponent<Animator>();
     }
+    
     // Start is called before the first frame update
     void Start()
     {
