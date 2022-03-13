@@ -5,7 +5,7 @@ using UnityEngine;
 public class Billboard : MonoBehaviour
 {
     Camera cam;
-
+    [SerializeField] bool username;
 
     void Update()
     {
@@ -22,6 +22,8 @@ public class Billboard : MonoBehaviour
         }
 
         transform.LookAt(cam.transform);
-        transform.Rotate(Vector3.up * 180); // Flip username so its not back to front.
+        if (username) {
+            transform.Rotate(Vector3.up * 180); // Flip username so its not back to front.
+        }
     }
 }
