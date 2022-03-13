@@ -12,6 +12,7 @@ public class MiniBossTarget : BaseBirdTarget
 	private int targetNum;
 	float timePassed = 0f;
 	private bool startTimer = false;
+	// [SerializeField] TMP_Text healthStatus;
 
 	void Awake() {
 		_animator = GetComponent<Animator>();
@@ -73,6 +74,10 @@ public class MiniBossTarget : BaseBirdTarget
 // add text between each round?
 // understand somewhat how the event manager code works
 // add hearts/similar text to cubes
+// 	 - figure out how to import the text
+//   - how to make the text like numLives * health
+//   - visually alter the text
+//   - maybe at first you can't see the health, only once they start to die you can see it?
 // re-add in a timer that actually works -- DONE
 // add in transition from colourChange to spinning? - no.
 //  -- no so if you've hit them they can't attack you and also if they're attacking you you can't hit them
