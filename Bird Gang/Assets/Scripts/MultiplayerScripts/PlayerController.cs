@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private float increasedAcceleration = 1f;
     private bool slowDown;
     
-    private float lookRateSpeed = 110f;
+    private float lookRateSpeed = 90f;
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
 

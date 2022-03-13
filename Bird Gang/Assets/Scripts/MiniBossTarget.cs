@@ -7,19 +7,18 @@ using TMPro;
 
 public class MiniBossTarget : BaseBirdTarget
 {
-	// private int numHits = 0;
 	private Animator _animator;
+	
 	public List<String> attackers = new List<string>();
 	private int targetNum;
 
 	private int numOfPlayers;
 	private GameObject[] playersInGame;
 	[SerializeField] TMP_Text healthStatus;
-	private int hitsLeft = 2;
+	private int health;
 
 	float timePassed = 0f;
 	private bool startTimer = false;
-	
 
 	void Awake() {
 		_animator = GetComponent<Animator>();
@@ -27,9 +26,8 @@ public class MiniBossTarget : BaseBirdTarget
 		numOfPlayers = playersInGame.Length;
 		targetNum = Mathf.Min(3, numOfPlayers);
 		// targetNum = 2;
-		hitsLeft = targetNum;
-		Debug.Log("num players needed " + targetNum);
-		healthStatus.text = new String('+', hitsLeft);
+		health = targetNum;
+		healthStatus.text = new String('+', health);
 	}
 
 	// Update is called once per frame
@@ -45,15 +43,16 @@ public class MiniBossTarget : BaseBirdTarget
 				attackers.Clear();
 				timePassed = 0f; 
 				startTimer = false;
-				hitsLeft = targetNum;
-				healthStatus.text = new String('+', hitsLeft);
+				health = targetNum;
+				healthStatus.text = new String('+', health);
 			}
 		}
 	}
 
 	[PunRPC]
-	public override void OnHit(int numPlayers, PhotonMessageInfo info)
+	public override void OnHit(PhotonMessageInfo info)
 	{
+		// Debug.Log("num players needed " + targetNum);
 		startTimer = true;
 
 		if (PhotonNetwork.NickName == info.Sender.NickName) {
@@ -62,8 +61,8 @@ public class MiniBossTarget : BaseBirdTarget
 
 		if (!attackers.Contains(info.Sender.NickName)) {
 			attackers.Add(info.Sender.NickName);
-			hitsLeft -=1;
-			healthStatus.text = new String('+', hitsLeft);
+			health -=1;
+			healthStatus.text = new String('+', health);
 		}
  
 		if (attackers.Count == targetNum)
@@ -94,4 +93,4 @@ public class MiniBossTarget : BaseBirdTarget
 // re-add in a timer that actually works -- DONE
 // add in transition from colourChange to spinning? 
 //  -- no so if you've hit them they can't attack you and also if they're attacking you you can't hit them
-// -- add in transition so they can still hit u even if you've attacked them once. (Attack = true)
+//  -- add in transition so they can still hit u even if you've attacked them once. (Attack = true)
