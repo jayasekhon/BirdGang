@@ -25,11 +25,11 @@ public class MiniBossTarget : BaseBirdTarget
 		_animator = GetComponent<Animator>();
 		playersInGame = GameObject.FindGameObjectsWithTag("Player");
 		numOfPlayers = playersInGame.Length;
-		// targetNum = Mathf.Min(3, numPlayers);
-		targetNum = 2;
+		targetNum = Mathf.Min(3, numPlayers);
+		// targetNum = 2;
 		hitsLeft = targetNum;
 		Debug.Log("num players needed " + targetNum);
-		// healthStatus.text = new String('+', hitsLeft); it doesn't like this here because the miniboss hasn't been spawned yet so not sure where to put it.
+		healthStatus.text = new String('+', hitsLeft);
 	}
 
 	// Update is called once per frame
@@ -90,7 +90,7 @@ public class MiniBossTarget : BaseBirdTarget
 // 	 - figure out how to import the text -- DONE
 //   - how to make the text like numLives * health -- DONE
 //   - visually alter the text -- DONE
-//   - maybe at first you can't see the health, only once they start to die you can see it?
+//   - maybe at first you can't see the health, only once they start to die you can see it? -- DONE
 // re-add in a timer that actually works -- DONE
 // add in transition from colourChange to spinning? 
 //  -- no so if you've hit them they can't attack you and also if they're attacking you you can't hit them
