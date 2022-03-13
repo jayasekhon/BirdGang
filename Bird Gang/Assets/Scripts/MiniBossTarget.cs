@@ -90,8 +90,8 @@ public class MiniBossTarget : BaseBirdTarget
 // 	 - figure out how to import the text -- DONE
 //   - how to make the text like numLives * health -- DONE
 //   - visually alter the text -- DONE
-//   - maybe at first you can't see the health, only once they start to die you can see it? -- DONE
+//   - maybe at first you can't see the health, only once they start to die you can see it? -- DONE u can see from the beginning
 // re-add in a timer that actually works -- DONE
 // add in transition from colourChange to spinning? 
 //  -- no so if you've hit them they can't attack you and also if they're attacking you you can't hit them
-// -- add in transition so they can still hit u even if you've attack them once. (Attack = true)
+// -- add in transition so they can still hit u even if you've attacked them once. (Attack = true)

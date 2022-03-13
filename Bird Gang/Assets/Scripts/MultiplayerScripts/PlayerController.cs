@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private float increasedAcceleration = 1f;
     private bool slowDown;
     
-    private float lookRateSpeed = 60f;
+    private float lookRateSpeed = 110f;
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
 
@@ -280,7 +280,7 @@ fire_skip: ;
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
-            if (Vector2.SqrMagnitude(mouseDistance) < 0.5f) //for the sensitivity
+            if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
             {
                 mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
                 mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
