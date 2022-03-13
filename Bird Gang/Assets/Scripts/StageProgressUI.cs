@@ -1,52 +1,84 @@
-using Photon.Pun.Demo.PunBasics;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
 
-public class StageProgressUI : MonoBehaviour, GameEventManager.GameEventCallbacks
+public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 {
-	private RawImage uiImage;
+	public RawImage uiImage;
 	private Texture2D tex;
+	public Text text;
 
 	private float totalTime;
 	private float timeElapsed;
 	private int currPixel = 0;
 
-	private bool isStarted = false;
+	private static readonly int TEX_WIDTH = 1024;
+	private static readonly int TEX_HEIGHT = 32;
+
+	private static readonly int BORDER_HEIGHT = 4;
+	private static readonly int BORDER_WIDTH = BORDER_HEIGHT * 4;
 
 	private void Awake()
 	{
-		uiImage = GetComponent<RawImage>();
-		tex = new Texture2D(1024, 1, DefaultFormat.LDR, TextureCreationFlags.None);
+		tex = new Texture2D(
+			TEX_WIDTH, TEX_HEIGHT, DefaultFormat.LDR, 
+			TextureCreationFlags.None);
 		uiImage.texture = tex;
+		text.text = "";
 	}
 
 	void Start()
 	{
-		if (!GameEventManager.instance)
-			return;
-		isStarted = true;
-
 		Color32[] pixels = tex.GetPixels32();
-		GameEventManager.instance.RegisterCallbacks(this, GameEventManager.STAGE.ALL, GameEventManager.CALLBACK_TYPE.ALL);
-		foreach (GameEventManager.Stage s in GameEventManager.instance.agenda)
+		GameEvents.RegisterCallbacks(this, GAME_STAGE.ALL, STAGE_CALLBACK.ALL);
+		foreach (GameEvents.Stage s in GameEvents.agenda)
 		{
 			totalTime += s.maxDuration;
 		}
 
-		int currPixel = 0;
-		foreach (GameEventManager.Stage s in GameEventManager.instance.agenda)
+		tex.filterMode = FilterMode.Point;
+		Color32 grey = new Color32(56, 63, 81, 255);
+
+		for (int y = 0; y < tex.height; y++)
 		{
-			int num = (int)((s.maxDuration / totalTime) * (float)pixels.Length);
-			Color32 col = new Color32((byte)Random.Range(0, 255),
-				(byte)Random.Range(0, 255), 
-				(byte)Random.Range(0, 255), 255);
+			for (int x = 0; x < BORDER_WIDTH; x++)
+				pixels[(y * tex.width) + x] = grey;
+			for (int x = tex.width - BORDER_WIDTH; x < tex.width; x++)
+				pixels[(y * tex.width) + x] = grey;
+		}
+
+		int currPixel = BORDER_WIDTH;
+		foreach (GameEvents.Stage s in GameEvents.agenda)
+		{
+			int num = (int)((s.maxDuration / totalTime) *
+			                (float)(tex.width - 2*BORDER_WIDTH));
+			Color32 col;
+			switch (s.GameStage)
+			{
+			case GAME_STAGE.BREAK:
+				col = new Color32(12, 160, 180, 255);
+				break;
+			case GAME_STAGE.FIRST:
+				col = new Color32(200, 16, 16, 255);
+				break;
+			default:
+				col = new Color32(0, 0, 0, 255);
+				break;
+			}
 			for (int i = 0; i < num; i++)
 			{
-				currPixel++;
-				if (currPixel == pixels.Length)
+				if (currPixel == tex.width - BORDER_WIDTH)
 					goto exit;
-				pixels[currPixel] = col;
+
+				int y;
+				for (y = 0; y < BORDER_HEIGHT; y++)
+					pixels[(y * tex.width ) + currPixel] = grey;
+				for (; y < tex.height - BORDER_HEIGHT; y++)
+					pixels[(y * tex.width ) + currPixel] = col;
+				for (; y < tex.height; y++)
+					pixels[(y * tex.width) + currPixel] = grey;
+
+				currPixel++;
 			}
 		}
 exit:
@@ -56,35 +88,50 @@ exit:
 
 	void Update()
 	{
-		if (!isStarted)
-			Start();
 	}
 
-	public void OnStageBegin(GameEventManager.Stage stage)
+	public void OnStageBegin(GameEvents.Stage stage)
 	{
 		timeElapsed = 0;
-		for (int i = 0; GameEventManager.instance.agenda[i].id != stage.id; i++)
+		for (int i = 0; GameEvents.agenda[i].id != stage.id; i++)
 		{
-			timeElapsed += GameEventManager.instance.agenda[i].maxDuration;
+			timeElapsed += GameEvents.agenda[i].maxDuration;
 		}
 	}
 
-	public void OnStageEnd(GameEventManager.Stage stage)
+	public void OnStageEnd(GameEvents.Stage stage)
 	{
 
 	}
 
-	public void OnStageProgress(GameEventManager.Stage stage, float progress)
+	private bool textShown = false;
+
+	public void OnStageProgress(GameEvents.Stage stage, float progress)
 	{
-		int pixelProg = (int)(((timeElapsed + progress * stage.maxDuration) / totalTime) * (float)tex.width);
+		float seconds = Mathf.Floor(progress * stage.maxDuration);
+		if (stage.maxDuration - seconds < 5f)
+		{
+			text.text = $"Next stage in {stage.maxDuration - seconds}...";
+			textShown = true;
+		}
+		else if (stage.GameStage != GAME_STAGE.BREAK && seconds < 5f)
+		{
+			text.text = "Miniboss spawned.";
+			textShown = true;
+		}
+		else if (textShown)
+		{
+			text.CrossFadeAlpha(0f, 1f, false);
+			textShown = false;
+		}
+
+		int pixelProg = (int)(((timeElapsed + progress * stage.maxDuration) / totalTime) 
+		                      * (float)(tex.width - 2*BORDER_WIDTH));
+		Color32 col = new Color32(30, 30, 30, 255);
 		while (currPixel < pixelProg)
 		{
-			Color32 p = tex.GetPixel(currPixel, 0);
-			p.r /= 2;
-			p.g /= 2;
-			p.b /= 2;
-			p.a = 127;
-			tex.SetPixel(currPixel, 0, p);
+			for (int y = BORDER_HEIGHT; y < tex.height - BORDER_HEIGHT; y++)
+				tex.SetPixel(BORDER_WIDTH + currPixel, y, col);
 			currPixel++;
 		}
 		tex.Apply();

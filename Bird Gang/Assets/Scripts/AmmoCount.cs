@@ -19,5 +19,4 @@ public class AmmoCount : MonoBehaviour
 	{
 		text.text = "Ammo: " + new String('○', maxAmmo - ammo) + new String('●', ammo) ;
 	}
-
 }

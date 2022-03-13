@@ -7,18 +7,14 @@ using System.IO;
 using Photon.Realtime;
 
 [System.Serializable]
-public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
+public class SpawnManager : MonoBehaviour, GameEventCallbacks
 {
-    public int NumberOfMiniBossTotal;
-    private float spawnDelay;
-    private float nextSpawnTime;
-    public Spawner[] spawners;
-    public static SpawnManager Instance;
-    PhotonView PV;
+    private readonly int maxMinibosses = 10;
+    private Spawner[] spawners;
 
     void Awake()
     {
-        PV = GetComponent<PhotonView>();
+        spawners = GetComponentsInChildren<Spawner>();
     }
 
     // Start is called before the first frame update
@@ -29,13 +25,8 @@ public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
             return;
         }
 
-        spawners = GetComponentsInChildren<Spawner>();
-        NumberOfMiniBossTotal = 10; //this can be changed for however mini bosses we want
-        spawnDelay = 5f; //this can be changed from 5 seconds to maybe 120 - so a mini boss appears at the start of every new "wave".
-        nextSpawnTime = Time.time + spawnDelay;
-
-        GameEventManager.instance.RegisterCallbacks(this, ~GameEventManager.STAGE.BREAK,
-            GameEventManager.CALLBACK_TYPE.BEGIN | GameEventManager.CALLBACK_TYPE.END);
+        GameEvents.RegisterCallbacks(this, ~GAME_STAGE.BREAK,
+            STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
     }
 
     // Update is called once per frame
@@ -45,7 +36,7 @@ public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
         {
             return;
         } 
-        
+
         if (spawners == null)
         {
             return;
@@ -58,37 +49,38 @@ public class SpawnManager : MonoBehaviour, GameEventManager.GameEventCallbacks
             {
                 spawner.fillMaxGoodPeople(3);
                 //20% chance of a bad person being spawned in a garden - NOT WORKING
-                int chanceOfBad = Random.Range(0, 4);
-                if (chanceOfBad == 1)
+                if (Random.Range(0, 4) == 1)
                 {
                     spawner.fillMaxBadPeople(1);
                 }
-            } else 
-            {
+            } else {
                 spawner.fillMaxGoodPeople(10);
                 spawner.fillMaxBadPeople(2);
             }
         }
     }
 
-    public void OnStageBegin(GameEventManager.Stage stage)
+    public void OnStageBegin(GameEvents.Stage stage)
     {
         Debug.Log("New stage, spawned miniboss");
-        int index = Random.Range(0, spawners.Length);
-        spawners[index].fillMaxMiniBoss(NumberOfMiniBossTotal);
-    }
-
-    public void OnStageEnd(GameEventManager.Stage stage)
-    {
-        Debug.Log("Stage end, destroyed miniboss");
-        foreach (Spawner s in spawners)
+        for (int i = 0; i < 2; i++)
         {
-            s.destroyMiniBosses();
+            int index = Random.Range(0, spawners.Length);
+            spawners[index].fillMaxMiniBoss(maxMinibosses);
         }
     }
 
-    public void OnStageProgress(GameEventManager.Stage stage, float progress)
+    public void OnStageEnd(GameEvents.Stage stage)
     {
-    
+        /* Disabled for demo. */
+        //Debug.Log("Stage end, destroyed miniboss");
+        //foreach (Spawner s in spawners)
+        //{
+        //    s.destroyMiniBosses();
+        //}
+    }
+
+    public void OnStageProgress(GameEvents.Stage stage, float progress)
+    {
     }
 }
