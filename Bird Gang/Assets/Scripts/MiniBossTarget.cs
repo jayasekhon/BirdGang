@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using TMPro;
 
 public class MiniBossTarget : BaseBirdTarget
 {
@@ -12,7 +13,7 @@ public class MiniBossTarget : BaseBirdTarget
 	private int targetNum;
 	float timePassed = 0f;
 	private bool startTimer = false;
-	// [SerializeField] TMP_Text healthStatus;
+	[SerializeField] TMP_Text healthStatus;
 
 	void Awake() {
 		_animator = GetComponent<Animator>();
@@ -39,8 +40,8 @@ public class MiniBossTarget : BaseBirdTarget
 	public override void OnHit(int numPlayers, PhotonMessageInfo info)
 	{
 		startTimer = true;
-		targetNum = Mathf.Min(3, numPlayers);
-		// targetNum = 2;
+		// targetNum = Mathf.Min(3, numPlayers);
+		targetNum = 2;
 		Debug.Log("num players needed " + targetNum);
 		// numHits += 1;
 		// Debug.Log("I've been hit!!" + numHits);
@@ -74,10 +75,11 @@ public class MiniBossTarget : BaseBirdTarget
 // add text between each round?
 // understand somewhat how the event manager code works
 // add hearts/similar text to cubes
-// 	 - figure out how to import the text
+// 	 - figure out how to import the text -- DONE
 //   - how to make the text like numLives * health
 //   - visually alter the text
 //   - maybe at first you can't see the health, only once they start to die you can see it?
 // re-add in a timer that actually works -- DONE
 // add in transition from colourChange to spinning? - no.
 //  -- no so if you've hit them they can't attack you and also if they're attacking you you can't hit them
+// -- add in transition so they can still hit u even if you've attack them once. (Attack = true)
