@@ -25,7 +25,7 @@ public class MiniBossTarget : BaseBirdTarget
 		_animator = GetComponent<Animator>();
 		playersInGame = GameObject.FindGameObjectsWithTag("Player");
 		numOfPlayers = playersInGame.Length;
-		targetNum = Mathf.Min(3, numPlayers);
+		targetNum = Mathf.Min(3, numOfPlayers);
 		// targetNum = 2;
 		hitsLeft = targetNum;
 		Debug.Log("num players needed " + targetNum);
@@ -86,7 +86,7 @@ public class MiniBossTarget : BaseBirdTarget
 // add animation/colour change -- DONE
 // add text between each round?
 // understand somewhat how the event manager code works
-// add hearts/similar text to cubes
+// add hearts/similar text to cubes -- DONE
 // 	 - figure out how to import the text -- DONE
 //   - how to make the text like numLives * health -- DONE
 //   - visually alter the text -- DONE
