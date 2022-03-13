@@ -11,12 +11,19 @@ public class MiniBossTarget : BaseBirdTarget
 	private Animator _animator;
 	public List<String> attackers = new List<string>();
 	private int targetNum;
+	// private int numOfPlayers;
 	float timePassed = 0f;
 	private bool startTimer = false;
 	[SerializeField] TMP_Text healthStatus;
+	// private GameObject[] playersInGame;
+
+	private int hitsLeft = 2;
 
 	void Awake() {
 		_animator = GetComponent<Animator>();
+		// playersInGame = GameObject.FindGameObjectsWithTag("Player");
+		// numOfPlayers = playersInGame.Length;
+		// healthStatus.text = new String('+', numOfPlayers);
 	}
 
 	// Update is called once per frame
@@ -46,12 +53,17 @@ public class MiniBossTarget : BaseBirdTarget
 		// numHits += 1;
 		// Debug.Log("I've been hit!!" + numHits);
 
+		// we need a variable that stores how many have been hit.
+		// on hit that variable reduces by one. 
+
 		if (PhotonNetwork.NickName == info.Sender.NickName) {
 			_animator.SetBool("Hit", true);
 		}
 
 		if (!attackers.Contains(info.Sender.NickName)) {
 			attackers.Add(info.Sender.NickName);
+			hitsLeft -=1;
+			healthStatus.text = new String('+', hitsLeft);
 		}
  
 		if (attackers.Count == targetNum)
@@ -77,7 +89,7 @@ public class MiniBossTarget : BaseBirdTarget
 // add hearts/similar text to cubes
 // 	 - figure out how to import the text -- DONE
 //   - how to make the text like numLives * health
-//   - visually alter the text
+//   - visually alter the text -- DONE
 //   - maybe at first you can't see the health, only once they start to die you can see it?
 // re-add in a timer that actually works -- DONE
 // add in transition from colourChange to spinning? - no.
