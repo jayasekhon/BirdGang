@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2a4b76c74e8369c43a2cac224e590fb9, type: 2}
+  - {fileID: 2100000, guid: 5a5578a086ac544fa9b3dfa4fc344443, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -252,6 +252,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GoodPeople
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fab4e7e78ee51e142b9f63258025f7dc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fab4e7e78ee51e142b9f63258025f7dc, type: 3}
 --- !u!1 &4873926941788733649 stripped
@@ -272,7 +276,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4873926941788733649}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 99acff07e70353149946fafa7708617c, type: 2}
   m_CullingMode: 0

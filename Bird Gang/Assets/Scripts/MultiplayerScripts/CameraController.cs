@@ -32,6 +32,7 @@ public class CameraController : MonoBehaviour
             }
         }
         targetPos = m_player.GetComponent<Transform>();
+
     }
 
     public void MoveToTarget(bool cameraUpdate)
