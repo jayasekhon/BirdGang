@@ -38,7 +38,7 @@ public class MiniBossTarget : BaseBirdTarget
 		if(startTimer) {
 			timePassed += Time.fixedDeltaTime;
 
-			if (timePassed >= 6f) {
+			if (timePassed >= 30f) {
 				_animator.SetBool("Hit", false);
 				attackers.Clear();
 				timePassed = 0f; 

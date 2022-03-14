@@ -9,7 +9,7 @@ using Photon.Realtime;
 [System.Serializable]
 public class SpawnManager : MonoBehaviour, GameEventCallbacks
 {
-    private readonly int maxMinibosses = 10;
+    private readonly int maxMinibosses = 1;
     private Spawner[] spawners;
 
     void Awake()
@@ -63,9 +63,10 @@ public class SpawnManager : MonoBehaviour, GameEventCallbacks
     public void OnStageBegin(GameEvents.Stage stage)
     {
         Debug.Log("New stage, spawned miniboss");
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 1; i++)
         {
-            int index = Random.Range(0, spawners.Length);
+            //int index = Random.Range(0, spawners.Length);
+            int index = 3;
             spawners[index].fillMaxMiniBoss(maxMinibosses);
         }
     }

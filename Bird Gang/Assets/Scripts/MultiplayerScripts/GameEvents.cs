@@ -68,7 +68,7 @@ public class GameEvents : MonoBehaviour
 
 	public static readonly Stage[] agenda =
 	{
-		new Stage(GAME_STAGE.BREAK, 60f),
+		new Stage(GAME_STAGE.BREAK, 45f),
 		new Stage(GAME_STAGE.FIRST, 600f),
 	};
 
