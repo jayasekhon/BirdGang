@@ -8,7 +8,7 @@ public class FlockManager : MonoBehaviour
     public int numBirds = 100;
     public GameObject[] allBirds;
     public Vector3 flyLimits = new Vector3(30,30,30);
-    public Vector3 worldLimits = new Vector3(250,50,250);
+    public Vector3 worldLimits = new Vector3(100,50,100);
     public Vector3 goalPos;
 
     public Renderer flockingBorder;
