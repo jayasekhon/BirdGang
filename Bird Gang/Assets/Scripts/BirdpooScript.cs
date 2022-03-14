@@ -57,7 +57,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		{
 			if (pv.IsMine) {
 				agent = collision.collider.gameObject;
-				agent.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All, playerCount);
+				agent.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
 			}
 
 			flee = true;
