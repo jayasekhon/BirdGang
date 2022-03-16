@@ -56,12 +56,15 @@ public class PlayerController : MonoBehaviour
     private PhotonView PV;
     private Camera cam;
     private CameraController cameraController;
+    private Animator anim;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         upForce = GetComponent<ConstantForce>();
+        anim = gameObject.GetComponentInChildren<Animator>();
+        anim.enabled = true;
     }
 
     void Start()
@@ -106,6 +109,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
         if (!PV.IsMine)
         {
             return;
@@ -114,7 +118,16 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             PV.RPC("OnKeyPress", RpcTarget.All);
+            
 
+        }
+
+        if (gameObject.transform.localRotation.eulerAngles.x <= 100 && gameObject.transform.localRotation.eulerAngles.x >= 20 ){
+    
+            anim.SetBool("flyingDown", true);
+        }
+        else{
+            anim.SetBool("flyingDown", false);
         }
         
         GetInput();
@@ -173,6 +186,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey("s"))
         {
             slowDown = true;
+                        
         }
         else
         {
@@ -334,6 +348,7 @@ fire_skip: ;
     }
 
     void Hovering() {
+        anim.speed = 3f;
 
         if (timePassed < 0.6)
         {   
