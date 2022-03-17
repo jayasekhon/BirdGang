@@ -120,7 +120,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             PV.RPC("OnKeyPress", RpcTarget.All);
-
         }
 
         // Check screen size has not changed
