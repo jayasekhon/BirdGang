@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     private float xPos;
     private float zPos;
 
-
     private bool accelerate;
     private ConstantForce upForce;
     float timePassed = 0f;
@@ -57,11 +56,18 @@ public class PlayerController : MonoBehaviour
     private Camera cam;
     private CameraController cameraController;
 
+    private Vector2 resolution;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         upForce = GetComponent<ConstantForce>();
+
+        // Get screen size
+        resolution = new Vector2(Screen.width, Screen.height);
+        screenCenter.x = Screen.width * 0.5f;
+        screenCenter.y = Screen.height * 0.5f;
     }
 
     void Start()
@@ -85,8 +91,8 @@ public class PlayerController : MonoBehaviour
             projLineRenderer.material = projLineMat;
         }
 
-        screenCenter.x = Screen.width * 0.5f;
-        screenCenter.y = Screen.height * 0.5f;
+        // screenCenter.x = Screen.width * 0.5f;
+        // screenCenter.y = Screen.height * 0.5f;
 
         // Get the local camera component for targeting
         foreach (Camera c in Camera.allCameras)
@@ -116,9 +122,15 @@ public class PlayerController : MonoBehaviour
             PV.RPC("OnKeyPress", RpcTarget.All);
 
         }
+
+        // Check screen size has not changed
+        if (resolution.x != Screen.width || resolution.y != Screen.height)
+        {
+                    screenCenter.x = Screen.width * 0.5f;
+                    screenCenter.y = Screen.height * 0.5f;
+        }
         
         GetInput();
-
         Targeting();
     }
 
@@ -130,10 +142,7 @@ public class PlayerController : MonoBehaviour
         }
         Look();
         Movement();
-        if (move)
-        {
-            KeyboardTurning();
-        }
+        KeyboardTurning();
         cameraController.MoveToTarget(cameraUpdate);
     }
 
@@ -384,13 +393,7 @@ fire_skip: ;
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
-        } 
-        else 
-        {
-            float h = Input.GetAxis("Horizontal") * 5f * Time.fixedDeltaTime;
-            rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
-        }
-        
+        }         
     }
 
     void Acceleration()
