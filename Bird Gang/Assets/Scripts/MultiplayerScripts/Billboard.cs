@@ -12,7 +12,6 @@ public class Billboard : MonoBehaviour
         if (cam == null)
         {
             cam = FindObjectOfType<Camera>();
-
         }
 
         // If still cannot find a camera then just return.

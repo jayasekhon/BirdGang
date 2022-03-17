@@ -15,6 +15,15 @@ public class PlayerNameManager : MonoBehaviour
 
     public void OnUsernameInputValueChanged()
     {
-        PhotonNetwork.NickName = usernameInput.text;
+        if (CheckLength(usernameInput.text)) // Just in case.
+            PhotonNetwork.NickName = usernameInput.text;
+    }
+
+    public static bool CheckLength(string nameCheck)
+    {
+        if (nameCheck.Length > 22)
+            return false;
+        else
+            return true;
     }
 }

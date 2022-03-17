@@ -14,4 +14,14 @@ public class username
         // ASSERT
         Assert.AreEqual(false, usernameCheck);
     }
+
+    [Test]
+    public void validUsername_false_when_nickName_too_long()
+    {
+        // ACT
+        bool usernameCheck = PlayerNameManager.CheckLength("aaaaaaaaaaaaaaaaaaaaaaa");
+
+        // ASSERT
+        Assert.AreEqual(false, usernameCheck);
+    }
 }
