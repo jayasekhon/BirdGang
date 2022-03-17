@@ -16,8 +16,10 @@ public class AiController : MonoBehaviour
 
     //FixMe : Need to tidy this up later 
     public bool isGood;
-
     public bool isFleeing;
+    public bool isMiniboss;
+
+    private int minibossSpeed = 4;
     private int normalSpeed = 2;
     private int fleeingSpeed = 20;
     private int normalAngularSpeed = 120;
@@ -25,8 +27,15 @@ public class AiController : MonoBehaviour
 
     void ResetAgent()
     {
+        if (isMiniboss) 
+        {
+            agent.speed = minibossSpeed;
+        } 
+        else 
+        {
+            agent.speed = normalSpeed;
+        }
         speedMult = Random.Range(0.1f, 1.5f);
-        agent.speed = normalSpeed;
         agent.angularSpeed = normalAngularSpeed;
         int index = Random.Range(0, goalLocations.Length);
         //Debug.Log(index);
@@ -127,7 +136,15 @@ public class AiController : MonoBehaviour
         }
         else
         {
-            agent.speed = normalSpeed;
+            if (isMiniboss) 
+            {
+                agent.speed = minibossSpeed;
+            } 
+            else 
+            {
+                agent.speed = normalSpeed;
+            }
+
             agent.angularSpeed = normalAngularSpeed;
         }
     }

@@ -33,7 +33,12 @@ public class RobberScript : MonoBehaviour
 }
 
 // ambika + iban TO:DO 
-// add money to robber
-// add particle effect emulating speech (spread, despawn after time)
-// particle effect always comes from where mayor is
-// implement detection of particles with bird
+// create minibosses -done
+// spawn minibosses at specific locations -done
+// robber invisibility -done
+// add money to robber - done
+// add particle effect emulating speech (spread, despawn after time) -done
+// particle effect always comes from where mayor is -done
+// implement detection of particles with bird -done
+// change speed -done
+
