@@ -11,6 +11,13 @@ public enum ANCHOR_STAGE
     WAITING = 4,
     
 }
+public enum ANCHOR_COLOUR
+{
+    DELAY = 1,
+    STARTED = 2,
+    WAITING = 4,
+
+}
 
 public class Anchor : BaseBirdTarget,IPunObservable
 {
@@ -20,15 +27,18 @@ public class Anchor : BaseBirdTarget,IPunObservable
     public Image timer;
     public float delayStart;
     public float delayTimer;
+    private float fillAmount;
+    private bool reattachedFlag;
 
-    private bool reattachedFlag; 
+    private float networkTimePassed;
 
     private ANCHOR_STAGE currentStage;
+    private ANCHOR_STAGE networkStage;
     // Start is called before the first frame update
     void Start()
     {
         timePassed = 0f;
-        delayStart = Random.RandomRange(10,60);
+        delayStart = 1f;//Random.RandomRange(10,60);
         delayTimer = 0f;
         currentStage = ANCHOR_STAGE.DELAY;
         reattachedFlag = false;
@@ -38,29 +48,54 @@ public class Anchor : BaseBirdTarget,IPunObservable
     // Update is called once per frame
     void Update()
     {
-
-        switch (currentStage)
+        if (PhotonNetwork.IsMasterClient)
         {
-            case ANCHOR_STAGE.DELAY:
-                Debug.Log("Delayed");
-                Delayed();
-                break;
-            case ANCHOR_STAGE.STARTED:
-                Debug.Log("Started");
-                Started();
-                break;
-            case ANCHOR_STAGE.WAITING:
-                Debug.Log("Waiting");
-                Waiting();
-                break;
+            switch (currentStage)
+            {
+                case ANCHOR_STAGE.DELAY:
+                    Debug.Log("Delayed");
+                    Delayed();
+                    break;
+                case ANCHOR_STAGE.STARTED:
+                    Debug.Log("Started");
+                    Started();
+                    break;
+                case ANCHOR_STAGE.WAITING:
+                    Debug.Log("Waiting");
+                    Waiting();
+                    break;
 
+            }
+            timer.fillAmount = fillAmount;
         }
+        else
+        {
+            switch (networkStage)
+            {
+                case ANCHOR_STAGE.DELAY:
+                    Debug.Log("Delayed");
+                    NetworkDelayed();
+                    break;
+                case ANCHOR_STAGE.STARTED:
+                    Debug.Log("Started");
+                    NetworkStarted();
+                    break;
+                case ANCHOR_STAGE.WAITING:
+                    Debug.Log("Waiting");
+                    NetworkWaiting();
+                    break;
+
+            }
+        }
+        
+        
+        
 
 
     }
     private void Delayed()
     {
-        timer.fillAmount = 0;
+        fillAmount = 0;
         timer.color = new Color32(255, 0, 0, 255);
 
         delayTimer += Time.deltaTime;
@@ -72,9 +107,17 @@ public class Anchor : BaseBirdTarget,IPunObservable
         
         
     }
+    private void NetworkDelayed()
+    {
+        timer.fillAmount = 0;
+        networkTimePassed = 0;
+        timer.color = new Color32(255, 0, 0, 255);
+    }
+    
     private void Started()
     {
-        timer.fillAmount = Mathf.Round((timePassed / detachTime) * 20f) / 20f;
+        fillAmount = Mathf.Round((timePassed / detachTime) * 20f) / 20f;
+        
         timer.color = new Color32(255, 0, 0, 255);
         //Debug.Log("Started "+ timePassed);
         timePassed += Time.deltaTime;
@@ -84,13 +127,20 @@ public class Anchor : BaseBirdTarget,IPunObservable
             timePassed = 0;
             currentStage = ANCHOR_STAGE.WAITING;
             balloon.RemoveAnchor();
-            //Tell the master client that this anchor needs to be removed
+         
         }
         
     }
+    private void NetworkStarted()
+    {
+        timer.fillAmount = Mathf.Round((networkTimePassed / detachTime) * 20f) / 20f;
+        timer.color = new Color32(255, 0, 0, 255);
+        networkTimePassed += Time.deltaTime;
+    }
     private void Waiting()
     {
-        timer.fillAmount = 1;
+        fillAmount = 1;
+        
         timer.color =   new Color32(255,215,0, 200);
         if (reattachedFlag)
         {
@@ -102,6 +152,12 @@ public class Anchor : BaseBirdTarget,IPunObservable
 
         }
     }
+    private void NetworkWaiting()
+    {
+        timer.fillAmount = 1;
+        networkTimePassed = 0;
+        timer.color = new Color32(255, 215, 0, 200);
+    }
     public void ReattachedAnchorFlag()
     {
         reattachedFlag = true;
@@ -109,9 +165,16 @@ public class Anchor : BaseBirdTarget,IPunObservable
 
     [PunRPC]
     public override void OnHit(PhotonMessageInfo info)
-    {    
-       float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
-        timePassed = lag;
+    {
+        float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+        if (PhotonNetwork.IsMasterClient)
+        {
+            
+            timePassed = lag;
+        }
+        else {
+            networkTimePassed = lag;
+        }
 
     }
     public void SetBalloon(BalloonScript parentBalloon)
@@ -123,21 +186,25 @@ public class Anchor : BaseBirdTarget,IPunObservable
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 {
-    //if (stream.IsWriting)
-    //{
+        if (stream.IsWriting)
+        {
 
-    //    stream.SendNext(timePassed);
+            stream.SendNext(currentStage);
 
-    //}
-    //else
-    //{
-    //    networkTimePassed = (float)stream.ReceiveNext();
-    //    Debug.Log(networkTimePassed);
-    //    float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
-    //    networkTimePassed += lag;
+        }
+        else
+        {
+            networkStage = (ANCHOR_STAGE)stream.ReceiveNext();
+            
+            if(currentStage== ANCHOR_STAGE.STARTED)
+            {
+                float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+                networkTimePassed = lag;
+            }
+            
 
-    //}
-}
+        }
+    }
 
 
 }

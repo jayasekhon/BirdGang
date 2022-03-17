@@ -26,9 +26,14 @@ public class BalloonScript : MonoBehaviour
     private BALLOON_STAGE currentStage;
     private int balloonHeight =17;
 
+    private LineRenderer lineRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
+        lineRenderer = GetComponent<LineRenderer>();
+
+
         currentStage = BALLOON_STAGE.ATTACHED;
         
         anchors = new List<Anchor>();
@@ -38,7 +43,7 @@ public class BalloonScript : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < 1; ++i)
             {
                 Vector3 position = new Vector3(0, 0, 0); ;
                 if (i == 0) position = new Vector3(5, -balloonHeight + 1, 5);
@@ -50,6 +55,8 @@ public class BalloonScript : MonoBehaviour
                 Anchor anchor = anchorObject.GetComponent<Anchor>();
                 anchor.SetBalloon(this);
                 anchors.Add(anchor);
+
+
                 
 
             }
@@ -63,6 +70,7 @@ public class BalloonScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DrawLines();
         if (PhotonNetwork.IsMasterClient)
         {
             //Debug.Log("Attached count" + attachedAnchors);
@@ -71,6 +79,7 @@ public class BalloonScript : MonoBehaviour
                 case BALLOON_STAGE.ATTACHED:
                     Debug.Log("Attached");
                     Attatched();
+                    DrawLines();
                     break;
                 case BALLOON_STAGE.DETACHED:
                     Debug.Log("Dettached");
@@ -83,6 +92,28 @@ public class BalloonScript : MonoBehaviour
                 case BALLOON_STAGE.LOST:
                     Debug.Log("Lost");
                     Lost();
+                    break;
+            }
+        }
+        else
+        {
+            switch (currentStage)
+            {
+                case BALLOON_STAGE.ATTACHED:
+                    Debug.Log("Attached");
+                    
+                    break;
+                case BALLOON_STAGE.DETACHED:
+                    Debug.Log("Dettached");
+                    
+                    break;
+                case BALLOON_STAGE.REATTACHED:
+                    Debug.Log("Rettached");
+                    
+                    break;
+                case BALLOON_STAGE.LOST:
+                    Debug.Log("Lost");
+                    
                     break;
             }
         }
@@ -158,6 +189,19 @@ public class BalloonScript : MonoBehaviour
         if (reattachCount>=balloonHeight) {
             reattachCount-=10;
          }
+    }
+    private void DrawLines()
+    {
+        lineRenderer.SetPosition(0, this.transform.position);
+        int count = 0;
+        foreach (Anchor anchor in anchors)
+        {
+            count++;
+            lineRenderer.SetPosition(count, anchor.transform.position);
+            count++;
+            lineRenderer.SetPosition(count, this.transform.position);
+        }
+
     }
    
 }
