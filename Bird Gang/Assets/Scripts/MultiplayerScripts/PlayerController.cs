@@ -24,8 +24,6 @@ public class PlayerController : MonoBehaviour
     private float xPos;
     private float zPos;
 
-    private bool hovering = false; //for animation trigger
-
 
     private bool accelerate;
     private ConstantForce upForce;
