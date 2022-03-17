@@ -15,13 +15,13 @@ public class username
         Assert.AreEqual(false, usernameCheck);
     }
 
-    [Test]
-    public void validUsername_false_when_nickName_too_long()
-    {
-        // ACT
-        bool usernameCheck = MenuManager.CheckUsername("aaaaaaaaaaaaaaaaaaaaaaaaa");
+    // [Test]
+    // public void validUsername_false_when_nickName_too_long()
+    // {
+    //     // ACT
+    //     bool usernameCheck = MenuManager.CheckUsername("aaaaaaaaaaaaaaaaaaaaaaaaa");
 
-        // ASSERT
-        Assert.AreEqual(false, usernameCheck);
-    }
+    //     // ASSERT
+    //     Assert.AreEqual(false, usernameCheck);
+    // }
 }

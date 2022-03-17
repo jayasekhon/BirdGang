@@ -53,10 +53,6 @@ public class MenuManager : MonoBehaviour
         {
             return false;
         } 
-        else if (usernameToCheck.Length > 22) // Max length of username is 22 characters.
-        {
-            return false;
-        }
         else
         {
             return true;
