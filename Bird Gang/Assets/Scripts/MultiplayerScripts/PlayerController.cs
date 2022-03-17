@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     private float xPos;
     private float zPos;
 
+    private bool hovering = false; //for animation trigger
+
 
     private bool accelerate;
     private ConstantForce upForce;
@@ -127,7 +129,9 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("flyingDown", true);
         }
         else{
+
             anim.SetBool("flyingDown", false);
+            
         }
         
         GetInput();
@@ -343,12 +347,14 @@ fire_skip: ;
         
         else if (!grounded && !move)
         {
+            
             Hovering();
         } 
     }
 
     void Hovering() {
         anim.speed = 3f;
+        anim.SetBool("flyingDown", false);
 
         if (timePassed < 0.6)
         {   
