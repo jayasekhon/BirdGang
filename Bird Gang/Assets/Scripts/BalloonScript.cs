@@ -43,7 +43,7 @@ public class BalloonScript : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            for (int i = 0; i < 1; ++i)
+            for (int i = 0; i < 4; ++i)
             {
                 Vector3 position = new Vector3(0, 0, 0); ;
                 if (i == 0) position = new Vector3(5, -balloonHeight + 1, 5);
@@ -199,7 +199,7 @@ public class BalloonScript : MonoBehaviour
         //     count++;
         //     lineRenderer.SetPosition(count, anchor.transform.position);
         //     count++;
-        //     // lineRenderer.SetPosition(count, this.transform.position);
+        //     lineRenderer.SetPosition(count, this.transform.position);
         // }
 
     }
