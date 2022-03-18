@@ -41,7 +41,7 @@ public class Flocking : MonoBehaviour
             // Debug.Log(direction + "1");
             direction = Vector3.Reflect(this.transform.forward, hit.normal);
             // Debug.Log(direction + "2");
-            Debug.DrawRay(this.transform.position, this.transform.forward * 20f, Color.red);
+            // Debug.DrawRay(this.transform.position, this.transform.forward * 20f, Color.red);
         }
         else 
             turning = false;

@@ -7,7 +7,7 @@ using TMPro;
 
 public class MiniBossTarget : BaseBirdTarget
 {
-	private Animator _animator;
+	// private Animator _animator;
 	
 	public List<String> attackers = new List<string>();
 	private int targetNum;
@@ -20,44 +20,46 @@ public class MiniBossTarget : BaseBirdTarget
 	float timePassed = 0f;
 	private bool startTimer = false;
 
-	void Awake() {
-		_animator = GetComponent<Animator>();
+	void Start() {
+
+		// _animator = GetComponent<Animator>();
 		playersInGame = GameObject.FindGameObjectsWithTag("Player");
 		numOfPlayers = playersInGame.Length;
 		targetNum = Mathf.Min(3, numOfPlayers);
 		// targetNum = 2;
-		health = targetNum;
+		health = targetNum; 
 		healthStatus.text = new String('+', health);
 	}
 
 	// Update is called once per frame
 	// 60 frames per second = 0.02 * 60 = 1.2f
 	// so to reach 300f = 250 seconds = 4 minutes
-	void Update() 
-	{
-		if(startTimer) {
-			timePassed += Time.fixedDeltaTime;
+	// void Update() 
+	// {
+	// 	if(startTimer) {
+	// 		timePassed += Time.fixedDeltaTime;
 
-			if (timePassed >= 30f) {
-				_animator.SetBool("Hit", false);
-				attackers.Clear();
-				timePassed = 0f; 
-				startTimer = false;
-				health = targetNum;
-				healthStatus.text = new String('+', health);
-			}
-		}
-	}
+	// 		if (timePassed >= 30f) 
+	// {
+	// 			// _animator.SetBool("Hit", false);
+	// 			attackers.Clear();
+	// 			timePassed = 0f; 
+	// 			startTimer = false;
+	// 			health = targetNum;
+	// 			healthStatus.text = new String('+', health);
+	// 		}
+	// 	}
+	// }
 
 	[PunRPC]
 	public override void OnHit(PhotonMessageInfo info)
 	{
-		// Debug.Log("num players needed " + targetNum);
-		startTimer = true;
+		Debug.Log("num players needed " + targetNum);
+		// startTimer = true;
 
-		if (PhotonNetwork.NickName == info.Sender.NickName) {
-			_animator.SetBool("Hit", true);
-		}
+		// if (PhotonNetwork.NickName == info.Sender.NickName) {
+		// 	// _animator.SetBool("Hit", true);
+		// }
 
 		if (!attackers.Contains(info.Sender.NickName)) {
 			attackers.Add(info.Sender.NickName);
