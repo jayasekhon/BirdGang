@@ -3,7 +3,10 @@ using UnityEngine;
 using System.IO;
 
 public class PlayerController : MonoBehaviour
-{    
+{   
+    /* New because of testing */
+    public IPlayerInput PlayerInput;
+
     /* Flight Control */
     private float forwardSpeed = 85f; //strafeSpeed = 7.5f;  hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed; // activeHoverSpeed;
@@ -23,7 +26,6 @@ public class PlayerController : MonoBehaviour
     public bool cameraUpdate;
     private float xPos;
     private float zPos;
-
 
     private bool accelerate;
     private ConstantForce upForce;
@@ -57,15 +59,26 @@ public class PlayerController : MonoBehaviour
     private Camera cam;
     private CameraController cameraController;
 
+    private Vector2 resolution;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         upForce = GetComponent<ConstantForce>();
+
+        // Get screen size
+        resolution = new Vector2(Screen.width, Screen.height);
+        screenCenter.x = Screen.width * 0.5f;
+        screenCenter.y = Screen.height * 0.5f;
     }
 
     void Start()
     {
+        if (PlayerInput == null)
+        {
+            PlayerInput = new PlayerInput();
+        }
         InstructionsLoad.instance.InstructionsText();
 
         AmmoCount.instance.maxAmmo = targetingMaxShots;
@@ -84,9 +97,6 @@ public class PlayerController : MonoBehaviour
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
             projLineRenderer.material = projLineMat;
         }
-
-        screenCenter.x = Screen.width * 0.5f;
-        screenCenter.y = Screen.height * 0.5f;
 
         // Get the local camera component for targeting
         foreach (Camera c in Camera.allCameras)
@@ -114,11 +124,16 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             PV.RPC("OnKeyPress", RpcTarget.All);
+        }
 
+        // Check screen size has not changed
+        if (resolution.x != Screen.width || resolution.y != Screen.height)
+        {
+                    screenCenter.x = Screen.width * 0.5f;
+                    screenCenter.y = Screen.height * 0.5f;
         }
         
         GetInput();
-
         Targeting();
     }
 
@@ -130,10 +145,7 @@ public class PlayerController : MonoBehaviour
         }
         Look();
         Movement();
-        if (move)
-        {
-            KeyboardTurning();
-        }
+        KeyboardTurning();
         cameraController.MoveToTarget(cameraUpdate);
     }
 
@@ -320,11 +332,11 @@ fire_skip: ;
         if (move)
         {
             FoVChanges();
-            activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed * increasedAcceleration, forwardAcceleration * Time.fixedDeltaTime);
-
-            Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
-
-            rb.AddForce(position, ForceMode.Impulse);  
+            float vertical = PlayerInput.Vertical;
+            float fixedDeltaTime = PlayerInput.FixedDeltaTime;
+            activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
+            Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
+            rb.AddForce(position, ForceMode.Impulse); 
         }
         
         else if (!grounded && !move)
@@ -332,6 +344,7 @@ fire_skip: ;
             Hovering();
         } 
     }
+    
 
     void Hovering() {
 
@@ -384,13 +397,7 @@ fire_skip: ;
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
-        } 
-        else 
-        {
-            float h = Input.GetAxis("Horizontal") * 5f * Time.fixedDeltaTime;
-            rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
-        }
-        
+        }         
     }
 
     void Acceleration()
