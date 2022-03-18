@@ -25,8 +25,8 @@ public class SpawnManager : MonoBehaviour, GameEventCallbacks
             return;
         }
 
-        GameEvents.RegisterCallbacks(this, ~GAME_STAGE.BREAK,
-            STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
+        //GameEvents.RegisterCallbacks(this, ~GAME_STAGE.BREAK,
+        //    STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
     }
 
     // Update is called once per frame
