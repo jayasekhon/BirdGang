@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class RobberScript : MonoBehaviour
 {
+    Transform child;
+
     float timePassed = 0f;
     // Start is called before the first frame update
     void Start()
     {
-        
+        child = gameObject.transform.GetChild(0);
     }
 
     // Update is called once per frame
@@ -16,12 +18,14 @@ public class RobberScript : MonoBehaviour
     {
         if (timePassed < 2f) 
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = true;
+            // gameObject.GetComponent<MeshRenderer>().enabled = true;
+            child.gameObject.SetActive(true);
             gameObject.GetComponentInChildren<Canvas>().enabled = true;
         }
         else if (timePassed >= 2f && timePassed <= 4f)
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            // gameObject.GetComponent<MeshRenderer>().enabled = false;
+            child.gameObject.SetActive(false);
             gameObject.GetComponentInChildren<Canvas>().enabled = false;
         }
         else 

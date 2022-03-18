@@ -192,6 +192,7 @@ public class PlayerController : MonoBehaviour
         // Acceleration
         if (Input.GetKeyDown("space"))
         {
+            anim.speed = 2f;
             accelerate = true;
         }
 

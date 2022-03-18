@@ -77,20 +77,20 @@ public class BalloonScript : MonoBehaviour
             switch (currentStage)
             {
                 case BALLOON_STAGE.ATTACHED:
-                    Debug.Log("Attached");
+                    // Debug.Log("Attached");
                     Attatched();
                     DrawLines();
                     break;
                 case BALLOON_STAGE.DETACHED:
-                    Debug.Log("Dettached");
+                    // Debug.Log("Dettached");
                     Dettached();
                     break;
                 case BALLOON_STAGE.REATTACHED:
-                    Debug.Log("Rettached");
+                    // Debug.Log("Rettached");
                     Rettached();
                     break;
                 case BALLOON_STAGE.LOST:
-                    Debug.Log("Lost");
+                    // Debug.Log("Lost");
                     Lost();
                     break;
             }
@@ -100,19 +100,19 @@ public class BalloonScript : MonoBehaviour
             switch (currentStage)
             {
                 case BALLOON_STAGE.ATTACHED:
-                    Debug.Log("Attached");
+                    // Debug.Log("Attached");
                     
                     break;
                 case BALLOON_STAGE.DETACHED:
-                    Debug.Log("Dettached");
+                    // Debug.Log("Dettached");
                     
                     break;
                 case BALLOON_STAGE.REATTACHED:
-                    Debug.Log("Rettached");
+                    // Debug.Log("Rettached");
                     
                     break;
                 case BALLOON_STAGE.LOST:
-                    Debug.Log("Lost");
+                    // Debug.Log("Lost");
                     
                     break;
             }
@@ -192,15 +192,15 @@ public class BalloonScript : MonoBehaviour
     }
     private void DrawLines()
     {
-        lineRenderer.SetPosition(0, this.transform.position);
-        int count = 0;
-        foreach (Anchor anchor in anchors)
-        {
-            count++;
-            lineRenderer.SetPosition(count, anchor.transform.position);
-            count++;
-            lineRenderer.SetPosition(count, this.transform.position);
-        }
+        // lineRenderer.SetPosition(0, this.transform.position);
+        // int count = 0;
+        // foreach (Anchor anchor in anchors)
+        // {
+        //     count++;
+        //     lineRenderer.SetPosition(count, anchor.transform.position);
+        //     count++;
+        //     // lineRenderer.SetPosition(count, this.transform.position);
+        // }
 
     }
    

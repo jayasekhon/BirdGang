@@ -53,15 +53,15 @@ public class Anchor : BaseBirdTarget,IPunObservable
             switch (currentStage)
             {
                 case ANCHOR_STAGE.DELAY:
-                    Debug.Log("Delayed");
+                    // Debug.Log("Delayed");
                     Delayed();
                     break;
                 case ANCHOR_STAGE.STARTED:
-                    Debug.Log("Started");
+                    // Debug.Log("Started");
                     Started();
                     break;
                 case ANCHOR_STAGE.WAITING:
-                    Debug.Log("Waiting");
+                    // Debug.Log("Waiting");
                     Waiting();
                     break;
 
