@@ -71,6 +71,23 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 				transform.position = hit.point + new Vector3(0f, 0.1f, 0f);
 			}
 		}
+		//If the player hits one of the anchors in the carivnal round
+		else if(collision.collider.CompareTag("Anchor_target")){
+			if (pv.IsMine)
+			{
+				GameObject anchor = collision.collider.gameObject;
+				anchor.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
+			}
+		}
+		//If the player hits one of the balloon in the carivnal round
+		else if (collision.collider.CompareTag("Balloon_target"))
+		{
+			if (pv.IsMine)
+			{
+				GameObject balloon = collision.collider.gameObject;
+				balloon.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
+			}
+		}
 		/* Freeze and cease collision when we collide with world geometry */
 		else if (collision.collider.gameObject.layer == LAYER_WORLD)
 		{

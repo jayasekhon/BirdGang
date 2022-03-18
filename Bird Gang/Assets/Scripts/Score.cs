@@ -64,6 +64,24 @@ public class Score : MonoBehaviour
         }*/
     }
 
+    public static int UpdateScoreValueGoodPerson(int scoreToUpdate)
+    {
+        // Hitting a good person results in a decrease in points
+        return scoreToUpdate -= 10;
+    }
+
+    public static int UpdateScoreValueBadPerson(int scoreToUpdate)
+    {
+        // Hitting a bad person results in an increase in points
+        return scoreToUpdate += 10;
+    }
+
+    public static int UpdateScoreValueMiniBoss(int scoreToUpdate)
+    {
+        // Defeating a miniboss results in an extra large increase in points
+        return scoreToUpdate += 50;
+    }
+
     void Hide(){
         FadeOutRoutine(targetReached);
         targetReached.text = "";

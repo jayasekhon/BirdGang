@@ -9,6 +9,8 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] Menu[] menus;
 
+    private bool validUsername;
+
     void Awake()
     {
         Instance = this;
@@ -31,11 +33,10 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menu)
     {
-        // Check username field isn't empty
-        if (string.IsNullOrEmpty(PhotonNetwork.NickName))
-        {
+        validUsername = CheckUsername(PhotonNetwork.NickName);
+        if (!validUsername)
             return;
-        }
+
         for (int i = 0; i < menus.Length; i++)
         {
             if (menus[i].open)
@@ -44,6 +45,18 @@ public class MenuManager : MonoBehaviour
             }
         }
         menu.Open();
+    }
+
+    public static bool CheckUsername(string usernameToCheck)
+    {
+        if (string.IsNullOrEmpty(usernameToCheck))
+        {
+            return false;
+        } 
+        else
+        {
+            return true;
+        }
     }
 
     public void CloseMenu(Menu menu)
