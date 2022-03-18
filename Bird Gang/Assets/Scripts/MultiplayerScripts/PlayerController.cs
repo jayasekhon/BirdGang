@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
     private PhotonView PV;
     private Camera cam;
     private CameraController cameraController;
+    private Animator anim;
 
     private Vector2 resolution;
 
@@ -66,7 +67,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         upForce = GetComponent<ConstantForce>();
-
+        anim = gameObject.GetComponentInChildren<Animator>();
+        anim.enabled = true;
+        
         // Get screen size
         resolution = new Vector2(Screen.width, Screen.height);
         screenCenter.x = Screen.width * 0.5f;
@@ -116,6 +119,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
         if (!PV.IsMine)
         {
             return;
@@ -131,6 +135,16 @@ public class PlayerController : MonoBehaviour
         {
                     screenCenter.x = Screen.width * 0.5f;
                     screenCenter.y = Screen.height * 0.5f;
+        }
+
+        if (gameObject.transform.localRotation.eulerAngles.x <= 100 && gameObject.transform.localRotation.eulerAngles.x >= 20 ){
+    
+            anim.SetBool("flyingDown", true);
+        }
+        else{
+
+            anim.SetBool("flyingDown", false);
+            
         }
         
         GetInput();
@@ -185,6 +199,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey("s"))
         {
             slowDown = true;
+                        
         }
         else
         {
@@ -341,12 +356,15 @@ fire_skip: ;
         
         else if (!grounded && !move)
         {
+            
             Hovering();
         } 
     }
     
 
     void Hovering() {
+        anim.speed = 3f;
+        anim.SetBool("flyingDown", false);
 
         if (timePassed < 0.6)
         {   
