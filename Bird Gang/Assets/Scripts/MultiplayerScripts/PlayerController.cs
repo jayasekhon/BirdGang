@@ -3,7 +3,10 @@ using UnityEngine;
 using System.IO;
 
 public class PlayerController : MonoBehaviour
-{    
+{   
+    /* New because of testing */
+    public IPlayerInput PlayerInput;
+
     /* Flight Control */
     private float forwardSpeed = 85f; //strafeSpeed = 7.5f;  hoverSpeed = 5f;
     private float activeForwardSpeed, activeStrafeSpeed; // activeHoverSpeed;
@@ -23,7 +26,6 @@ public class PlayerController : MonoBehaviour
     public bool cameraUpdate;
     private float xPos;
     private float zPos;
-
 
     private bool accelerate;
     private ConstantForce upForce;
@@ -56,16 +58,30 @@ public class PlayerController : MonoBehaviour
     private PhotonView PV;
     private Camera cam;
     private CameraController cameraController;
+    private Animator anim;
+
+    private Vector2 resolution;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         upForce = GetComponent<ConstantForce>();
+        anim = gameObject.GetComponentInChildren<Animator>();
+        anim.enabled = true;
+        
+        // Get screen size
+        resolution = new Vector2(Screen.width, Screen.height);
+        screenCenter.x = Screen.width * 0.5f;
+        screenCenter.y = Screen.height * 0.5f;
     }
 
     void Start()
     {
+        if (PlayerInput == null)
+        {
+            PlayerInput = new PlayerInput();
+        }
         InstructionsLoad.instance.InstructionsText();
 
         AmmoCount.instance.maxAmmo = targetingMaxShots;
@@ -85,9 +101,6 @@ public class PlayerController : MonoBehaviour
             projLineRenderer.material = projLineMat;
         }
 
-        screenCenter.x = Screen.width * 0.5f;
-        screenCenter.y = Screen.height * 0.5f;
-
         // Get the local camera component for targeting
         foreach (Camera c in Camera.allCameras)
         {
@@ -106,6 +119,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
         if (!PV.IsMine)
         {
             return;
@@ -114,11 +128,26 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             PV.RPC("OnKeyPress", RpcTarget.All);
+        }
 
+        // Check screen size has not changed
+        if (resolution.x != Screen.width || resolution.y != Screen.height)
+        {
+                    screenCenter.x = Screen.width * 0.5f;
+                    screenCenter.y = Screen.height * 0.5f;
+        }
+
+        if (gameObject.transform.localRotation.eulerAngles.x <= 100 && gameObject.transform.localRotation.eulerAngles.x >= 20 ){
+    
+            anim.SetBool("flyingDown", true);
+        }
+        else{
+
+            anim.SetBool("flyingDown", false);
+            
         }
         
         GetInput();
-
         Targeting();
     }
 
@@ -130,10 +159,7 @@ public class PlayerController : MonoBehaviour
         }
         Look();
         Movement();
-        if (move)
-        {
-            KeyboardTurning();
-        }
+        KeyboardTurning();
         cameraController.MoveToTarget(cameraUpdate);
     }
 
@@ -166,6 +192,7 @@ public class PlayerController : MonoBehaviour
         // Acceleration
         if (Input.GetKeyDown("space"))
         {
+            anim.speed = 2f;
             accelerate = true;
         }
 
@@ -173,6 +200,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey("s"))
         {
             slowDown = true;
+                        
         }
         else
         {
@@ -320,20 +348,24 @@ fire_skip: ;
         if (move)
         {
             FoVChanges();
-            activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed * increasedAcceleration, forwardAcceleration * Time.fixedDeltaTime);
-
-            Vector3 position = (transform.forward * activeForwardSpeed * Time.fixedDeltaTime);
-
-            rb.AddForce(position, ForceMode.Impulse);  
+            float vertical = PlayerInput.Vertical;
+            float fixedDeltaTime = PlayerInput.FixedDeltaTime;
+            activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
+            Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
+            rb.AddForce(position, ForceMode.Impulse); 
         }
         
         else if (!grounded && !move)
         {
+            
             Hovering();
         } 
     }
+    
 
     void Hovering() {
+        anim.speed = 3f;
+        anim.SetBool("flyingDown", false);
 
         if (timePassed < 0.6)
         {   
@@ -384,13 +416,7 @@ fire_skip: ;
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
-        } 
-        else 
-        {
-            float h = Input.GetAxis("Horizontal") * 5f * Time.fixedDeltaTime;
-            rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
-        }
-        
+        }         
     }
 
     void Acceleration()
