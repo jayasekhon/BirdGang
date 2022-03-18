@@ -17,7 +17,7 @@ public class score
         Assert.AreEqual(20, newScore);
     }
 
-    [Test]
+    [Test]    
     public void score_decreased_by_10_when_good_person_hit()
     {
         // ACT
