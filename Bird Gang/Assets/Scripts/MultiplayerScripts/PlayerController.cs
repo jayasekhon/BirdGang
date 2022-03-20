@@ -3,7 +3,7 @@ using UnityEngine;
 using System.IO;
 
 public class PlayerController : MonoBehaviour
-{   
+{
     /* New because of testing */
     public IPlayerInput PlayerInput;
 
@@ -13,15 +13,14 @@ public class PlayerController : MonoBehaviour
     private float forwardAcceleration = 5f, hoverAcceleration = 2f; //strafeAcceleration = 2f;
     private float increasedAcceleration = 1f;
     private bool slowDown;
-    
+
     private float lookRateSpeed = 90f;
-    private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
 
     float current_x_rot;
     float current_y_rot;
 
-    bool grounded; 
+    bool grounded;
     public bool move;
     public bool cameraUpdate;
     private float xPos;
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     /* Targeting */
     public GameObject targetObj;
-    
+
     public float targetProfileNear = 150f;
     [Range(-1f, 1f)]
     public float targetProfileNearFac = -0.8f;
@@ -58,14 +57,12 @@ public class PlayerController : MonoBehaviour
 
     public Material projLineMat;
     private LineRenderer projLineRenderer;
-    
+
     private Rigidbody rb;
     private PhotonView PV;
     private Camera cam;
     private CameraController cameraController;
     private Animator anim;
-
-    private Vector2 resolution;
 
     void Awake()
     {
@@ -74,11 +71,6 @@ public class PlayerController : MonoBehaviour
         upForce = GetComponent<ConstantForce>();
         anim = gameObject.GetComponentInChildren<Animator>();
         anim.enabled = true;
-        
-        // Get screen size
-        resolution = new Vector2(Screen.width, Screen.height);
-        screenCenter.x = Screen.width * 0.5f;
-        screenCenter.y = Screen.height * 0.5f;
     }
 
     void Start()
@@ -124,7 +116,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        
+
         if (!PV.IsMine)
         {
             return;
@@ -135,23 +127,16 @@ public class PlayerController : MonoBehaviour
             PV.RPC("OnKeyPress", RpcTarget.All);
         }
 
-        // Check screen size has not changed
-        if (resolution.x != Screen.width || resolution.y != Screen.height)
-        {
-                    screenCenter.x = Screen.width * 0.5f;
-                    screenCenter.y = Screen.height * 0.5f;
-        }
-
         if (gameObject.transform.localRotation.eulerAngles.x <= 100 && gameObject.transform.localRotation.eulerAngles.x >= 20 ){
-    
+
             anim.SetBool("flyingDown", true);
         }
         else{
 
             anim.SetBool("flyingDown", false);
-            
+
         }
-        
+
         GetInput();
         Targeting();
     }
@@ -193,7 +178,7 @@ public class PlayerController : MonoBehaviour
                 zPos = transform.position.z;
             }
         }
-        
+
         // Acceleration
         if (Input.GetKeyDown("space"))
         {
@@ -205,7 +190,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey("s"))
         {
             slowDown = true;
-                        
+
         }
         else
         {
@@ -311,11 +296,8 @@ fire_skip: ;
     {
         if (move)
         {
-            lookInput.x = Input.mousePosition.x;
-            lookInput.y = Input.mousePosition.y;
-            mouseDistance.x = (lookInput.x - screenCenter.x) / screenCenter.y;
-            mouseDistance.y = (lookInput.y - screenCenter.y) / screenCenter.y;
-
+            Vector3 mouseDistance = cam.ScreenToViewportPoint(Input.mousePosition) * 2f
+                - new Vector3(1f, 1f);
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
             if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
@@ -324,7 +306,7 @@ fire_skip: ;
                 mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
             }
 
-            Vector2 unitVec = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
+            Vector2 unitVec = new Vector2(mouseDistance.x, mouseDistance.y + 0.5f);
 
             float rollAngle = Vector2.Angle(unitVec.normalized, new Vector2(1, 0));
             rollAngle = Mathf.Clamp(rollAngle, 50, 130); //change values depending on how much we want bird to rotate sideways.
@@ -338,23 +320,23 @@ fire_skip: ;
             }
             if (x < 90) {
                 x = Mathf.Clamp(x, -10, 80);
-            }           
+            }
 
             transform.rotation = Quaternion.Euler(x, y, rollInput);
             // transform.rotation = Quaternion.Euler(pitch, yaw, rollInput);
         } else
         {
             // Make sure bird is straightend up
-            current_x_rot = this.transform.eulerAngles.x;
-            current_y_rot = this.transform.eulerAngles.y;
+            current_x_rot = transform.eulerAngles.x;
+            current_y_rot = transform.eulerAngles.y;
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(current_x_rot, current_y_rot, 0), 60f * Time.fixedDeltaTime);
         }
     }
 
     void Movement()
     {
-        Acceleration();  
-        // In an IF now to prevent S moving the bird backwards.      
+        Acceleration();
+        // In an IF now to prevent S moving the bird backwards.
         if (move)
         {
             FoVChanges();
@@ -368,22 +350,22 @@ fire_skip: ;
             upForce.relativeForce = new Vector3(0,0,0);
             windTimePassed = 0;
         }
-        
+
         else if (!grounded && !move)
         {
-            
+
             Hovering();
             Wind();
-        } 
+        }
     }
-    
+
 
     void Hovering() {
         anim.speed = 3f;
         anim.SetBool("flyingDown", false);
 
         if (timePassed < 0.6)
-        {   
+        {
             //UP
             upForce.force = new Vector3(0, 30, 0);
             // ycomp = upForce.force.y;
@@ -396,7 +378,7 @@ fire_skip: ;
             //DOWN
             upForce.force = new Vector3(0, 0, 0);
             timePassed += Time.fixedDeltaTime;
-        } 
+        }
 
         if (timePassed > 1.04)
         {
@@ -423,8 +405,8 @@ fire_skip: ;
             {
                 cam.fieldOfView += 0.25f * Mathf.Abs(transform.forward.y);
             }
-            
-        } 
+
+        }
     }
 
     void KeyboardTurning()
@@ -433,7 +415,7 @@ fire_skip: ;
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
-        }         
+        }
     }
 
     void Acceleration()
@@ -469,12 +451,12 @@ fire_skip: ;
         {
             if (increasedAcceleration > 1.05)
             {
-                increasedAcceleration -= 0.05f;      
-            } 
+                increasedAcceleration -= 0.05f;
+            }
             else
             {
                 increasedAcceleration = 1;
-            }        
+            }
         }
 
         // When the bird starts moving it should always start from minimum acceleration
