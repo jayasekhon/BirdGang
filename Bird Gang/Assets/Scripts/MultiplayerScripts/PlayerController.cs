@@ -213,8 +213,10 @@ public class PlayerController : MonoBehaviour
         }
         /* Find target pos in terms of world geometry */
         RaycastHit hit;
-        if (!Physics.Raycast(cam.transform.position, mouseRay, out hit, float.MaxValue, 1 << 8))
-        {
+        if (!Physics.Raycast(cam.transform.position, mouseRay,
+                out hit, float.MaxValue, 1 << 8)
+            || hit.point.y > transform.position.y
+        ) {
             targetObj.transform.position = new Vector3(0, -10, 0);
             projLineRenderer.positionCount = 0;
             return;
