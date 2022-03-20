@@ -54,7 +54,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9198111749603487451}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -252,6 +252,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ad0952b84e75f4883878013b8ad0f2b9, type: 3}
       propertyPath: m_Name
       value: mayorBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad0952b84e75f4883878013b8ad0f2b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad0952b84e75f4883878013b8ad0f2b9, type: 3}
