@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: -2291868995440789640}
   - component: {fileID: 7836328602251963993}
   - component: {fileID: 1575613300564582443}
+  - component: {fileID: 327061003483314526}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -153,7 +154,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4716701025068079662}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22fa394824521e245aebe89cbd144c47, type: 3}
   m_Name: 
@@ -257,6 +258,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 731a1fe90f5ca4f4c894deb762adbb56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &327061003483314526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716701025068079662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38633b0f3cc784ed899ba3aec24421fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move: 0
+  cameraUpdate: 0
+  targetObj: {fileID: 8782284789153274189, guid: ba7ff9ee558523a4e9b19bbf29d4b4a5, type: 3}
+  targetProfileNear: 150
+  targetProfileNearFac: -0.8
+  targetProfileFar: 600
+  targetProfileFarFac: 0.6
+  targetFixedVelocity: 60
+  targetLineRes: 20
+  limitAimAngles: 0
+  projLineMat: {fileID: 2100000, guid: 327ff9cc15846363e8e2e1393bc9a106, type: 2}
 --- !u!1 &5054865259955276068
 GameObject:
   m_ObjectHideFlags: 0
