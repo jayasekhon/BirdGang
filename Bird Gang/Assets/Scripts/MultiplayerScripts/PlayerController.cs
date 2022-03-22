@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
     private float xPos;
     private float zPos;
 
+    private float pushRight;
+    private float pushLeft;
+    private float pushDirection;
+    private bool thing = true;
+
     private bool accelerate;
     private ConstantForce upForce;
     float timePassed = 0f;
@@ -500,17 +505,36 @@ fire_skip: ;
 
         //implement move left too
 
+        pushRight = 1;
+        pushLeft = -1;
+
+
+        if (Random.Range(0,2) == 0 && thing)
+        {
+            pushDirection = 1;
+        }
+
+        else if (Random.Range(0,2) == 1 && thing)
+        {
+            pushDirection = -1;
+        }
+
         if (windTimePassed <= 3)
         {
+            thing = true;
             upForce.relativeForce = new Vector3(0,0,0);
             windTimePassed += Time.fixedDeltaTime;
         }
 
         if (windTimePassed > 3 && windTimePassed < 4)
         {
-            upForce.relativeForce = new Vector3(30,0,0); 
+            thing = false;
+            upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0); 
             windTimePassed += Time.fixedDeltaTime;  
+            Debug.Log(pushDirection);
         }
+
+        
 
         if (windTimePassed > 4)
         {
