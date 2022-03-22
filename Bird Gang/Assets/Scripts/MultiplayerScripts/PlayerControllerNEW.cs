@@ -444,7 +444,6 @@ public class PlayerControllerNEW : MonoBehaviour
             {
                 increasedAcceleration -= 0.002f;
             }
-
         }
 
         // When the user presses s the bird should gradually slow down to a min accleration of 1
@@ -478,3 +477,20 @@ public class PlayerControllerNEW : MonoBehaviour
         this.grounded = grounded;
     }
 }
+
+// Add back in field of view changes
+// Add back in targeting
+// Spawn in camera and player not from scene
+// Make this all work on multiplayer
+// stop camera going through the floor
+// stop the camera going through the buildings
+// hovering - stop the world moving
+// actually add in the panning to the cutscene
+// bug fix - room creation
+// bug fix - ammo
+// look into customisable options on camera
+// min height
+
+
+// "that looks fun"!!!!!!!!!!
+// inpsired kids to go to uni
