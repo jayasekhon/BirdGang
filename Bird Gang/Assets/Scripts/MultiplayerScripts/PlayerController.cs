@@ -27,8 +27,6 @@ public class PlayerController : MonoBehaviour
     private float xPos;
     private float zPos;
 
-    private float pushRight;
-    private float pushLeft;
     private float pushDirection;
     private bool thing = true;
 
@@ -489,25 +487,6 @@ fire_skip: ;
 
     void Wind()
     {
-        // maybe try every 10 seconds instead
-
-
-        // if (Random.Range(0,500) < 1)
-        // {
-        //     windy = true;
-        // }
-
-        // if (windy)
-        // {
-        //     rb.AddRelativeForce(new Vector3(30,0,0), ForceMode.Impulse);
-        //     windy = false;
-        // }
-
-        //implement move left too
-
-        pushRight = 1;
-        pushLeft = -1;
-
 
         if (Random.Range(0,2) == 0 && thing)
         {
@@ -534,47 +513,10 @@ fire_skip: ;
             Debug.Log(pushDirection);
         }
 
-        
-
         if (windTimePassed > 4)
         {
             windTimePassed = 0;
         }
-
-        // if (move)
-        // {
-        //     upForce.relativeForce = new Vector3(0,0,0);
-        // }
-
-        // upForce.relativeForce = new Vector3(0,0,0);  
-        // windTimePassed += Time.fixedDeltaTime;
-
-
-        // if (windy)
-        // {
-        //     if (timePassed < 0.5)
-        //     {   
-        //         //UP
-        //         rb.AddRelativeForce(new Vector3(30,0,0), ForceMode.Force);
-        //         timePassed += Time.fixedDeltaTime;
-        //     }
-
-        //     if (timePassed > 0.5 && timePassed < 1)
-        //     {
-        //         //DOWN
-        //         rb.AddRelativeForce(new Vector3(-30,0,0), ForceMode.Force);
-        //         timePassed += Time.fixedDeltaTime;
-
-        //     } 
-
-        //     if (timePassed > 1)
-        //     {
-        //         timePassed = 0f;
-        //     }
-
-            // windy = false;
-
-        // }
         
     }
 
