@@ -11,14 +11,15 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         PV = GetComponent<PhotonView>();
-    }
-    
-    void Start()
-    {
         if (PV.IsMine)
         {
             CreateController();
         }
+    }
+    
+    void Start()
+    {
+        
     }
 
     void CreateController()
