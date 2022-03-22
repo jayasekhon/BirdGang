@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private bool accelerate;
     private ConstantForce upForce;
     float timePassed = 0f;
+    private bool windy;
 
     /* Targeting */
     public GameObject targetObj;
@@ -358,37 +359,37 @@ fire_skip: ;
         else if (!grounded && !move)
         {
             
-            // Hovering();
+            Hovering();
             Wind();
         } 
     }
     
 
-    // void Hovering() {
-    //     anim.speed = 3f;
-    //     anim.SetBool("flyingDown", false);
+    void Hovering() {
+        anim.speed = 3f;
+        anim.SetBool("flyingDown", false);
 
-    //     if (timePassed < 0.6)
-    //     {   
-    //         //UP
-    //         upForce.force = new Vector3(0, 30, 0);
-    //         // ycomp = upForce.force.y;
+        if (timePassed < 0.6)
+        {   
+            //UP
+            upForce.force = new Vector3(0, 30, 0);
+            // ycomp = upForce.force.y;
             
-    //         timePassed += Time.fixedDeltaTime;
-    //     }
+            timePassed += Time.fixedDeltaTime;
+        }
 
-    //     if (timePassed > 0.6 && timePassed < 1.04)
-    //     {
-    //         //DOWN
-    //         upForce.force = new Vector3(0, 0, 0);
-    //         timePassed += Time.fixedDeltaTime;
-    //     } 
+        if (timePassed > 0.6 && timePassed < 1.04)
+        {
+            //DOWN
+            upForce.force = new Vector3(0, 0, 0);
+            timePassed += Time.fixedDeltaTime;
+        } 
 
-    //     if (timePassed > 1.04)
-    //     {
-    //         timePassed = 0f;
-    //     }
-    // }
+        if (timePassed > 1.04)
+        {
+            timePassed = 0f;
+        }
+    }
 
     void FoVChanges()
     {
@@ -478,29 +479,42 @@ fire_skip: ;
 
     void Wind()
     {
-
-        if (timePassed < 0.5)
-        {   
-            //UP
-            rb.AddRelativeForce(new Vector3(30,0,0), ForceMode.Force);
-            timePassed += Time.fixedDeltaTime;
+        if (Random.Range(0,500) < 1)
+        {
+            windy = true;
         }
 
-        if (timePassed > 0.5 && timePassed < 1)
+        if (windy)
         {
-            //DOWN
-            rb.AddRelativeForce(new Vector3(-30,0,0), ForceMode.Force);
-            timePassed += Time.fixedDeltaTime;
-
-        } 
-
-        if (timePassed > 1)
-        {
-            timePassed = 0f;
+            rb.AddRelativeForce(new Vector3(30,0,0), ForceMode.Impulse);
+            windy = false;
         }
 
-        // if (Random.Range(0,10) < 1)
+
+
+        // if (windy)
         // {
+        //     if (timePassed < 0.5)
+        //     {   
+        //         //UP
+        //         rb.AddRelativeForce(new Vector3(30,0,0), ForceMode.Force);
+        //         timePassed += Time.fixedDeltaTime;
+        //     }
+
+        //     if (timePassed > 0.5 && timePassed < 1)
+        //     {
+        //         //DOWN
+        //         rb.AddRelativeForce(new Vector3(-30,0,0), ForceMode.Force);
+        //         timePassed += Time.fixedDeltaTime;
+
+        //     } 
+
+        //     if (timePassed > 1)
+        //     {
+        //         timePassed = 0f;
+        //     }
+
+            // windy = false;
 
         // }
         
