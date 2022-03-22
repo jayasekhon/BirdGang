@@ -358,34 +358,37 @@ fire_skip: ;
         else if (!grounded && !move)
         {
             
-            Hovering();
+            // Hovering();
+            Wind();
         } 
     }
     
 
-    void Hovering() {
-        anim.speed = 3f;
-        anim.SetBool("flyingDown", false);
+    // void Hovering() {
+    //     anim.speed = 3f;
+    //     anim.SetBool("flyingDown", false);
 
-        if (timePassed < 0.6)
-        {   
-            //UP
-            upForce.force = new Vector3(0, 30, 0);
-            timePassed += Time.fixedDeltaTime;
-        }
+    //     if (timePassed < 0.6)
+    //     {   
+    //         //UP
+    //         upForce.force = new Vector3(0, 30, 0);
+    //         // ycomp = upForce.force.y;
+            
+    //         timePassed += Time.fixedDeltaTime;
+    //     }
 
-        if (timePassed > 0.6 && timePassed < 1.04)
-        {
-            //DOWN
-            upForce.force = new Vector3(0, 0, 0);
-            timePassed += Time.fixedDeltaTime;
-        } 
+    //     if (timePassed > 0.6 && timePassed < 1.04)
+    //     {
+    //         //DOWN
+    //         upForce.force = new Vector3(0, 0, 0);
+    //         timePassed += Time.fixedDeltaTime;
+    //     } 
 
-        if (timePassed > 1.04)
-        {
-            timePassed = 0f;
-        }
-    }
+    //     if (timePassed > 1.04)
+    //     {
+    //         timePassed = 0f;
+    //     }
+    // }
 
     void FoVChanges()
     {
@@ -471,6 +474,36 @@ fire_skip: ;
         {
             Debug.LogWarning("increasedAcceleration below 1");
         }
+    }
+
+    void Wind()
+    {
+
+        if (timePassed < 0.5)
+        {   
+            //UP
+            rb.AddRelativeForce(new Vector3(30,0,0), ForceMode.Force);
+            timePassed += Time.fixedDeltaTime;
+        }
+
+        if (timePassed > 0.5 && timePassed < 1)
+        {
+            //DOWN
+            rb.AddRelativeForce(new Vector3(-30,0,0), ForceMode.Force);
+            timePassed += Time.fixedDeltaTime;
+
+        } 
+
+        if (timePassed > 1)
+        {
+            timePassed = 0f;
+        }
+
+        // if (Random.Range(0,10) < 1)
+        // {
+
+        // }
+        
     }
 
     public void SetGroundedState(bool grounded)
