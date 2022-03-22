@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private bool accelerate;
     private ConstantForce upForce;
     float timePassed = 0f;
+    float windTimePassed = 0f;
     private bool windy;
 
     /* Targeting */
@@ -354,6 +355,10 @@ fire_skip: ;
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
             Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
             rb.AddForce(position, ForceMode.Impulse); 
+            
+            upForce.force = new Vector3(0,0,0);
+            upForce.relativeForce = new Vector3(0,0,0);
+            windTimePassed = 0;
         }
         
         else if (!grounded && !move)
@@ -479,17 +484,46 @@ fire_skip: ;
 
     void Wind()
     {
-        if (Random.Range(0,500) < 1)
+        // maybe try every 10 seconds instead
+
+
+        // if (Random.Range(0,500) < 1)
+        // {
+        //     windy = true;
+        // }
+
+        // if (windy)
+        // {
+        //     rb.AddRelativeForce(new Vector3(30,0,0), ForceMode.Impulse);
+        //     windy = false;
+        // }
+
+        //implement move left too
+
+        if (windTimePassed <= 3)
         {
-            windy = true;
+            upForce.relativeForce = new Vector3(0,0,0);
+            windTimePassed += Time.fixedDeltaTime;
         }
 
-        if (windy)
+        if (windTimePassed > 3 && windTimePassed < 4)
         {
-            rb.AddRelativeForce(new Vector3(30,0,0), ForceMode.Impulse);
-            windy = false;
+            upForce.relativeForce = new Vector3(30,0,0); 
+            windTimePassed += Time.fixedDeltaTime;  
         }
 
+        if (windTimePassed > 4)
+        {
+            windTimePassed = 0;
+        }
+
+        // if (move)
+        // {
+        //     upForce.relativeForce = new Vector3(0,0,0);
+        // }
+
+        // upForce.relativeForce = new Vector3(0,0,0);  
+        // windTimePassed += Time.fixedDeltaTime;
 
 
         // if (windy)
