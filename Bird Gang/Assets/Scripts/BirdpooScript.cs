@@ -1,5 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
+using System.IO;
 
 public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 { 
@@ -11,7 +12,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 
 	private bool active = true;
 
-	private const float Lifetime = 50f;
+	private const float Lifetime = 10f;
 	private float endTime;
 
 	private const int LAYER_WORLD = 8;
@@ -92,6 +93,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		else if (collision.collider.gameObject.layer == LAYER_WORLD)
 		{
 			Destroy(rb);
+			
 			Destroy(collider);
 			active = false;
 			flee = true;
@@ -103,6 +105,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 			if (acc.y > -19.81f)
 				acc.y = -19.81f;
 		}
+		
 
 		if (flee && PhotonNetwork.IsMasterClient)
 		{
@@ -113,6 +116,15 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 					a.GetComponent<AiController>().DetectNewObstacle(rb.position);
 			}
 		}
+		if (PhotonNetwork.IsMasterClient)
+		{
+			PhotonNetwork.Destroy(gameObject);
+		}
+		else
+		{
+			gameObject.GetComponent<MeshRenderer>().enabled = false;
+		}
+
 	}
 
 	private void Update()
@@ -120,6 +132,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		if (Time.time > endTime)
 		{
 			active = false;
+			
 			Destroy(this.gameObject);
 		}
 	}
