@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: PostProcessing Profile
+  m_Name: glowManager Profile 1
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 5033352262242789118}
---- !u!114 &5033352262242789118
+  - {fileID: 8433255655770145017}
+--- !u!114 &8433255655770145017
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -34,7 +34,7 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 6
     min: 0
   scatter:
     m_OverrideState: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
     min: 0
   tint:
     m_OverrideState: 0
-    m_Value: {r: 1, g: 0.13333334, b: 0, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
     hdr: 0
     showAlpha: 0
     showEyeDropper: 1
