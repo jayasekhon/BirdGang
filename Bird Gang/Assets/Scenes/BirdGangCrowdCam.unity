@@ -27608,7 +27608,7 @@ GameObject:
   - component: {fileID: 1170977568}
   - component: {fileID: 1170977567}
   - component: {fileID: 1170977566}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: IslandChunk (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53917,6 +53917,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Island
       objectReference: {fileID: 0}
+    - target: {fileID: 809985742500822441, guid: 78e704e5941904c2483a14e63251499d, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2239287198857764857, guid: 78e704e5941904c2483a14e63251499d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -53925,9 +53929,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: dba8728d427874424ab2332b0d9d219a, type: 2}
+    - target: {fileID: 3767233467128054851, guid: 78e704e5941904c2483a14e63251499d, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4948211364415298495, guid: 78e704e5941904c2483a14e63251499d, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5240810844664492796, guid: 78e704e5941904c2483a14e63251499d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 29.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5652002674140997644, guid: 78e704e5941904c2483a14e63251499d, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6451275277256029329, guid: 78e704e5941904c2483a14e63251499d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -53981,6 +53997,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7978473805646727916, guid: 78e704e5941904c2483a14e63251499d, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78e704e5941904c2483a14e63251499d, type: 3}
 --- !u!4 &4961078846252083626 stripped
@@ -54018,6 +54038,10 @@ PrefabInstance:
     - target: {fileID: 6526705665147263213, guid: 8d1b433eef3e44dc7a7002217bdf3db1, type: 3}
       propertyPath: m_LocalPosition.y
       value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591438291130541210, guid: 8d1b433eef3e44dc7a7002217bdf3db1, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6591438291130541210, guid: 8d1b433eef3e44dc7a7002217bdf3db1, type: 3}
       propertyPath: m_NavMeshLayer

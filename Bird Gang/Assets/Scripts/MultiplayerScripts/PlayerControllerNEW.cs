@@ -449,16 +449,18 @@ fire_skip: ;
     }
 }
 
-// Add back in field of view changes
+// Add back in field of view changes -- DONE
 // Add back in targeting -- DONE
 // Spawn in camera and player not from scene -- DONE
 // Make this all work on multiplayer -- DONE
-// stop camera going through the floor
+// stop camera going through the floor -- slightly done
 // stop the camera going through the buildings
+
 // hovering - stop the world moving
 // actually add in the panning to the cutscene
 // bug fix - room creation
 // bug fix - ammo
+
 // look into customisable options on camera
 // min height for camera
 // tidy up/split up playerController
