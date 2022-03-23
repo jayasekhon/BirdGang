@@ -106,7 +106,7 @@ public class GameEvents : MonoBehaviour
 				lastProgressTime = Time.time;
 				lastProgress = 0;
 			}
-			Debug.Log("Event callback: " + t.ToString() + " on " + currStage.GameStage.ToString());
+			// Debug.Log("Event callback: " + t.ToString() + " on " + currStage.GameStage.ToString());
 		}
 
 		foreach (CallbackItem h in callbacks)
