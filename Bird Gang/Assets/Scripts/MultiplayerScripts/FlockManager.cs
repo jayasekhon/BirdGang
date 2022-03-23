@@ -32,6 +32,7 @@ public class FlockManager : MonoBehaviour
     private bool attacking;
 
     private Transform playerToAttack;
+    Transform child;
 
     // Start is called before the first frame update
     void Start()
@@ -44,12 +45,10 @@ public class FlockManager : MonoBehaviour
                                                                 Random.Range(-flyLimits.z, flyLimits.z));
             allBirds[i] = (GameObject) Instantiate(bird, pos, Quaternion.identity);       
             allBirds[i].GetComponent<Flocking>().flockManager = this;
-           
-            Animator anim = allBirds[i].GetComponentInChildren<Animator>();
-            //if (anim != null)
-            //{
-            anim.Play("Base Layer.FlappingAnimation", 0, Random.Range(0, 120));
-            //}
+
+            child = allBirds[i].transform.GetChild(0);
+            Animator anim = child.GetComponent<Animator>();
+            anim.Play("Base Layer.FlappingAnimation", 0, Random.Range(0, 1.0f));
                                 
         }
         transform.position = new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
