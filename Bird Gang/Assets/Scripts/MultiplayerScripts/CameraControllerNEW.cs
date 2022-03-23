@@ -5,19 +5,17 @@ using Photon.Pun;
 public class CameraControllerNEW : MonoBehaviour
 {
     private PhotonView PV;
-    private Transform targetPos;
+    private CinemachineVirtualCamera cam;
+    private PhotonView checkLocal;
 
     private GameObject[] playersInGame;
     private GameObject m_player;  
-
-    private CinemachineVirtualCamera cam;
-
-    private PhotonView checkLocal;
+    private Transform playerPos;
 
     void Awake()
     {
         PV = GetComponent<PhotonView>();
-        // cam = GetComponent<CinemachineVirtualCamera>();
+        cam = GetComponent<CinemachineVirtualCamera>();
 
         // Find the local player for this local camera to follow.
         playersInGame = GameObject.FindGameObjectsWithTag("Player");
@@ -26,10 +24,10 @@ public class CameraControllerNEW : MonoBehaviour
             checkLocal = playersInGame[p].GetComponent<PhotonView>();
             if (checkLocal.IsMine)
             {
-                // cam.Follow = playersInGame[p];
+                playerPos = playersInGame[p].transform;
             }
         }
-        // targetPos = m_player.GetComponent<Transform>(); 
-
+        cam.Follow = playerPos;
+        cam.LookAt = playerPos;
     }
 }
