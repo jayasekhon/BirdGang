@@ -13,6 +13,7 @@ public class playerPointer : MonoBehaviour
     private Vector3 myPosition;
 
     private Vector2 resolution, screenCenter;
+    private int borderWidth = 100;
 
     private Camera cam;
 
@@ -30,7 +31,7 @@ public class playerPointer : MonoBehaviour
     
     IEnumerator InitCoroutine()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
         playersInGame = GameObject.FindGameObjectsWithTag("Player");
         InstantiateLists();
@@ -180,17 +181,21 @@ public class playerPointer : MonoBehaviour
             if (viewPos.x < 1 && viewPos.x > 0 && viewPos.y < 1 && viewPos.y > 0 && viewPos.z > 0)
             {
                 // Can be seen
+                if (indicatorManager.CheckIfIndicatorIsActive(p))
+                    indicatorManager.HideIndicator(p);
+            } 
+            else 
+            {
+                // Cannot be seen
                 float gradient = CalculateGradient(playerPositions[p], myPosition);
                 float yIntercept = CalculateYIntercept(playerPositions[p], myPosition, gradient);
 
                 if (!indicatorManager.CheckIfIndicatorIsActive(p))
                     indicatorManager.ShowIndicator(p);
-            } 
-            else 
-            {
-                // Cannot be seen
-                if (indicatorManager.CheckIfIndicatorIsActive(p))
-                    indicatorManager.HideIndicator(p);
+                
+                indicatorManager.AdjustPositionOfIndicator(p, new Vector2(120, 120));
+                indicatorManager.AdjustPositionOfIndicator(p, new Vector2(120, 120));
+                
             }                
         }   
     }

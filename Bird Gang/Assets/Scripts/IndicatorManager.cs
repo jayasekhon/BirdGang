@@ -20,10 +20,6 @@ public class IndicatorManager : MonoBehaviour
             {
                 indicators[i].Show();
             }
-            // else if (indicators[i].active)
-            // {   
-            //     HideIndicator(indicators[i]);
-            // }
         }
     }
 
@@ -35,16 +31,7 @@ public class IndicatorManager : MonoBehaviour
             {
                 indicators[i].Hide();
             }
-            // else if (indicators[i].active)
-            // {   
-            //     HideIndicator(indicators[i]);
-            // }
         }
-    }
-
-    public void HideIndicator(Indicator indicator)
-    {
-        indicator.Hide();
     }
 
     public bool CheckIfIndicatorIsActive(int indicatorID)
@@ -57,5 +44,16 @@ public class IndicatorManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void AdjustPositionOfIndicator(int indicatorID, Vector2 position)
+    {   
+        for (int i = 0; i < indicators.Length; i++)
+        {
+            if (indicators[i].indicatorID == indicatorID)
+            {
+                indicators[i].MoveIndidcator(position);
+            }
+        }
     }
 }
