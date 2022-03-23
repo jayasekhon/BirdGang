@@ -113,15 +113,12 @@ public class PlayerControllerNEW : MonoBehaviour
             else
             {
                 cam = camerasInGame[c].GetComponent<Camera>();
-                // cameraController = c.GetComponentInParent<CameraController>();
             }
         }
-        // cameraUpdate = true;
     }
 
     void Update()
     {
-        
         if (!PV.IsMine)
         {
             return;
@@ -162,7 +159,6 @@ public class PlayerControllerNEW : MonoBehaviour
         Look();
         Movement();
         KeyboardTurning();
-        // cameraController.MoveToTarget(cameraUpdate);
     }
 
     void GetInput()
@@ -171,7 +167,6 @@ public class PlayerControllerNEW : MonoBehaviour
         if (Input.GetAxisRaw("Vertical") == 1)
         {
             move = true;
-            // cameraUpdate = true;
             xPos = transform.position.x;
             zPos = transform.position.z;
         }
@@ -333,7 +328,6 @@ fire_skip: ;
             }           
 
             transform.rotation = Quaternion.Euler(x, y, rollInput);
-            // transform.rotation = Quaternion.Euler(pitch, yaw, rollInput);
         } else
         {
             // Make sure bird is straightend up
@@ -349,7 +343,6 @@ fire_skip: ;
         // In an IF now to prevent S moving the bird backwards.      
         if (move)
         {
-            // FoVChanges();
             float vertical = PlayerInput.Vertical;
             float fixedDeltaTime = PlayerInput.FixedDeltaTime;
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
@@ -359,7 +352,6 @@ fire_skip: ;
         
         else if (!grounded && !move)
         {
-            
             Hovering();
         } 
     }
@@ -388,29 +380,6 @@ fire_skip: ;
             timePassed = 0f;
         }
     }
-
-    // void FoVChanges()
-    // {
-    //     // When the player is moving up (so the player is facing up - positive) decrease FoV.
-    //     if(transform.forward.y > 0.05f)
-    //     {
-    //         // Stopping the FoV getting too small
-    //         if (!(cam.fieldOfView <= 50))
-    //         {
-    //             cam.fieldOfView -= 0.2f * Mathf.Abs(transform.forward.y);
-    //         }
-    //     }
-    //     // When the player is moving down (so the player is facing down - negative) increase FoV.
-    //     else if (transform.forward.y < -0.05f)
-    //     {
-    //         // Stopping the FoV getting too large
-    //         if (!(cam.fieldOfView >= 75))
-    //         {
-    //             cam.fieldOfView += 0.25f * Mathf.Abs(transform.forward.y);
-    //         }
-            
-    //     } 
-    // }
 
     void KeyboardTurning()
     {
@@ -481,7 +450,7 @@ fire_skip: ;
 }
 
 // Add back in field of view changes
-// Add back in targeting
+// Add back in targeting -- DONE
 // Spawn in camera and player not from scene -- DONE
 // Make this all work on multiplayer -- DONE
 // stop camera going through the floor
@@ -491,7 +460,8 @@ fire_skip: ;
 // bug fix - room creation
 // bug fix - ammo
 // look into customisable options on camera
-// min height
+// min height for camera
+// tidy up/split up playerController
 
 
 // "that looks fun"!!!!!!!!!!
