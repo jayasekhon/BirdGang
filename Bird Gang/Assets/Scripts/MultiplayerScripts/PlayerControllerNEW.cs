@@ -56,7 +56,8 @@ public class PlayerControllerNEW : MonoBehaviour
     
     private Rigidbody rb;
     private PhotonView PV;
-    // private Camera cam;
+    private Camera cam;
+    private GameObject[] camerasInGame;
     // private CameraController cameraController;
     private Animator anim;
 
@@ -102,18 +103,19 @@ public class PlayerControllerNEW : MonoBehaviour
         }
 
         // Get the local camera component for targeting
-        // foreach (Camera c in Camera.allCameras)
-        // {
-        //     if (!c.GetComponentInParent<PhotonView>().IsMine)
-        //     {
-        //         Destroy(c.gameObject);
-        //     }
-        //     else
-        //     {
-        //         cam = c;
-        //         cameraController = c.GetComponentInParent<CameraController>();
-        //     }
-        // }
+        camerasInGame = GameObject.FindGameObjectsWithTag("MainCamera");
+        for (int c = 0; c < camerasInGame.Length; c++)
+        {
+            if (!camerasInGame[c].GetComponentInParent<PhotonView>().IsMine)
+            {
+                Destroy(camerasInGame[c].gameObject);
+            }
+            else
+            {
+                cam = camerasInGame[c].GetComponent<Camera>();
+                // cameraController = c.GetComponentInParent<CameraController>();
+            }
+        }
         // cameraUpdate = true;
     }
 
@@ -148,7 +150,7 @@ public class PlayerControllerNEW : MonoBehaviour
         }
         
         GetInput();
-        // Targeting();
+        Targeting(); //why is this not in fixed update?
     }
 
     void FixedUpdate()
@@ -208,94 +210,94 @@ public class PlayerControllerNEW : MonoBehaviour
         }
     }
 
-    // void Targeting()
-    // {
-    //     Vector3 ndc = cam.ScreenToViewportPoint(Input.mousePosition);
-    //     Vector3 mouseRay = cam.ViewportPointToRay(ndc).direction.normalized;
+    void Targeting()
+    {
+        Vector3 ndc = cam.ScreenToViewportPoint(Input.mousePosition);
+        Vector3 mouseRay = cam.ViewportPointToRay(ndc).direction.normalized;
 
-    //     if (limitAimAngles)
-    //     {
-    //         float d = Mathf.Sqrt(mouseRay.x * mouseRay.x + mouseRay.z * mouseRay.z);
-    //         if (mouseRay.y / d > -0.1f)
-    //         {
-    //             mouseRay.y = d * -0.1f;
-    //         }
-    //     }
-    //     /* Find target pos in terms of world geometry */
-    //     RaycastHit hit;
-    //     if (!Physics.Raycast(cam.transform.position, mouseRay, out hit, float.MaxValue, 1 << 8))
-    //     {
-    //         targetObj.transform.position = new Vector3(0, -10, 0);
-    //         projLineRenderer.positionCount = 0;
-    //         return;
-    //     }
-    //     hit.point += hit.normal * 0.25f;
-    //     /*
-    //      * Fix time to hit as (distance to target) / constant,
-    //      * then assume constant velocity on x, z,
-    //      * and choose a and u for y axis (as in s = ut + 1/2at^2).
-    //      * targetParabolaProfile controls balance of u, a.
-    //      * of 0 gives u = 0 (i.e. z = z0 - 1/2at^2),
-    //      * of 1 gives u = dist / time, (z = z0 - ut).
-    //      * Somewhere in-between gives nice parabola with u =/= 0 =/= a.
-    //      */
-    //     Vector3 pos = rb.position;
-    //     Vector3 dist = hit.point - pos;
-    //     float timeToHit = dist.magnitude / targetFixedVelocity;
+        if (limitAimAngles)
+        {
+            float d = Mathf.Sqrt(mouseRay.x * mouseRay.x + mouseRay.z * mouseRay.z);
+            if (mouseRay.y / d > -0.1f)
+            {
+                mouseRay.y = d * -0.1f;
+            }
+        }
+        /* Find target pos in terms of world geometry */
+        RaycastHit hit;
+        if (!Physics.Raycast(cam.transform.position, mouseRay, out hit, float.MaxValue, 1 << 8))
+        {
+            targetObj.transform.position = new Vector3(0, -10, 0);
+            projLineRenderer.positionCount = 0;
+            return;
+        }
+        hit.point += hit.normal * 0.25f;
+        /*
+         * Fix time to hit as (distance to target) / constant,
+         * then assume constant velocity on x, z,
+         * and choose a and u for y axis (as in s = ut + 1/2at^2).
+         * targetParabolaProfile controls balance of u, a.
+         * of 0 gives u = 0 (i.e. z = z0 - 1/2at^2),
+         * of 1 gives u = dist / time, (z = z0 - ut).
+         * Somewhere in-between gives nice parabola with u =/= 0 =/= a.
+         */
+        Vector3 pos = rb.position;
+        Vector3 dist = hit.point - pos;
+        float timeToHit = dist.magnitude / targetFixedVelocity;
 
-    //     float v;
-    //     {
-    //         Vector3 distFloor = dist * (pos.y / dist.y);
-    //         distFloor.y = 0f;
+        float v;
+        {
+            Vector3 distFloor = dist * (pos.y / dist.y);
+            distFloor.y = 0f;
 
-//             float profile = Mathf.Lerp
-//             (
-//                 targetProfileFarFac, targetProfileNearFac,
-//                 (distFloor.magnitude - targetProfileNear) / targetProfileFar
-//             );
-//             v = -(dist.y / timeToHit) * profile;
-//         }
-//         float g = -(dist.y + (v * timeToHit)) / (0.5f * timeToHit * timeToHit);
+            float profile = Mathf.Lerp
+            (
+                targetProfileFarFac, targetProfileNearFac,
+                (distFloor.magnitude - targetProfileNear) / targetProfileFar
+            );
+            v = -(dist.y / timeToHit) * profile;
+        }
+        float g = -(dist.y + (v * timeToHit)) / (0.5f * timeToHit * timeToHit);
 
-//         Vector3 step = dist / targetLineRes;
-//         step.y = 0f;
-//         float timeStep = timeToHit / targetLineRes;
-//         projLineRenderer.positionCount = targetLineRes + 1;
-//         for (int i = 0; i < targetLineRes; i++)
-//         {
-//             pos.y = (rb.position.y - (0.5f * g * Mathf.Pow(i*timeStep, 2))) - v * (float)(i) * timeStep;
-//             projLineRenderer.SetPosition(i, pos);
-//             pos += step;
-//         }
+        Vector3 step = dist / targetLineRes;
+        step.y = 0f;
+        float timeStep = timeToHit / targetLineRes;
+        projLineRenderer.positionCount = targetLineRes + 1;
+        for (int i = 0; i < targetLineRes; i++)
+        {
+            pos.y = (rb.position.y - (0.5f * g * Mathf.Pow(i*timeStep, 2))) - v * (float)(i) * timeStep;
+            projLineRenderer.SetPosition(i, pos);
+            pos += step;
+        }
 
-//         projLineRenderer.SetPosition(targetLineRes, hit.point);
-//         targetObj.transform.position = hit.point;
-//         targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
+        projLineRenderer.SetPosition(targetLineRes, hit.point);
+        targetObj.transform.position = hit.point;
+        targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
 
-//         if (targetingShotCount != 0 && Time.time >= targetingLastShot + targetingDelay)
-//         {
-//             targetingShotCount = 0;
-//             AmmoCount.instance.SetAmmo(targetingMaxShots);
-//         }
+        if (targetingShotCount != 0 && Time.time >= targetingLastShot + targetingDelay)
+        {
+            targetingShotCount = 0;
+            AmmoCount.instance.SetAmmo(targetingMaxShots);
+        }
 
-//         if (Input.GetMouseButtonDown(0))
-//         {
-//             if (targetingShotCount == targetingMaxShots)
-//                 goto fire_skip;
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (targetingShotCount == targetingMaxShots)
+                goto fire_skip;
 
-//             targetingShotCount++;
-//             targetingLastShot = Time.time;
-//             AmmoCount.instance.SetAmmo(targetingMaxShots - targetingShotCount);
+            targetingShotCount++;
+            targetingLastShot = Time.time;
+            AmmoCount.instance.SetAmmo(targetingMaxShots - targetingShotCount);
 
-//             Vector3 acc = new Vector3(0f, -g, 0f);
-//             Vector3 vel = dist / timeToHit;
-//             vel.y = -v;
+            Vector3 acc = new Vector3(0f, -g, 0f);
+            Vector3 vel = dist / timeToHit;
+            vel.y = -v;
 
-//             object[] args = new object[] {acc, vel};
-//             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
-//         }
-// fire_skip: ;
-//     }
+            object[] args = new object[] {acc, vel};
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
+        }
+fire_skip: ;
+    }
 
     void Look()
     {
