@@ -480,8 +480,8 @@ public class PlayerControllerNEW : MonoBehaviour
 
 // Add back in field of view changes
 // Add back in targeting
-// Spawn in camera and player not from scene
-// Make this all work on multiplayer
+// Spawn in camera and player not from scene -- DONE
+// Make this all work on multiplayer -- DONE
 // stop camera going through the floor
 // stop the camera going through the buildings
 // hovering - stop the world moving
