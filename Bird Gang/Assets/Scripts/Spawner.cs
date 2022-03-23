@@ -23,6 +23,7 @@ public class Spawner : MonoBehaviour
     private List<GameObject> miniBosses = new List<GameObject>();
 
     PhotonView PV;
+    Transform child;
 
     void Awake()
     {
@@ -51,10 +52,12 @@ public class Spawner : MonoBehaviour
     }
 
     private void SpawnGoodPerson()
-    {
+    {   
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
 
         GameObject newGoodPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs","Good Person Cube"),position,Quaternion.identity);
+        child = newGoodPerson.transform.GetChild(Random.Range(0, 3));
+        child.gameObject.SetActive(true);
         NumberGoodPeopleSpawned++;
     }
 
