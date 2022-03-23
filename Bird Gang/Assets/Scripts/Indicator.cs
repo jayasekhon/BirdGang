@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class Indicator : MonoBehaviour
 {
-    [SerializeField] bool active = false;
+    public bool active = false;
     public int indicatorID; 
-    // Start is called before the first frame update
-    void Start()
+    
+    public void Show()
     {
-        
+        active = true;
+        gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Hide()
     {
-        
+        active = false;
+        gameObject.SetActive(false);
     }
 }

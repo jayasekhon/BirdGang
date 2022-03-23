@@ -16,6 +16,8 @@ public class playerPointer : MonoBehaviour
 
     private Camera cam;
 
+    private IndicatorManager indicatorManager;
+
     void Start()
     {
         StartCoroutine(InitCoroutine());
@@ -23,6 +25,7 @@ public class playerPointer : MonoBehaviour
         resolution = new Vector2(Screen.width, Screen.height);
         screenCenter.x = Screen.width * 0.5f;
         screenCenter.y = Screen.height * 0.5f;
+        indicatorManager = GetComponent<IndicatorManager>();
     }
     
     IEnumerator InitCoroutine()
@@ -33,9 +36,7 @@ public class playerPointer : MonoBehaviour
         InstantiateLists();
 
         GetPlayerPhotonViews();
-        Debug.Log("Got all player PVs.");
         GetPlayerTransforms();
-        Debug.Log("Got player transforms");
         GetCamera();
         
     }
@@ -181,13 +182,16 @@ public class playerPointer : MonoBehaviour
                 // Can be seen
                 float gradient = CalculateGradient(playerPositions[p], myPosition);
                 float yIntercept = CalculateYIntercept(playerPositions[p], myPosition, gradient);
-                
-                
+
+                if (!indicatorManager.CheckIfIndicatorIsActive(p))
+                    indicatorManager.ShowIndicator(p);
             } 
-            // else 
-            // {
-            //     // Cannot be seen
-            // }                
+            else 
+            {
+                // Cannot be seen
+                if (indicatorManager.CheckIfIndicatorIsActive(p))
+                    indicatorManager.HideIndicator(p);
+            }                
         }   
     }
 
