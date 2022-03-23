@@ -65,6 +65,8 @@ public class Spawner : MonoBehaviour
     {
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         GameObject newBadPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bad Person Cube"), position, Quaternion.identity);
+        child = newBadPerson.transform.GetChild(Random.Range(0, 3));
+        child.gameObject.SetActive(true);
         NumberBadPeopleSpawned++;
         
     }
