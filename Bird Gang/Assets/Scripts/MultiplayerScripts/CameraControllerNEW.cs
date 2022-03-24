@@ -44,7 +44,7 @@ public class CameraControllerNEW : MonoBehaviour
         } 
 
     //  // When the player is moving up (so the player is facing up - positive) decrease FoV.
-        if(playerPos.forward.y > 0.05f)
+        if (playerPos.forward.y > 0.05f)
         {
             // Stopping the FoV getting too small
             if (!(cam.m_Lens.FieldOfView <= 50))
