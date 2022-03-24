@@ -462,12 +462,12 @@ fire_skip: ;
 // Add back in targeting -- DONE
 // Spawn in camera and player not from scene -- DONE
 // Make this all work on multiplayer -- DONE
-// stop camera going through the floor -- slightly done
-// stop the camera going through the buildings
+// stop camera going through the floor -- DONE
+// stop the camera going through the buildings -- DONE
 
+// actually add in the panning to the cutscene -- DONE
 // hovering - stop the world moving
-// actually add in the panning to the cutscene
-// bug fix - room creation failed , cant' click okay
+// bug fix - room creation failed , cant' click okay - added to list
 // bug fix - ammo
 // bug fix - mini boss doesn't have a timer  
 
