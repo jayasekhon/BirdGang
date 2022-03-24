@@ -15,24 +15,24 @@ public class BaseBirdTarget : MonoBehaviour
     public virtual void OnHit(PhotonMessageInfo info)
     {
         Debug.Log(isGood ? "Got good cube (i.e. take points)" : "Got bad cube (i.e. give points)");
-
+        
         Score.instance.AddScore(isGood, false);
         //gameObject.GetComponent<Score>().status = isGood;
         //gameObject.GetComponent<Score>().UpdateScore();
 
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    SpawnManager spawnManager = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>();
-        //    Spawner spawner = spawnManager.spawners[Random.Range(0, spawnManager.spawners.Length)];
-        //    if (isGood)
-        //    {
-        //        spawner.DecrementGoodPeople();
-        //    }
-        //    else
-        //    {
-        //        spawner.DecrementBadPeople();
-        //    }
-        //}
+        if (PhotonNetwork.IsMasterClient)
+        {
+            SpawnManager spawnManager = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>();
+            Spawner spawner = spawnManager.spawners[Random.Range(0, spawnManager.spawners.Length)];
+            if (isGood)
+            {
+                spawner.DecrementGoodPeople();
+            }
+            else
+            {
+                spawner.DecrementBadPeople();
+            }
+        }
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.Destroy(gameObject);

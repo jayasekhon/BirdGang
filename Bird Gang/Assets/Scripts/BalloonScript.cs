@@ -14,7 +14,7 @@ public enum BALLOON_STAGE
     LOST = 8,
 }
 
-public class BalloonScript : MonoBehaviour
+public class BalloonScript : MonoBehaviour, IPunObservable
 {
     bool floatAway;
     List<Anchor> anchors;
@@ -29,6 +29,8 @@ public class BalloonScript : MonoBehaviour
 
     private LineRenderer lineRenderer;
     private NavMeshAgent agent;
+    private float networkBaseOffset;
+    private Vector3 networkNextPosition;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +41,6 @@ public class BalloonScript : MonoBehaviour
         
         anchors = new List<Anchor>();
         agent.baseOffset = balloonHeight;
-        //this.transform.position = new Vector3(this.transform.position.x, balloonHeight, this.transform.position.z);
 
 
 
@@ -52,7 +53,7 @@ public class BalloonScript : MonoBehaviour
                 if (i == 1) position = new Vector3(-4, -balloonHeight + 1, 4);
                 if (i == 2) position = new Vector3(4, -balloonHeight + 1, -4);
                 if (i == 3) position = new Vector3(-4, -balloonHeight + 1, -4);
-
+                
                 GameObject anchorObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Anchor"), this.transform.position + position, Quaternion.identity);
                 Anchor anchor = anchorObject.GetComponent<Anchor>();
                 anchor.SetBalloon(this);
@@ -77,7 +78,7 @@ public class BalloonScript : MonoBehaviour
         
         if (PhotonNetwork.IsMasterClient)
         {
-            //Debug.Log("Attached count" + attachedAnchors);
+           
             switch (currentStage)
             {
                 case BALLOON_STAGE.ATTACHED:
@@ -101,6 +102,8 @@ public class BalloonScript : MonoBehaviour
         }
         else
         {
+           
+            agent.baseOffset = Mathf.Lerp(agent.baseOffset,networkBaseOffset,Time.deltaTime);
             switch (currentStage)
             {
                 case BALLOON_STAGE.ATTACHED:
@@ -127,7 +130,6 @@ public class BalloonScript : MonoBehaviour
     private void Attatched()
     {
 
-        //Debug.Log("Attatched" + attachedAnchors);
         if (attachedAnchors == 0)
         {
             currentStage = BALLOON_STAGE.DETACHED;
@@ -143,8 +145,7 @@ public class BalloonScript : MonoBehaviour
             floatAwayTimer = 0f;
         }
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, reattachCount, Time.deltaTime);
-        //this.transform.position = Vector3.Lerp(this.transform.position, new Vector3(this.transform.position.x, reattachCount, this.transform.position.z), Time.deltaTime);
-
+      
         if(reattachCount > 150)
         {
             currentStage = BALLOON_STAGE.LOST;
@@ -164,12 +165,11 @@ public class BalloonScript : MonoBehaviour
             anchor.ReattachedAnchorFlag();
         }
         attachedAnchors = anchors.Count;
-        //Debug.Log("ReattachAnchors" + attachedAnchors);
+    
     }
     private void Rettached()
     {
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, balloonHeight, 0.5f * Time.deltaTime);
-        //this.transform.position = Vector3.Lerp(this.transform.position, new Vector3(this.transform.position.x, balloonHeight, this.transform.position.z), 0.5f*Time.deltaTime);
         if (agent.baseOffset < balloonHeight+1)
         {
             currentStage = BALLOON_STAGE.ATTACHED;
@@ -184,8 +184,6 @@ public class BalloonScript : MonoBehaviour
     public void RemoveAnchor()
     {
         if(attachedAnchors>0) attachedAnchors--;
-
-        //Debug.Log("RemoveAnchor" + attachedAnchors);
 
     }
 
@@ -211,5 +209,29 @@ public class BalloonScript : MonoBehaviour
         }
 
     }
-   
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //if (stream.IsWriting)
+        //{
+
+        //    stream.SendNext(agent.baseOffset);
+        //    stream.SendNext(agent.nextPosition);
+        //    stream.SendNext(agent.avoidancePriority);
+
+
+        //}
+        //else
+        //{
+        //    networkBaseOffset = (float)stream.ReceiveNext();
+        //    networkNextPosition = (Vector3)stream.ReceiveNext();
+        //    agent.avoidancePriority = (int)stream.ReceiveNext();
+        //    agent.SetDestination(networkNextPosition);
+            
+
+            
+
+
+        //}
+    }
+
 }

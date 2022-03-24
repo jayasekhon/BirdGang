@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class BalloonAgent : MonoBehaviour
 {
@@ -17,17 +18,29 @@ public class BalloonAgent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        agent.SetDestination(goal);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            agent.SetDestination(goal);
+            
+        }
         agent.avoidancePriority = id;
-        
+
     }
     public void SetGoal(Vector3 managerGoal)
     {
         goal = managerGoal;
     }
+    public Vector3 GetGoal()
+    {
+        return this.goal;
+    }
     public void SetID(int balloonId)
     {
         id = balloonId;
     }
-  
+    public int GetID()
+    {
+        return this.id;
+    }
+
 }

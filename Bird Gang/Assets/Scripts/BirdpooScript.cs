@@ -56,8 +56,11 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		bool flee = false;
 		if (collision.collider.CompareTag("bird_target"))
 		{
+			
 			if (pv.IsMine) {
+				
 				agent = collision.collider.gameObject;
+				Debug.Log(agent.name);
 				agent.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
 			}
 
@@ -116,16 +119,21 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 					a.GetComponent<AiController>().DetectNewObstacle(rb.position);
 			}
 		}
-		if (PhotonNetwork.IsMasterClient)
-		{
-			PhotonNetwork.Destroy(gameObject);
-		}
-		else
-		{
-			gameObject.GetComponent<MeshRenderer>().enabled = false;
-		}
 
-	}
+        foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+        {
+            meshRenderer.enabled = false;
+        }
+        gameObject.GetComponentInChildren<ParticleSystem>().enableEmission = false;
+        gameObject.GetComponentInChildren<ParticleSystem>().Clear();
+
+
+
+
+
+
+
+    }
 
 	private void Update()
 	{

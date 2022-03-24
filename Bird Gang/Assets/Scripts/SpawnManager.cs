@@ -10,7 +10,7 @@ using Photon.Realtime;
 public class SpawnManager : MonoBehaviour, GameEventCallbacks
 {
     private readonly int maxMinibosses = 1;
-    private Spawner[] spawners;
+    public Spawner[] spawners;
 
     void Awake()
     {
