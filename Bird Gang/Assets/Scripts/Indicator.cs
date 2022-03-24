@@ -29,6 +29,6 @@ public class Indicator : MonoBehaviour
     public void MoveIndidcator(Vector2 position)
     {
         if (active)
-            indicatorLocation.anchoredPosition = Vector2.MoveTowards(indicatorLocation.anchoredPosition, position, 30f * Time.deltaTime);
+            indicatorLocation.anchoredPosition = Vector2.MoveTowards(indicatorLocation.anchoredPosition, position, 300f * Time.deltaTime);
     }
 }

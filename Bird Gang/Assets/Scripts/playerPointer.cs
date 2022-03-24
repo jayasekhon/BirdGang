@@ -13,7 +13,7 @@ public class playerPointer : MonoBehaviour
     private Vector3 myPosition;
 
     private Vector2 resolution, screenCenter;
-    private int borderWidth = 100;
+    private int buffer = 50;
 
     private Camera cam;
 
@@ -163,21 +163,6 @@ public class playerPointer : MonoBehaviour
         for (int p = 0; p < playerPositions.Length; p++)
         {
             Vector3 viewPos = cam.WorldToViewportPoint(playerPositions[p]);
-            // if (viewPos.x > 0.5F)
-            //     print("target is on the right side!");
-            // else
-            //     print("target is on the left side!");
-            
-            // if (viewPos.y > 0.5f)
-            //     print("target is above!");
-            // else
-            //     print("target is below!");
-            
-            // if (viewPos.z > 0f)
-            //     print("target is infront!");
-            // else
-            //     print("target is behind you!");
-
             if (viewPos.x < 1 && viewPos.x > 0 && viewPos.y < 1 && viewPos.y > 0 && viewPos.z > 0)
             {
                 // Can be seen
@@ -193,11 +178,41 @@ public class playerPointer : MonoBehaviour
                 if (!indicatorManager.CheckIfIndicatorIsActive(p))
                     indicatorManager.ShowIndicator(p);
                 
-                indicatorManager.AdjustPositionOfIndicator(p, new Vector2(120, 120));
-                indicatorManager.AdjustPositionOfIndicator(p, new Vector2(120, 120));
-                
+                Vector2 newLocation = GetCoordOfNewIndicatorPosition(viewPos);                
+                indicatorManager.AdjustPositionOfIndicator(p, newLocation);                
             }                
         }   
+    }
+
+    Vector2 GetCoordOfNewIndicatorPosition(Vector3 viewPos)
+    {
+        Vector3 dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        float maxWidth = dimensions.x;
+        float maxHeight =  dimensions.y;
+        Vector2 newLocation  = Vector2.zero;
+        if (viewPos.x > 0.5F)
+        {
+            // target is on the right side
+            newLocation.x = maxWidth;
+        } else
+        {
+            // target is on the left side
+            newLocation.x = -maxWidth;
+        }
+        if (viewPos.y > 0.5f)
+        {
+            // target is above!
+            newLocation.y = maxHeight;
+        } else
+        {
+            // target is below!
+            newLocation.y = -maxHeight;
+        }
+        // if (viewPos.z > 0f)
+        //     print("target is infront!");
+        // else
+        //     print("target is behind you!");
+        return newLocation;
     }
 
 }
