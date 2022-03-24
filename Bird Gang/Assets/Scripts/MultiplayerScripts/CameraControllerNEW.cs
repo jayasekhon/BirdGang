@@ -30,25 +30,25 @@ public class CameraControllerNEW : MonoBehaviour
         cam.LookAt = playerPos;
     }
 
-    void FixedUpdate()
-    {
-        // When the player is moving up (so the player is facing up - positive) decrease FoV.
-        if(playerPos.forward.y > 0.05f)
-        {
-            // Stopping the FoV getting too small
-            if (!(cam.m_Lens.FieldOfView <= 50))
-            {
-                cam.m_Lens.FieldOfView -= 0.2f * Mathf.Abs(playerPos.forward.y);
-            }
-        }
-        // When the player is moving down (so the player is facing down - negative) increase FoV.
-        else if (playerPos.forward.y < -0.05f)
-        {
-            // Stopping the FoV getting too large
-            if (!(cam.m_Lens.FieldOfView >= 75))
-            {
-                cam.m_Lens.FieldOfView += 0.25f * Mathf.Abs(playerPos.forward.y);
-            }
-        } 
-    }
+    // void FixedUpdate()
+    // {
+    //     // When the player is moving up (so the player is facing up - positive) decrease FoV.
+    //     if(playerPos.forward.y > 0.05f)
+    //     {
+    //         // Stopping the FoV getting too small
+    //         if (!(cam.m_Lens.FieldOfView <= 50))
+    //         {
+    //             cam.m_Lens.FieldOfView -= 0.2f * Mathf.Abs(playerPos.forward.y);
+    //         }
+    //     }
+    //     // When the player is moving down (so the player is facing down - negative) increase FoV.
+    //     else if (playerPos.forward.y < -0.05f)
+    //     {
+    //         // Stopping the FoV getting too large
+    //         if (!(cam.m_Lens.FieldOfView >= 75))
+    //         {
+    //             cam.m_Lens.FieldOfView += 0.25f * Mathf.Abs(playerPos.forward.y);
+    //         }
+    //     } 
+    // }
 }

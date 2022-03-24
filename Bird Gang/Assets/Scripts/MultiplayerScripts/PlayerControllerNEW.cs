@@ -2,7 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using System.IO;
 
-public class PlayerControllerNEW : MonoBehaviour
+public class PlayerControllerNEW : MonoBehaviour, IPunInstantiateMagicCallback
 {   
     /* New because of testing */
     public IPlayerInput PlayerInput;
@@ -57,11 +57,19 @@ public class PlayerControllerNEW : MonoBehaviour
     private Rigidbody rb;
     private PhotonView PV;
     private Camera cam;
-    private GameObject[] camerasInGame;
+    private GameObject mainCam;
+    // private GameObject[] camerasInGame;
     // private CameraController cameraController;
     private Animator anim;
 
     private Vector2 resolution;
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info) 
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        mainCam = (GameObject)instantiationData[0];
+        cam = mainCam.GetComponent<Camera>();
+    }
 
     void Awake()
     {
@@ -103,18 +111,19 @@ public class PlayerControllerNEW : MonoBehaviour
         }
 
         // Get the local camera component for targeting
-        camerasInGame = GameObject.FindGameObjectsWithTag("MainCamera");
-        for (int c = 0; c < camerasInGame.Length; c++)
-        {
-            if (!camerasInGame[c].GetComponentInParent<PhotonView>().IsMine)
-            {
-                Destroy(camerasInGame[c].gameObject);
-            }
-            else
-            {
-                cam = camerasInGame[c].GetComponent<Camera>();
-            }
-        }
+        // see OnPhotonInstantiate function above - does this a nicer way 
+        // camerasInGame = GameObject.FindGameObjectsWithTag("MainCamera");
+        // for (int c = 0; c < camerasInGame.Length; c++)
+        // {
+        //     if (!camerasInGame[c].GetComponentInParent<PhotonView>().IsMine)
+        //     {
+        //         Destroy(camerasInGame[c].gameObject);
+        //     }
+        //     else
+        //     {
+        //         cam = camerasInGame[c].GetComponent<Camera>();
+        //     }
+        // }
     }
 
     void Update()
@@ -458,8 +467,9 @@ fire_skip: ;
 
 // hovering - stop the world moving
 // actually add in the panning to the cutscene
-// bug fix - room creation
+// bug fix - room creation failed , cant' click oaky
 // bug fix - ammo
+// bug fix - mini boss doesn't have a timer  
 
 // look into customisable options on camera
 // min height for camera
