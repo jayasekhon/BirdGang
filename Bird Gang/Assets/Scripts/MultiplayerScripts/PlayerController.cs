@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Photon.Pun;
 using UnityEngine;
 using System.IO;
@@ -6,6 +7,9 @@ public class PlayerController : MonoBehaviour
 {
     /* New because of testing */
     public IPlayerInput PlayerInput;
+
+    /* Singleton */
+    public static PlayerController Ours;
 
     /* Flight Control */
     private float forwardSpeed = 85f; //strafeSpeed = 7.5f;  hoverSpeed = 5f;
@@ -30,7 +34,6 @@ public class PlayerController : MonoBehaviour
     private bool thing = true;
 
     private bool accelerate;
-    private ConstantForce upForce;
     float timePassed = 0f;
     float windTimePassed = 0f;
     private bool windy;
@@ -63,14 +66,33 @@ public class PlayerController : MonoBehaviour
     private Camera cam;
     private CameraController cameraController;
     private Animator anim;
+    private ConstantForce windForce;
+
+    public bool input_lock_x = false,
+        input_lock_y = false,
+        input_lock_ad = false,
+        input_disable_targeting = false;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
-        upForce = GetComponent<ConstantForce>();
+	windForce = GetComponent<ConstantForce>();
         anim = gameObject.GetComponentInChildren<Animator>();
         anim.enabled = true;
+
+        if (PV.IsMine)
+            Ours = this;
+    }
+
+    /* Change player position cleanly, keeping camera in step, etc. */
+    public void PutAt(Vector3 pos, Quaternion rot)
+    {
+        transform.position = pos;
+        transform.rotation = rot;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        cameraController.MoveToTarget(true, true);
     }
 
     void Start()
@@ -86,12 +108,16 @@ public class PlayerController : MonoBehaviour
 
         if (!PV.IsMine)
         {
-            Destroy(upForce);
             Destroy(rb); //Causes issue with constant force component.
         }
         else
         {
-            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber * -2f -180f, 115f, 115f); // TEMP FIX: preventing players spawning below the map if there are >1.
+            GameObject[] spawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
+            rb.position = spawns[PhotonNetwork.LocalPlayer.ActorNumber]
+                .transform.position;
+            rb.rotation = spawns[PhotonNetwork.LocalPlayer.ActorNumber]
+                .transform.rotation;
+
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
@@ -116,7 +142,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-
         if (!PV.IsMine)
         {
             return;
@@ -150,7 +175,7 @@ public class PlayerController : MonoBehaviour
         Look();
         Movement();
         KeyboardTurning();
-        cameraController.MoveToTarget(cameraUpdate);
+        cameraController.MoveToTarget(cameraUpdate, false);
     }
 
     void GetInput()
@@ -213,7 +238,8 @@ public class PlayerController : MonoBehaviour
         }
         /* Find target pos in terms of world geometry */
         RaycastHit hit;
-        if (!Physics.Raycast(cam.transform.position, mouseRay,
+        if (input_disable_targeting
+            || !Physics.Raycast(cam.transform.position, mouseRay,
                 out hit, float.MaxValue, 1 << 8)
             || hit.point.y > transform.position.y
         ) {
@@ -300,6 +326,12 @@ fire_skip: ;
         {
             Vector3 mouseDistance = cam.ScreenToViewportPoint(Input.mousePosition) * 2f
                 - new Vector3(1f, 1f);
+
+            if (input_lock_x)
+                mouseDistance.x = 0f;
+            if (input_lock_y)
+                mouseDistance.y = 0f;
+
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
             if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
@@ -347,42 +379,43 @@ fire_skip: ;
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
             Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
             rb.AddForce(position, ForceMode.Impulse); 
-            
-            upForce.force = new Vector3(0,0,0);
-            upForce.relativeForce = new Vector3(0,0,0);
             windTimePassed = 0;
+            // Assume gravity == reaction force from wings.
+            rb.useGravity = false;
         }
-
-        else if (!grounded && !move)
+        else
         {
-
             Hovering();
             Wind();
+            rb.useGravity = true;
         }
     }
 
+    public void SetHoveringGravity(bool enabled)
+    {
+        /* 3.2 as originally set, 1.756 from observation. */
+        if (enabled)
+            rb.mass = 3.2f;
+        else
+            rb.mass = 1.755f;
+    }
 
     void Hovering() {
         anim.speed = 3f;
         anim.SetBool("flyingDown", false);
 
-        if (timePassed < 0.6)
+        if (timePassed <= 0.6f)
         {
             //UP
-            upForce.force = new Vector3(0, 30, 0);
-            // ycomp = upForce.force.y;
-            
+            rb.AddForce(new Vector3(0f, 30f, 0f));
             timePassed += Time.fixedDeltaTime;
         }
-
-        if (timePassed > 0.6 && timePassed < 1.04)
+        else if (timePassed > 0.6f && timePassed <= 1.04f)
         {
             //DOWN
-            upForce.force = new Vector3(0, 0, 0);
             timePassed += Time.fixedDeltaTime;
         }
-
-        if (timePassed > 1.04)
+        else // (timePassed > 1.04)
         {
             timePassed = 0f;
         }
@@ -413,7 +446,7 @@ fire_skip: ;
 
     void KeyboardTurning()
     {
-        if (move)
+        if (move && !input_lock_ad)
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
@@ -490,14 +523,14 @@ fire_skip: ;
         if (windTimePassed <= 3)
         {
             thing = true;
-            upForce.relativeForce = new Vector3(0,0,0);
+            windForce.relativeForce = new Vector3(0,0,0);
             windTimePassed += Time.fixedDeltaTime;
         }
 
         if (windTimePassed > 3 && windTimePassed < 4)
         {
             thing = false;
-            upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0); 
+            windForce.relativeForce = new Vector3(30 * pushDirection, 0, 0); 
             windTimePassed += Time.fixedDeltaTime;  
             Debug.Log(pushDirection);
         }

@@ -1,45 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using System.IO;
-/*
- * Base target. Inherit this class and override OnHit to do
- * e.g. animation, breakable objects, update score, etc on being hit.
- */
-public class BaseBirdTarget : MonoBehaviour
+
+/* Inherit this on items which react to hits. */
+public interface IBirdTarget
+{
+    [PunRPC]
+    public void OnHit(PhotonMessageInfo info);
+    /* If true, OnHit should be called as RPC, otherwise just called on client. */
+    public bool IsClientSideTarget();
+}
+
+/* Target which destroys itself on hit, and adds/subtracts score. */
+public sealed class BaseBirdTarget : MonoBehaviour, IBirdTarget
 {
     public bool isGood;
+    public bool clientSide = false;
+
+    public bool IsClientSideTarget()
+    {
+        return clientSide;
+    }
 
     [PunRPC]
-    public virtual void OnHit(PhotonMessageInfo info)
+    public void OnHit(PhotonMessageInfo info)
     {
         Debug.Log(isGood ? "Got good cube (i.e. take points)" : "Got bad cube (i.e. give points)");
-        
-        Score.instance.AddScore(isGood, false);
-        //gameObject.GetComponent<Score>().status = isGood;
-        //gameObject.GetComponent<Score>().UpdateScore();
+        Score.instance.AddScore(isGood ? Score.HIT.GOOD : Score.HIT.BAD);
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            SpawnManager spawnManager = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>();
-            Spawner spawner = spawnManager.spawners[Random.Range(0, spawnManager.spawners.Length)];
-            if (isGood)
-            {
-                spawner.DecrementGoodPeople();
-            }
-            else
-            {
-                spawner.DecrementBadPeople();
-            }
-        }
-        if (PhotonNetwork.IsMasterClient)
-        {
+        if (clientSide)
+            Destroy(gameObject);
+        else if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.Destroy(gameObject);
-        }
         else
-        {
             gameObject.GetComponent<MeshRenderer>().enabled = false;
-        }
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
@@ -18,6 +16,7 @@ public class AiController : MonoBehaviour
     public bool isGood;
     public bool isFleeing;
     public bool isMiniboss;
+    public bool forTutorial;
 
     private int minibossSpeed = 4;
     private int normalSpeed = 2;
@@ -39,7 +38,7 @@ public class AiController : MonoBehaviour
         agent.angularSpeed = normalAngularSpeed;
         int index = Random.Range(0, goalLocations.Length);
         //Debug.Log(index);
-          
+
         agent.SetDestination(goalLocations[index].transform.position);
     }
 
@@ -96,7 +95,8 @@ public class AiController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        goalLocations = GameObject.FindGameObjectsWithTag("goal");
+        if (goalLocations == null)
+            goalLocations = GameObject.FindGameObjectsWithTag(forTutorial ? "tut_goal" : "goal");
         PV = GetComponent<PhotonView>();
         // Access the agents NavMesh
         agent = this.GetComponent<NavMeshAgent>();
@@ -109,6 +109,9 @@ public class AiController : MonoBehaviour
 
     private void Update()
     {
+        if (!agent.isActiveAndEnabled || !agent.isOnNavMesh)
+            return;
+
         if (PhotonNetwork.IsMasterClient)
         {
             if (agent.remainingDistance < 2)

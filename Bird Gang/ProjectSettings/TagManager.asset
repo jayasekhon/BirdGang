@@ -14,6 +14,8 @@ TagManager:
   - SpawnManager
   - Anchor_target
   - Balloon_target
+  - PlayerSpawn
+  - tut_goal
   layers:
   - Default
   - TransparentFX
@@ -24,7 +26,7 @@ TagManager:
   - Glow
   - Post Processing
   - SimpleWorldCollisions
-  - NavMesh
+  - TutorialRaycast
   - 
   - 
   - 

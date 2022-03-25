@@ -19,7 +19,7 @@ public enum ANCHOR_COLOUR
 
 }
 
-public class Anchor : BaseBirdTarget,IPunObservable
+public class Anchor : MonoBehaviour, IBirdTarget, IPunObservable
 {
     private float timePassed;
     private float detachTime =30f;
@@ -142,7 +142,7 @@ public class Anchor : BaseBirdTarget,IPunObservable
     private void Waiting()
     {
         fillAmount = 1;
-        
+
         timer.color =   new Color32(255,215,0, 200);
         if (reattachedFlag)
         {
@@ -181,13 +181,17 @@ public class Anchor : BaseBirdTarget,IPunObservable
         reattachedFlag = true;
     }
 
+    public bool IsClientSideTarget()
+    {
+        return false;
+    }
+
     [PunRPC]
-    public override void OnHit(PhotonMessageInfo info)
+    public void OnHit(PhotonMessageInfo info)
     {
         float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
         if (PhotonNetwork.IsMasterClient)
         {
-            
             timePassed = lag;
         }
         else {
@@ -195,20 +199,20 @@ public class Anchor : BaseBirdTarget,IPunObservable
         }
 
     }
+
     public void SetBalloon(BalloonScript parentBalloon)
     {
         balloon = parentBalloon;
     }
+
     public void SetID(int balloonId)
     {
         id = balloonId;
     }
 
     
- 
-
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-{
+    {
         if (stream.IsWriting)
         {
 
