@@ -334,7 +334,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
             object[] args = new object[] {acc, vel};
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
-            
             object[] splatterInitData = new object[] { currentTime + timeToHit };
             Quaternion rotation = Quaternion.LookRotation(-hit.normal);
             GameObject splatObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Splatter"), hit.point, rotation,0, splatterInitData);
@@ -534,7 +533,7 @@ fire_skip: ;
             thing = false;
             upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0); 
             windTimePassed += Time.fixedDeltaTime;  
-            Debug.Log(pushDirection);
+            // Debug.Log(pushDirection);
         }
 
         if (windTimePassed > 4)
