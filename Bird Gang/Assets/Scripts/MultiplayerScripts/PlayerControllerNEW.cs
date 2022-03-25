@@ -18,8 +18,17 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     private Vector2 lookInput, screenCenter, mouseDistance;
     private float rollInput;
 
+    /* Singleton */
+    public static PlayerControllerNEW Ours;
+
     float current_x_rot;
     float current_y_rot;
+
+    float windTimePassed = 0f;
+    private bool windy;
+    private float pushDirection;
+    private bool thing = true;
+    // private ConstantForce windForce;
 
     bool grounded; 
     public bool move;
@@ -64,6 +73,11 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     private Vector2 resolution;
 
+    public bool input_lock_x = false,
+    input_lock_y = false,
+    input_lock_ad = false,
+    input_disable_targeting = false;
+
     // public void OnPhotonInstantiate(PhotonMessageInfo info) 
     // {
     //     object[] instantiationData = info.photonView.InstantiationData;
@@ -83,6 +97,19 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         resolution = new Vector2(Screen.width, Screen.height);
         screenCenter.x = Screen.width * 0.5f;
         screenCenter.y = Screen.height * 0.5f;
+
+        if (PV.IsMine)
+            Ours = this;
+    }
+
+    /* Change player position cleanly, keeping camera in step, etc. */
+    public void PutAt(Vector3 pos, Quaternion rot)
+    {
+        transform.position = pos;
+        transform.rotation = rot;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        // cameraController.MoveToTarget(true, true);
     }
 
     void Start()
@@ -98,12 +125,16 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
         if (!PV.IsMine)
         {
-            Destroy(upForce);
+            // Destroy(upForce);
             Destroy(rb); //Causes issue with constant force component.
         }
         else
         {
-            rb.position = new Vector3(PhotonNetwork.LocalPlayer.ActorNumber * -2f -180f, 115f, 115f); // TEMP FIX: preventing players spawning below the map if there are >1.
+            GameObject[] spawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
+            rb.position = spawns[PhotonNetwork.LocalPlayer.ActorNumber]
+                .transform.position;
+            rb.rotation = spawns[PhotonNetwork.LocalPlayer.ActorNumber]
+                .transform.rotation;
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
@@ -138,12 +169,12 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             PV.RPC("OnKeyPress", RpcTarget.All);
         }
 
-        // Check screen size has not changed
-        if (resolution.x != Screen.width || resolution.y != Screen.height)
-        {
-                    screenCenter.x = Screen.width * 0.5f;
-                    screenCenter.y = Screen.height * 0.5f;
-        }
+        // // Check screen size has not changed
+        // if (resolution.x != Screen.width || resolution.y != Screen.height)
+        // {
+        //             screenCenter.x = Screen.width * 0.5f;
+        //             screenCenter.y = Screen.height * 0.5f;
+        // }
 
         if (gameObject.transform.localRotation.eulerAngles.x <= 100 && gameObject.transform.localRotation.eulerAngles.x >= 20 ){
     
@@ -229,8 +260,12 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
         /* Find target pos in terms of world geometry */
         RaycastHit hit;
-        if (!Physics.Raycast(cam.transform.position, mouseRay, out hit, float.MaxValue, 1 << 8))
-        {
+
+        if (input_disable_targeting
+            || !Physics.Raycast(cam.transform.position, mouseRay,
+                out hit, float.MaxValue, 1 << 8)
+            || hit.point.y > transform.position.y
+        ) {
             targetObj.transform.position = new Vector3(0, -10, 0);
             projLineRenderer.positionCount = 0;
             return;
@@ -313,10 +348,14 @@ fire_skip: ;
     {
         if (move)
         {
-            lookInput.x = Input.mousePosition.x;
-            lookInput.y = Input.mousePosition.y;
-            mouseDistance.x = (lookInput.x - screenCenter.x) / screenCenter.y;
-            mouseDistance.y = (lookInput.y - screenCenter.y) / screenCenter.y;
+            Vector3 mouseDistance = cam.ScreenToViewportPoint(Input.mousePosition) * 2f
+                - new Vector3(1f, 1f);
+
+            if (input_lock_x)
+                mouseDistance.x = 0f;
+            if (input_lock_y)
+                mouseDistance.y = 0f;
+
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
@@ -326,7 +365,8 @@ fire_skip: ;
                 mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
             }
 
-            Vector2 unitVec = new Vector2(lookInput.x - screenCenter.x, lookInput.y);
+            Vector2 unitVec = new Vector2(mouseDistance.x, mouseDistance.y + 0.5f);
+
 
             float rollAngle = Vector2.Angle(unitVec.normalized, new Vector2(1, 0));
             rollAngle = Mathf.Clamp(rollAngle, 50, 130); //change values depending on how much we want bird to rotate sideways.
@@ -346,51 +386,62 @@ fire_skip: ;
         } else
         {
             // Make sure bird is straightend up
-            current_x_rot = this.transform.eulerAngles.x;
-            current_y_rot = this.transform.eulerAngles.y;
+            current_x_rot = transform.eulerAngles.x;
+            current_y_rot = transform.eulerAngles.y;
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(current_x_rot, current_y_rot, 0), 60f * Time.fixedDeltaTime);
         }
     }
 
     void Movement()
     {
-        Acceleration();  
-        // In an IF now to prevent S moving the bird backwards.      
+        Acceleration();
+        // In an IF now to prevent S moving the bird backwards.
         if (move)
         {
+            // FoVChanges();
             float vertical = PlayerInput.Vertical;
             float fixedDeltaTime = PlayerInput.FixedDeltaTime;
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
             Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
             rb.AddForce(position, ForceMode.Impulse); 
+            windTimePassed = 0;
+            // Assume gravity == reaction force from wings.
+            rb.useGravity = false;
         }
-        
-        else if (!grounded && !move)
+        else
         {
             Hovering();
-        } 
+            Wind();
+            rb.useGravity = true;
+        }
     }
     
+    public void SetHoveringGravity(bool enabled)
+    {
+        /* 3.2 as originally set, 1.756 from observation. */
+        if (enabled)
+            rb.mass = 3.2f;
+        else
+            rb.mass = 1.755f;
+    }
 
     void Hovering() {
         anim.speed = 3f;
         anim.SetBool("flyingDown", false);
 
-        if (timePassed < 0.6)
+        if (timePassed <= 0.6f)
         {   
             //UP
-            upForce.force = new Vector3(0, 30, 0);
+            rb.AddForce(new Vector3(0f, 30f, 0f));
             timePassed += Time.fixedDeltaTime;
         }
 
-        if (timePassed > 0.6 && timePassed < 1.04)
+        else if (timePassed > 0.6f && timePassed <= 1.04f)
         {
             //DOWN
-            upForce.force = new Vector3(0, 0, 0);
             timePassed += Time.fixedDeltaTime;
         } 
-
-        if (timePassed > 1.04)
+        else
         {
             timePassed = 0f;
         }
@@ -398,7 +449,7 @@ fire_skip: ;
 
     void KeyboardTurning()
     {
-        if (move)
+        if (move && !input_lock_ad)
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
@@ -455,6 +506,40 @@ fire_skip: ;
         if(increasedAcceleration < 1)
         {
             Debug.LogWarning("increasedAcceleration below 1");
+        }
+    }
+    
+    void Wind()
+    {
+
+        if (Random.Range(0,2) == 0 && thing)
+        {
+            pushDirection = 1;
+        }
+
+        else if (Random.Range(0,2) == 1 && thing)
+        {
+            pushDirection = -1;
+        }
+
+        if (windTimePassed <= 3)
+        {
+            thing = true;
+            upForce.relativeForce = new Vector3(0,0,0);
+            windTimePassed += Time.fixedDeltaTime;
+        }
+
+        if (windTimePassed > 3 && windTimePassed < 4)
+        {
+            thing = false;
+            upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0); 
+            windTimePassed += Time.fixedDeltaTime;  
+            Debug.Log(pushDirection);
+        }
+
+        if (windTimePassed > 4)
+        {
+            windTimePassed = 0;
         }
     }
 

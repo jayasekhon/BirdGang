@@ -334,7 +334,7 @@ fire_skip: ;
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
-            if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
+            if (Vector2.SqrMagnitude(mouseDistance) < 0.05f) //for the sensitivity
             {
                 mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
                 mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
@@ -539,7 +539,6 @@ fire_skip: ;
         {
             windTimePassed = 0;
         }
-        
     }
 
     public void SetGroundedState(bool grounded)
