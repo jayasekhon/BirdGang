@@ -27,9 +27,14 @@ public class PlayerController : MonoBehaviour
     private float xPos;
     private float zPos;
 
+    private float pushDirection;
+    private bool thing = true;
+
     private bool accelerate;
     private ConstantForce upForce;
     float timePassed = 0f;
+    float windTimePassed = 0f;
+    private bool windy;
 
     /* Targeting */
     public GameObject targetObj;
@@ -358,12 +363,17 @@ fire_skip: ;
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
             Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
             rb.AddForce(position, ForceMode.Impulse); 
+            
+            upForce.force = new Vector3(0,0,0);
+            upForce.relativeForce = new Vector3(0,0,0);
+            windTimePassed = 0;
         }
         
         else if (!grounded && !move)
         {
             
             Hovering();
+            Wind();
         } 
     }
     
@@ -376,6 +386,8 @@ fire_skip: ;
         {   
             //UP
             upForce.force = new Vector3(0, 30, 0);
+            // ycomp = upForce.force.y;
+            
             timePassed += Time.fixedDeltaTime;
         }
 
@@ -476,6 +488,41 @@ fire_skip: ;
         {
             Debug.LogWarning("increasedAcceleration below 1");
         }
+    }
+
+    void Wind()
+    {
+
+        if (Random.Range(0,2) == 0 && thing)
+        {
+            pushDirection = 1;
+        }
+
+        else if (Random.Range(0,2) == 1 && thing)
+        {
+            pushDirection = -1;
+        }
+
+        if (windTimePassed <= 3)
+        {
+            thing = true;
+            upForce.relativeForce = new Vector3(0,0,0);
+            windTimePassed += Time.fixedDeltaTime;
+        }
+
+        if (windTimePassed > 3 && windTimePassed < 4)
+        {
+            thing = false;
+            upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0); 
+            windTimePassed += Time.fixedDeltaTime;  
+            Debug.Log(pushDirection);
+        }
+
+        if (windTimePassed > 4)
+        {
+            windTimePassed = 0;
+        }
+        
     }
 
     public void SetGroundedState(bool grounded)

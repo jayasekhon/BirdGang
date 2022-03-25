@@ -87,7 +87,6 @@ public class Anchor : BaseBirdTarget,IPunObservable
                     //Debug.Log("Waiting");
                     NetworkWaiting();
                     break;
-
             }
         }
         

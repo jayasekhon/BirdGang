@@ -21,7 +21,7 @@ public class MiniBossTarget : BaseBirdTarget
 	private bool startTimer = false;
 
 	void Start() {
-
+  
 		// _animator = GetComponent<Animator>();
 		playersInGame = GameObject.FindGameObjectsWithTag("Player");
 		numOfPlayers = playersInGame.Length;
