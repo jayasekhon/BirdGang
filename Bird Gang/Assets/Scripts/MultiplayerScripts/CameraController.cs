@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     private PhotonView PV;
     private Transform targetPos;
 
-    private GameObject[] playersInGame;
+    public GameObject[] playersInGame;
     private GameObject m_player;
 
     private PhotonView checkLocal;
