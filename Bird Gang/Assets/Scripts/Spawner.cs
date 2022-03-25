@@ -116,15 +116,15 @@ public class Spawner : MonoBehaviour
         miniBosses.Clear();
     }
 
-    public int GetNumberOfMiniBoss(int numOfPeople)
+    public int GetNumberOfMiniBoss()
     {
         return NumberOfMiniBoss;
     }
-    public int GetNumberOfGoodPeople(int numOfPeople)
+    public int GetNumberOfGoodPeople()
     {
         return NumberOfGoodPeople;
     }
-    public int GetNumberOfBadPeople(int numOfPeople)
+    public int GetNumberOfBadPeople()
     {
         return NumberOfBadPeople;
     }

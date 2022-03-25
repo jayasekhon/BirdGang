@@ -1,5 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
+using System.IO;
 
 public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 { 
@@ -11,7 +12,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 
 	private bool active = true;
 
-	private const float Lifetime = 50f;
+	private const float Lifetime = 10f;
 	private float endTime;
 
 	private const int LAYER_WORLD = 8;
@@ -55,8 +56,11 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		bool flee = false;
 		if (collision.collider.CompareTag("bird_target"))
 		{
+			
 			if (pv.IsMine) {
+				
 				agent = collision.collider.gameObject;
+				Debug.Log(agent.name);
 				agent.GetComponent<PhotonView>().RPC("OnHit", RpcTarget.All);
 			}
 
@@ -92,6 +96,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		else if (collision.collider.gameObject.layer == LAYER_WORLD)
 		{
 			Destroy(rb);
+			
 			Destroy(collider);
 			active = false;
 			flee = true;
@@ -103,6 +108,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 			if (acc.y > -19.81f)
 				acc.y = -19.81f;
 		}
+		
 
 		if (flee && PhotonNetwork.IsMasterClient)
 		{
@@ -113,13 +119,28 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 					a.GetComponent<AiController>().DetectNewObstacle(rb.position);
 			}
 		}
-	}
+
+        foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+        {
+            meshRenderer.enabled = false;
+        }
+        gameObject.GetComponentInChildren<ParticleSystem>().enableEmission = false;
+        gameObject.GetComponentInChildren<ParticleSystem>().Clear();
+
+
+
+
+
+
+
+    }
 
 	private void Update()
 	{
 		if (Time.time > endTime)
 		{
 			active = false;
+			
 			Destroy(this.gameObject);
 		}
 	}

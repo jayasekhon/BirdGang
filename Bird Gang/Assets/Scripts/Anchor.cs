@@ -29,6 +29,7 @@ public class Anchor : BaseBirdTarget,IPunObservable
     public float delayTimer;
     private float fillAmount;
     private bool reattachedFlag;
+    private int id;
 
     private float networkTimePassed;
 
@@ -38,7 +39,7 @@ public class Anchor : BaseBirdTarget,IPunObservable
     void Start()
     {
         timePassed = 0f;
-        delayStart = 1f;//Random.RandomRange(10,60);
+        delayStart = Random.RandomRange(10,90);
         delayTimer = 0f;
         currentStage = ANCHOR_STAGE.DELAY;
         reattachedFlag = false;
@@ -48,8 +49,10 @@ public class Anchor : BaseBirdTarget,IPunObservable
     // Update is called once per frame
     void Update()
     {
+        
         if (PhotonNetwork.IsMasterClient)
         {
+            Movement();
             switch (currentStage)
             {
                 case ANCHOR_STAGE.DELAY:
@@ -73,18 +76,17 @@ public class Anchor : BaseBirdTarget,IPunObservable
             switch (networkStage)
             {
                 case ANCHOR_STAGE.DELAY:
-                    // Debug.Log("Delayed");
+                    //Debug.Log("Delayed");
                     NetworkDelayed();
                     break;
                 case ANCHOR_STAGE.STARTED:
-                    // Debug.Log("Started");
+                    //Debug.Log("Started");
                     NetworkStarted();
                     break;
                 case ANCHOR_STAGE.WAITING:
-                    // Debug.Log("Waiting");
+                    //Debug.Log("Waiting");
                     NetworkWaiting();
                     break;
-
             }
         }
         
@@ -158,6 +160,22 @@ public class Anchor : BaseBirdTarget,IPunObservable
         networkTimePassed = 0;
         timer.color = new Color32(255, 215, 0, 200);
     }
+    
+
+    private void Movement()
+    {
+        Vector3 position = new Vector3(0,0,0);
+        if (id == 0) position = new Vector3(4, 0, 4);
+        if (id == 1) position = new Vector3(-4, 0, 4);
+        if (id == 2) position = new Vector3(4, 0, -4);
+        if (id == 3) position = new Vector3(-4, 0, -4);
+        transform.position = new Vector3(balloon.transform.position.x, 1, balloon.transform.position.z);
+        transform.position += position;
+        transform.rotation = balloon.transform.rotation;
+
+
+    }
+
     public void ReattachedAnchorFlag()
     {
         reattachedFlag = true;
@@ -181,6 +199,11 @@ public class Anchor : BaseBirdTarget,IPunObservable
     {
         balloon = parentBalloon;
     }
+    public void SetID(int balloonId)
+    {
+        id = balloonId;
+    }
+
     
  
 
