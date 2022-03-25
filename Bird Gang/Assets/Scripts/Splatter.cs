@@ -34,7 +34,7 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
  
         if (Time.timeAsDouble > appearTime)
         {
-
+            // Debug.Log("hello");
             meshRenderer.enabled =true;
             particleSystem.gameObject.SetActive(true);
             //particleSystem.Play();
@@ -51,7 +51,7 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
         {
             
 
-            Destroy(this.gameObject);
+            // Destroy(this.gameObject);
         }
     }
     public void OnPhotonInstantiate(PhotonMessageInfo info)

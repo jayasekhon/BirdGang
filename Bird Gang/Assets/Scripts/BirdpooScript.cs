@@ -107,11 +107,13 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 
 		if (flee && PhotonNetwork.IsMasterClient)
 		{
-			GameObject[] agents = GameObject.FindGameObjectsWithTag("bird_target");
-			foreach (GameObject a in agents)
+			// GameObject[] agents = GameObject.FindGameObjectsWithTag("bird_target");
+			AiController[] agents = GameObject.FindObjectsOfType<AiController>();
+			foreach (AiController a in agents)
 			{
 				if (a != collision.collider.gameObject)
-					a.GetComponent<AiController>().DetectNewObstacle(rb.position);
+					// a.GetComponent<AiController>().DetectNewObstacle(rb.position);
+					a.DetectNewObstacle(rb.position);
 			}
 		}
 

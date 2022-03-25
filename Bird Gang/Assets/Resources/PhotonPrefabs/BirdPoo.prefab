@@ -93,8 +93,8 @@ GameObject:
   - component: {fileID: 6445212967473487037}
   - component: {fileID: 5230856505960675552}
   - component: {fileID: 8409860348149065120}
-  - component: {fileID: 1015660236302419073}
   - component: {fileID: 758777237648319423}
+  - component: {fileID: -7947694087459375909}
   m_Layer: 0
   m_Name: BirdPoo
   m_TagString: Untagged
@@ -146,6 +146,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2942b1948993fd45a9555aee7bc8c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &758777237648319423
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087393127234607363}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-7947694087459375909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,19 +181,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!135 &758777237648319423
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4087393127234607363}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5643143592556033274
 GameObject:
   m_ObjectHideFlags: 0

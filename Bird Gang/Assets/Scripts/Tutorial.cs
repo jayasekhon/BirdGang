@@ -18,7 +18,7 @@ public class Tutorial : MonoBehaviour
 	private float nextLostCheck = 0f;
 	private int lostCtr;
 
-	private PlayerController pc;
+	private PlayerControllerNEW pc;
 	private int stage = 0;
 	private bool has_init = false;
 
@@ -83,9 +83,9 @@ public class Tutorial : MonoBehaviour
 	public void Update()
 	{
 		/* PC is spawned by script, might not be available in Start. */
-		if (!has_init && PlayerController.Ours)
+		if (!has_init && PlayerControllerNEW.Ours)
 		{
-			pc = PlayerController.Ours;
+			pc = PlayerControllerNEW.Ours;
                         has_init = true;
 			AdvanceTutorial();
 		}
