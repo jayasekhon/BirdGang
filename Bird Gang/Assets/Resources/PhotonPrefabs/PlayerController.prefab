@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 7836328602251963993}
   - component: {fileID: 1575613300564582443}
   - component: {fileID: 327061003483314526}
+  - component: {fileID: 4266927269432915150}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -272,6 +273,18 @@ MonoBehaviour:
   targetLineRes: 20
   limitAimAngles: 0
   projLineMat: {fileID: 2100000, guid: 327ff9cc15846363e8e2e1393bc9a106, type: 2}
+--- !u!75 &4266927269432915150
+ConstantForce:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716701025068079662}
+  m_Enabled: 1
+  m_Force: {x: 0, y: 0, z: 0}
+  m_RelativeForce: {x: 0, y: 0, z: 0}
+  m_Torque: {x: 0, y: 0, z: 0}
+  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1 &5054865259955276068
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,6 +789,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6637057332674595695, guid: a039225516b454d9eacfb12888b2fd26, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d6ec4b13ff9fc17d099360e3e810da2b, type: 2}
     - target: {fileID: 919132149155446097, guid: a039225516b454d9eacfb12888b2fd26, type: 3}
       propertyPath: m_Name
       value: birdCap
