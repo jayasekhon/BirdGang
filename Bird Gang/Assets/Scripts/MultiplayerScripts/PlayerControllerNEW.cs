@@ -248,7 +248,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         Vector3 pos = rb.position;
         Vector3 dist = hit.point - pos;
         float timeToHit = dist.magnitude / targetFixedVelocity;
-
+        double currentTime = Time.time;
         float v;
         {
             Vector3 distFloor = dist * (pos.y / dist.y);
@@ -299,6 +299,12 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
             object[] args = new object[] {acc, vel};
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
+            
+            object[] splatterInitData = new object[] { currentTime + timeToHit };
+            Quaternion rotation = Quaternion.LookRotation(-hit.normal);
+            GameObject splatObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Splatter"), hit.point, rotation,0, splatterInitData);
+            
+            splatObject.transform.SetParent(hit.collider.gameObject.transform);
         }
 fire_skip: ;
     }
