@@ -22,6 +22,8 @@ public enum GAME_STAGE
 	ETC = 8,
 	BREAK = 16,
 
+	INTRODUCTION = 32,
+
 	ALL = 0xFF,
 };
 
@@ -68,16 +70,18 @@ public class GameEvents : MonoBehaviour
 
 	public static readonly Stage[] agenda =
 	{
-		new Stage(GAME_STAGE.BREAK, 2f),
-		new Stage(GAME_STAGE.FIRST, 600f),
+		new Stage(GAME_STAGE.INTRODUCTION, 120f),
 	};
 
 	private int stageIndex;
 	private Stage currStage;
-	private bool finished;
+	private bool finished = false;
+	private bool waitOnRPC = false;
 
 	private float lastProgress;
-	private float lastProgressTime;
+	private double lastProgressTime;
+
+	private float nextSyncTime;
 
 	private PhotonView pv;
 
@@ -103,10 +107,10 @@ public class GameEvents : MonoBehaviour
 					return;
 				}
 				currStage = agenda[stageIndex];
-				lastProgressTime = Time.time;
+				lastProgressTime = PhotonNetwork.Time;
 				lastProgress = 0;
 			}
-			Debug.Log("Event callback: " + t.ToString() + " on " + currStage.GameStage.ToString());
+			// Debug.Log("Event callback: " + t.ToString() + " on " + currStage.GameStage.ToString());
 		}
 
 		foreach (CallbackItem h in callbacks)
@@ -127,11 +131,13 @@ public class GameEvents : MonoBehaviour
 				}
 			}
 		}
+
+		waitOnRPC = false;
 	}
 
 	float GetProgress()
 	{
-		return lastProgress + ((Time.time - lastProgressTime) / currStage.maxDuration);
+		return Mathf.Min(1f, lastProgress + ((float)(PhotonNetwork.Time - lastProgressTime) / currStage.maxDuration));
 	}
 
 	/* We can't be sure that event manager exists when these functions are called. */
@@ -150,14 +156,15 @@ public class GameEvents : MonoBehaviour
 	{
 		if (finished)
 			return;
-		pv.RPC("SetProgressRPC", RpcTarget.All, progress);
+		pv.RPC("SyncProgressRPC", RpcTarget.AllViaServer, progress);
+		waitOnRPC = true;
 	}
 
 	[PunRPC]
-	private void SetProgressRPC(object[] progress)
+	private void SyncProgressRPC(object progress, PhotonMessageInfo info)
 	{
-		lastProgress = (float)progress[0];
-		lastProgressTime = Time.time;
+		lastProgress = (float)progress;
+		lastProgressTime = info.SentServerTime;
 		EmitCallback(new object[]{ STAGE_CALLBACK.PROGRESS });
 	}
 
@@ -165,8 +172,9 @@ public class GameEvents : MonoBehaviour
 	{
 		if (finished)
 			return;
-		pv.RPC("EmitCallback", RpcTarget.All, new object[]{STAGE_CALLBACK.END, 0});
-		pv.RPC("EmitCallback", RpcTarget.All, new object[]{STAGE_CALLBACK.BEGIN, stageIndex + 1});
+		pv.RPC("EmitCallback", RpcTarget.AllViaServer, new object[]{STAGE_CALLBACK.END, 0});
+		pv.RPC("EmitCallback", RpcTarget.AllViaServer, new object[]{STAGE_CALLBACK.BEGIN, stageIndex + 1});
+		waitOnRPC = true;
 	}
 
 	void Awake()
@@ -182,15 +190,29 @@ public class GameEvents : MonoBehaviour
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
-			pv.RPC("EmitCallback", RpcTarget.All, STAGE_CALLBACK.BEGIN, 0);
+			pv.RPC("EmitCallback", RpcTarget.AllViaServer, new object[]{ STAGE_CALLBACK.BEGIN, 0 });
+			waitOnRPC = true;
 		}
 	}
 
 	void Update()
 	{
-		if (GetProgress() > 1f && PhotonNetwork.IsMasterClient)
+		if (waitOnRPC)
+			return;
+
+		if (PhotonNetwork.IsMasterClient && GetProgress() == 1f)
+		{
 			ToNextStage();
+			nextSyncTime = Time.time + 10f;
+		}
+		else if (PhotonNetwork.IsMasterClient && Time.time > nextSyncTime)
+		{
+			pv.RPC("SyncProgressRPC", RpcTarget.AllViaServer, new object[]{ GetProgress() });
+			nextSyncTime = Time.time + 10f;
+		}
 		else
-			EmitCallback(new object[]{ STAGE_CALLBACK.PROGRESS });
+		{
+			EmitCallback(new object[] {STAGE_CALLBACK.PROGRESS});
+		}
 	}
 }

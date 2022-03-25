@@ -149,7 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51217cf63ddfb3ef1af1e0abe81ae9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGood: 0
   attackers: []
   healthStatus: {fileID: 2646586866908473418}
 --- !u!114 &8852955915655878227
@@ -167,6 +166,7 @@ MonoBehaviour:
   isGood: 0
   isFleeing: 0
   isMiniboss: 1
+  forTutorial: 0
 --- !u!114 &7353842676869555437
 MonoBehaviour:
   m_ObjectHideFlags: 0

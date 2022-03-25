@@ -23,6 +23,7 @@ public class Spawner : MonoBehaviour
     private List<GameObject> miniBosses = new List<GameObject>();
 
     PhotonView PV;
+    Transform child;
 
     void Awake()
     {
@@ -51,10 +52,12 @@ public class Spawner : MonoBehaviour
     }
 
     private void SpawnGoodPerson()
-    {
+    {   
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
 
         GameObject newGoodPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs","Good Person Cube"),position,Quaternion.identity);
+        child = newGoodPerson.transform.GetChild(Random.Range(0, 3));
+        child.gameObject.SetActive(true);
         NumberGoodPeopleSpawned++;
     }
 
@@ -62,6 +65,8 @@ public class Spawner : MonoBehaviour
     {
         Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         GameObject newBadPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bad Person Cube"), position, Quaternion.identity);
+        child = newBadPerson.transform.GetChild(Random.Range(0, 3));
+        child.gameObject.SetActive(true);
         NumberBadPeopleSpawned++;
         
     }
@@ -116,15 +121,15 @@ public class Spawner : MonoBehaviour
         miniBosses.Clear();
     }
 
-    public int GetNumberOfMiniBoss(int numOfPeople)
+    public int GetNumberOfMiniBoss()
     {
         return NumberOfMiniBoss;
     }
-    public int GetNumberOfGoodPeople(int numOfPeople)
+    public int GetNumberOfGoodPeople()
     {
         return NumberOfGoodPeople;
     }
-    public int GetNumberOfBadPeople(int numOfPeople)
+    public int GetNumberOfBadPeople()
     {
         return NumberOfBadPeople;
     }
