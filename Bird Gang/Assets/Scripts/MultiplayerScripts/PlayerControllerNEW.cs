@@ -466,12 +466,11 @@ fire_skip: ;
 // stop the camera going through the buildings -- DONE
 
 // actually add in the panning to the cutscene -- DONE
-// hovering - stop the world moving
+// hovering - stop the world moving - can be fixed with damping
 // bug fix - room creation failed , cant' click okay - added to list
-// bug fix - ammo
-// bug fix - mini boss doesn't have a timer  
+// bug fix - ammo - fixed
+// bug fix - mini boss doesn't have a timer - not a problem for now
 
-// look into customisable options on camera
 // tidy up/split up playerController
 
 
