@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7954890241794801075}
   - component: {fileID: 8664797527115061431}
   - component: {fileID: 5464263947585463568}
+  - component: {fileID: 4203894430267606306}
   m_Layer: 0
   m_Name: IntroductionBoss
   m_TagString: bird_target
@@ -94,6 +95,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8764500696354487163}
+  - {fileID: 4203894430267606306}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -147,7 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51217cf63ddfb3ef1af1e0abe81ae9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGood: 0
   attackers: []
   healthStatus: {fileID: 1374958384363900158}
 --- !u!114 &5464263947585463568
@@ -165,6 +166,19 @@ MonoBehaviour:
   isGood: 0
   isFleeing: 0
   isMiniboss: 1
+  forTutorial: 0
+--- !u!114 &4203894430267606306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5329284163723592707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce82e08083a149bda094b59870d6874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4528597683383819045
 PrefabInstance:
   m_ObjectHideFlags: 0

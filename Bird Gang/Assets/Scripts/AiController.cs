@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
+using System;
 
 public class AiController : MonoBehaviour
 {
@@ -34,9 +35,9 @@ public class AiController : MonoBehaviour
         {
             agent.speed = normalSpeed;
         }
-        speedMult = Random.Range(0.1f, 1.5f);
+        speedMult = UnityEngine.Random.Range(0.1f, 1.5f);
         agent.angularSpeed = normalAngularSpeed;
-        int index = Random.Range(0, goalLocations.Length);
+        int index = UnityEngine.Random.Range(0, goalLocations.Length);
         //Debug.Log(index);
 
         agent.SetDestination(goalLocations[index].transform.position);
@@ -101,10 +102,10 @@ public class AiController : MonoBehaviour
         // Access the agents NavMesh
         agent = this.GetComponent<NavMeshAgent>();
         // Instruct the agent where it has to go
-        int index = Random.Range(0, goalLocations.Length);
+        int index = UnityEngine.Random.Range(0, goalLocations.Length);
         //Debug.Log(index);
         agent.SetDestination(goalLocations[index].transform.position);
-        agent.speed *= Random.Range(0.2f, 1.5f);
+        agent.speed *= UnityEngine.Random.Range(0.2f, 1.5f);
     }
 
     private void Update()
@@ -128,7 +129,14 @@ public class AiController : MonoBehaviour
 
     void UpdateNetworkPosition()
     {
-        agent.SetDestination(this.GetComponent<SyncManager>().GetNetworkPosition());
+        try 
+        {
+            agent.SetDestination(this.GetComponent<SyncManager>().GetNetworkPosition());
+        } catch (Exception e)
+        {
+            Debug.Log(agent.name);
+        }
+        
     }
     void UpdateNetworkIsFleeing()
     {
