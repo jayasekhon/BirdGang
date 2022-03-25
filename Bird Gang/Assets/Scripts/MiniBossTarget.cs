@@ -5,10 +5,9 @@ using Photon.Pun;
 using UnityEngine;
 using TMPro;
 
-public class MiniBossTarget : BaseBirdTarget
+public class MiniBossTarget : MonoBehaviour, IBirdTarget
 {
 	// private Animator _animator;
-	
 	public List<String> attackers = new List<string>();
 	private int targetNum;
 
@@ -51,8 +50,13 @@ public class MiniBossTarget : BaseBirdTarget
 	// 	}
 	// }
 
+	public bool IsClientSideTarget()
+	{
+		return false;
+	}
+
 	[PunRPC]
-	public override void OnHit(PhotonMessageInfo info)
+	public void OnHit(PhotonMessageInfo info)
 	{
 		Debug.Log("num players needed " + targetNum);
 		// startTimer = true;
@@ -69,15 +73,15 @@ public class MiniBossTarget : BaseBirdTarget
  
 		if (attackers.Count == targetNum)
 		{
-			Score.instance.AddScore(isGood, true);
+			Score.instance.AddScore(Score.HIT.MINIBOSS);
 			if (PhotonNetwork.IsMasterClient)
 			{
 				PhotonNetwork.Destroy(gameObject);
-			}        
+			}
 			else
-        	{
-            	gameObject.GetComponent<MeshRenderer>().enabled = false;
-       		}
+			{
+				gameObject.GetComponent<MeshRenderer>().enabled = false;
+			}
 			attackers.Clear();
 		}
 	}

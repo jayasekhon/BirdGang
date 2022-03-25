@@ -21,16 +21,16 @@ public class MiniBossController : MonoBehaviour
         PV = GetComponent<PhotonView>();
         _animator = GetComponent<Animator>();
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
 
-    } 
+    }
 
     // Update is called once per frame
     void Update()
-    {   
+    {
         playersInGame = GameObject.FindGameObjectsWithTag("Player"); //this line shouldn't really be here but also doesn't work in start atm
 
         if (!PV.IsMine)
@@ -47,7 +47,7 @@ public class MiniBossController : MonoBehaviour
             {
                 playerInRange = true;
                 break;
-            } 
+            }
             else
             {
                 counter += 1;
@@ -60,7 +60,7 @@ public class MiniBossController : MonoBehaviour
             // Debug.Log("Reset playerInRange bool");
             playerInRange = false;
             counter = 0;
-        } 
+        }
 
         if (playerInRange)
         {

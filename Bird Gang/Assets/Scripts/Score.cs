@@ -21,27 +21,30 @@ public class Score : MonoBehaviour
         scoreText.text = "Score: " + score.ToString();
     }
 
-    public void AddScore(bool status, bool miniboss)
+    public enum HIT
     {
-        if (status == true){
-            score -= 10;
-            streakFlag = 0;
-            scoreText.text = "Score: " + score.ToString();
-        }
-        else if (status == false && !miniboss){
-            score += 10;
-            streakFlag++;
-            scoreText.text = "Score: " + score.ToString();
-        }
-
-        if (miniboss) 
+        GOOD, BAD, MINIBOSS
+    }
+    public void AddScore(HIT type)
+    {
+        switch (type)
         {
-            score += 50; 
-            streakFlag++;
-            scoreText.text = "Score: " + score.ToString();
-            targetReached.text = "NICE TEAMWORK";
-            Invoke("Hide", time);
+            case HIT.GOOD:
+                score -= 10;
+                streakFlag = 0;
+                break;
+            case HIT.BAD:
+                score += 10;
+                streakFlag++;
+                break;
+            case HIT.MINIBOSS:
+                score += 50;
+                streakFlag++;
+                targetReached.text = "NICE TEAMWORK";
+                Invoke("Hide", time);
+                break;
         }
+        scoreText.text = $"Score: {score}";
 
         if (streakFlag == 5){
             targetReached.text = "5 HIT STREAK";
@@ -56,9 +59,9 @@ public class Score : MonoBehaviour
             targetReached.text = "KEEP GOING";
             Invoke("Hide", time);
         }*/
-        
+
         /*if (score == -20){
-            
+
             targetReached.text = "TARGET FAILED";
             Invoke("Hide", time);
         }*/
