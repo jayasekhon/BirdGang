@@ -23,10 +23,6 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
         material = GetComponent<Renderer>().material;
 
         material.SetFloat("_index", Random.RandomRange(0, 4));
-        
-
-
-
 
     }
      void Update()
@@ -49,9 +45,7 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
         
         if (Time.time > endTime)
         {
-            
-
-            // Destroy(this.gameObject);
+            Destroy(this.gameObject);
         }
     }
     public void OnPhotonInstantiate(PhotonMessageInfo info)
