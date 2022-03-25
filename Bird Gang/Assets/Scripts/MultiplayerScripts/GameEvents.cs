@@ -22,6 +22,8 @@ public enum GAME_STAGE
 	ETC = 8,
 	BREAK = 16,
 
+	INTRODUCTION = 32,
+
 	ALL = 0xFF,
 };
 
@@ -68,8 +70,7 @@ public class GameEvents : MonoBehaviour
 
 	public static readonly Stage[] agenda =
 	{
-		new Stage(GAME_STAGE.BREAK, 2f),
-		new Stage(GAME_STAGE.FIRST, 600f),
+		new Stage(GAME_STAGE.INTRODUCTION, 120f),
 	};
 
 	private int stageIndex;
@@ -109,7 +110,7 @@ public class GameEvents : MonoBehaviour
 				lastProgressTime = PhotonNetwork.Time;
 				lastProgress = 0;
 			}
-			Debug.Log("Event callback: " + t.ToString() + " on " + currStage.GameStage.ToString());
+			// Debug.Log("Event callback: " + t.ToString() + " on " + currStage.GameStage.ToString());
 		}
 
 		foreach (CallbackItem h in callbacks)
