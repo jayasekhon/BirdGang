@@ -16,8 +16,8 @@ public class Indicator : MonoBehaviour
     
     public void Show()
     {
-        active = true;
         gameObject.SetActive(true);
+        active = true;
     }
 
     public void Hide()
@@ -29,6 +29,11 @@ public class Indicator : MonoBehaviour
     public void MoveIndidcator(Vector2 position)
     {
         if (active)
+        {
             indicatorLocation.anchoredPosition = Vector2.MoveTowards(indicatorLocation.anchoredPosition, position, 300f * Time.deltaTime);
+            // indicatorLocation.anchoredPosition = position;
+        }
+            
+            
     }
 }

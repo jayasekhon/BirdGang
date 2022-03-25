@@ -18,6 +18,7 @@ public class playerPointer : MonoBehaviour
     private Camera cam;
 
     private IndicatorManager indicatorManager;
+    Vector3 dimensions;
 
     void Start()
     {
@@ -57,6 +58,18 @@ public class playerPointer : MonoBehaviour
                 Debug.Log("Got camera");
             }
         }
+        dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+    }
+
+    bool checkNotNull()
+    {
+        if (playersInGame == null || playerTransforms == null || playerPositions == null || myTransform == null || cam == null || indicatorManager == null)
+        {
+            return false;
+        } else 
+        {
+            return true;
+        }
     }
 
     void InstantiateLists()
@@ -68,15 +81,13 @@ public class playerPointer : MonoBehaviour
 
     void Update()
     {
-
-        if (playersInGame == null || playerTransforms == null)
+        if (checkNotNull())
         {
-            return;
+            GetPlayerPositons();
+            GetScreenSize();
+            CheckPlayersAreInView();
+            // CalculateIntersectionOfScreenEdgeWithLine();
         }
-        GetPlayerPositons();
-        GetScreenSize();
-        CheckPlayersAreInView();
-        // CalculateIntersectionOfScreenEdgeWithLine();
     }
 
     void GetPlayerPhotonViews()
@@ -123,6 +134,7 @@ public class playerPointer : MonoBehaviour
         {
             screenCenter.x = Screen.width * 0.5f;
             screenCenter.y = Screen.height * 0.5f;
+            dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         }
     }
 
@@ -139,7 +151,7 @@ public class playerPointer : MonoBehaviour
         }
     }
 
-    float CalculateGradient(Vector3 otherPos, Vector3 myPos)
+    public static float CalculateGradient(Vector3 otherPos, Vector3 myPos)
     {
         // Linear so y=mx+b
 
@@ -151,7 +163,7 @@ public class playerPointer : MonoBehaviour
         return gradient;
     }
 
-    float CalculateYIntercept(Vector3 otherPos, Vector3 myPos, float gradient)
+    public static float CalculateYIntercept(Vector3 otherPos, Vector3 myPos, float gradient)
     {
         // Find y-intercept
         float yIntercept = myPos.y - (gradient * myPos.x);
@@ -160,6 +172,10 @@ public class playerPointer : MonoBehaviour
 
     void CheckPlayersAreInView()
     {
+        if (!checkNotNull())
+        {
+            return;
+        }
         for (int p = 0; p < playerPositions.Length; p++)
         {
             Vector3 viewPos = cam.WorldToViewportPoint(playerPositions[p]);
@@ -172,46 +188,75 @@ public class playerPointer : MonoBehaviour
             else 
             {
                 // Cannot be seen
-                float gradient = CalculateGradient(playerPositions[p], myPosition);
-                float yIntercept = CalculateYIntercept(playerPositions[p], myPosition, gradient);
-
                 if (!indicatorManager.CheckIfIndicatorIsActive(p))
                     indicatorManager.ShowIndicator(p);
-                
-                Vector2 newLocation = GetCoordOfNewIndicatorPosition(viewPos);                
+
+                Debug.DrawLine(myPosition, playerPositions[p]);
+                Vector2 newLocation = GetCoordOfNewIndicatorPosition(viewPos, playerPositions[p]);
+
                 indicatorManager.AdjustPositionOfIndicator(p, newLocation);                
             }                
         }   
     }
 
-    Vector2 GetCoordOfNewIndicatorPosition(Vector3 viewPos)
+    public static float GetXCoord(float gradient, float yIntercept, float yCoord)
     {
-        Vector3 dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        float maxWidth = dimensions.x;
-        float maxHeight =  dimensions.y;
+        float xCoord = (yCoord - yIntercept) / gradient;
+        return xCoord;
+    }
+
+    public static float GetYCoord(float gradient, float yIntercept, float xCoord)
+    {
+        float yCoord = (xCoord * gradient) + yIntercept;
+        return yCoord;
+    }
+
+    Vector2 GetCoordOfNewIndicatorPosition(Vector3 viewPos, Vector3 otherPos)
+    {
+        float gradient = CalculateGradient(otherPos, myPosition);
+        float yIntercept = CalculateYIntercept(otherPos, myPosition, gradient);
         Vector2 newLocation  = Vector2.zero;
-        if (viewPos.x > 0.5F)
+        if (viewPos.y > 1f)
+        {
+            // target is above
+            newLocation.y = dimensions.y;
+            if (viewPos.x > 1f)
+                newLocation.x = GetXCoord(gradient, yIntercept, newLocation.y);
+            else
+                newLocation.x = otherPos.x;
+        } 
+        else if (viewPos.y < 0f)
+        {
+            // target is below
+            newLocation.y = -1 * dimensions.y;
+            if (viewPos.x > 1f)
+                newLocation.x = GetXCoord(gradient, yIntercept, newLocation.y);
+            else
+                newLocation.x = otherPos.x;
+        }
+        else if (viewPos.x > 1f)
         {
             // target is on the right side
-            newLocation.x = maxWidth;
-        } else
+            newLocation.x = dimensions.x;
+            if (viewPos.y > 1f)
+                newLocation.y = GetXCoord(gradient, yIntercept, newLocation.x);
+            else
+                newLocation.y = otherPos.y;
+        } else if (viewPos.x < 0f)
         {
             // target is on the left side
-            newLocation.x = -maxWidth;
+            newLocation.x = -1 * dimensions.x;
+            if (viewPos.y > 1f)
+                newLocation.y = GetXCoord(gradient, yIntercept, newLocation.x);
+            else
+                newLocation.y = otherPos.y;
         }
-        if (viewPos.y > 0.5f)
-        {
-            // target is above!
-            newLocation.y = maxHeight;
-        } else
-        {
-            // target is below!
-            newLocation.y = -maxHeight;
-        }
+
         // if (viewPos.z > 0f)
         //     print("target is infront!");
         // else
         //     print("target is behind you!");
+        // newLocation = cam.WorldToScreenPoint(newLocation);
         return newLocation;
     }
 
