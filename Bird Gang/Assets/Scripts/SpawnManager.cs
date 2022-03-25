@@ -54,8 +54,8 @@ public class SpawnManager : MonoBehaviour, GameEventCallbacks
                     spawner.fillMaxBadPeople(1);
                 }
             } else {
-                spawner.fillMaxGoodPeople(10);
-                spawner.fillMaxBadPeople(2);
+                spawner.fillMaxGoodPeople(6);
+                spawner.fillMaxBadPeople(3);
             }
         }
     }
