@@ -48,7 +48,8 @@ public class FlockManager : MonoBehaviour
 
             child = allBirds[i].transform.GetChild(0);
             Animator anim = child.GetComponent<Animator>();
-            anim.Play("Base Layer.FlappingAnimation", 0, Random.Range(0, 1.0f));
+            float[] startPositions = new float[] { 0, 0.5f };
+            //anim.Play("Base Layer.FlappingAnimation", 0, 0);
                                 
         }
         transform.position = new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
