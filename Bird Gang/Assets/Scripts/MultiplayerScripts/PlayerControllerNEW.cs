@@ -92,14 +92,11 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         upForce = GetComponent<ConstantForce>();
         anim = gameObject.GetComponentInChildren<Animator>();
         anim.enabled = true;
-        
+
         // Get screen size
         resolution = new Vector2(Screen.width, Screen.height);
         screenCenter.x = Screen.width * 0.5f;
         screenCenter.y = Screen.height * 0.5f;
-
-        if (PV.IsMine)
-            Ours = this;
     }
 
     /* Change player position cleanly, keeping camera in step, etc. */
@@ -130,15 +127,15 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
         else
         {
-            GameObject[] spawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
-            rb.position = spawns[PhotonNetwork.LocalPlayer.ActorNumber]
-                .transform.position;
-            rb.rotation = spawns[PhotonNetwork.LocalPlayer.ActorNumber]
-                .transform.rotation;
+            GameObject spawn = GameObject.FindGameObjectsWithTag("PlayerSpawn")
+                [PhotonNetwork.LocalPlayer.ActorNumber];
+            rb.position = spawn.transform.position;
+            rb.rotation = spawn.transform.rotation;
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
             projLineRenderer.material = projLineMat;
+            Ours = this;
         }
 
         // Get the local camera component for targeting
@@ -355,7 +352,6 @@ fire_skip: ;
             if (input_lock_y)
                 mouseDistance.y = 0f;
 
-
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
             if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
@@ -365,7 +361,6 @@ fire_skip: ;
             }
 
             Vector2 unitVec = new Vector2(mouseDistance.x, mouseDistance.y + 0.5f);
-
 
             float rollAngle = Vector2.Angle(unitVec.normalized, new Vector2(1, 0));
             rollAngle = Mathf.Clamp(rollAngle, 50, 130); //change values depending on how much we want bird to rotate sideways.
@@ -379,7 +374,7 @@ fire_skip: ;
             }
             if (x < 90) {
                 x = Mathf.Clamp(x, -10, 80);
-            }           
+            }
 
             transform.rotation = Quaternion.Euler(x, y, rollInput);
         } else
@@ -404,20 +399,22 @@ fire_skip: ;
             Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
             rb.AddForce(position, ForceMode.Impulse); 
             windTimePassed = 0;
-            // Assume gravity == reaction force from wings.
+            // Assume gravity == reaction force from wings
+            // alternately, we could do hovering while moving.
             rb.useGravity = false;
         }
         else
         {
             Hovering();
+            /* FIXME: Wind will never reset while moving. */
             Wind();
             rb.useGravity = true;
         }
     }
-    
+
     public void SetHoveringGravity(bool enabled)
     {
-        /* 3.2 as originally set, 1.756 from observation. */
+        /* 3.2 as originally set, 1.755 from observation. */
         if (enabled)
             rb.mass = 3.2f;
         else
@@ -429,17 +426,16 @@ fire_skip: ;
         anim.SetBool("flyingDown", false);
 
         if (timePassed <= 0.6f)
-        {   
-            //UP
+        {
+            //UP -- If you change this, also change rb.mass = 1.755 in SetHoveringGravity.
             rb.AddForce(new Vector3(0f, 30f, 0f));
             timePassed += Time.fixedDeltaTime;
         }
-
         else if (timePassed > 0.6f && timePassed <= 1.04f)
         {
             //DOWN
             timePassed += Time.fixedDeltaTime;
-        } 
+        }
         else
         {
             timePassed = 0f;
