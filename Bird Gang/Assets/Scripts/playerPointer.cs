@@ -20,6 +20,8 @@ public class playerPointer : MonoBehaviour
     private IndicatorManager indicatorManager;
     Vector3 dimensions;
 
+    float minX, maxX, minY, maxY;
+
     void Start()
     {
         StartCoroutine(InitCoroutine());
@@ -83,11 +85,45 @@ public class playerPointer : MonoBehaviour
     {
         if (checkNotNull())
         {
-            GetPlayerPositons();
-            GetScreenSize();
-            CheckPlayersAreInView();
-            // CalculateIntersectionOfScreenEdgeWithLine();
+            minX = indicatorManager.GetImageWidth(0); // does not matter which image at the moment since they are all the same size
+            maxX = Screen.width - minX;
+            minY = indicatorManager.GetImageHeight(0);
+            maxY = Screen.height - minY;
+
+            for (int p = 0; p < playerPositions.Length; p++)
+            {
+                if (!IsVisible(playerPositions[p]))
+                {
+                    if (!indicatorManager.CheckIfIndicatorIsActive(p))
+                        indicatorManager.ShowIndicator(p);
+                    Vector2 pos = cam.WorldToScreenPoint(playerPositions[p]);
+                    if (Vector3.Dot((playerPositions[p] - myPosition), transform.forward) < 0)
+                    {
+                        // Target player is behind the local player
+                        if (pos.x < (Screen.width / 2))
+                            pos.x = maxX;
+                        else
+                            pos.x = minX;
+                    }
+                    pos.x = Mathf.Clamp(pos.x, minX, maxX);
+                    pos.y = Mathf.Clamp(pos.y, minY, maxY);
+                    indicatorManager.AdjustPositionOfIndicator(p, pos);
+                } else 
+                {
+                    if (indicatorManager.CheckIfIndicatorIsActive(p))
+                        indicatorManager.HideIndicator(p);
+                }
+            }
         }
+    }
+
+    bool IsVisible(Vector3 playerPos)
+    {
+        Vector3 viewPos = cam.WorldToViewportPoint(playerPos);
+        if (viewPos.x < 1 && viewPos.x > 0 && viewPos.y < 1 && viewPos.y > 0 && viewPos.z > 0)
+            return true;
+        else
+            return false;
     }
 
     void GetPlayerPhotonViews()
