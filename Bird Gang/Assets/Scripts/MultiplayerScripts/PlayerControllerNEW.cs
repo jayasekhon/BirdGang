@@ -354,11 +354,11 @@ fire_skip: ;
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
-            if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
-            {
-                mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
-                mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
-            }
+            // if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
+            // {
+            //     mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
+            //     mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
+            // }
 
             Vector2 unitVec = new Vector2(mouseDistance.x, mouseDistance.y + 0.5f);
 
