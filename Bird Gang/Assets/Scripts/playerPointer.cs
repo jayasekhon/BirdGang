@@ -13,7 +13,6 @@ public class playerPointer : MonoBehaviour
     private Vector3 myPosition;
 
     private Vector2 resolution, screenCenter;
-    private int buffer = 50;
 
     private Camera cam;
 
@@ -85,34 +84,30 @@ public class playerPointer : MonoBehaviour
     {
         if (checkNotNull())
         {
+            GetPlayerPositons();
             minX = indicatorManager.GetImageWidth(0); // does not matter which image at the moment since they are all the same size
             maxX = Screen.width - minX;
             minY = indicatorManager.GetImageHeight(0);
             maxY = Screen.height - minY;
-
             for (int p = 0; p < playerPositions.Length; p++)
             {
-                if (!IsVisible(playerPositions[p]))
-                {
-                    if (!indicatorManager.CheckIfIndicatorIsActive(p))
-                        indicatorManager.ShowIndicator(p);
-                    Vector2 pos = cam.WorldToScreenPoint(playerPositions[p]);
-                    if (Vector3.Dot((playerPositions[p] - myPosition), transform.forward) < 0)
-                    {
-                        // Target player is behind the local player
-                        if (pos.x < (Screen.width / 2))
-                            pos.x = maxX;
-                        else
-                            pos.x = minX;
-                    }
-                    pos.x = Mathf.Clamp(pos.x, minX, maxX);
-                    pos.y = Mathf.Clamp(pos.y, minY, maxY);
-                    indicatorManager.AdjustPositionOfIndicator(p, pos);
-                } else 
-                {
-                    if (indicatorManager.CheckIfIndicatorIsActive(p))
-                        indicatorManager.HideIndicator(p);
+                if (!indicatorManager.CheckIfIndicatorIsActive(p))
+                    indicatorManager.ShowIndicator(p);
+
+                Vector2 pos = cam.WorldToScreenPoint(playerPositions[p]);
+                Vector3 viewPos = cam.WorldToViewportPoint(playerPositions[p]);
+                if (viewPos.z < 0)
+                {   
+                    // Target player is behind the local player
+                    Debug.Log("Behind player");
+                    if (pos.x < (Screen.width / 2))
+                        pos.x = maxX;
+                    else
+                        pos.x = minX;
                 }
+                pos.x = Mathf.Clamp(pos.x, minX, maxX);
+                pos.y = Mathf.Clamp(pos.y, minY, maxY);
+                indicatorManager.AdjustPositionOfIndicator(p, pos);
             }
         }
     }
@@ -153,13 +148,14 @@ public class playerPointer : MonoBehaviour
 
     void GetPlayerPositons()
     {
-        if (playersInGame == null || playerTransforms == null || playerPositions == null || myTransform == null)
+        if (!checkNotNull())
         {
             return;
         }
         for (int p = 0; p < playerTransforms.Length; p++)
         {
             playerPositions[p] = playerTransforms[p].position;
+            playerPositions[p].y = playerPositions[p].y + 2; // Move the icon above the player
         }
         myPosition = myTransform.position;
     }
