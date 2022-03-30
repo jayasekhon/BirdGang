@@ -42,25 +42,26 @@ public class Tutorial : MonoBehaviour
 			pc.input_lock_ad = true;
 			pc.input_disable_targeting = true;
 			pc.SetHoveringGravity(false);
-			text.text = "Press <b>W</b> key to fly forwards through the ring.";
+			text.text = "Hold <b>W</b> to fly forwards through the ring.\n" +
+				"Alternately, press <b>X</b> to escape.";
 			break;
 		case 1:
 			stage2.SetActive(true);
 			pc.input_lock_x = false;
 			text.text =
-				"You can yaw with the mouse while <b>W</b>.\n" +
+				"You can yaw with the mouse while holding <b>W</b>.\n" +
 				"Move through the rings ahead.";
 			break;
 		case 2:
 			stage3.SetActive(true);
 			pc.input_lock_y = false;
 			text.text =
-				"You can pitch with the mouse while pressing <b>W</b>\n" +
+				"You can pitch with the mouse while holding <b>W</b>\n" +
 				"Continue through the rings below, using your mouse.";
 			break;
 		case 3:
 			stage4.SetActive(true);
-			text.text = "You may press <b>Space</b> to speed up.";
+			text.text = "While holding <b>W</b>, you may tap <b>Space</b> to speed up.";
 			break;
 		case 4:
 			stage5.SetActive(true);
@@ -76,14 +77,28 @@ public class Tutorial : MonoBehaviour
 
 	public void Start()
 	{
-		/* Otherwise player hasn't yet moved. */
+		/* Otherwise player hasn't yet properly spawned. */
 		nextLostCheck = Time.time + 2f;
 	}
 
 	public void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.X))
+		{
+			pc.PutAt(new Vector3(0f, 10f, 0f), Quaternion.identity);
+			pc.input_disable_targeting =
+				pc.input_lock_ad =
+				pc.input_lock_x =
+				pc.input_lock_y =
+					false;
+			alertText.enabled = false;
+			/* Any excuse not to change the scene... */
+			text.transform.parent.gameObject.SetActive(false);
+			pc.SetHoveringGravity(true);
+			Destroy(gameObject);
+		}
 		/* PC is spawned by script, might not be available in Start. */
-		if (!has_init && PlayerControllerNEW.Ours)
+		else if (!has_init && PlayerControllerNEW.Ours)
 		{
 			pc = PlayerControllerNEW.Ours;
                         has_init = true;
