@@ -62,9 +62,10 @@ public class Flocking : MonoBehaviour
         }
         else
         {
-          
+            if (Random.Range(0, 100) < 20)
+            {
                 ApplyRules();
-            
+            }
         }
         if (attacking)
         {
@@ -145,7 +146,7 @@ public class Flocking : MonoBehaviour
 
         
         RaycastHit hit = new RaycastHit();
-        int numRays = 17;
+        int numRays = 9;
         Vector3 deltaDirection = Vector3.zero;
         int layerMask = 1 << 8;
         for (int i = 0; i < numRays; i++)
