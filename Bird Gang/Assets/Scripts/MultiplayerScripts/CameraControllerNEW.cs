@@ -38,7 +38,7 @@ public class CameraControllerNEW : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (transform.position.y < 2.5f)
+        if (transform.position.y < 3.5f)
         {
             transform.position = new Vector3(transform.position.x, 2.5f, transform.position.z);
         } 
