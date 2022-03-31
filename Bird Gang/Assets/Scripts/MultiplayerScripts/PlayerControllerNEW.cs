@@ -197,7 +197,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         Look();
         Movement();
         KeyboardTurning();
-        HeightControl();
+        // HeightControl();
     }
 
     void GetInput()
@@ -513,7 +513,7 @@ fire_skip: ;
 
     void HeightControl() 
     {
-        if (transform.position.y < 14f)
+        if (transform.position.y < 3f)
         {
             // transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 14f, transform.position.z), Time.fixedDeltaTime);
             transform.position = new Vector3(transform.position.x, 14f, transform.position.z);
