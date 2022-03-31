@@ -5,7 +5,7 @@ using System.IO;
 public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 { 
 	private Rigidbody rb;
-	private new Collider collider;
+	
 	private PhotonView pv;
 
 	private Vector3 acc;
@@ -16,19 +16,34 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 	private float endTime;
 
 	private const int LAYER_WORLD = 8;
+	private Collider worldCollider;
+	private Collider targetCollider;
 
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
 		rb = GetComponent<Rigidbody>();
-		collider = GetComponent<Collider>();
+		Collider[] colliders= GetComponentsInChildren<Collider>();
+		foreach(Collider c in colliders)
+        {
+			if(c.tag == "worldCollider")
+            {
+				worldCollider = c;
+            }
+			else if (c.tag == "targetCollider") {
+				targetCollider = c;
+			}
+        }
+
+	
 		endTime = Time.time + Lifetime;
 		/* Don't collide with player who fired us. */
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
 		{
 			if ((g.transform.position - transform.position).sqrMagnitude < 0.4f)
 			{
-				Physics.IgnoreCollision(g.GetComponent<Collider>(), collider, true);
+				Physics.IgnoreCollision(g.GetComponent<Collider>(), worldCollider, true);
+				Physics.IgnoreCollision(g.GetComponent<Collider>(), targetCollider, true);
 			}
 		}
 	}
@@ -79,8 +94,10 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 					    Vector3.down, out RaycastHit hit,
 					    1.5f, 1 << LAYER_WORLD))
 				{
+					
 					Destroy(rb);
-					Destroy(collider);
+					Destroy(worldCollider);
+					Destroy(targetCollider);
 					active = false;
 					transform.position = hit.point +
 						new Vector3(0f, 0.1f, 0f);
@@ -91,8 +108,9 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		else if (collision.collider.gameObject.layer == LAYER_WORLD)
 		{
 			Destroy(rb);
+			Destroy(worldCollider);
+			Destroy(targetCollider);
 			
-			Destroy(collider);
 			active = false;
 			flee = true;
 		}
@@ -117,11 +135,12 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 			}
 		}
 
-        foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
-        {
-            meshRenderer.enabled = false;
-        }
-        gameObject.GetComponentInChildren<ParticleSystem>().enableEmission = false;
+		//foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+		//{
+		//    meshRenderer.enabled = false;
+		//}
+		//transform.SetParent(tar.transform);
+		gameObject.GetComponentInChildren<ParticleSystem>().enableEmission = false;
         gameObject.GetComponentInChildren<ParticleSystem>().Clear();
     }
 
