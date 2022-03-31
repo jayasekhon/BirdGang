@@ -68,7 +68,24 @@ public class Flocking : MonoBehaviour
         }
         if (attacking)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerToAttack.position - transform.position), flockManager.rotationSpeed * Time.deltaTime);
+            
+            GameObject[] gos;
+            gos = flockManager.allBirds;
+
+            Vector3 vAvoid = Vector3.zero;
+            float nDistance;
+            foreach (GameObject go in gos)
+            {
+                if (go != this.gameObject)
+                {
+                    nDistance = Vector3.Distance(go.transform.position, this.transform.position);
+                    if (nDistance < 3.0f)
+                    {
+                        vAvoid = vAvoid + (this.transform.position - go.transform.position);
+                    }
+                }
+            }
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerToAttack.position - transform.position+ 10*vAvoid), flockManager.rotationSpeed * Time.deltaTime);
             
         }
         
@@ -126,7 +143,7 @@ public class Flocking : MonoBehaviour
             }
         }
 
-        Debug.Log(vAvoid);
+        
         RaycastHit hit = new RaycastHit();
         int numRays = 17;
         Vector3 deltaDirection = Vector3.zero;

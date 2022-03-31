@@ -429,7 +429,7 @@ fire_skip: ;
         if (timePassed <= 0.6f)
         {
             //UP -- If you change this, also change rb.mass = 1.755 in SetHoveringGravity.
-            rb.AddForce(new Vector3(0f, 30f, 0f));
+            rb.AddForce(new Vector3(0f, 55f, 0f));
             timePassed += Time.fixedDeltaTime;
         }
         else if (timePassed > 0.6f && timePassed <= 1.04f)
