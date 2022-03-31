@@ -99,12 +99,17 @@ public class AiController : MonoBehaviour, IPunObservable
 
     void Start()
     {
-        if (goalLocations == null && PhotonNetwork.IsMasterClient)
-            goalLocations = GameObject.FindGameObjectsWithTag(forTutorial ? "tut_goal" : "goal");
         // Access the agents NavMesh
-        agent = this.GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
 
-        ResetAgent();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            goalLocations =
+                GameObject.FindGameObjectsWithTag(forTutorial
+                    ? "tut_goal"
+                    : "goal");
+            ResetAgent();
+        }
     }
 
     private void Update()
@@ -137,9 +142,15 @@ public class AiController : MonoBehaviour, IPunObservable
         }
         else
         {
-            agent.SetDestination((Vector3)stream.ReceiveNext());
-            SetFleeing((bool)stream.ReceiveNext());
+            try
+            {
+                agent.SetDestination((Vector3) stream.ReceiveNext());
+                SetFleeing((bool) stream.ReceiveNext());
+            }
+            catch
+            {
+                Debug.LogError("error");
+            }
         }
     }
 }
-

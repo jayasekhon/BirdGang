@@ -130,8 +130,8 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         {
             GameObject spawn = GameObject.FindGameObjectsWithTag("PlayerSpawn")
                 [PhotonNetwork.LocalPlayer.ActorNumber];
-            rb.position = spawn.transform.position;
-            rb.rotation = spawn.transform.rotation;
+            transform.position = spawn.transform.position;
+            transform.rotation = spawn.transform.rotation;
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;

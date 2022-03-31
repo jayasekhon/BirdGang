@@ -8,37 +8,28 @@ using UnityEngine;
 
 public class MayorManager : MonoBehaviour, GameEventCallbacks
 {
-    public static MayorManager Instance;
-    // Start is called before the first frame update
+    private GameObject mayor;
+
     void Awake()
     {
-        if (Instance) // checks if a RobberManager already exists
+        if (!PhotonNetwork.IsMasterClient)
         {
             Destroy(gameObject);
             return;
         }
-        DontDestroyOnLoad(gameObject);
-        Instance = this;
-        GameEvents.RegisterCallbacks(this, ~GAME_STAGE.BREAK,
+        GameEvents.RegisterCallbacks(this, GAME_STAGE.POLITICIAN,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
     }
 
-
     public void OnStageBegin(GameEvents.Stage stage)
     {
-
-
-        if (PhotonNetwork.IsMasterClient) //this means only one gets created
-        {
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(115, 2, -280), Quaternion.identity);
-        }
-
-
+            mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(115, 2, -280), Quaternion.identity);
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-
+        if (mayor)
+            PhotonNetwork.Destroy(mayor);
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
