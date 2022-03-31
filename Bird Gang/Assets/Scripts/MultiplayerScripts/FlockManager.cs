@@ -55,7 +55,6 @@ public class FlockManager : MonoBehaviour
         transform.position = new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
                                             Random.Range(0, worldLimits.y),                                                            
                                             Random.Range(-worldLimits.z, worldLimits.z));
-
     }
 
     // Update is called once per frame
@@ -99,12 +98,11 @@ public class FlockManager : MonoBehaviour
                                             Mathf.Clamp(this.transform.position.y, 0, worldLimits.y),
                                             Mathf.Clamp(this.transform.position.z, -worldLimits.z, worldLimits.z));
         transform.Translate(0, 0, Time.deltaTime * 18);   
-
     }
+
     public void AttackPlayer(GameObject player){
         attacking = true;
         playerToAttack = player.transform;
-        
     }
 
     public void StopAttackPlayer()
