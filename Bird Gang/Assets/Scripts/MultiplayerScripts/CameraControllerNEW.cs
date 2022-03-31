@@ -36,11 +36,11 @@ public class CameraControllerNEW : MonoBehaviour
         camTransposer = cam.GetCinemachineComponent<CinemachineTransposer>();
         }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
-        if (transform.position.y < 2.5f)
+        if (transform.position.y < 4.5f)
         {
-            transform.position = new Vector3(transform.position.x, 2.5f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 4.5f, transform.position.z);
         } 
 
     // //  // When the player is moving up (so the player is facing up - positive) decrease FoV.

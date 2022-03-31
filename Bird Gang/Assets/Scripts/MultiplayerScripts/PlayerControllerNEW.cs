@@ -372,7 +372,13 @@ fire_skip: ;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
 
             if (x > 270) {
-                x = Mathf.Clamp(x, 275, 380);
+                if (transform.position.y < 10f) 
+                {
+                    x = Mathf.Clamp(x, 330, 380);
+                } else {
+                    x = Mathf.Clamp(x, 275, 380);
+                }
+                
             }
             if (x < 90) {
                 x = Mathf.Clamp(x, -10, 80);
