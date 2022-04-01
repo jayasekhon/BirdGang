@@ -35,17 +35,17 @@ public class CameraControllerNEW : MonoBehaviour
         cam.Follow = playerPos;
         cam.LookAt = playerPos;
         camTransposer = cam.GetCinemachineComponent<CinemachineTransposer>();
-        groundPos = playerPos;
-        groundPos.position = new Vector3(groundPos.position.x, 5f, groundPos.position.z);
+        // groundPos = playerPos;
+        // groundPos.position = new Vector3(groundPos.position.x, 5f, groundPos.position.z);
         }
 
     void LateUpdate()
     {
-        if (playerPos.position.y < 10f) 
-        {
-            Debug.Log("groundPos");
-            cam.Follow = groundPos;
-        }
+        // if (playerPos.position.y < 10f) 
+        // {
+        //     Debug.Log("groundPos");
+        //     cam.Follow = groundPos;
+        // }
         // if (transform.position.y < 4.5f)
         // {
         //     transform.position = new Vector3(transform.position.x, 4.5f, transform.position.z);
