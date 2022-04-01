@@ -233,15 +233,17 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
 
         // Slow down
-        if (Input.GetKey("s"))
-        {
-            slowDown = true;
+        // if (Input.GetKeyDown(KeyCode.H))
+        // {
+        //     // slowDown = true;
+        //     Pushback();
                         
-        }
-        else
-        {
-            slowDown = false;
-        }
+        // }
+
+        // else
+        // {
+        //     slowDown = false;
+        // }
     }
 
     void Targeting()
@@ -421,6 +423,10 @@ fire_skip: ;
         }
         else
         {
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                rb.AddRelativeForce(Vector3.back * 20, ForceMode.Impulse);
+            }
             Hovering();
             /* FIXME: Wind will never reset while moving. */
             Wind();
@@ -463,10 +469,18 @@ fire_skip: ;
         // if (move && !input_lock_ad)
         // {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
-            rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
+            rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
+            windTimePassed = 0; 
+            // move = true;
         // }
 
     }
+
+    // void Pushback() 
+    // {
+    //     rb.AddRelativeForce(new Vector3(0,0,-25), ForceMode.Force);
+    //     Debug.Log(transform.position);
+    // }
 
     void Acceleration()
     {
