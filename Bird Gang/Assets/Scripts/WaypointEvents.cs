@@ -8,13 +8,19 @@ public class WaypointEvents: MonoBehaviour
     // If you have multiple custom events, it is recommended to define them in the used class
     public const byte ShowWaypoint = 6;
     bool activeWaypoint;
+    PhotonView PV;
+
+    void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
 
     void Update()
     {
-        // if(!PV.IsMine)
-        // {
-        //     return;
-        // }
+        if(!PV.IsMine)
+        {
+            return;
+        }
 
         if (Input.GetMouseButtonDown(1) && !activeWaypoint)
         {
