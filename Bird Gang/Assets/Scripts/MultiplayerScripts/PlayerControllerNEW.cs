@@ -28,6 +28,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     private bool windy;
     private float pushDirection;
     private bool thing = true;
+    private ParticleSystem windParticle;
     // private ConstantForce windForce;
 
     bool grounded; 
@@ -92,14 +93,11 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         upForce = GetComponent<ConstantForce>();
         anim = gameObject.GetComponentInChildren<Animator>();
         anim.enabled = true;
-        
+
         // Get screen size
         resolution = new Vector2(Screen.width, Screen.height);
         screenCenter.x = Screen.width * 0.5f;
         screenCenter.y = Screen.height * 0.5f;
-
-        if (PV.IsMine)
-            Ours = this;
     }
 
     /* Change player position cleanly, keeping camera in step, etc. */
@@ -130,15 +128,15 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
         else
         {
-            GameObject[] spawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
-            rb.position = spawns[PhotonNetwork.LocalPlayer.ActorNumber]
-                .transform.position;
-            rb.rotation = spawns[PhotonNetwork.LocalPlayer.ActorNumber]
-                .transform.rotation;
+            GameObject spawn = GameObject.FindGameObjectsWithTag("PlayerSpawn")
+                [PhotonNetwork.LocalPlayer.ActorNumber];
+            transform.position = spawn.transform.position;
+            transform.rotation = spawn.transform.rotation;
             targetObj = Instantiate(targetObj);
             projLineRenderer = gameObject.AddComponent<LineRenderer>();
             projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
             projLineRenderer.material = projLineMat;
+            Ours = this;
         }
 
         // Get the local camera component for targeting
@@ -199,6 +197,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         Look();
         Movement();
         KeyboardTurning();
+        // HeightControl();
     }
 
     void GetInput()
@@ -234,15 +233,17 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
 
         // Slow down
-        if (Input.GetKey("s"))
-        {
-            slowDown = true;
+        // if (Input.GetKeyDown(KeyCode.H))
+        // {
+        //     // slowDown = true;
+        //     Pushback();
                         
-        }
-        else
-        {
-            slowDown = false;
-        }
+        // }
+
+        // else
+        // {
+        //     slowDown = false;
+        // }
     }
 
     void Targeting()
@@ -333,11 +334,12 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             vel.y = -v;
 
             object[] args = new object[] {acc, vel};
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
+            GameObject birdPooObject= PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
             object[] splatterInitData = new object[] { currentTime + timeToHit };
             Quaternion rotation = Quaternion.LookRotation(-hit.normal);
             GameObject splatObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Splatter"), hit.point, rotation,0, splatterInitData);
-            
+         
+           
             splatObject.transform.SetParent(hit.collider.gameObject.transform);
         }
 fire_skip: ;
@@ -355,17 +357,15 @@ fire_skip: ;
             if (input_lock_y)
                 mouseDistance.y = 0f;
 
-
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
 
-            if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
-            {
-                mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
-                mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
-            }
+            // if (Vector2.SqrMagnitude(mouseDistance) < 0.1f) //for the sensitivity
+            // {
+            //     mouseDistance.x *= Vector2.SqrMagnitude(mouseDistance)*2;
+            //     mouseDistance.y *= Vector2.SqrMagnitude(mouseDistance)*2;
+            // }
 
             Vector2 unitVec = new Vector2(mouseDistance.x, mouseDistance.y + 0.5f);
-
 
             float rollAngle = Vector2.Angle(unitVec.normalized, new Vector2(1, 0));
             rollAngle = Mathf.Clamp(rollAngle, 50, 130); //change values depending on how much we want bird to rotate sideways.
@@ -374,12 +374,22 @@ fire_skip: ;
             float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
 
-            if (x > 270) {
+            // if (x > 270) {
+            //     if (transform.position.y < 10f) //change this value of 10 depending on follow offset
+            //     {
+            //         x = Mathf.Clamp(x, 345, 380);
+            //     } else {
+            //         x = Mathf.Clamp(x, 285, 380);
+            //     }
+            // }
+
+            if (x > 270)
+            {
                 x = Mathf.Clamp(x, 275, 380);
             }
             if (x < 90) {
                 x = Mathf.Clamp(x, -10, 80);
-            }           
+            }
 
             transform.rotation = Quaternion.Euler(x, y, rollInput);
         } else
@@ -403,43 +413,52 @@ fire_skip: ;
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
             Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
             rb.AddForce(position, ForceMode.Impulse); 
+
+            windParticle.enableEmission = false;
+            upForce.force = new Vector3(0,0,0);
+            upForce.relativeForce = new Vector3(0,0,0);
             windTimePassed = 0;
-            // Assume gravity == reaction force from wings.
+            // Assume gravity == reaction force from wings
+            // alternately, we could do hovering while moving.
             rb.useGravity = false;
         }
         else
         {
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                rb.AddRelativeForce(Vector3.back * 20, ForceMode.Impulse);
+            }
             Hovering();
+            /* FIXME: Wind will never reset while moving. */
             Wind();
             rb.useGravity = true;
         }
     }
-    
+
     public void SetHoveringGravity(bool enabled)
     {
-        /* 3.2 as originally set, 1.756 from observation. */
+        /* 3.2 as originally set, 1.755 from observation. */
         if (enabled)
             rb.mass = 3.2f;
         else
             rb.mass = 1.755f;
     }
-
+   
     void Hovering() {
         anim.speed = 3f;
         anim.SetBool("flyingDown", false);
 
         if (timePassed <= 0.6f)
-        {   
-            //UP
-            rb.AddForce(new Vector3(0f, 30f, 0f));
+        {
+            //UP -- If you change this, also change rb.mass = 1.755 in SetHoveringGravity.
+            rb.AddForce(new Vector3(0f, 55f, 0f));
             timePassed += Time.fixedDeltaTime;
         }
-
         else if (timePassed > 0.6f && timePassed <= 1.04f)
         {
             //DOWN
             timePassed += Time.fixedDeltaTime;
-        } 
+        }
         else
         {
             timePassed = 0f;
@@ -448,12 +467,21 @@ fire_skip: ;
 
     void KeyboardTurning()
     {
-        if (move && !input_lock_ad)
-        {
+        // if (move && !input_lock_ad)
+        // {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
-            rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
-        }         
+            rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
+            windTimePassed = 0; 
+            // move = true;
+        // }
+
     }
+
+    // void Pushback() 
+    // {
+    //     rb.AddRelativeForce(new Vector3(0,0,-25), ForceMode.Force);
+    //     Debug.Log(transform.position);
+    // }
 
     void Acceleration()
     {
@@ -507,9 +535,22 @@ fire_skip: ;
             Debug.LogWarning("increasedAcceleration below 1");
         }
     }
+
+    void HeightControl() 
+    {
+        if (transform.position.y < 3f)
+        {
+            // transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 14f, transform.position.z), Time.fixedDeltaTime);
+            transform.position = new Vector3(transform.position.x, 14f, transform.position.z);
+        }
+    }
     
     void Wind()
     {
+        windParticle = GetComponentInChildren<ParticleSystem>();
+        windParticle.enableEmission = false;
+        // windParticle.emission.enabled = false;
+
 
         if (Random.Range(0,2) == 0 && thing)
         {
@@ -531,7 +572,13 @@ fire_skip: ;
         if (windTimePassed > 3 && windTimePassed < 4)
         {
             thing = false;
-            upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0); 
+            upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0);
+            // todo: change rotation of particle emission
+
+            windParticle.transform.rotation = Quaternion.Euler(0, -90 * pushDirection, 0);
+            // windParticle.transform.position = new Vector3(15 * pushDirection, 0, 0);
+
+            windParticle.enableEmission = true; 
             windTimePassed += Time.fixedDeltaTime;  
             // Debug.Log(pushDirection);
         }

@@ -3,47 +3,44 @@ using UnityEngine.AI;
 using Photon.Pun;
 using System;
 
-public class AiController : MonoBehaviour
+public class AiController : MonoBehaviour, IPunObservable
 {
     GameObject[] goalLocations;
-    // Get the prefab
+
     NavMeshAgent agent;
-    float speedMult;
     float detectionRadius = 30;
     float fleeRadius = 10;
-    PhotonView PV;
 
-    //FixMe : Need to tidy this up later 
-    public bool isGood;
-    public bool isFleeing;
-    public bool isMiniboss;
+    public bool isMiniboss = false;
     public bool forTutorial;
 
-    private int minibossSpeed = 4;
-    private int normalSpeed = 2;
-    private int fleeingSpeed = 20;
-    private int normalAngularSpeed = 120;
-    private int fleeingAngularSpeed = 500;
+    public float normalSpeed = 2f;
+    public float minibossSpeed = 4f;
+    public float normalAngularSpeed = 120f;
+    private bool isFleeing;
+
+    public float fleeingSpeed = 20f;
+    public float fleeingAngularSpeed = 500f;
+
+    private Vector3 lastSteeringTarget;
+    private bool lastIsFleeing;
 
     void ResetAgent()
     {
-        if (isMiniboss) 
-        {
-            agent.speed = minibossSpeed;
-        } 
-        else 
-        {
-            agent.speed = normalSpeed;
-        }
-        speedMult = UnityEngine.Random.Range(0.1f, 1.5f);
+        agent.speed = isMiniboss ? normalSpeed : minibossSpeed;
         agent.angularSpeed = normalAngularSpeed;
-        int index = UnityEngine.Random.Range(0, goalLocations.Length);
-        //Debug.Log(index);
 
+        int index = UnityEngine.Random.Range(0, goalLocations.Length);
         agent.SetDestination(goalLocations[index].transform.position);
     }
 
     public void DetectNewObstacle(Vector3 position){
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            /* RPCs should be called before we get this far */
+            Debug.LogError("DetectNewObstacle called on client.");
+        }
+
         /* FIXME: Have seen this occasionally leading to errors.
          * if this is expected, move the checks inside the last if, and remove the warnings. */
         if (!agent.isOnNavMesh)
@@ -68,11 +65,9 @@ public class AiController : MonoBehaviour
             if (path.status != NavMeshPathStatus.PathInvalid)
             {
                 agent.SetDestination(path.corners[path.corners.Length - 1]);
-                agent.speed = fleeingSpeed;
-                agent.angularSpeed = fleeingAngularSpeed;
-                isFleeing = true;
-            } 
-            else 
+                SetFleeing(true);
+            }
+            else
             {
                 NavMeshHit hit;
                 NavMeshPath newPath = new NavMeshPath();
@@ -81,31 +76,40 @@ public class AiController : MonoBehaviour
                 if(NavMesh.SamplePosition(newgoal, out hit, newRadius, NavMesh.AllAreas)){
                     agent.CalculatePath(hit.position, newPath);
                     agent.SetDestination(newPath.corners[newPath.corners.Length - 1]);
-                    agent.speed = fleeingSpeed;
-                    agent.angularSpeed = fleeingAngularSpeed;
-                    isFleeing = true;
+                    SetFleeing(true);
                 }
             }
         }
+    }
+
+    void SetFleeing(bool fleeing)
+    {
+        isFleeing = fleeing;
+        if (isFleeing)
+        {
+            agent.speed = fleeingSpeed;
+            agent.angularSpeed = fleeingAngularSpeed;
+        }
         else
         {
-            isFleeing = false;
+            agent.speed = isMiniboss ? minibossSpeed : normalSpeed;
+            agent.angularSpeed = normalAngularSpeed;
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        if (goalLocations == null)
-            goalLocations = GameObject.FindGameObjectsWithTag(forTutorial ? "tut_goal" : "goal");
-        PV = GetComponent<PhotonView>();
         // Access the agents NavMesh
-        agent = this.GetComponent<NavMeshAgent>();
-        // Instruct the agent where it has to go
-        int index = UnityEngine.Random.Range(0, goalLocations.Length);
-        //Debug.Log(index);
-        agent.SetDestination(goalLocations[index].transform.position);
-        agent.speed *= UnityEngine.Random.Range(0.2f, 1.5f);
+        agent = GetComponent<NavMeshAgent>();
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            goalLocations =
+                GameObject.FindGameObjectsWithTag(forTutorial
+                    ? "tut_goal"
+                    : "goal");
+            ResetAgent();
+        }
     }
 
     private void Update()
@@ -120,44 +124,33 @@ public class AiController : MonoBehaviour
                 ResetAgent();
             }
         }
-        else
-        {                      
-            UpdateNetworkPosition();
-            UpdateNetworkIsFleeing();
-        }
     }
 
-    void UpdateNetworkPosition()
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        try 
+        if (stream.IsWriting)
         {
-            agent.SetDestination(this.GetComponent<SyncManager>().GetNetworkPosition());
-        } catch (Exception e)
-        {
-            Debug.Log(agent.name);
-        }
-        
-    }
-    void UpdateNetworkIsFleeing()
-    {
-        if (this.GetComponent<SyncManager>().GetNetworkIsFleeing())
-        {
-            agent.speed = fleeingSpeed;
-            agent.angularSpeed = fleeingAngularSpeed;
-        }
-        else
-        {
-            if (isMiniboss) 
+            /* Obviously only send when changed (PUN does support this) */
+            if (agent.steeringTarget != lastSteeringTarget ||
+                isFleeing != lastIsFleeing)
             {
-                agent.speed = minibossSpeed;
-            } 
-            else 
-            {
-                agent.speed = normalSpeed;
+                stream.SendNext(agent.steeringTarget);
+                stream.SendNext(isFleeing);
+                lastSteeringTarget = agent.steeringTarget;
+                lastIsFleeing = isFleeing;
             }
-
-            agent.angularSpeed = normalAngularSpeed;
+        }
+        else
+        {
+            try
+            {
+                agent.SetDestination((Vector3) stream.ReceiveNext());
+                SetFleeing((bool) stream.ReceiveNext());
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
         }
     }
 }
-

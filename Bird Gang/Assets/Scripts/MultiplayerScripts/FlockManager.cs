@@ -14,10 +14,10 @@ public class FlockManager : MonoBehaviour
     public Renderer flockingBorder;
     bool turning = false;
 
-    [Range(0.0f, 20.0f)]
+    [Range(0.0f, 30.0f)]
     public float minSpeed;
 
-    [Range(0.0f, 20.0f)]
+    [Range(0.0f, 50.0f)]
     public float maxSpeed;
 
     [Range(1.0f, 10.0f)]
@@ -29,7 +29,7 @@ public class FlockManager : MonoBehaviour
     public float rotationSpeed;    
 
     Quaternion r = Quaternion.identity ;
-    private bool attacking;
+    public bool attacking;
 
     private Transform playerToAttack;
     Transform child;
@@ -55,7 +55,6 @@ public class FlockManager : MonoBehaviour
         transform.position = new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
                                             Random.Range(0, worldLimits.y),                                                            
                                             Random.Range(-worldLimits.z, worldLimits.z));
-
     }
 
     // Update is called once per frame
@@ -63,53 +62,66 @@ public class FlockManager : MonoBehaviour
     {
 
         Vector3 direction = Vector3.zero;
-        Vector3 noise = new Vector3 (Random.Range(-50, 50),Random.Range(-30, 30),Random.Range(-50, 50));
+        Vector3 noise = new Vector3(Random.Range(-50, 50), Random.Range(-30, 30), Random.Range(-50, 50));
         
         Bounds b = flockingBorder.bounds;
         if (!b.Contains(transform.position))
         {
             turning = true;
             direction = b.center - transform.position;
-        } 
-        else {
+        }
+        else
+        {
             turning = false;
         }
-        if(attacking){
+        if (attacking)
+        {
             transform.LookAt(playerToAttack);
         }
         else
         {
-            if(turning)
+            if (turning)
             {
                 // transform.rotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction+noise), rotationSpeed * Time.deltaTime);
-        
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction + noise), rotationSpeed * Time.deltaTime);
+
             }
-            else{
-                
-                    if(Random.Range(0,100) < 1) {
-                        r =  Quaternion.Euler(Random.Range(-180,180)+transform.rotation.x,Random.Range(-180,180)+transform.rotation.y,Random.Range(-180,180)+transform.rotation.z);
-                    }
-                    transform.rotation = Quaternion.Slerp(transform.rotation, r,  Time.deltaTime*5);
-                
+            else
+            {
+
+                if (Random.Range(0, 100) < 1)
+                {
+                    r = Quaternion.Euler(Random.Range(-180, 180) + transform.rotation.x, Random.Range(-180, 180) + transform.rotation.y, Random.Range(-180, 180) + transform.rotation.z);
+                }
+                transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * 5);
+
             }
         }
         // this.transform.position  = Vector3.Lerp(this.transform.position,goalPos,Time.deltaTime);
         this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, -worldLimits.x, worldLimits.x),
                                             Mathf.Clamp(this.transform.position.y, 0, worldLimits.y),
                                             Mathf.Clamp(this.transform.position.z, -worldLimits.z, worldLimits.z));
-        transform.Translate(0, 0, Time.deltaTime * 18);   
-
+        transform.Translate(0, 0, Time.deltaTime * 20); 
     }
+
     public void AttackPlayer(GameObject player){
         attacking = true;
         playerToAttack = player.transform;
-        
+        foreach(GameObject bird in allBirds)
+        {
+            bird.GetComponent<Flocking>().AttackPlayer(player);
+
+        }
     }
 
     public void StopAttackPlayer()
     {
         attacking = false;
+        foreach (GameObject bird in allBirds)
+        {
+            bird.GetComponent<Flocking>().StopAttackPlayer();
+
+        }
     }
     
 }

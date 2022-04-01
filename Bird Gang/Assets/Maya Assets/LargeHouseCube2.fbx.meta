@@ -12,12 +12,27 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: shadingMap3
+    second: {fileID: 2100000, guid: 70000b63d3312438a81dc8f51095cd6b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standardSurface10
+    second: {fileID: 2100000, guid: 4f3bb1fc7ea8848f79c3bd6f9f428faf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: standardSurface6
     second: {fileID: 2100000, guid: 4f3bb1fc7ea8848f79c3bd6f9f428faf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: standardSurface7
+    second: {fileID: 2100000, guid: 4f3bb1fc7ea8848f79c3bd6f9f428faf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standardSurface9
     second: {fileID: 2100000, guid: 4f3bb1fc7ea8848f79c3bd6f9f428faf, type: 2}
   - first:
       type: UnityEngine:Material
@@ -29,6 +44,21 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: surfaceShader4
     second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader5
+    second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader7
+    second: {fileID: 2100000, guid: 3631db16f0abc4bdda8d1aeebec6abd9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader8
+    second: {fileID: 2100000, guid: 3631db16f0abc4bdda8d1aeebec6abd9, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -98,7 +128,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human: []
@@ -117,7 +147,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1

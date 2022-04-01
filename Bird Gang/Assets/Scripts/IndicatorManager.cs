@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IndicatorManager : MonoBehaviour
 {
@@ -55,5 +56,31 @@ public class IndicatorManager : MonoBehaviour
                 indicators[i].MoveIndidcator(position);
             }
         }
+    }
+
+    public float GetImageWidth(int indicatorID)
+    {
+        for (int i = 0; i < indicators.Length; i++)
+        {
+            if (indicators[i].indicatorID == indicatorID)
+            {
+                Image img = indicators[i].GetComponent<Image>();
+                return img.GetPixelAdjustedRect().width;
+            }
+        }
+        return 0f;
+    }
+
+    public float GetImageHeight(int indicatorID)
+    {
+        for (int i = 0; i < indicators.Length; i++)
+        {
+            if (indicators[i].indicatorID == indicatorID)
+            {
+                Image img = indicators[i].GetComponent<Image>();
+                return img.GetPixelAdjustedRect().height;
+            }
+        }
+        return 0f;
     }
 }

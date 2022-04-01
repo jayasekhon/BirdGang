@@ -11,7 +11,7 @@ public class IntroductionRound : MonoBehaviour, GameEventCallbacks
 
 	void Awake()
 	{
-		GameEvents.RegisterCallbacks(this, GAME_STAGE.INTRODUCTION, STAGE_CALLBACK.ALL);
+		//GameEvents.RegisterCallbacks(this, GAME_STAGE.INTRODUCTION, STAGE_CALLBACK.ALL);
 		//circles = GetComponent<FloatyCirclesThing>();
 	}
 
