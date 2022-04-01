@@ -24,7 +24,7 @@ public class FlockHinderance : MonoBehaviour
         {
             if(hitCollider.GetComponent<FlockManager>())
             {
-                Debug.Log("hitCollider");
+                // Debug.Log("hitCollider");
                 
                 // comes in when it gets hit
                 // then we start a timer for how long they can't move (kinematic = true)

@@ -374,9 +374,9 @@ fire_skip: ;
             if (x > 270) {
                 if (transform.position.y < 10f) //change this value of 10 depending on follow offset
                 {
-                    x = Mathf.Clamp(x, 335, 380);
+                    x = Mathf.Clamp(x, 345, 380);
                 } else {
-                    x = Mathf.Clamp(x, 275, 380);
+                    x = Mathf.Clamp(x, 285, 380);
                 }
             }
 
