@@ -147,9 +147,9 @@ public class AiController : MonoBehaviour, IPunObservable
                 agent.SetDestination((Vector3) stream.ReceiveNext());
                 SetFleeing((bool) stream.ReceiveNext());
             }
-            catch
+            catch (Exception e)
             {
-                Debug.LogError("error");
+                Debug.LogError(e);
             }
         }
     }
