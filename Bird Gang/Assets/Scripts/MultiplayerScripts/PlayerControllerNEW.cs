@@ -28,6 +28,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     private bool windy;
     private float pushDirection;
     private bool thing = true;
+    private ParticleSystem windParticle;
     // private ConstantForce windForce;
 
     bool grounded; 
@@ -196,6 +197,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         Look();
         Movement();
         KeyboardTurning();
+        // HeightControl();
     }
 
     void GetInput()
@@ -370,8 +372,18 @@ fire_skip: ;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
 
             if (x > 270) {
-                x = Mathf.Clamp(x, 275, 380);
+                if (transform.position.y < 10f) //change this value of 10 depending on follow offset
+                {
+                    x = Mathf.Clamp(x, 345, 380);
+                } else {
+                    x = Mathf.Clamp(x, 285, 380);
+                }
             }
+
+            // if (x > 270)
+            // {
+            //     x = Mathf.Clamp(x, 275, 380);
+            // }
             if (x < 90) {
                 x = Mathf.Clamp(x, -10, 80);
             }
@@ -398,6 +410,10 @@ fire_skip: ;
             activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, vertical * forwardSpeed * increasedAcceleration, forwardAcceleration * fixedDeltaTime);
             Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
             rb.AddForce(position, ForceMode.Impulse); 
+
+            windParticle.enableEmission = false;
+            upForce.force = new Vector3(0,0,0);
+            upForce.relativeForce = new Vector3(0,0,0);
             windTimePassed = 0;
             // Assume gravity == reaction force from wings
             // alternately, we could do hovering while moving.
@@ -420,7 +436,7 @@ fire_skip: ;
         else
             rb.mass = 1.755f;
     }
-
+   
     void Hovering() {
         anim.speed = 3f;
         anim.SetBool("flyingDown", false);
@@ -428,7 +444,7 @@ fire_skip: ;
         if (timePassed <= 0.6f)
         {
             //UP -- If you change this, also change rb.mass = 1.755 in SetHoveringGravity.
-            rb.AddForce(new Vector3(0f, 30f, 0f));
+            rb.AddForce(new Vector3(0f, 55f, 0f));
             timePassed += Time.fixedDeltaTime;
         }
         else if (timePassed > 0.6f && timePassed <= 1.04f)
@@ -444,11 +460,12 @@ fire_skip: ;
 
     void KeyboardTurning()
     {
-        if (move && !input_lock_ad)
-        {
+        // if (move && !input_lock_ad)
+        // {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange); 
-        }         
+        // }
+
     }
 
     void Acceleration()
@@ -503,9 +520,22 @@ fire_skip: ;
             Debug.LogWarning("increasedAcceleration below 1");
         }
     }
+
+    void HeightControl() 
+    {
+        if (transform.position.y < 3f)
+        {
+            // transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 14f, transform.position.z), Time.fixedDeltaTime);
+            transform.position = new Vector3(transform.position.x, 14f, transform.position.z);
+        }
+    }
     
     void Wind()
     {
+        windParticle = GetComponentInChildren<ParticleSystem>();
+        windParticle.enableEmission = false;
+        // windParticle.emission.enabled = false;
+
 
         if (Random.Range(0,2) == 0 && thing)
         {
@@ -527,7 +557,13 @@ fire_skip: ;
         if (windTimePassed > 3 && windTimePassed < 4)
         {
             thing = false;
-            upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0); 
+            upForce.relativeForce = new Vector3(30 * pushDirection, 0, 0);
+            // todo: change rotation of particle emission
+
+            windParticle.transform.rotation = Quaternion.Euler(0, -90 * pushDirection, 0);
+            // windParticle.transform.position = new Vector3(15 * pushDirection, 0, 0);
+
+            windParticle.enableEmission = true; 
             windTimePassed += Time.fixedDeltaTime;  
             // Debug.Log(pushDirection);
         }

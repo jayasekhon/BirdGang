@@ -9,7 +9,7 @@ public class FlockCEO : MonoBehaviour
 
     public Vector3 worldLimits = new Vector3(250,50,250);
 
-    public List<PlayerController> players;
+    public List<PlayerControllerNEW> players;
     public List<GameObject> stillPlayers = new List<GameObject>();
     public List<GameObject> attackedPlayers = new List<GameObject>();
     public List<FlockManager> flockManagers;
@@ -54,16 +54,16 @@ public class FlockCEO : MonoBehaviour
         {
             return;
         }
-        players = new List<PlayerController>();
+        players = new List<PlayerControllerNEW>();
         GameObject[] playersObjects = GameObject.FindGameObjectsWithTag("Player");
         // Debug.Log(playersObjects.Length);
         for (int i = 0; i < playersObjects.Length; i++)
         {
-            players.Add(playersObjects[i].GetComponent<PlayerController>());
+            players.Add(playersObjects[i].GetComponent<PlayerControllerNEW>());
         }        
         // Debug.Log(players.Count);
         // stillPlayers = new List<GameObject>();
-        foreach (PlayerController player in players)
+        foreach (PlayerControllerNEW player in players)
         {
             if (!player.move && !stillPlayers.Contains(player.gameObject) && !attackedPlayers.Contains(player.gameObject)) {
                 stillPlayers.Add(player.gameObject);

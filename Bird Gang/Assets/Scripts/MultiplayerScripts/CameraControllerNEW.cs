@@ -15,6 +15,7 @@ public class CameraControllerNEW : MonoBehaviour
     public float width = 5f;
     public float distance = 0f;
     public float fieldOfView = 60f;
+    private Transform groundPos;
 
     void Awake()
     {
@@ -34,14 +35,28 @@ public class CameraControllerNEW : MonoBehaviour
         cam.Follow = playerPos;
         cam.LookAt = playerPos;
         camTransposer = cam.GetCinemachineComponent<CinemachineTransposer>();
+        // groundPos = playerPos;
+        // groundPos.position = new Vector3(groundPos.position.x, 5f, groundPos.position.z);
         }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
+        // if (playerPos.position.y < 10f) 
+        // {
+        //     Debug.Log("groundPos");
+        //     cam.Follow = groundPos;
+        // }
+        // if (transform.position.y < 4.5f)
+        // {
+        //     transform.position = new Vector3(transform.position.x, 4.5f, transform.position.z);
+        // } 
+
+
         if (transform.position.y < 3.5f)
         {
             transform.position = new Vector3(transform.position.x, 2.5f, transform.position.z);
         } 
+
 
     // //  // When the player is moving up (so the player is facing up - positive) decrease FoV.
     //     if (playerPos.forward.y > 0.05f)

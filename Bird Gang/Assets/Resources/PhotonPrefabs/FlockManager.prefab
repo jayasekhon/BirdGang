@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7165233957488281813}
   - component: {fileID: -7083796695843234914}
   - component: {fileID: -2628115994848600178}
+  - component: {fileID: -6483868721687088817}
   m_Layer: 0
   m_Name: FlockManager
   m_TagString: FlockManager
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bird: {fileID: 1419285867022960271, guid: b5d2f170260734410b85d7b676ead948, type: 3}
-  numBirds: 8
+  numBirds: 20
   allBirds: []
   flyLimits: {x: 15, y: 15, z: 15}
   worldLimits: {x: 200, y: 50, z: 175}
@@ -96,3 +97,16 @@ MonoBehaviour:
   m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!65 &-6483868721687088817
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7165233957488281812}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
