@@ -33,7 +33,7 @@ public class holder : MonoBehaviour
         //     return;
         // }
 
-        // if (Input.GetMouseButtonDown(1) && !activeWaypoint && PV.IsMine)
+        // if (Input.GetMouseButtonDown(1) && !activeWaypoint)
         // {
         //     if (PV.IsMine)
         //     {
@@ -41,7 +41,7 @@ public class holder : MonoBehaviour
         //     }
                        
         // }
-        // else if (Input.GetMouseButtonDown(1) && activeWaypoint && PV.I)
+        // else if (Input.GetMouseButtonDown(1) && activeWaypoint)
         // {
         //     HideWaypoint();
         // }
