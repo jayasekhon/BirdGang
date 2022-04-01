@@ -99,7 +99,6 @@ public class playerPointer : MonoBehaviour
                 if (viewPos.z < 0)
                 {   
                     // Target player is behind the local player
-                    Debug.Log("Behind player");
                     if (pos.x < (Screen.width / 2))
                         pos.x = maxX;
                     else
