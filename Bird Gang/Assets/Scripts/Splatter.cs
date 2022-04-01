@@ -19,10 +19,10 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
     }
     private void Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        material = GetComponent<Renderer>().material;
+        //meshRenderer = GetComponent<MeshRenderer>();
+        //material = GetComponent<Renderer>().material;
 
-        material.SetFloat("_index", Random.RandomRange(0, 4));
+        //material.SetFloat("_index", Random.RandomRange(0, 4));
 
     }
      void Update()
@@ -31,7 +31,7 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
         if (Time.timeAsDouble > appearTime)
         {
             // Debug.Log("hello");
-            meshRenderer.enabled =true;
+            //meshRenderer.enabled =true;
             particleSystem.gameObject.SetActive(true);
             //particleSystem.Play();
             if (burst)

@@ -58,6 +58,7 @@ public class Spawner : MonoBehaviour
         GameObject newGoodPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs","Good Person Cube"),position,Quaternion.identity);
         child = newGoodPerson.transform.GetChild(Random.Range(0, 3));
         child.gameObject.SetActive(true);
+        //child.gameObject.GetComponent<Animator>().enabled = true;
         NumberGoodPeopleSpawned++;
     }
 
@@ -67,6 +68,7 @@ public class Spawner : MonoBehaviour
         GameObject newBadPerson = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bad Person Cube"), position, Quaternion.identity);
         child = newBadPerson.transform.GetChild(Random.Range(0, 3));
         child.gameObject.SetActive(true);
+        //child.gameObject.GetComponent<Animator>().enabled = true;
         NumberBadPeopleSpawned++;
         
     }
