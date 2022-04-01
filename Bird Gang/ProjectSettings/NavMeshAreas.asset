@@ -17,8 +17,8 @@ NavMeshProjectSettings:
     cost: 10
   - name: WorldFloor
     cost: 100
-  - name: 
-    cost: 1
+  - name: River
+    cost: 100000
   - name: 
     cost: 1
   - name: 
@@ -76,7 +76,7 @@ NavMeshProjectSettings:
     agentRadius: 1
     agentHeight: 2
     agentSlope: 45
-    agentClimb: 0.75
+    agentClimb: 1.3
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
