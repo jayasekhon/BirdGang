@@ -52,6 +52,12 @@ public class CameraControllerNEW : MonoBehaviour
         // } 
 
 
+        if (transform.position.y < 3.5f)
+        {
+            transform.position = new Vector3(transform.position.x, 2.5f, transform.position.z);
+        } 
+
+
     // //  // When the player is moving up (so the player is facing up - positive) decrease FoV.
     //     if (playerPos.forward.y > 0.05f)
     //     {
