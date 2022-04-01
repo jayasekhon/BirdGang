@@ -13,17 +13,18 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         numberOfBalloons = 4;
 
-        GameEvents.RegisterCallbacks(this, ~GAME_STAGE.BREAK,
+        GameEvents.RegisterCallbacks(this, GAME_STAGE.CARNIVAL,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void OnStageBegin(GameEvents.Stage stage)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -47,7 +48,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
                 if (i == 3) finishPosition = new Vector3(0, 0, -10);
                 balloon.SetGoal(CarnivalFinish.position+finishPosition);
                 balloon.SetID(i);
-                
             }
         }
     }

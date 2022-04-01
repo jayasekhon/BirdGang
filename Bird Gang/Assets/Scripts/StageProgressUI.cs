@@ -55,11 +55,17 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 			Color32 col;
 			switch (s.GameStage)
 			{
-			case GAME_STAGE.BREAK:
+			case GAME_STAGE.TUTORIAL:
+				col = new Color32(0, 163, 108, 255);
+				break;
+			case GAME_STAGE.ROBBERY:
+				col = new Color32(200, 16, 16, 255);
+				break;
+			case GAME_STAGE.POLITICIAN:
 				col = new Color32(12, 160, 180, 255);
 				break;
-			case GAME_STAGE.FIRST:
-				col = new Color32(200, 16, 16, 255);
+			case GAME_STAGE.CARNIVAL:
+				col = new Color32(255, 201, 51, 255);
 				break;
 			default:
 				col = new Color32(0, 0, 0, 255);
@@ -111,14 +117,14 @@ exit:
 		float seconds = Mathf.Floor(progress * stage.maxDuration);
 		if (stage.maxDuration - seconds < 5f)
 		{
-			text.text = $"Next stage in {stage.maxDuration - seconds}...";
+			text.text = $"Next event in {stage.maxDuration - seconds}...";
 			textShown = true;
 		}
-		else if (stage.GameStage != GAME_STAGE.BREAK && seconds < 5f)
+		/*else if (stage.GameStage != GAME_STAGE.BREAK && seconds < 5f)
 		{
 			text.text = "Miniboss spawned.";
 			textShown = true;
-		}
+		}*/
 		else if (textShown)
 		{
 			text.CrossFadeAlpha(0f, 1f, false);

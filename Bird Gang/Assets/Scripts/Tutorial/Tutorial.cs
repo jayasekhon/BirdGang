@@ -27,8 +27,12 @@ public class Tutorial : MonoBehaviour
 
 	public void AdvanceTutorial()
 	{
-		rec_pos = pc.transform.position;
-		rec_rot = pc.transform.rotation;
+		if (stage != 5)
+		{
+			rec_pos = pc.transform.position;
+			rec_rot = pc.transform.rotation;
+		}
+
 		switch (stage++)
 		{
 		case 0:
@@ -36,7 +40,7 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(false);
 			stage3.SetActive(false);
 			stage4.SetActive(false);
-			stage5.SetActive(false);
+			//stage5.SetActive(false); -- This is networked.
         		pc.input_lock_x = true;
         		pc.input_lock_y = true;
 			pc.input_lock_ad = true;
@@ -49,7 +53,7 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(true);
 			pc.input_lock_x = false;
 			text.text =
-				"You can yaw with the mouse while holding <b>W</b>.\n" +
+				"You can turn with the mouse while holding <b>W</b>.\n" +
 				"Move through the rings ahead.";
 			break;
 		case 2:
@@ -57,11 +61,11 @@ public class Tutorial : MonoBehaviour
 			pc.input_lock_y = false;
 			text.text =
 				"You can pitch with the mouse while holding <b>W</b>\n" +
-				"Continue through the rings below, using your mouse.";
+				"Continue through the rings ahead.";
 			break;
 		case 3:
 			stage4.SetActive(true);
-			text.text = "While holding <b>W</b>, you may tap <b>Space</b> to speed up.";
+			text.text = "While holding <b>W</b>, you can tap <b>Space</b> to speed up.";
 			break;
 		case 4:
 			stage5.SetActive(true);
@@ -70,7 +74,10 @@ public class Tutorial : MonoBehaviour
 			            "primary mouse button.\n" +
 			            "Ammunition will regenerate over time, " +
 			            "and is shown on the top right.\n" +
-			            "Hit the targets below.";
+			            "Hit the targets below, but avoid the innocent OAPs.";
+			break;
+		case 5:
+			text.text = "A thief! Give them their comeuppance.";
 			break;
 		}
 	}

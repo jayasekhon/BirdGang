@@ -16,13 +16,11 @@ public enum STAGE_CALLBACK
 [Flags]
 public enum GAME_STAGE
 {
-	FIRST = 1,
-	SECOND = 2,
-	THIRD = 4,
-	ETC = 8,
-	BREAK = 16,
-
-	INTRODUCTION = 32,
+	TUTORIAL = 1,
+	ROBBERY = 2,
+	POLITICIAN = 4,
+	CARNIVAL = 8,
+	FINISH = 16,
 
 	ALL = 0xFF,
 };
@@ -56,9 +54,9 @@ public class GameEvents : MonoBehaviour
 	{
 		public CallbackItem(GameEventCallbacks h, GAME_STAGE s, STAGE_CALLBACK t)
 		{
-			this.gameStage = s;
-			this.type = t;
-			this.holder = h;
+			gameStage = s;
+			type = t;
+			holder = h;
 		}
 
 		public readonly GameEventCallbacks holder;
@@ -70,7 +68,11 @@ public class GameEvents : MonoBehaviour
 
 	public static readonly Stage[] agenda =
 	{
-		new Stage(GAME_STAGE.INTRODUCTION, 120f),
+		new Stage(GAME_STAGE.TUTORIAL, 120f),
+		new Stage(GAME_STAGE.ROBBERY, 120f),
+		new Stage(GAME_STAGE.POLITICIAN, 120f),
+		new Stage(GAME_STAGE.CARNIVAL, 120f),
+		new Stage(GAME_STAGE.FINISH, .01f),
 	};
 
 	private int stageIndex;
