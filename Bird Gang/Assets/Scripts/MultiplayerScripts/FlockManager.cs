@@ -55,7 +55,6 @@ public class FlockManager : MonoBehaviour
         transform.position = new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
                                             Random.Range(0, worldLimits.y),                                                            
                                             Random.Range(-worldLimits.z, worldLimits.z));
-
     }
 
     // Update is called once per frame
@@ -102,9 +101,9 @@ public class FlockManager : MonoBehaviour
         this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, -worldLimits.x, worldLimits.x),
                                             Mathf.Clamp(this.transform.position.y, 0, worldLimits.y),
                                             Mathf.Clamp(this.transform.position.z, -worldLimits.z, worldLimits.z));
-        transform.Translate(0, 0, Time.deltaTime * 20);
-
+        transform.Translate(0, 0, Time.deltaTime * 20); 
     }
+
     public void AttackPlayer(GameObject player){
         attacking = true;
         playerToAttack = player.transform;
@@ -113,7 +112,6 @@ public class FlockManager : MonoBehaviour
             bird.GetComponent<Flocking>().AttackPlayer(player);
 
         }
-        
     }
 
     public void StopAttackPlayer()
