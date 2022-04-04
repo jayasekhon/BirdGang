@@ -91,10 +91,9 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents:
   - {fileID: 8764500696354487163}
-  - {fileID: 5464263947585463568}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -164,6 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMiniboss: 1
   forTutorial: 0
+  disableSerialisation: 0
   normalSpeed: 2
   minibossSpeed: 4
   normalAngularSpeed: 120
