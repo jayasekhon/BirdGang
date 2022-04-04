@@ -26,7 +26,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(115, 2, -280), Quaternion.identity);
+        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(149.0f, 4.0f, -270.0f), Quaternion.Euler(0, 270, 0));
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
