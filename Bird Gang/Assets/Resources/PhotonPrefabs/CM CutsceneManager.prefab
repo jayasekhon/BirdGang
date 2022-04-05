@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5109977954986602697}
   m_Layer: 0
   m_Name: CM CutsceneManager
-  m_TagString: Untagged
+  m_TagString: cutsceneManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,7 +60,9 @@ MonoBehaviour:
   m_AnimatedTarget: {fileID: 1884505082919060035}
   m_LayerIndex: 0
   m_ShowDebugText: 0
-  m_ChildCameras: []
+  m_ChildCameras:
+  - {fileID: 8845626396690569467}
+  - {fileID: 6020673947193647778}
   m_Instructions:
   - m_FullHash: 912603144
     m_VirtualCamera: {fileID: 8845626396690569467}
@@ -111,7 +113,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884505082919060037}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31cb439dc9f494316ba2792d3b756a57, type: 3}
   m_Name: 
@@ -256,14 +258,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8048790359465846303}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 2, z: -283}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 135, y: 2, z: -266}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5915226942377549806}
   m_Father: {fileID: 1884505082919060033}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!1001 &1884505081498837633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -277,7 +279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3420980062130030740, guid: 6fec6ad1b0c4245929bdbebe0707b099, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 100
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 3420980062130030740, guid: 6fec6ad1b0c4245929bdbebe0707b099, type: 3}
       propertyPath: m_LocalPosition.y
@@ -285,23 +287,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3420980062130030740, guid: 6fec6ad1b0c4245929bdbebe0707b099, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -273
+      value: -266
       objectReference: {fileID: 0}
     - target: {fileID: 3420980062130030740, guid: 6fec6ad1b0c4245929bdbebe0707b099, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 0.7038875
       objectReference: {fileID: 0}
     - target: {fileID: 3420980062130030740, guid: 6fec6ad1b0c4245929bdbebe0707b099, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.000000008706114
       objectReference: {fileID: 0}
     - target: {fileID: 3420980062130030740, guid: 6fec6ad1b0c4245929bdbebe0707b099, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0.71031153
       objectReference: {fileID: 0}
     - target: {fileID: 3420980062130030740, guid: 6fec6ad1b0c4245929bdbebe0707b099, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.0000000087855705
       objectReference: {fileID: 0}
     - target: {fileID: 3420980062130030740, guid: 6fec6ad1b0c4245929bdbebe0707b099, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -402,15 +404,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5034941349324250746, guid: 4aee61b5bb5a04240b102412d493f809, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.122183256
+      value: 0.12218323
       objectReference: {fileID: 0}
     - target: {fileID: 5034941349324250746, guid: 4aee61b5bb5a04240b102412d493f809, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -2.4198927e-15
+      value: 0.000000030489364
       objectReference: {fileID: 0}
     - target: {fileID: 5034941349324250746, guid: 4aee61b5bb5a04240b102412d493f809, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1.6126688e-16
+      value: -0.0000000037534114
       objectReference: {fileID: 0}
     - target: {fileID: 5034941349324250746, guid: 4aee61b5bb5a04240b102412d493f809, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -13,6 +13,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     private GameObject robber1;
     private GameObject robber2;
 
+    GameObject cutsceneManager;
+    Animator cutsceneManagerAnim;
 
     GameObject leftDoor;
     GameObject rightDoor;
@@ -40,7 +42,13 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
+    }
 
+    void Start() 
+    {
+        cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
+        Debug.Log(cutsceneManager);
+        cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
     }
 
     IEnumerator ExecuteAfterTime(float time)
@@ -68,7 +76,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        
+        cutsceneManagerAnim.Play("Cutscene");
+        Debug.Log("robber stage has begun");
         StartCoroutine(ExecuteAfterTime(2f));
     
     }
@@ -98,6 +107,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {   
+        cutsceneManagerAnim.Play("Main");
         leftAnim.SetBool("swingDoor", false);
         rightAnim.SetBool("swingDoor", false);
 
