@@ -43,9 +43,22 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     }
 
-     IEnumerator ExecuteAfterTime(float time)
+    IEnumerator ExecuteAfterTime(float time)
     {
+        //initial delay for camera pan
         yield return new WaitForSeconds(time);
+        
+        startAlarm = true;
+
+        //let alarm run alone as boss explains round
+        yield return new WaitForSeconds(5f);
+    
+
+        leftAnim.SetBool("swingDoor", true);
+        rightAnim.SetBool("swingDoor", true);
+        
+        //slight delay for animation and robbers to spawn
+        yield return new WaitForSeconds(1.5f);
 
         robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
@@ -55,14 +68,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-
-        leftAnim.SetBool("swingDoor", true);
-        rightAnim.SetBool("swingDoor", true);
-
-        startAlarm = true;
-
-        StartCoroutine(ExecuteAfterTime(1.5f));
-
+        
+        StartCoroutine(ExecuteAfterTime(2f));
     
     }
 
