@@ -26,7 +26,15 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(149.0f, 4.0f, -270.0f), Quaternion.Euler(0, 270, 0));
+        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(141.0f, 2.0f, -270f), Quaternion.Euler(0, 270, 0));
+        GameObject leftDoor = GameObject.FindGameObjectWithTag("bankDoorL");
+        GameObject rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
+        Animator leftAnim = leftDoor.GetComponent<Animator>();
+        Animator rightAnim = rightDoor.GetComponent<Animator>();
+        leftAnim.SetBool("swingDoor", true);
+        rightAnim.SetBool("swingDoor", true);
+
+    
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
