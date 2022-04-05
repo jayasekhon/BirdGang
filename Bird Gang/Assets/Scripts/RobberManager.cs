@@ -10,6 +10,14 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 //    public static RobberManager Instance;
 
     private GameObject robber;
+    private GameObject robber1;
+    private GameObject robber2;
+
+
+    GameObject leftDoor;
+    GameObject rightDoor;
+    Animator leftAnim;
+    Animator rightAnim;
 
     // Start is called before the first frame update
     void Awake()
@@ -22,28 +30,48 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         DontDestroyOnLoad(gameObject);
         GameEvents.RegisterCallbacks(this, GAME_STAGE.ROBBERY,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
+
+        leftDoor = GameObject.FindGameObjectWithTag("bankDoorL");
+        rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
+        leftAnim = leftDoor.GetComponent<Animator>();
+        rightAnim = rightDoor.GetComponent<Animator>();
+
+    }
+
+     IEnumerator ExecuteAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+        robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+        robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(141.0f, 2.0f, -270f), Quaternion.Euler(0, 270, 0));
-        GameObject leftDoor = GameObject.FindGameObjectWithTag("bankDoorL");
-        GameObject rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
-        Animator leftAnim = leftDoor.GetComponent<Animator>();
-        Animator rightAnim = rightDoor.GetComponent<Animator>();
+
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
+
+        StartCoroutine(ExecuteAfterTime(1.5f));
 
     
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
-    {
+    {   
+        leftAnim.SetBool("swingDoor", false);
+        rightAnim.SetBool("swingDoor", false);
+
+
         if (!robber) // If we've already won.
             return;
         /* Possibly play some animation of robber getting away,
          * have gang boss chastise player or something. */
         PhotonNetwork.Destroy(robber);
+
+
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
