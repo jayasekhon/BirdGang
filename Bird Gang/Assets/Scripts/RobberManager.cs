@@ -16,8 +16,12 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     GameObject leftDoor;
     GameObject rightDoor;
+    GameObject bankAlarm;
     Animator leftAnim;
     Animator rightAnim;
+
+    float timePassed = 0f;
+    bool startAlarm = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -33,6 +37,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         leftDoor = GameObject.FindGameObjectWithTag("bankDoorL");
         rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
+        bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
 
@@ -54,15 +59,42 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
 
+        startAlarm = true;
+
         StartCoroutine(ExecuteAfterTime(1.5f));
 
     
     }
 
+    void Update()
+    {
+        if(startAlarm){
+            if (timePassed < 0.5f) 
+            {
+                // gameObject.GetComponent<MeshRenderer>().enabled = true;
+                bankAlarm.GetComponent<Light>().enabled = true;
+            }
+            else if (timePassed >= 0.5f && timePassed <= 1f)
+            {
+                // gameObject.GetComponent<MeshRenderer>().enabled = false;
+                //bankAlarm.SetActive(false);
+                bankAlarm.GetComponent<Light>().enabled = false;
+            }
+            else 
+            {
+                timePassed = 0f;
+            }
+            timePassed += Time.fixedDeltaTime; //0.02
+        }
+
+	}
+
     public void OnStageEnd(GameEvents.Stage stage)
     {   
         leftAnim.SetBool("swingDoor", false);
         rightAnim.SetBool("swingDoor", false);
+
+        startAlarm = false;
 
 
         if (!robber) // If we've already won.
