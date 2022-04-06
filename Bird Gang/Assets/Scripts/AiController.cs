@@ -17,7 +17,7 @@ public class AiController : MonoBehaviour, IPunObservable
     public float normalSpeed = 2f;
     public float minibossSpeed = 4f;
     public float normalAngularSpeed = 120f;
-    private bool isFleeing;
+    public bool isFleeing;
 
     public float fleeingSpeed = 20f;
     public float fleeingAngularSpeed = 500f;
