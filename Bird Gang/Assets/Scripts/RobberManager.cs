@@ -66,13 +66,14 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
 
+        yield return new WaitForSeconds(60f);
+
+        gatherCrowd();
+
+
     }
 
-    public void OnStageBegin(GameEvents.Stage stage)
-    {
-
-        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(115, 2, -280), Quaternion.identity);
-
+    public void gatherCrowd(){
         //Start the navmeshagents moving to the mayors stage for the next round
         AiController[] agents = GameObject.FindObjectsOfType<AiController>();
         foreach(AiController agent in agents)
@@ -94,8 +95,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
                 }
             }
         }
+    }
 
-        
+    public void OnStageBegin(GameEvents.Stage stage)
+    {
         StartCoroutine(ExecuteAfterTime(2f));
     
 
