@@ -13,8 +13,19 @@ MonoBehaviour:
   m_Name: CM Brain Blends
   m_EditorClassIdentifier: 
   m_CustomBlends:
+  - m_From: '**ANY CAMERA**'
+    m_To: CM MainVCam
+    m_Blend:
+      m_Style: 3
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
   - m_From: CM MainVCam
-    m_To: CM CutCam
+    m_To: CM RobberCam
     m_Blend:
       m_Style: 3
       m_Time: 4
@@ -24,11 +35,11 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CM CutCam
-    m_To: CM MainVCam
+  - m_From: CM MainVCam
+    m_To: CM MayorCam
     m_Blend:
-      m_Style: 3
-      m_Time: 4
+      m_Style: 1
+      m_Time: 2
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []

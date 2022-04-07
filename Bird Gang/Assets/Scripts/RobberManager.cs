@@ -72,14 +72,15 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
 
+        yield return new WaitForSeconds(5f);
+        cutsceneManagerAnim.Play("Main");
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        cutsceneManagerAnim.Play("Cutscene");
+        cutsceneManagerAnim.Play("RobberCS");
         Debug.Log("robber stage has begun");
         StartCoroutine(ExecuteAfterTime(2f));
-    
     }
 
     void Update()
@@ -107,20 +108,16 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {   
-        cutsceneManagerAnim.Play("Main");
         leftAnim.SetBool("swingDoor", false);
         rightAnim.SetBool("swingDoor", false);
 
         startAlarm = false;
-
 
         if (!robber) // If we've already won.
             return;
         /* Possibly play some animation of robber getting away,
          * have gang boss chastise player or something. */
         PhotonNetwork.Destroy(robber);
-
-
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
