@@ -189,7 +189,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 74266090233837150}
-  - component: {fileID: 2492681410657362092}
   m_Layer: 8
   m_Name: SmallTent
   m_TagString: Untagged
@@ -213,23 +212,57 @@ Transform:
   - {fileID: 2812831466461901424}
   - {fileID: 7484080503904312535}
   - {fileID: 809879449657705637}
+  - {fileID: 4127066956169615200}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &2492681410657362092
-CapsuleCollider:
+--- !u!1 &5825811794977068165
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 741977045383179492}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.02
-  m_Height: 0.085
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.04, z: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4127066956169615200}
+  - component: {fileID: 6159675800395669783}
+  m_Layer: 8
+  m_Name: NavMeshObs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4127066956169615200
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5825811794977068165}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.0346, z: 0}
+  m_LocalScale: {x: 2.3333333, y: 2.5000002, z: 2.3333333}
+  m_Children: []
+  m_Father: {fileID: 74266090233837150}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &6159675800395669783
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5825811794977068165}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.009, y: 0.016, z: 0.009}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &6043227980321444997
 GameObject:
   m_ObjectHideFlags: 0
