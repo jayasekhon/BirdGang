@@ -54,6 +54,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     IEnumerator ExecuteAfterTime(float time)
     {
         //initial delay for camera pan
+        // yield return new WaitForSeconds(0.15f);
+
+        // cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(time);
         
         startAlarm = true;
@@ -72,7 +75,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(30f);
         cutsceneManagerAnim.Play("Main");
     }
 
@@ -124,3 +127,11 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     {
     }
 }
+
+
+
+// pans side to side - possibly watching a dolly cart
+// then switches to another camera which follows the robber
+
+// one camera that just watches
+// one camera that follows either a player or the robber.

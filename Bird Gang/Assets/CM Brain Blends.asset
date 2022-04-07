@@ -27,8 +27,8 @@ MonoBehaviour:
   - m_From: CM MainVCam
     m_To: CM RobberCam
     m_Blend:
-      m_Style: 3
-      m_Time: 4
+      m_Style: 0
+      m_Time: 2
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
@@ -37,6 +37,28 @@ MonoBehaviour:
         m_RotationOrder: 0
   - m_From: CM MainVCam
     m_To: CM MayorCam
+    m_Blend:
+      m_Style: 0
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM MainVCam
+    m_To: CM OverheadCam
+    m_Blend:
+      m_Style: 4
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM MayorCam
+    m_To: CM MayorFollow
     m_Blend:
       m_Style: 1
       m_Time: 2

@@ -37,6 +37,13 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         cutsceneManagerAnim.Play("MayorCS");
         Debug.Log("mayor stage has begun");
         mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(115, 2, -280), Quaternion.identity);
+        StartCoroutine(ExecuteAfterTime(2f));
+    }
+
+    IEnumerator ExecuteAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        cutsceneManagerAnim.Play("MayorFollow");
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
