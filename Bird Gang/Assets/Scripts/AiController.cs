@@ -137,7 +137,7 @@ public class AiController : MonoBehaviour, IPunObservable
            if(!changeGoal& agent.remainingDistance < 0.5f)
             {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-                Debug.Log(transform.rotation.eulerAngles);
+               
             }
 
 
