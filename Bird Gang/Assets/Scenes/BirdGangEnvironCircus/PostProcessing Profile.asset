@@ -16,7 +16,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   redOutRedIn:
     m_OverrideState: 1
-    m_Value: 148
+    m_Value: 0
     min: -200
     max: 200
   redOutGreenIn:
@@ -107,11 +107,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   threshold:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 0.9
     min: 0
   intensity:
     m_OverrideState: 1
@@ -249,7 +249,7 @@ MonoBehaviour:
     m_Value: 0.07
   contrast:
     m_OverrideState: 1
-    m_Value: 8
+    m_Value: -39
     min: -100
     max: 100
   colorFilter:
