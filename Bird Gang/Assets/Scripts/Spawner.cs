@@ -11,7 +11,7 @@ public class Spawner : MonoBehaviour
     public int NumberOfGoodPeople;
     public int NumberOfBadPeople;
     public int NumberOfMiniBoss;
-    public Renderer renderer;
+    public Renderer spawnRenderer;
 
     private int NumberGoodPeopleSpawned;
     private int NumberBadPeopleSpawned;
@@ -35,9 +35,9 @@ public class Spawner : MonoBehaviour
     {
         NumberOfPeopleTotal = NumberGoodPeopleSpawned + NumberBadPeopleSpawned;
 
-        minPosition = renderer.bounds.min;
-        maxPosition = renderer.bounds.max;
-        centerPosition = renderer.bounds.center;
+        minPosition = spawnRenderer.bounds.min;
+        maxPosition = spawnRenderer.bounds.max;
+        centerPosition = spawnRenderer.bounds.center;
     }
 
     // Update is called once per frame

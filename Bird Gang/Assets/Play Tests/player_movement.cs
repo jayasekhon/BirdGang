@@ -13,7 +13,7 @@ public class player_movement
     public IEnumerator player_moves_forward_with_positive_vertical_input()
     {
         var playerGameObject = new GameObject("Player");
-        PlayerController player = playerGameObject.AddComponent<PlayerController>();
+        PlayerControllerNEW player = playerGameObject.AddComponent<PlayerControllerNEW>();
         player.PlayerInput = Substitute.For<IPlayerInput>();
         player.PlayerInput.Vertical.Returns(1f);
         player.PlayerInput.FixedDeltaTime.Returns(0.02f);

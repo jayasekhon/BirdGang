@@ -17,13 +17,15 @@ public class AiController : MonoBehaviour, IPunObservable
     public float normalSpeed = 2f;
     public float minibossSpeed = 4f;
     public float normalAngularSpeed = 120f;
-    private bool isFleeing;
+    public bool isFleeing;
 
     public float fleeingSpeed = 20f;
     public float fleeingAngularSpeed = 500f;
 
     private Vector3 lastSteeringTarget;
     private bool lastIsFleeing;
+
+    private bool changeGoal = true;
 
     void ResetAgent()
     {
@@ -101,6 +103,8 @@ public class AiController : MonoBehaviour, IPunObservable
     {
         // Access the agents NavMesh
         agent = GetComponent<NavMeshAgent>();
+        
+        agent.avoidancePriority = UnityEngine.Random.Range(10, 100);
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -119,10 +123,24 @@ public class AiController : MonoBehaviour, IPunObservable
 
         if (PhotonNetwork.IsMasterClient)
         {
-            if (agent.remainingDistance < 2)
+            if (agent.remainingDistance < 2 )
             {
-                ResetAgent();
+                if (changeGoal)
+                {
+                    ResetAgent();
+                }
+                else
+                {
+                    //agent.speed = 0f;
+                }
             }
+           if(!changeGoal& agent.remainingDistance < 0.5f)
+            {
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+               
+            }
+
+
         }
     }
 
@@ -152,5 +170,13 @@ public class AiController : MonoBehaviour, IPunObservable
                 Debug.LogError(e);
             }
         }
+    }
+    public void SetGoal(Vector3 goal)
+    {
+        agent.SetDestination(goal);
+    }
+    public void SetChangeGoal(bool val)
+    {
+        changeGoal = val;
     }
 }
