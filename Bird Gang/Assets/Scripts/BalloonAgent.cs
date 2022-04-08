@@ -23,22 +23,23 @@ public class BalloonAgent : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            //if (agent.remainingDistance < 2)
-            //{
-            //    ResetAgent();
+            if (agent.remainingDistance < 2)
+            {
+                ResetAgent();
 
-            //}    
-            
+            }
+
         }
+        agent.SetDestination(goal);
         agent.avoidancePriority = id;
 
     }
     public void ResetAgent()
     {
-        if (currentGoal == 0) agent.SetDestination(new Vector3(-64, 0, 24));
-        if (currentGoal == 1) agent.SetDestination(new Vector3(-64, 0, -38));
-        if (currentGoal == 2) agent.SetDestination(new Vector3(75, 0, -38));
-        if (currentGoal == 3) agent.SetDestination(new Vector3(60, 0, 60));
+        if (currentGoal == 0) goal = new Vector3(-64, 0, 24);
+        if (currentGoal == 1) goal  = new Vector3(-64, 0, -38);
+        if (currentGoal == 2) goal = new Vector3(75, 0, -38);
+        if (currentGoal == 3) goal = new Vector3(60, 0, 60);
         currentGoal++;
         if (currentGoal > 3) currentGoal = 0;
     }

@@ -83,6 +83,10 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
                 child.gameObject.SetActive(true);
                 BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
                 balloon.SetID(i + 1);
+                //if (currentGoal == 0) goal = new Vector3(-64, 0, 24);
+                //if (currentGoal == 1) goal = new Vector3(-64, 0, -38);
+                //if (currentGoal == 2) goal = new Vector3(75, 0, -38);
+                //if (currentGoal == 3) goal = new Vector3(60, 0, 60);
                 if (i == 1) position = new Vector3(60, 1, 60);
                 if (i == 0) position = new Vector3(-64, 1, 24);
                 if (i == 3) position = new Vector3(-64, 1, -38);
