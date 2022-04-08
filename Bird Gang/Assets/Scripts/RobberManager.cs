@@ -54,9 +54,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     IEnumerator ExecuteAfterTime(float time)
     {
         //initial delay for camera pan
-        // yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(1f);
 
-        // cutsceneManagerAnim.Play("RobberCS");
+        cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(time);
         
         startAlarm = true;
@@ -75,13 +75,15 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
 
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(5f);
+        cutsceneManagerAnim.Play("OverheadCS");
+        yield return new WaitForSeconds(5f);
         cutsceneManagerAnim.Play("Main");
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        cutsceneManagerAnim.Play("RobberCS");
+        cutsceneManagerAnim.Play("OverheadCS");
         Debug.Log("robber stage has begun");
         StartCoroutine(ExecuteAfterTime(2f));
     }
