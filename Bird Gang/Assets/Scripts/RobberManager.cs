@@ -54,7 +54,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     IEnumerator ExecuteAfterTime(float time)
     {
         //initial delay for camera pan
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(6f);
 
         cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(time);
