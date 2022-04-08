@@ -40,7 +40,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         
     IEnumerator ExecuteAfterTime(float time)
     {
-        cutsceneManagerAnim.Play("MayorFollow");
+        // cutsceneManagerAnim.Play("MayorFollow");
         mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(-10.5f, 3.8f, -249), Quaternion.identity);
         agent = mayor.GetComponent<NavMeshAgent>();
         mayorAI = mayor.GetComponent<AiController>();
@@ -103,7 +103,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     void Start() 
     {
         cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        Debug.Log(cutsceneManager);
+        // Debug.Log(cutsceneManager);
         cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
     }
 
@@ -111,7 +111,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     {
         cutsceneManagerAnim.Play("MayorCS");
         Debug.Log("mayor stage has begun");
-        mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(115, 2, -280), Quaternion.identity);
+        // mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(115, 2, -280), Quaternion.identity);
         StartCoroutine(ExecuteAfterTime(2f));
     }
 

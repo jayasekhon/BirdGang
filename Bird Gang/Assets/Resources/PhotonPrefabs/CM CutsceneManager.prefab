@@ -229,7 +229,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2040087492416118032}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 12, y: 13, z: -230}
+  m_LocalPosition: {x: -10.2, y: 2, z: -238.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6332991790131704437}
@@ -1322,6 +1322,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7226426981820980226, guid: d1bb486b6905247adb6e26c1a58e8245, type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 3095444617910134721}
+    - target: {fileID: 7226426981820980226, guid: d1bb486b6905247adb6e26c1a58e8245, type: 3}
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 3095444617910134721}
@@ -1360,7 +1364,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5514630677302199966, guid: d1bb486b6905247adb6e26c1a58e8245, type: 3}
   m_PrefabInstance: {fileID: 5708158071035333004}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6139062987358734364
+--- !u!114 &970787202070735050
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1369,25 +1373,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8999607383639125741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
-  m_LookaheadTime: 0
-  m_LookaheadSmoothing: 0
-  m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 0.5
-  m_VerticalDamping: 0.5
-  m_ScreenX: 0.5
-  m_ScreenY: 0.5
-  m_DeadZoneWidth: 0
-  m_DeadZoneHeight: 0
-  m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
-  m_BiasX: 0
-  m_BiasY: 0
-  m_CenterOnActivate: 1
---- !u!114 &8994350044075161329
+--- !u!114 &9040658027123878938
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1396,19 +1385,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8999607383639125741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
+  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 2
-  m_FollowOffset: {x: 0, y: 0, z: -10}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
-  m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
-  m_AngularDamping: 0
+  m_Damping: 0
 --- !u!1001 &6738424242786897170
 PrefabInstance:
   m_ObjectHideFlags: 0
