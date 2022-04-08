@@ -7,7 +7,7 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
 {
     private double appearTime;
     private MeshRenderer meshRenderer;
-    public ParticleSystem particleSystem;
+    public ParticleSystem splatterParticleSystem;
     private bool burst;
     private Material material;
     private const float Lifetime = 30f;
@@ -32,13 +32,13 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
         {
             // Debug.Log("hello");
             //meshRenderer.enabled =true;
-            particleSystem.gameObject.SetActive(true);
-            //particleSystem.Play();
+            splatterParticleSystem.gameObject.SetActive(true);
+            //splatterParticleSystem.Play();
             if (burst)
             {
 
                 
-                particleSystem.Emit(1);
+                splatterParticleSystem.Emit(1);
                 burst = false;
             }
         }
@@ -52,7 +52,7 @@ public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
     {
         object[] instantiationData = info.photonView.InstantiationData;
         appearTime = (double)instantiationData[0];
-        particleSystem.emissionRate = 0;
+        splatterParticleSystem.emissionRate = 0;
         burst = true;
         
 
