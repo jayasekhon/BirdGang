@@ -14,6 +14,14 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     private AiController mayorAI;
     Vector3 position = new Vector3(9.4f, 1.8f, -35.0f);
     private bool enRoute = false;
+    private bool releasedCrowd = false;
+    List<List<AiController>> assignedAgents;
+
+    public float numberOfBalloons;
+    public Transform CarnivalStart;
+    public Transform CarnivalFinish;
+    Transform child;
+    List<BalloonAgent> balloons;
 
     void Awake()
     {
@@ -47,7 +55,66 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         mayorAI.SetGoal(position);
         mayorAI.SetChangeGoal(false);
 
+        
+        balloons = new List<BalloonAgent>();
+        SpawnBalloons();
+        yield return new WaitForSeconds(10);
+       
+        ReleaseCrowd();
+        releasedCrowd = true;
+
+
+
     }
+    void SpawnBalloons()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            for (int i = 0; i < numberOfBalloons; i++)
+            {
+                Vector3 position = new Vector3(0, 0, 0);
+                if (i == 0) position = new Vector3(60, 1, 60);
+                if (i == 1) position = new Vector3(-64, 1, 24);
+                if (i == 2) position = new Vector3(-64, 1, -38);
+                if (i == 3) position = new Vector3(74, 1, -38);
+                Vector3 start = position;
+                GameObject balloonObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balloon"), start, Quaternion.identity);
+                child = balloonObject.transform.GetChild(Random.Range(0, 2));
+                child.gameObject.SetActive(true);
+                BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
+                balloon.SetID(i + 1);
+                //if (currentGoal == 0) goal = new Vector3(-64, 0, 24);
+                //if (currentGoal == 1) goal = new Vector3(-64, 0, -38);
+                //if (currentGoal == 2) goal = new Vector3(75, 0, -38);
+                //if (currentGoal == 3) goal = new Vector3(60, 0, 60);
+                if (i == 1) position = new Vector3(60, 1, 60);
+                if (i == 0) position = new Vector3(-64, 1, 24);
+                if (i == 3) position = new Vector3(-64, 1, -38);
+                if (i == 2) position = new Vector3(74, 1, -38);
+                balloon.SetGoal(position);
+                //balloon.SetCurrentID(i);
+                //balloon.ResetAgent();
+
+                balloons.Add(balloon);
+                
+            }
+        }
+    }
+
+    
+    void ReleaseCrowd()
+    {
+        AiController[] agents = GameObject.FindObjectsOfType<AiController>();
+        foreach (AiController agent in agents)
+        {
+            if (agent.gameObject.name != "Robber(Clone)" || agent.gameObject.name != "Mayor(Clone)")
+            {
+                agent.SetChangeGoal(true);
+                agent.SetGoal(position);
+            }
+        }
+    }
+    
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
@@ -56,18 +123,20 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     void Update(){
         
-        if(enRoute){
+        if(enRoute && !mayor){
             if(!mayorAI.isFleeing){
 
                 mayorAI.SetGoal(position);
             }
         }
+        
 
         
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
+        enRoute = false;
         if (mayor)
             PhotonNetwork.Destroy(mayor);
     }
