@@ -17,7 +17,7 @@ public class AiController : MonoBehaviour, IPunObservable
     public float normalSpeed = 2f;
     public float minibossSpeed = 4f;
     public float normalAngularSpeed = 120f;
-    private bool isFleeing;
+    public bool isFleeing;
 
     public float fleeingSpeed = 20f;
     public float fleeingAngularSpeed = 500f;
@@ -137,7 +137,7 @@ public class AiController : MonoBehaviour, IPunObservable
            if(!changeGoal& agent.remainingDistance < 0.5f)
             {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-                Debug.Log(transform.rotation.eulerAngles);
+               
             }
 
 

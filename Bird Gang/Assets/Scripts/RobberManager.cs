@@ -24,6 +24,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     float timePassed = 0f;
     bool startAlarm = false;
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -66,25 +67,27 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
 
+        yield return new WaitForSeconds(60f);
+
+        gatherCrowd();
+
+
     }
 
-    public void OnStageBegin(GameEvents.Stage stage)
-    {
-
-        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(115, 2, -280), Quaternion.identity);
-
+    public void gatherCrowd(){
         //Start the navmeshagents moving to the mayors stage for the next round
         AiController[] agents = GameObject.FindObjectsOfType<AiController>();
         foreach(AiController agent in agents)
         {
-            if(agent.gameObject.name!= "Robber(Clone)")
+            if(agent.gameObject.name!= "Robber(Clone)" || agent.gameObject.name!= "Mayor(Clone)" )
             {
+                Debug.Log(agent.gameObject.name);
                 
                 if (Random.Range(0, 100) > 25)
                 {
                     Vector3 minPosition = new Vector3(-20,0,-20);
                     Vector3 maxPosition = new Vector3(20, 0, 20);
-                    Vector3 centerPosition = new Vector3(-10, 1, -233);
+                    Vector3 centerPosition = new Vector3(-10, 1, -224);
                     
                     Vector3 position = centerPosition+ new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
 
@@ -94,8 +97,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
                 }
             }
         }
+    }
 
-        
+    public void OnStageBegin(GameEvents.Stage stage)
+    {
         StartCoroutine(ExecuteAfterTime(2f));
     
 
@@ -132,11 +137,18 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         startAlarm = false;
 
 
-        if (!robber) // If we've already won.
-            return;
-        /* Possibly play some animation of robber getting away,
-         * have gang boss chastise player or something. */
-        PhotonNetwork.Destroy(robber);
+        if (robber)
+        {
+            PhotonNetwork.Destroy(robber);
+        } 
+        if (robber1)
+        {
+            PhotonNetwork.Destroy(robber1);
+        }
+        if (robber2)
+        {
+            PhotonNetwork.Destroy(robber2);
+        }
 
 
     }
