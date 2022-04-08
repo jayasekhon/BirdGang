@@ -116,7 +116,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         {
             PlayerInput = new PlayerInput();
         }
-        InstructionsLoad.instance.InstructionsText();
 
         AmmoCount.instance.maxAmmo = targetingMaxShots;
         AmmoCount.instance.SetAmmo(targetingMaxShots);

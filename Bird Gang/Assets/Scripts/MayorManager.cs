@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Photon.Pun;
-using UnityEngine;
 using UnityEngine.AI;
 
 public class MayorManager : MonoBehaviour, GameEventCallbacks

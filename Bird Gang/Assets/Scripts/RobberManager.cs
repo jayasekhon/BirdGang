@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Photon.Pun;
-using UnityEngine;
 
 public class RobberManager : MonoBehaviour, GameEventCallbacks
 {

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerGroundCheck : MonoBehaviour
 {
-    PlayerController playerController;
+    PlayerControllerNEW playerController;
     
     void Awake()
     {
-        playerController = GetComponentInParent<PlayerController>();
+        playerController = GetComponentInParent<PlayerControllerNEW>();
     }
 
     void OnTriggerEnter(Collider other)

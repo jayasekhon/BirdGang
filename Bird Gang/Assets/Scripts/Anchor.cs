@@ -39,7 +39,7 @@ public class Anchor : MonoBehaviour, IBirdTarget, IPunObservable
     void Start()
     {
         timePassed = 0f;
-        delayStart = Random.RandomRange(10,90);
+        delayStart = Random.Range(10,90);
         delayTimer = 0f;
         currentStage = ANCHOR_STAGE.DELAY;
         reattachedFlag = false;
