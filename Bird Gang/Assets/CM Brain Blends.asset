@@ -14,9 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CustomBlends:
   - m_From: CM MainVCam
-    m_To: CM CutCam
+    m_To: CM OverheadCam
     m_Blend:
-      m_Style: 3
+      m_Style: 1
+      m_Time: 5
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM OverheadCam
+    m_To: CM RobberCam
+    m_Blend:
+      m_Style: 1
+      m_Time: 6
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM RobberCam
+    m_To: CM OverheadCam
+    m_Blend:
+      m_Style: 1
       m_Time: 4
       m_CustomCurve:
         serializedVersion: 2
@@ -24,11 +46,11 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CM CutCam
+  - m_From: CM OverheadCam
     m_To: CM MainVCam
     m_Blend:
-      m_Style: 3
-      m_Time: 4
+      m_Style: 1
+      m_Time: 5
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []

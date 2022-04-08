@@ -13,6 +13,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     private GameObject robber1;
     private GameObject robber2;
 
+    GameObject cutsceneManager;
+    Animator cutsceneManagerAnim;
 
     GameObject leftDoor;
     GameObject rightDoor;
@@ -42,12 +44,21 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
+    }
 
+    void Start() 
+    {
+        cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
+        Debug.Log(cutsceneManager);
+        cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
     }
 
     IEnumerator ExecuteAfterTime(float time)
     {
         //initial delay for camera pan
+        yield return new WaitForSeconds(6f);
+
+        cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(time);
         
         startAlarm = true;
@@ -66,11 +77,13 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
 
+        yield return new WaitForSeconds(5f);
+        cutsceneManagerAnim.Play("OverheadCS");
+        yield return new WaitForSeconds(5f);
+        cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(60f);
 
         gatherCrowd();
-
-
     }
 
     public void gatherCrowd(){
@@ -100,9 +113,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        cutsceneManagerAnim.Play("OverheadCS");
+        Debug.Log("robber stage has begun");
         StartCoroutine(ExecuteAfterTime(2f));
-    
-
     }
 
     void Update()
@@ -135,7 +148,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         startAlarm = false;
 
-
         if (robber)
         {
             PhotonNetwork.Destroy(robber);
@@ -148,11 +160,17 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         {
             PhotonNetwork.Destroy(robber2);
         }
-
-
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
     {
     }
 }
+
+
+
+// pans side to side - possibly watching a dolly cart
+// then switches to another camera which follows the robber
+
+// one camera that just watches
+// one camera that follows either a player or the robber.
