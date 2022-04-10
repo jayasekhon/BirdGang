@@ -25,6 +25,9 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     GameObject cutsceneManager;
     Animator cutsceneManagerAnim;
 
+    AudioSource voiceover;
+    public AudioClip MayorIntro;
+
     void Awake()
     {
         
@@ -35,6 +38,8 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         }
         GameEvents.RegisterCallbacks(this, GAME_STAGE.POLITICIAN,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
+        
+        voiceover = GetComponent<AudioSource>();
     }
 
     IEnumerator ExecuteAfterTime(float time)
@@ -43,14 +48,15 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         cutsceneManagerAnim.Play("MayorCS");
         yield return new WaitForSeconds(4f);        
         mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(-10.5f, 3.8f, -249), Quaternion.identity);
+        // yield return new WaitForSeconds(2f); 
+        voiceover.PlayOneShot(MayorIntro, 1f);
 
-        // yield return new WaitForSeconds(6.5f); //this is the time to wait for it to pan to the mayor
         agent = mayor.GetComponent<NavMeshAgent>();
         mayorAI = mayor.GetComponent<AiController>();
         agent.speed = 0f;
         agent.acceleration = 0f;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
         
         agent.speed = 3.5f;
         agent.acceleration = 8f;
