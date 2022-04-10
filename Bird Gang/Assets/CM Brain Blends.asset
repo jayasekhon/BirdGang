@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CM Brain Blends
   m_EditorClassIdentifier: 
   m_CustomBlends:
-  - m_From: CM MainVCam
-    m_To: CM OverheadCam
+  - m_From: MainCam
+    m_To: OverheadCam
     m_Blend:
       m_Style: 1
       m_Time: 5
@@ -24,8 +24,8 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CM OverheadCam
-    m_To: CM RobberCam
+  - m_From: OverheadCam
+    m_To: RobberCam
     m_Blend:
       m_Style: 1
       m_Time: 6
@@ -35,8 +35,8 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CM RobberCam
-    m_To: CM OverheadCam
+  - m_From: RobberCam
+    m_To: OverheadCam
     m_Blend:
       m_Style: 1
       m_Time: 4
@@ -46,8 +46,8 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CM OverheadCam
-    m_To: CM MainVCam
+  - m_From: OverheadCam
+    m_To: MainCam
     m_Blend:
       m_Style: 1
       m_Time: 5
