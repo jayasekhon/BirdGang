@@ -10436,6 +10436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f4e3beab0f641ef815fb9367b70dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RobberIntro: {fileID: 0}
 --- !u!4 &439435519
 Transform:
   m_ObjectHideFlags: 0
@@ -19878,6 +19879,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a8b790e7f2142db8877c3601693f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CarnivalIntro: {fileID: 0}
+  StormHowl: {fileID: 0}
 --- !u!1001 &873821557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49400,6 +49403,7 @@ MonoBehaviour:
   numberOfBalloons: 0
   CarnivalStart: {fileID: 0}
   CarnivalFinish: {fileID: 0}
+  MayorIntro: {fileID: 0}
 --- !u!4 &1937843320
 Transform:
   m_ObjectHideFlags: 0
@@ -51373,10 +51377,6 @@ PrefabInstance:
     - target: {fileID: 1699652856, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
       propertyPath: sceneViewId
       value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 1884505082919060032, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
-      propertyPath: m_ChildCameras.Array.size
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
       propertyPath: m_RootOrder
