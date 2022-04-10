@@ -25,6 +25,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     float timePassed = 0f;
     bool startAlarm = false;
 
+    AudioSource voiceover;
 
     // Start is called before the first frame update
     void Awake()
@@ -43,6 +44,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
+        voiceover = GetComponent<AudioSource>();
     }
 
     void Start() 
@@ -72,7 +74,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         //let alarm run alone as boss explains round
         yield return new WaitForSeconds(5f);
-
+        voiceover.Play(0);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
         
