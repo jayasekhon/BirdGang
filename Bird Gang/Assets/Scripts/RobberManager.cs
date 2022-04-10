@@ -74,7 +74,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         startAlarm = true;
 
         //let alarm run alone as boss explains round
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(4f);
         voiceover.PlayOneShot(RobberIntro, 1f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);

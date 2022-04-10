@@ -9,6 +9,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     GameObject cutsceneManager;
     Animator cutsceneManagerAnim;
 
+    AudioSource voiceover;
+    public AudioClip CarnivalIntro;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -20,6 +23,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.CARNIVAL,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
+        
+        voiceover = GetComponent<AudioSource>(); 
     }
 
     void Start() 
@@ -40,7 +45,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         //gives enough time for camera to pan to sky
         yield return new WaitForSeconds(5.5f);
         cutsceneManagerAnim.Play("CarnivalCS");
-        yield return new WaitForSeconds(10f); //this means we can pan and then watch the carnival happen 
+        yield return new WaitForSeconds(5f); //this means we can pan 
+        voiceover.PlayOneShot(CarnivalIntro, 1f);
+        yield return new WaitForSeconds(13f); //this means we can watch the carnival happen 
         cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
         cutsceneManagerAnim.Play("Main");
