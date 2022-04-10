@@ -37,17 +37,20 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
     }
 
-        
     IEnumerator ExecuteAfterTime(float time)
     {
-        // cutsceneManagerAnim.Play("MayorFollow");
+        yield return new WaitForSeconds(6f); //this is the time to wait for it to pan to the sky
+        cutsceneManagerAnim.Play("MayorCS");
+        yield return new WaitForSeconds(4f);        
         mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(-10.5f, 3.8f, -249), Quaternion.identity);
+
+        // yield return new WaitForSeconds(6.5f); //this is the time to wait for it to pan to the mayor
         agent = mayor.GetComponent<NavMeshAgent>();
         mayorAI = mayor.GetComponent<AiController>();
         agent.speed = 0f;
         agent.acceleration = 0f;
 
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(3f);
         
         agent.speed = 3.5f;
         agent.acceleration = 8f;
@@ -57,10 +60,14 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         mayorAI.SetGoal(position);
         mayorAI.SetChangeGoal(false);
 
-        
+        yield return new WaitForSeconds(3f);
+        cutsceneManagerAnim.Play("OverheadCS");
+
         balloons = new List<BalloonAgent>();
         SpawnBalloons();
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(5f);
+        cutsceneManagerAnim.Play("Main");
+        yield return new WaitForSeconds(5f);
        
         ReleaseCrowd();
         releasedCrowd = true;
@@ -103,13 +110,12 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     void Start() 
     {
         cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        // Debug.Log(cutsceneManager);
         cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        cutsceneManagerAnim.Play("MayorCS");
+        cutsceneManagerAnim.Play("OverheadCS");
         Debug.Log("mayor stage has begun");
         // mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(115, 2, -280), Quaternion.identity);
         StartCoroutine(ExecuteAfterTime(2f));
@@ -140,7 +146,6 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-        cutsceneManagerAnim.Play("Main");
         enRoute = false;
         if (mayor)
             PhotonNetwork.Destroy(mayor);
