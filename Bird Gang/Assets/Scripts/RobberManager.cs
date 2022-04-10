@@ -29,7 +29,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     // Start is called before the first frame update
     void Awake()
     {
-        
         if (!PhotonNetwork.IsMasterClient) // checks if a RobberManager already exists
         {
             Destroy(gameObject);
@@ -39,7 +38,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.ROBBERY,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
-        leftDoor = GameObject.FindGameObjectWithTag("bankDoorL");
+        leftDoor = GameObject.FindGameObjectWithTag("bankDoorL"); //can we just drag these in from the scene rather than finding when the game starts?
         rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
         bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
         leftAnim = leftDoor.GetComponent<Animator>();
@@ -49,23 +48,30 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     void Start() 
     {
         cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        Debug.Log(cutsceneManager);
         cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
     }
 
-    IEnumerator ExecuteAfterTime(float time)
+    public void OnStageBegin(GameEvents.Stage stage)
     {
-        //initial delay for camera pan
+        cutsceneManagerAnim.Play("OverheadCS");
+        Debug.Log("robber stage has begun");
+        StartCoroutine(ExecuteAfterTime());
+        // this is where we would do the pun RPC call
+        // and then the pun RPC script holds all the timings and camera switches. 
+    }
+
+    IEnumerator ExecuteAfterTime()
+    {
+        //gives enough time for camera to pan to sky
         yield return new WaitForSeconds(6f);
 
         cutsceneManagerAnim.Play("RobberCS");
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(2f);
         
         startAlarm = true;
 
         //let alarm run alone as boss explains round
         yield return new WaitForSeconds(5f);
-    
 
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
@@ -77,13 +83,11 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
         cutsceneManagerAnim.Play("OverheadCS");
-        yield return new WaitForSeconds(5f);
-        cutsceneManagerAnim.Play("Main");
-        yield return new WaitForSeconds(60f);
-
         gatherCrowd();
+        yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
+        cutsceneManagerAnim.Play("Main");
     }
 
     public void gatherCrowd(){
@@ -103,19 +107,11 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
                     
                     Vector3 position = centerPosition+ new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
 
-
                     agent.SetGoal(position);
                     agent.SetChangeGoal(false);
                 }
             }
         }
-    }
-
-    public void OnStageBegin(GameEvents.Stage stage)
-    {
-        cutsceneManagerAnim.Play("OverheadCS");
-        Debug.Log("robber stage has begun");
-        StartCoroutine(ExecuteAfterTime(2f));
     }
 
     void Update()
@@ -166,11 +162,3 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     {
     }
 }
-
-
-
-// pans side to side - possibly watching a dolly cart
-// then switches to another camera which follows the robber
-
-// one camera that just watches
-// one camera that follows either a player or the robber.
