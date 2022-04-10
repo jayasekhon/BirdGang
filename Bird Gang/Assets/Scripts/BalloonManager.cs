@@ -11,6 +11,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     AudioSource voiceover;
     public AudioClip CarnivalIntro;
+    public AudioClip StormHowl;
 
     // Start is called before the first frame update
     void Awake()
@@ -35,6 +36,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        voiceover.PlayOneShot(StormHowl, 0.8f);
         cutsceneManagerAnim.Play("OverheadCS");
         Debug.Log("carnival stage has begun");
         StartCoroutine(ExecuteAfterTime());
