@@ -36,7 +36,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        voiceover.PlayOneShot(StormHowl, 0.8f);
+        voiceover.PlayOneShot(StormHowl, 0.5f);
         cutsceneManagerAnim.Play("OverheadCS");
         Debug.Log("carnival stage has begun");
         StartCoroutine(ExecuteAfterTime());
