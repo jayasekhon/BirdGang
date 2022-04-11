@@ -8,39 +8,41 @@ public class AiController : MonoBehaviour, IPunObservable
     GameObject[] goalLocations;
 
     NavMeshAgent agent;
-    float detectionRadius = 30;
-    float fleeRadius = 10;
+    const float detectionRadius = 30;
+    const float fleeRadius = 10;
 
     public bool isMiniboss = false;
     public bool forTutorial;
 
-    public float normalSpeed = 2f;
-    public float minibossSpeed = 4f;
-    public float normalAngularSpeed = 120f;
+    const float normalSpeed = 2f;
+    const float minibossSpeed = 4f;
+    const float normalAngularSpeed = 120f;
     public bool isFleeing;
 
-    public float fleeingSpeed = 20f;
-    public float fleeingAngularSpeed = 500f;
+    const float fleeingSpeed = 20f;
+    const float fleeingAngularSpeed = 500f;
 
+    /* Serialisation stuff. */
     private Vector3 lastSteeringTarget;
     private bool lastIsFleeing;
 
     private bool changeGoal = true;
+    private float nextForcedSerialise;
 
     void ResetAgent()
     {
-        agent.speed = isMiniboss ? normalSpeed : minibossSpeed;
-        agent.angularSpeed = normalAngularSpeed;
+        SetFleeing(false);
 
         int index = UnityEngine.Random.Range(0, goalLocations.Length);
         agent.SetDestination(goalLocations[index].transform.position);
     }
 
-    public void DetectNewObstacle(Vector3 position){
+    public void DetectNewObstacle(Vector3 position)
+    {
         if (!PhotonNetwork.IsMasterClient)
         {
-            /* RPCs should be called before we get this far */
-            Debug.LogError("DetectNewObstacle called on client.");
+            Debug.LogError("DetectNewObstacle should not be called on client.");
+            return;
         }
 
         /* FIXME: Have seen this occasionally leading to errors.
@@ -123,24 +125,17 @@ public class AiController : MonoBehaviour, IPunObservable
 
         if (PhotonNetwork.IsMasterClient)
         {
-            if (agent.remainingDistance < 2 )
+            if (changeGoal)
             {
-                if (changeGoal)
+                if (agent.remainingDistance < 2f )
                 {
                     ResetAgent();
                 }
-                else
-                {
-                    //agent.speed = 0f;
-                }
             }
-           if(!changeGoal& agent.remainingDistance < 0.5f)
+            else if (agent.remainingDistance < 0.5f)
             {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-               
             }
-
-
         }
     }
 
@@ -150,31 +145,49 @@ public class AiController : MonoBehaviour, IPunObservable
         {
             /* Obviously only send when changed (PUN does support this) */
             if (agent.steeringTarget != lastSteeringTarget ||
-                isFleeing != lastIsFleeing)
+                isFleeing != lastIsFleeing ||
+                Time.time > nextForcedSerialise)
             {
                 stream.SendNext(agent.steeringTarget);
                 stream.SendNext(isFleeing);
+                stream.SendNext(agent.nextPosition);
+                stream.SendNext(agent.velocity);
+
                 lastSteeringTarget = agent.steeringTarget;
                 lastIsFleeing = isFleeing;
+                /* Avoid updating everyone at once. */
+                nextForcedSerialise = Time.time + UnityEngine.Random.Range(6f, 10f);
             }
         }
         else
         {
             try
             {
+                float d = (float)(PhotonNetwork.Time - info.SentServerTime);
+
                 agent.SetDestination((Vector3) stream.ReceiveNext());
-                SetFleeing((bool) stream.ReceiveNext());
+
+                SetFleeing((bool)stream.ReceiveNext());
+
+                Vector3 pos = (Vector3) stream.ReceiveNext();
+                Vector3 vel = (Vector3) stream.ReceiveNext();
+                agent.velocity = vel;
+                agent.nextPosition = pos + (vel * d);
             }
-            catch (Exception e)
+            catch
             {
-                Debug.LogError(e);
+                Debug.LogError($"Error deserialising agent. ({gameObject.name})" +
+                               " Ensure agents don't have PhotonTransformViews, etc, " +
+                               "or set PhotonView observable search to manual to disable our agent serialisation.");
             }
         }
     }
+
     public void SetGoal(Vector3 goal)
     {
         agent.SetDestination(goal);
     }
+
     public void SetChangeGoal(bool val)
     {
         changeGoal = val;

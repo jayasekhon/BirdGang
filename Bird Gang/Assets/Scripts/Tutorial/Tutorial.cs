@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class Tutorial : MonoBehaviour
 	/* Concave mesh colliders can't be triggers.
 	 * So decide if we're in mesh by raycast from some origin. */
 	public Transform lostRaycastOrigin;
+
+	public TriggerEntity cityTrigger;
+
 	private float nextLostCheck = 0f;
 	private int lostCtr;
 
@@ -45,6 +49,7 @@ public class Tutorial : MonoBehaviour
         		pc.input_lock_y = true;
 			pc.input_lock_ad = true;
 			pc.input_disable_targeting = true;
+			pc.wind_disable = true;
 			pc.SetHoveringGravity(false);
 			text.text = "Hold <b>W</b> to fly forwards through the ring.\n" +
 				"Alternately, press <b>X</b> to escape.";
@@ -79,11 +84,37 @@ public class Tutorial : MonoBehaviour
 		case 5:
 			text.text = "A thief! Give them their comeuppance.";
 			break;
+		case 6:
+			text.text = "Tutorial completed, " +
+			            "descend to the city and nab some baddies.";
+			nextLostCheck = float.PositiveInfinity;
+			break;
+		case 7:
+			stage1.SetActive(false);
+			stage2.SetActive(false);
+			stage3.SetActive(false);
+			stage4.SetActive(false);
+			text.transform.parent.GetComponent<Image>()
+				.CrossFadeAlpha(0f, 5f, false);
+			text
+				.CrossFadeAlpha(0f, 5f, false);
+			break;
 		}
+	}
+
+	private bool OnEnterCity(Collider other)
+	{
+		if (other.gameObject == pc.gameObject && stage == 7)
+		{
+			AdvanceTutorial();
+			return true;
+		}
+		return false;
 	}
 
 	public void Start()
 	{
+		cityTrigger.RegisterCallback(OnEnterCity);
 		/* Otherwise player hasn't yet properly spawned. */
 		nextLostCheck = Time.time + 2f;
 	}
@@ -97,6 +128,7 @@ public class Tutorial : MonoBehaviour
 				pc.input_lock_ad =
 				pc.input_lock_x =
 				pc.input_lock_y =
+				pc.wind_disable = 
 					false;
 			alertText.enabled = false;
 			/* Any excuse not to change the scene... */
@@ -161,21 +193,33 @@ public class Tutorial : MonoBehaviour
 			{
 				if (lostCtr++ > 3)
 				{
-					alertText.text = "";
+					alertText.CrossFadeAlpha(0f, 0.25f, false);
+					lostCtr = 0;
 					pc.PutAt(rec_pos, rec_rot);
 				}
 				else
 				{
+					alertText.canvasRenderer.SetAlpha(1f);
 					alertText.text =
 						$"Please re-enter tutorial area in {5 - lostCtr}...";
 				}
 			}
 			else if (lostCtr > 0)
 			{
-				alertText.text = "";
+				alertText.CrossFadeAlpha(0f, 0.25f, false);
 				lostCtr = 0;
 			}
 			nextLostCheck = Time.time + 1f;
+		}
+	}
+
+	public void WarnOfPointLoss()
+	{
+		if (lostCtr == 0)
+		{
+			alertText.text = "Hitting innocents will cost points.";
+			alertText.canvasRenderer.SetAlpha(1f);
+			alertText.CrossFadeAlpha(0f, 4f, false);
 		}
 	}
 }
