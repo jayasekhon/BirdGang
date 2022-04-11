@@ -316,12 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMiniboss: 1
   forTutorial: 0
-  normalSpeed: 2
-  minibossSpeed: 4
-  normalAngularSpeed: 120
   isFleeing: 0
-  fleeingSpeed: 20
-  fleeingAngularSpeed: 500
 --- !u!1001 &5875349375080092591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -859,14 +854,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdc7c7af36bafa84693385ebbe9d4e0b, type: 3}
---- !u!1 &7238740264395917618 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fdc7c7af36bafa84693385ebbe9d4e0b, type: 3}
-  m_PrefabInstance: {fileID: 7544728096464696419}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8016120671712220040 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fdc7c7af36bafa84693385ebbe9d4e0b, type: 3}
+  m_PrefabInstance: {fileID: 7544728096464696419}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7238740264395917618 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fdc7c7af36bafa84693385ebbe9d4e0b, type: 3}
   m_PrefabInstance: {fileID: 7544728096464696419}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &4090180000729359459
