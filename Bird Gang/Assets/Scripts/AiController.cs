@@ -101,7 +101,7 @@ public class AiController : MonoBehaviour, IPunObservable
         }
     }
 
-    void Start()
+    void Awake()
     {
         // Access the agents NavMesh
         agent = GetComponent<NavMeshAgent>();
