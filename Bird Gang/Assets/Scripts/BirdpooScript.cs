@@ -2,10 +2,11 @@ using Photon.Pun;
 using UnityEngine;
 using System.IO;
 
-public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
-{ 
+public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
+{
+	public GameObject splatPrefab;
+
 	private Rigidbody rb;
-	
 	private PhotonView pv;
 
 	private Vector3 acc;
@@ -16,6 +17,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 	private float endTime;
 
 	private const int LAYER_WORLD = 8;
+
 	private Collider worldCollider;
 	private Collider targetCollider;
 
@@ -25,15 +27,15 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		rb = GetComponent<Rigidbody>();
 		Collider[] colliders= GetComponentsInChildren<Collider>();
 		foreach(Collider c in colliders)
-        {
+		{
 			if(c.tag == "worldCollider")
-            {
+			{
 				worldCollider = c;
-            }
+			}
 			else if (c.tag == "targetCollider") {
 				targetCollider = c;
 			}
-        }
+		}
 
 	
 		endTime = Time.time + Lifetime;
@@ -58,21 +60,32 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 		object[] instantiationData = info.photonView.InstantiationData;
 		acc = (Vector3) instantiationData[0];
 		GetComponent<Rigidbody>().AddForce((Vector3) instantiationData[1], ForceMode.VelocityChange);
+
+		GameObject splatObject = Instantiate
+		(
+			Resources.Load("PhotonPrefabs/Splatter") as GameObject,
+			transform.position,
+			(Quaternion)instantiationData[2],
+			transform
+		);
+		splatObject.GetComponent<Splatter>().appearTime = Time.time + (float)instantiationData[3];
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
 		if (!active)
 			return;
-
+		
+//     Debug.Log(collision.collider.gameObject.name);
 		bool flee = false;
 		bool notCarnival = true;
 		GameObject tar = collision.collider.gameObject;
-		if (tar.CompareTag("bird_target") ||
-		    (notCarnival = false) ||
-		    tar.CompareTag("Anchor_target") ||
-		    tar.CompareTag("Balloon_target"))
-		{
+		if (
+		tar.CompareTag("bird_target") ||
+		(notCarnival = false) ||
+		tar.CompareTag("Anchor_target") ||
+		tar.CompareTag("Balloon_target")
+		) {
 			/* Hits are client authoritative, from the client who
 			 * fired the projectile. */
 			if (pv.IsMine)
@@ -90,9 +103,9 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 				flee = true;
 				/* Stick to floor, if we've just hit a person (prevents skimming) */
 				if (Physics.Raycast(
-					    collision.transform.position,
-					    Vector3.down, out RaycastHit hit,
-					    1.5f, 1 << LAYER_WORLD))
+					collision.transform.position,
+					Vector3.down, out RaycastHit hit,
+					1.5f, 1 << LAYER_WORLD))
 				{
 					
 					Destroy(rb);
@@ -137,20 +150,21 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 
 		//foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
 		//{
-		//    meshRenderer.enabled = false;
+		//	meshRenderer.enabled = false;
 		//}
 		//transform.SetParent(tar.transform);
-		gameObject.GetComponentInChildren<ParticleSystem>().enableEmission = false;
-        gameObject.GetComponentInChildren<ParticleSystem>().Clear();
-    }
+		var p = gameObject.GetComponentInChildren<ParticleSystem>();
+		var e = p.emission;
+		e.enabled = false;
+		p.Clear();
+	}
 
 	private void Update()
 	{
 		if (Time.time > endTime)
 		{
 			active = false;
-			
-			Destroy(this.gameObject);
+			Destroy(gameObject);
 		}
 	}
 

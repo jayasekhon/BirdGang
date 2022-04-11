@@ -77,7 +77,10 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     public bool input_lock_x = false,
     input_lock_y = false,
     input_lock_ad = false,
-    input_disable_targeting = false;
+    input_disable_targeting = false,
+    wind_disable = false;
+
+    private bool hoveringGravity;
 
     // public void OnPhotonInstantiate(PhotonMessageInfo info) 
     // {
@@ -98,6 +101,8 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         resolution = new Vector2(Screen.width, Screen.height);
         screenCenter.x = Screen.width * 0.5f;
         screenCenter.y = Screen.height * 0.5f;
+        /* We simulate gravity in Hovering, and otherwise we don't want it. */
+        rb.useGravity = false;
     }
 
     /* Change player position cleanly, keeping camera in step, etc. */
@@ -140,17 +145,22 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
         // Get the local camera component for targeting
         // see OnPhotonInstantiate function above - does this a nicer way 
-        camerasInGame = GameObject.FindGameObjectsWithTag("MainCamera");
-        for (int c = 0; c < camerasInGame.Length; c++)
+        foreach (GameObject c in GameObject.FindGameObjectsWithTag("MainCamera"))
         {
-            if (!camerasInGame[c].GetComponentInParent<PhotonView>().IsMine)
+            if (!c.GetComponentInParent<PhotonView>().IsMine)
             {
-                Destroy(camerasInGame[c].gameObject);
+                Destroy(c.gameObject);
             }
             else
             {
-                cam = camerasInGame[c].GetComponent<Camera>();
+                cam = c.GetComponent<Camera>();
             }
+        }
+
+        if (cam == null)
+        {
+            Debug.LogError("PlayerController: failed to find main camera.");
+            
         }
     }
 
@@ -173,18 +183,9 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         //             screenCenter.y = Screen.height * 0.5f;
         // }
 
-        if (gameObject.transform.localRotation.eulerAngles.x <= 100 && gameObject.transform.localRotation.eulerAngles.x >= 20 ){
-    
-            anim.SetBool("flyingDown", true);
-        }
-        else{
-
-            anim.SetBool("flyingDown", false);
-            
-        }
-        
+       
         GetInput();
-        Targeting(); //why is this not in fixed update?
+        Targeting(); //why is this not in fixed update? -- Answer: Because it doesn't change the physics world (only reads from it).
     }
 
     void FixedUpdate()
@@ -283,7 +284,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         Vector3 pos = rb.position;
         Vector3 dist = hit.point - pos;
         float timeToHit = dist.magnitude / targetFixedVelocity;
-        double currentTime = Time.time;
         float v;
         {
             Vector3 distFloor = dist * (pos.y / dist.y);
@@ -304,6 +304,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         projLineRenderer.positionCount = targetLineRes + 1;
         for (int i = 0; i < targetLineRes; i++)
         {
+            /* Set y pos with constant acceleration, other axis linearly. */
             pos.y = (rb.position.y - (0.5f * g * Mathf.Pow(i*timeStep, 2))) - v * (float)(i) * timeStep;
             projLineRenderer.SetPosition(i, pos);
             pos += step;
@@ -313,17 +314,18 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         targetObj.transform.position = hit.point;
         targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
 
+        /* Firing */
         if (targetingShotCount != 0 && Time.time >= targetingLastShot + targetingDelay)
         {
             targetingShotCount = 0;
             AmmoCount.instance.SetAmmo(targetingMaxShots);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (
+                Input.GetMouseButtonDown(0)
+                && targetingShotCount < targetingMaxShots
+        )
         {
-            if (targetingShotCount == targetingMaxShots)
-                goto fire_skip;
-
             targetingShotCount++;
             targetingLastShot = Time.time;
             AmmoCount.instance.SetAmmo(targetingMaxShots - targetingShotCount);
@@ -332,16 +334,9 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             Vector3 vel = dist / timeToHit;
             vel.y = -v;
 
-            object[] args = new object[] {acc, vel};
+            object[] args = new object[] {acc, vel, Quaternion.LookRotation(-hit.normal), timeToHit};
             GameObject birdPooObject= PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
-            object[] splatterInitData = new object[] { currentTime + timeToHit };
-            Quaternion rotation = Quaternion.LookRotation(-hit.normal);
-            GameObject splatObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Splatter"), hit.point, rotation,0, splatterInitData);
-         
-           
-            splatObject.transform.SetParent(hit.collider.gameObject.transform);
         }
-fire_skip: ;
     }
 
     void Look()
@@ -417,9 +412,13 @@ fire_skip: ;
             upForce.force = new Vector3(0,0,0);
             upForce.relativeForce = new Vector3(0,0,0);
             windTimePassed = 0;
-            // Assume gravity == reaction force from wings
-            // alternately, we could do hovering while moving.
-            rb.useGravity = false;
+
+            if (gameObject.transform.localRotation.eulerAngles.x <= 100 && gameObject.transform.localRotation.eulerAngles.x >= 20) {
+                anim.SetBool("flyingDown", true);
+            }
+            else {
+                anim.SetBool("flyingDown", false);
+            }
         }
         else
         {
@@ -430,37 +429,39 @@ fire_skip: ;
             Hovering();
             /* FIXME: Wind will never reset while moving. */
             Wind();
-            rb.useGravity = true;
         }
     }
 
     public void SetHoveringGravity(bool enabled)
     {
-        /* 3.2 as originally set, 1.755 from observation. */
-        if (enabled)
-            rb.mass = 3.2f;
-        else
-            rb.mass = 1.755f;
+        hoveringGravity = enabled;
     }
    
-    void Hovering() {
-        anim.speed = 3f;
+    void Hovering()
+    {
         anim.SetBool("flyingDown", false);
+        anim.speed = 3f;
 
-        if (timePassed <= 0.6f)
+        // * 3f - 3 flaps per anim cycle.
+        float frac = (anim.GetCurrentAnimatorStateInfo(0).normalizedTime * 3f) % 1f;
+
+        const float mg = - 3.2f * 9.81f;
+        const float downImpulse = mg * 0.46f;
+        const float eqUpForce = - downImpulse / 0.54f;
+
+        if (frac >= 0.98f || frac <= 0.52f)
         {
-            //UP -- If you change this, also change rb.mass = 1.755 in SetHoveringGravity.
-            rb.AddForce(new Vector3(0f, 55f, 0f));
-            timePassed += Time.fixedDeltaTime;
-        }
-        else if (timePassed > 0.6f && timePassed <= 1.04f)
-        {
-            //DOWN
-            timePassed += Time.fixedDeltaTime;
+            //UP
+            if (hoveringGravity)
+                rb.AddForce(new Vector3(0f, 55f + mg, 0f));
+            else
+                rb.AddForce(new Vector3(0f, eqUpForce, 0f));
+
         }
         else
         {
-            timePassed = 0f;
+            //DOWN
+            rb.AddForce(new Vector3(0f, mg, 0f));
         }
     }
 
@@ -468,9 +469,12 @@ fire_skip: ;
     {
         // if (move && !input_lock_ad)
         // {
+        if (!input_lock_ad)
+        {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
             windTimePassed = 0; 
+        }
             // move = true;
         // }
 
@@ -548,8 +552,12 @@ fire_skip: ;
     {
         windParticle = GetComponentInChildren<ParticleSystem>();
         windParticle.enableEmission = false;
-        // windParticle.emission.enabled = false;
 
+        if (wind_disable)
+        {
+            upForce.relativeForce = Vector3.zero;
+            return;
+        }
 
         if (Random.Range(0,2) == 0 && thing)
         {

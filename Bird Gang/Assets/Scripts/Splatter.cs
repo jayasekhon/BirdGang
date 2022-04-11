@@ -1,61 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
-public class Splatter : MonoBehaviour, IPunInstantiateMagicCallback
+public class Splatter : MonoBehaviour
 {
-    private double appearTime;
-    private MeshRenderer meshRenderer;
-    public ParticleSystem splatterParticleSystem;
+    private ParticleSystem particleSystem;
     private bool burst;
-    private Material material;
-    private const float Lifetime = 30f;
     private float endTime;
+
+    private const float Lifetime = 30f;
+
+    public float appearTime;
 
     private void Awake()
     {
+        particleSystem = GetComponentInChildren<ParticleSystem>();
+
         endTime = Time.time + Lifetime;
+        // Rely on other script to set appear time.
+        if (appearTime == 0)
+            appearTime = endTime;
     }
-    private void Start()
+
+    void Update()
     {
-        //meshRenderer = GetComponent<MeshRenderer>();
-        //material = GetComponent<Renderer>().material;
-
-        //material.SetFloat("_index", Random.RandomRange(0, 4));
-
-    }
-     void Update()
-    {
- 
-        if (Time.timeAsDouble > appearTime)
-        {
-            // Debug.Log("hello");
-            //meshRenderer.enabled =true;
-            splatterParticleSystem.gameObject.SetActive(true);
-            //splatterParticleSystem.Play();
-            if (burst)
-            {
-
-                
-                splatterParticleSystem.Emit(1);
-                burst = false;
-            }
-        }
-        
         if (Time.time > endTime)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
-    }
-    public void OnPhotonInstantiate(PhotonMessageInfo info)
-    {
-        object[] instantiationData = info.photonView.InstantiationData;
-        appearTime = (double)instantiationData[0];
-        splatterParticleSystem.emissionRate = 0;
-        burst = true;
-        
-
-
+        else if (Time.time > appearTime && !burst)
+        {
+            particleSystem.Play();
+            particleSystem.Emit(1);
+            burst = true;
+        }
     }
 }

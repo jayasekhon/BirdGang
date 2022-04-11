@@ -14,59 +14,36 @@ public enum BALLOON_STAGE
     LOST = 8,
 }
 
-public class BalloonScript : MonoBehaviour, IPunObservable
+public class BalloonScript : MonoBehaviour, IBirdTarget
 {
-    bool floatAway;
-    List<Anchor> anchors;
-    private int attachedAnchors;
-    private float floatAwayTimer;
-    private float reattachTime = 1f;
-    private int reattachCount;
-    private bool detach;
+
 
     private BALLOON_STAGE currentStage;
-    private int balloonHeight =3;
+
+    private float currentTime;
+    private float dettachTime;
+
+    private float timePassed;
+    float height;
+    float baseHeight=3;
 
     private LineRenderer lineRenderer;
+
     private NavMeshAgent agent;
-    private float networkBaseOffset;
-    private Vector3 networkNextPosition;
+
+    private bool clientSide =false;
+
     // Start is called before the first frame update
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
-        agent = GetComponent<NavMeshAgent>();
-
+        currentTime = 0;
+        dettachTime = UnityEngine.Random.Range(10, 30);
+        height = baseHeight;
         currentStage = BALLOON_STAGE.ATTACHED;
-        
-        anchors = new List<Anchor>();
-        agent.baseOffset = balloonHeight;
+        agent = GetComponent<NavMeshAgent>();
+        agent.baseOffset = height;
 
-
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            for (int i = 0; i < 4; ++i)
-            {
-                Vector3 position = new Vector3(0, 0, 0); ;
-                if (i == 0) position = new Vector3(4, -balloonHeight + 1, 4);
-                if (i == 1) position = new Vector3(-4, -balloonHeight + 1, 4);
-                if (i == 2) position = new Vector3(4, -balloonHeight + 1, -4);
-                if (i == 3) position = new Vector3(-4, -balloonHeight + 1, -4);
-                
-                GameObject anchorObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Anchor"), this.transform.position + position, Quaternion.identity);
-                Anchor anchor = anchorObject.GetComponent<Anchor>();
-                anchor.SetBalloon(this);
-                anchor.SetID(i);
-                anchors.Add(anchor);
-
-
-                
-
-            }
-        }
-        reattachCount = balloonHeight+1;
-        attachedAnchors = anchors.Count;
     }
 
 
@@ -100,138 +77,77 @@ public class BalloonScript : MonoBehaviour, IPunObservable
                     break;
             }
         }
-        else
-        {
-           
-            agent.baseOffset = Mathf.Lerp(agent.baseOffset,networkBaseOffset,Time.deltaTime);
-            switch (currentStage)
-            {
-                case BALLOON_STAGE.ATTACHED:
-                    // Debug.Log("Attached");
-                    
-                    break;
-                case BALLOON_STAGE.DETACHED:
-                    // Debug.Log("Dettached");
-                    
-                    break;
-                case BALLOON_STAGE.REATTACHED:
-                    // Debug.Log("Rettached");
-                    
-                    break;
-                case BALLOON_STAGE.LOST:
-                    // Debug.Log("Lost");
-                    
-                    break;
-            }
-        }
+       
+       
         
     }
 
     private void Attatched()
     {
-
-        if (attachedAnchors == 0)
+        currentTime += Time.deltaTime;
+        if (currentTime > dettachTime)
         {
             currentStage = BALLOON_STAGE.DETACHED;
         }
+  
     }
     private void Dettached()
     {
+        timePassed += Time.deltaTime;
+        if (timePassed > 2)
+        {
+            height += 0.5f;
+            timePassed = 0;
+        }
 
-        floatAwayTimer += Time.deltaTime;
-        if (floatAwayTimer > reattachTime)
+        if (height < baseHeight)
         {
-            reattachCount++;
-            floatAwayTimer = 0f;
-        }
-        agent.baseOffset = Mathf.Lerp(agent.baseOffset, reattachCount, Time.deltaTime);
-      
-        if(reattachCount > 150)
-        {
-            currentStage = BALLOON_STAGE.LOST;
-        }
-        else if (reattachCount < balloonHeight)
-        {
-            reattachCount = balloonHeight+1;
+            height = baseHeight;
             currentStage = BALLOON_STAGE.REATTACHED;
-            
         }
-    }
-    private void ReattachAnchors()
-    {
-        foreach (Anchor anchor in anchors)
+        if (height > 150)
         {
-            
-            anchor.ReattachedAnchorFlag();
+            currentStage = BALLOON_STAGE.REATTACHED;
         }
-        attachedAnchors = anchors.Count;
-    
+         agent.baseOffset=Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
+
     }
+
     private void Rettached()
     {
-        agent.baseOffset = Mathf.Lerp(agent.baseOffset, balloonHeight, 0.5f * Time.deltaTime);
-        if (agent.baseOffset < balloonHeight+1)
+        if (transform.position.z - baseHeight<0.2f)
         {
             currentStage = BALLOON_STAGE.ATTACHED;
-            ReattachAnchors();
-            reattachCount = balloonHeight + 1;
+        }
+        else
+        {
+            agent.baseOffset = Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
+            
         }
     }
     private void Lost()
     {
 
     }
-    public void RemoveAnchor()
-    {
-        if(attachedAnchors>0) attachedAnchors--;
 
-    }
 
     [PunRPC]
     public  void OnHit(PhotonMessageInfo info)
     {
-      
-        if (reattachCount>=balloonHeight) {
-            reattachCount-=10;
-         }
+        Debug.Log(height);
+        if (height > baseHeight) height -= 3;
+     
     }
     private void DrawLines()
     {
-        lineRenderer.positionCount = 2 * anchors.Count + 1;
-        lineRenderer.SetPosition(0, this.transform.position);
-        int count = 0;
-        foreach (Anchor anchor in anchors)
-        {
-            count++;
-            lineRenderer.SetPosition(count, anchor.transform.position);
-            count++;
-            lineRenderer.SetPosition(count, this.transform.position);
-        }
+
 
     }
-    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public bool IsClientSideTarget()
     {
-        //if (stream.IsWriting)
-        //{
-
-        //    stream.SendNext(agent.baseOffset);
-        //    stream.SendNext(agent.nextPosition);
-        //    stream.SendNext(agent.avoidancePriority);
-
-
-        //}
-        //else
-        //{
-        //    networkBaseOffset = (float)stream.ReceiveNext();
-        //    networkNextPosition = (Vector3)stream.ReceiveNext();
-        //    agent.avoidancePriority = (int)stream.ReceiveNext();
-        //    agent.SetDestination(networkNextPosition);
-            
-
-            
-
-
-        //}
+        return clientSide;
     }
+
+
 
 }

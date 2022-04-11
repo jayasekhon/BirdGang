@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class TutorialStage5 : MonoBehaviour
 {
 	public Transform staticTargets;
 	public Transform dynamicTargets;
-	public Transform nonTargets;
 
 	private Tutorial tut;
-	private bool part1 = false;
+	private int ctr = 0;
 
 	void Start()
 	{
@@ -17,20 +15,28 @@ public class TutorialStage5 : MonoBehaviour
 
 		staticTargets.gameObject.SetActive(true);
 		dynamicTargets.gameObject.SetActive(false);
-		nonTargets.gameObject.SetActive(true);
 	}
 
 	void Update()
 	{
-		if (part1)
-			return;
-
-		if (staticTargets.childCount == 0)
+		switch (ctr)
 		{
-			tut.AdvanceTutorial();
-			part1 = true;
-			dynamicTargets.gameObject.SetActive(true);
-			nonTargets.gameObject.SetActive(true);
+		case 0:
+			if (staticTargets.childCount == 0)
+			{
+				tut.AdvanceTutorial();
+				dynamicTargets.gameObject.SetActive(true);
+				ctr++;
+			}
+			break;
+		case 1:
+			if (dynamicTargets.childCount == 0)
+			{
+				tut.AdvanceTutorial();
+				ctr++;
+				Destroy(this);
+			}
+			break;
 		}
 	}
 }
