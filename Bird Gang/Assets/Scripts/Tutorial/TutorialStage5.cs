@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class TutorialStage5 : MonoBehaviour
@@ -5,11 +6,8 @@ public class TutorialStage5 : MonoBehaviour
 	public Transform staticTargets;
 	public Transform dynamicTargets;
 
-	public Transform nonTargets;
-
 	private Tutorial tut;
 	private int ctr = 0;
-	private int nonTargetCount;
 
 	void Start()
 	{
@@ -17,18 +15,10 @@ public class TutorialStage5 : MonoBehaviour
 
 		staticTargets.gameObject.SetActive(true);
 		dynamicTargets.gameObject.SetActive(false);
-		nonTargets.gameObject.SetActive(true);
-		nonTargetCount = nonTargets.childCount;
 	}
 
 	void Update()
 	{
-		if (nonTargets.childCount < nonTargetCount)
-		{
-			tut.WarnOfPointLoss();
-		}
-		nonTargetCount = nonTargets.childCount;
-
 		switch (ctr)
 		{
 		case 0:
@@ -36,7 +26,6 @@ public class TutorialStage5 : MonoBehaviour
 			{
 				tut.AdvanceTutorial();
 				dynamicTargets.gameObject.SetActive(true);
-				nonTargets.gameObject.SetActive(true);
 				ctr++;
 			}
 			break;

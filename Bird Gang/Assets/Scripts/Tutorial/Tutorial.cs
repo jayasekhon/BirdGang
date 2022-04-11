@@ -29,6 +29,9 @@ public class Tutorial : MonoBehaviour
 	private Vector3 rec_pos;
 	private Quaternion rec_rot;
 
+	// Quick hack.
+	public static Tutorial instance;
+
 	public void AdvanceTutorial()
 	{
 		if (stage != 5)
@@ -114,6 +117,7 @@ public class Tutorial : MonoBehaviour
 
 	public void Start()
 	{
+		instance = this;
 		cityTrigger.RegisterCallback(OnEnterCity);
 		/* Otherwise player hasn't yet properly spawned. */
 		nextLostCheck = Time.time + 2f;
