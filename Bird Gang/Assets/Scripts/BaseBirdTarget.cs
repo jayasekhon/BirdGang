@@ -11,7 +11,7 @@ public interface IBirdTarget
 }
 
 /* Target which destroys itself on hit, and adds/subtracts score. */
-public sealed class BaseBirdTarget : MonoBehaviour, IBirdTarget
+public class BaseBirdTarget : MonoBehaviour, IBirdTarget
 {
     public bool isGood;
     public bool clientSide = false;
