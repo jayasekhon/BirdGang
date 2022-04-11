@@ -38,7 +38,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {
         lineRenderer = GetComponent<LineRenderer>();
         currentTime = 0;
-        dettachTime = UnityEngine.Random.Range(10, 30);
+        dettachTime = 20f+UnityEngine.Random.Range(10, 30);
         height = baseHeight;
         currentStage = BALLOON_STAGE.ATTACHED;
         agent = GetComponent<NavMeshAgent>();
