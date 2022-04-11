@@ -52,7 +52,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     void Update()
     {
         DrawLines();
-        Debug.Log(currentStage);
         
         if (PhotonNetwork.IsMasterClient)
         {
