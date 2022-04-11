@@ -22,7 +22,7 @@ public class BaseBirdTarget : MonoBehaviour, IBirdTarget
     }
 
     [PunRPC]
-    public void OnHit(PhotonMessageInfo info)
+    public virtual void OnHit(PhotonMessageInfo info)
     {
         Debug.Log(isGood ? "Got good cube (i.e. take points)" : "Got bad cube (i.e. give points)");
         Score.instance.AddScore(isGood ? Score.HIT.GOOD : Score.HIT.BAD);

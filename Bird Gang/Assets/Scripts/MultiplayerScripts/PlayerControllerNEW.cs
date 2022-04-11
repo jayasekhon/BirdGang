@@ -145,17 +145,22 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
         // Get the local camera component for targeting
         // see OnPhotonInstantiate function above - does this a nicer way 
-        camerasInGame = GameObject.FindGameObjectsWithTag("MainCamera");
-        for (int c = 0; c < camerasInGame.Length; c++)
+        foreach (GameObject c in GameObject.FindGameObjectsWithTag("MainCamera"))
         {
-            if (!camerasInGame[c].GetComponentInParent<PhotonView>().IsMine)
+            if (!c.GetComponentInParent<PhotonView>().IsMine)
             {
-                Destroy(camerasInGame[c].gameObject);
+                Destroy(c.gameObject);
             }
             else
             {
-                cam = camerasInGame[c].GetComponent<Camera>();
+                cam = c.GetComponent<Camera>();
             }
+        }
+
+        if (cam == null)
+        {
+            Debug.LogError("PlayerController: failed to find main camera.");
+            
         }
     }
 

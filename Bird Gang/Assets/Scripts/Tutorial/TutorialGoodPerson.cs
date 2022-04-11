@@ -7,8 +7,7 @@ using UnityEngine;
 
 public class TutorialGoodPerson : BaseBirdTarget
 {
-        [PunRPC]
-        public new void OnHit(PhotonMessageInfo info)
+        public override void OnHit(PhotonMessageInfo info)
         {
                 if (info.Sender.IsLocal)
                         Tutorial.instance.WarnOfPointLoss();
