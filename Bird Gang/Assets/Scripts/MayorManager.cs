@@ -73,26 +73,19 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             {
                 Vector3 position = new Vector3(0, 0, 0);
                 if (i == 0) position = new Vector3(60, 1, 60);
-                if (i == 1) position = new Vector3(-64, 1, 24);
+                if (i == 1) position = new Vector3(75, 1, -38); ;
                 if (i == 2) position = new Vector3(-64, 1, -38);
-                if (i == 3) position = new Vector3(74, 1, -38);
+                if (i == 3) position = new Vector3(-64, 1, 24);
                 Vector3 start = position;
                 GameObject balloonObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balloon"), start, Quaternion.identity);
                 child = balloonObject.transform.GetChild(Random.Range(0, 2));
                 child.gameObject.SetActive(true);
                 BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
-                balloon.SetID(i + 1);
-                //if (currentGoal == 0) goal = new Vector3(-64, 0, 24);
-                //if (currentGoal == 1) goal = new Vector3(-64, 0, -38);
-                //if (currentGoal == 2) goal = new Vector3(75, 0, -38);
-                //if (currentGoal == 3) goal = new Vector3(60, 0, 60);
-                if (i == 1) position = new Vector3(60, 1, 60);
-                if (i == 0) position = new Vector3(-64, 1, 24);
-                if (i == 3) position = new Vector3(-64, 1, -38);
-                if (i == 2) position = new Vector3(74, 1, -38);
-                balloon.SetGoal(position);
                 //balloon.SetCurrentID(i);
-                //balloon.ResetAgent();
+                //balloon.SetID(i + 1);
+                
+             
+   
 
                 balloons.Add(balloon);
                 
@@ -120,7 +113,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         AiController[] agents = GameObject.FindObjectsOfType<AiController>();
         foreach (AiController agent in agents)
         {
-            if (agent.gameObject.name != "Robber(Clone)" || agent.gameObject.name != "Mayor(Clone)")
+            if (agent.gameObject.name != "Robber(Clone)" || agent.gameObject.name != "Mayor(Clone)"||agent.gameObject.name!="Balloon(Clone)")
             {
                 agent.SetChangeGoal(true);
                 agent.SetGoal(position);

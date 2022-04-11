@@ -64,7 +64,7 @@ public class BirdpooScript: MonoBehaviour, IPunInstantiateMagicCallback
 	{
 		if (!active)
 			return;
-
+		Debug.Log(collision.collider.gameObject.name);
 		bool flee = false;
 		bool notCarnival = true;
 		GameObject tar = collision.collider.gameObject;
