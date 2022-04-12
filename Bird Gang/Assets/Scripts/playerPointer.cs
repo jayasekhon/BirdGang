@@ -33,7 +33,7 @@ public class playerPointer : MonoBehaviour
     
     IEnumerator InitCoroutine()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
 
         playersInGame = GameObject.FindGameObjectsWithTag("Player");
         InstantiateLists();
