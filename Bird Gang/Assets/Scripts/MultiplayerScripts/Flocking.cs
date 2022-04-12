@@ -20,26 +20,30 @@ public class Flocking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (flockManager == null)
+        if (Random.Range(0, 100) < 50)
         {
-            return;
+            if (flockManager == null)
+            {
+                return;
+            }
+
+            if (flockManager.flockMode)
+            {
+                avoidanceMode(); //spaced out. has the obstacle avoidance. goal is player when attacking, so circle player
+            }
+            else
+            {
+                groupMode(); //fly together as a flock. can also attack. goal is always flock manager, so not necessarily as close when attacking
+            }
         }
-       
-        if (flockManager.flockMode)
-        {
-            avoidanceMode(); //spaced out. has the obstacle avoidance. goal is player when attacking, so circle player
-        }
-        else
-        {
-            groupMode(); //fly together as a flock. can also attack. goal is always flock manager, so not necessarily as close when attacking
-        }
+        transform.Translate(0, 0, Time.deltaTime * speed);
     }
 
     void groupMode()
     {
         Bounds b = new Bounds(flockManager.transform.position, flockManager.flyLimits * 2);
 
-        RaycastHit hit = new RaycastHit();
+        
         Vector3 direction = Vector3.zero;
 
         if (!b.Contains(transform.position))
@@ -48,13 +52,17 @@ public class Flocking : MonoBehaviour
             direction = flockManager.transform.position - transform.position;
         }
 
-        else if (Physics.Raycast(transform.position, this.transform.forward * 20f, out hit))
-        {
-            turning = true;
-            direction = Vector3.Reflect(this.transform.forward, hit.normal);
-        }
         else
-            turning = false;
+        {
+            RaycastHit hit = new RaycastHit();
+            if (Physics.Raycast(transform.position, this.transform.forward * 20f, out hit))
+            {
+                turning = true;
+                direction = Vector3.Reflect(this.transform.forward, hit.normal);
+            }
+            else
+                turning = false;
+        }
 
         if (turning)
         {
@@ -72,7 +80,7 @@ public class Flocking : MonoBehaviour
                 ApplyGroupRules();
             }
         }
-        transform.Translate(0, 0, Time.deltaTime * speed);
+        
     }
 
     void ApplyGroupRules()
@@ -176,7 +184,7 @@ public class Flocking : MonoBehaviour
         float distance = Vector3.Distance(flockManager.transform.position, transform.position);
         speed = calculateSpeed(distance);
 
-        transform.Translate(0, 0, Time.deltaTime * speed);
+        
     }
 
     void ApplyRules()

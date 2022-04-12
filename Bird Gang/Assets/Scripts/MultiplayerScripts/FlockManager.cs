@@ -64,47 +64,47 @@ public class FlockManager : MonoBehaviour
     void Update()
     {
 
-        //Vector3 direction = Vector3.zero;
-        //Vector3 noise = new Vector3(Random.Range(-50, 50), Random.Range(-30, 30), Random.Range(-50, 50));
-        
-        //Bounds b = flockingBorder.bounds;
-        //if (!b.Contains(transform.position))
-        //{
-        //    turning = true;
-        //    direction = b.center - transform.position;
-        //}
-        //else
-        //{
-        //    turning = false;
-        //}
-        //if (attacking)
-        //{
-        //    transform.LookAt(playerToAttack);
-        //}
-        //else
-        //{
-        //    if (turning)
-        //    {
-        //        // transform.rotation = Quaternion.LookRotation(direction);
-        //        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction + noise), rotationSpeed * Time.deltaTime);
+        Vector3 direction = Vector3.zero;
+        Vector3 noise = new Vector3(Random.Range(-50, 50), Random.Range(-30, 30), Random.Range(-50, 50));
 
-        //    }
-        //    else
-        //    {
+        Bounds b = flockingBorder.bounds;
+        if (!b.Contains(transform.position))
+        {
+            turning = true;
+            direction = b.center - transform.position;
+        }
+        else
+        {
+            turning = false;
+        }
+        if (attacking)
+        {
+            transform.LookAt(playerToAttack);
+        }
+        else
+        {
+            if (turning)
+            {
+                // transform.rotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction + noise), rotationSpeed * Time.deltaTime);
 
-        //        if (Random.Range(0, 100) < 1)
-        //        {
-        //            r = Quaternion.Euler(Random.Range(-180, 180) + transform.rotation.x, Random.Range(-180, 180) + transform.rotation.y, Random.Range(-180, 180) + transform.rotation.z);
-        //        }
-        //        transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * 5);
+            }
+            else
+            {
 
-        //    }
-        //}
-        //// this.transform.position  = Vector3.Lerp(this.transform.position,goalPos,Time.deltaTime);
-        //this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, -worldLimits.x, worldLimits.x),
-        //                                    Mathf.Clamp(this.transform.position.y, 0, worldLimits.y),
-        //                                    Mathf.Clamp(this.transform.position.z, -worldLimits.z, worldLimits.z));
-        //transform.Translate(0, 0, Time.deltaTime * 20); 
+                if (Random.Range(0, 100) < 1)
+                {
+                    r = Quaternion.Euler(Random.Range(-180, 180) + transform.rotation.x, Random.Range(-180, 180) + transform.rotation.y, Random.Range(-180, 180) + transform.rotation.z);
+                }
+                transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * 5);
+
+            }
+        }
+        // this.transform.position  = Vector3.Lerp(this.transform.position,goalPos,Time.deltaTime);
+        this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, -worldLimits.x, worldLimits.x),
+                                            Mathf.Clamp(this.transform.position.y, 0, worldLimits.y),
+                                            Mathf.Clamp(this.transform.position.z, -worldLimits.z, worldLimits.z));
+        transform.Translate(0, 0, Time.deltaTime * 20);
     }
 
     public void AttackPlayer(GameObject player){
