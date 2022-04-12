@@ -473,7 +473,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
-            windTimePassed = 0; 
+            // windTimePassed = 0; 
         }
             // move = true;
         // }
