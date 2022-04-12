@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -97,6 +98,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void StartGame()
 	{
+		startGameButton.GetComponent<Button>().interactable = false; // Stop the button from being clicked twice.
 		PhotonNetwork.LoadLevel(2);
         PhotonNetwork.CurrentRoom.IsVisible = false;
 	}
