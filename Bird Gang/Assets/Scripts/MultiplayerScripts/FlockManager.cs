@@ -34,9 +34,12 @@ public class FlockManager : MonoBehaviour
     private Transform playerToAttack;
     Transform child;
 
+    public bool flockMode =true;
+
     // Start is called before the first frame update
     void Start()
     {
+
         allBirds = new GameObject[numBirds];
         for(int i=0; i<numBirds; i++)
         {
