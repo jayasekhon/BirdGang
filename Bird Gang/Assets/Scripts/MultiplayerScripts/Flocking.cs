@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Flocking : MonoBehaviour
 {
-
     public FlockManager flockManager;
     float speed;
     bool turning = false;
     private bool attacking;
     private Transform playerToAttack;
-
 
     // Start is called before the first frame update
     void Start()
@@ -27,28 +25,14 @@ public class Flocking : MonoBehaviour
             return;
         }
        
-        
-
-        
-        Debug.DrawRay(transform.position - this.transform.forward * 5f, this.transform.forward * 10f, Color.green);
         if (flockManager.flockMode)
         {
-            avoidanceMode();
+            avoidanceMode(); //spaced out. has the obstacle avoidance. goal is player when attacking, so circle player
         }
         else
         {
-            groupMode();
+            groupMode(); //fly together as a flock. can also attack. goal is always flock manager, so not necessarily as close when attacking
         }
-
-
-
-
-
-
-
-
-
-
     }
 
     void groupMode()
@@ -66,12 +50,8 @@ public class Flocking : MonoBehaviour
 
         else if (Physics.Raycast(transform.position, this.transform.forward * 20f, out hit))
         {
-            // Debug.Log("inside the raycast");
             turning = true;
-            // Debug.Log(direction + "1");
             direction = Vector3.Reflect(this.transform.forward, hit.normal);
-            // Debug.Log(direction + "2");
-            Debug.DrawRay(this.transform.position, this.transform.forward * 20f, Color.red);
         }
         else
             turning = false;
@@ -97,8 +77,8 @@ public class Flocking : MonoBehaviour
 
     void ApplyGroupRules()
     {
-        GameObject[] gos;
-        gos = flockManager.allBirds;
+        GameObject[] birds;
+        birds = flockManager.allBirds;
 
         Vector3 vCentre = Vector3.zero;
         Vector3 vAvoid = Vector3.zero;
@@ -107,24 +87,24 @@ public class Flocking : MonoBehaviour
         float nAngle;
         int groupSize = 0;
 
-        foreach (GameObject go in gos)
+        foreach (GameObject bird in birds)
         {
-            if (go != this.gameObject)
+            if (bird != this.gameObject)
             {
-                nDistance = Vector3.Distance(go.transform.position, this.transform.position);
-                nAngle = Vector3.Angle(this.transform.forward, go.transform.position - this.transform.position);
+                nDistance = Vector3.Distance(bird.transform.position, this.transform.position);
+                nAngle = Vector3.Angle(this.transform.forward, bird.transform.position - this.transform.position);
                 if (nDistance <= flockManager.neighbourDistance && nAngle < flockManager.neighbourAngle)
                 {
                     // Debug.Log(nAngle); 
-                    vCentre += go.transform.position;
+                    vCentre += bird.transform.position;
                     groupSize++;
 
                     if (nDistance < 1.0f)
                     {
-                        vAvoid = vAvoid + (this.transform.position - go.transform.position);
+                        vAvoid = vAvoid + (this.transform.position - bird.transform.position);
                     }
 
-                    Flocking anotherFlock = go.GetComponent<Flocking>();
+                    Flocking anotherFlock = bird.GetComponent<Flocking>();
                     gSpeed = gSpeed + anotherFlock.speed;
                 }
             }
@@ -144,32 +124,52 @@ public class Flocking : MonoBehaviour
 
     void avoidanceMode()
     {
-        if (Random.Range(0, 100) < 20)
-        {
-            ApplyRules();
-        }
-
         if (attacking)
         {
-
-            GameObject[] gos;
-            gos = flockManager.allBirds;
+            GameObject[] birds;
+            birds = flockManager.allBirds;
 
             Vector3 vAvoid = Vector3.zero;
             float nDistance;
-            foreach (GameObject go in gos)
+            foreach (GameObject bird in birds)
             {
-                if (go != this.gameObject)
+                if (bird != this.gameObject)
                 {
-                    nDistance = Vector3.Distance(go.transform.position, this.transform.position);
+                    nDistance = Vector3.Distance(bird.transform.position, this.transform.position);
                     if (nDistance < 3.0f)
                     {
-                        vAvoid = vAvoid + (this.transform.position - go.transform.position);
+                        vAvoid = vAvoid + (this.transform.position - bird.transform.position);
                     }
                 }
             }
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerToAttack.position - transform.position + 10 * vAvoid), flockManager.rotationSpeed * Time.deltaTime);
+            
+            RaycastHit hit = new RaycastHit();
+            int numRays = 9;
+            Vector3 deltaDirection = Vector3.zero;
+            int layerMask = 1 << 8;
+            for (int i = 0; i < numRays; i++)
+            {
+                var rotation = transform.rotation;
+                var rotationMod = Quaternion.AngleAxis(i / ((float)numRays - 1) * 180 - 90, transform.up);
+                var dir = rotation * rotationMod * Vector3.forward;
+                var ray = new Ray(transform.position, dir * 1);
+            
+                if (Physics.Raycast(ray, out hit, 20f, layerMask))
+                {
+                    deltaDirection -= dir;
+                }
+                else
+                {
+                    deltaDirection += dir;
+                }
+            }
+            oAvoid = deltaDirection;
 
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerToAttack.position - transform.position + 10 * vAvoid + oAvoid), flockManager.rotationSpeed * Time.deltaTime);
+        }
+        else if (Random.Range(0, 100) < 20)
+        {
+            ApplyRules();
         }
 
         float distance = Vector3.Distance(flockManager.transform.position, transform.position);
@@ -180,8 +180,8 @@ public class Flocking : MonoBehaviour
 
     void ApplyRules()
     {
-        GameObject[] gos;
-        gos = flockManager.allBirds;
+        GameObject[] birds;
+        birds = flockManager.allBirds;
 
         Vector3 vCentre = Vector3.zero;
         Vector3 vGoal = Vector3.zero;
@@ -201,32 +201,29 @@ public class Flocking : MonoBehaviour
         float vPlayerWeight = 10f;
         float vGoalWeight = 0.7f;
 
-        
-
-        foreach (GameObject go in gos)
+        foreach (GameObject bird in birds)
         {
-            if (go != this.gameObject)
+            if (bird != this.gameObject)
             {
-                nDistance = Vector3.Distance(go.transform.position, this.transform.position);
-                nAngle = Vector3.Angle(this.transform.forward, go.transform.position - this.transform.position);
+                nDistance = Vector3.Distance(bird.transform.position, this.transform.position);
+                nAngle = Vector3.Angle(this.transform.forward, bird.transform.position - this.transform.position);
                 if (nDistance <= flockManager.neighbourDistance && nAngle < flockManager.neighbourAngle)
                 {
                     
-                    vCentre += go.transform.position;
+                    vCentre += bird.transform.position;
                     groupSize++;
 
                     if (nDistance < 1.0f)
                     {
-                        vAvoid = vAvoid + (this.transform.position - go.transform.position);
+                        vAvoid = vAvoid + (this.transform.position - bird.transform.position);
                     }
 
-                    Flocking anotherFlock = go.GetComponent<Flocking>();
+                    Flocking anotherFlock = bird.GetComponent<Flocking>();
                     gSpeed = gSpeed + anotherFlock.speed;
                 }
             }
         }
 
-        
         RaycastHit hit = new RaycastHit();
         int numRays = 9;
         Vector3 deltaDirection = Vector3.zero;
@@ -248,22 +245,10 @@ public class Flocking : MonoBehaviour
             }
         }
         oAvoid = deltaDirection;
-
-        if (false)
-        {
-            vPlayer = (playerToAttack.position - transform.position);
-
-
-        }
-        else
-        {
-            vGoal = (flockManager.transform.position - this.transform.position);
-        }
-
+        vGoal = (flockManager.transform.position - this.transform.position);
 
         if (groupSize > 0)
         {
-
             vCentre = vCentre / groupSize;
             //speed = gSpeed / groupSize;
             //Debug.Log(vCentre + "   " + vAvoid + "   " + oAvoid);
@@ -289,7 +274,6 @@ public class Flocking : MonoBehaviour
     {
         attacking = true;
         playerToAttack = player.transform;
-
     }
 
     public void StopAttackPlayer()
