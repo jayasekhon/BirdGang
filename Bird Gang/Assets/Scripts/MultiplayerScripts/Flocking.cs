@@ -130,6 +130,7 @@ public class Flocking : MonoBehaviour
             birds = flockManager.allBirds;
 
             Vector3 vAvoid = Vector3.zero;
+            Vector3 oAvoid = Vector3.zero;
             float nDistance;
             foreach (GameObject bird in birds)
             {
