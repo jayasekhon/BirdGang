@@ -92,7 +92,6 @@ GameObject:
   - component: {fileID: 4880907963837379882}
   - component: {fileID: 1898483765369946519}
   - component: {fileID: 4891480758614557316}
-  - component: {fileID: 3762898085771964011}
   m_Layer: 8
   m_Name: CircusTentBody
   m_TagString: Untagged
@@ -166,20 +165,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3762898085771964011
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 177128091779960441}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1388539334438253826, guid: bf8a8c6f90dedf44281db956606742b4, type: 3}
 --- !u!1 &741977045383179492
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,6 +198,7 @@ Transform:
   - {fileID: 7484080503904312535}
   - {fileID: 809879449657705637}
   - {fileID: 4127066956169615200}
+  - {fileID: 6875344495568031463}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -274,7 +260,6 @@ GameObject:
   - component: {fileID: 8361831325038158605}
   - component: {fileID: 179978649474935341}
   - component: {fileID: 963805278400001579}
-  - component: {fileID: 3648179309805707223}
   m_Layer: 8
   m_Name: CircusTentTop
   m_TagString: Untagged
@@ -347,20 +332,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3648179309805707223
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6043227980321444997}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3814361926686718181, guid: bf8a8c6f90dedf44281db956606742b4, type: 3}
 --- !u!1 &7524181185730683002
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +413,51 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8640265507479007593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6875344495568031463}
+  - component: {fileID: 721710051145821351}
+  m_Layer: 0
+  m_Name: Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6875344495568031463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8640265507479007593}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.044700004, z: 0}
+  m_LocalScale: {x: 0.95549995, y: 0.9555002, z: 0.95549995}
+  m_Children: []
+  m_Father: {fileID: 74266090233837150}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &721710051145821351
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8640265507479007593}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 752447653027797191, guid: db2bdb31ff456794b8a682dde1459acb, type: 3}
 --- !u!1 &8841779579934203580
 GameObject:
   m_ObjectHideFlags: 0
