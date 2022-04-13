@@ -61,7 +61,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             else
             {
                 cutsceneManagerAnim = c.GetComponent<Animator>();
-                Debug.Log("got animator" + c)
+                Debug.Log("got animator" + c);
             }
         }
     }
