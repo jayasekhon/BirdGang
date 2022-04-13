@@ -23,7 +23,7 @@ public class CineMachineSwitcher : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.P))
         {
-            animator.Play("Cutscene");
+            animator.Play("CarnivalCS");
         }
     }
 }
