@@ -10,7 +10,6 @@ public class WaypointEvents: MonoBehaviour
     public const byte ShowWaypoint = 6;
     public const byte HideWaypoint = 7;
     public const byte myPosition = 8;
-    bool activeWaypoint;
     PhotonView PV;
     int myPVID;
     Vector3 myPos;
@@ -32,21 +31,13 @@ public class WaypointEvents: MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.F)) //&& !activeWaypoint
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            activeWaypoint = true;
             myPos = transform.position;
             SendMyLocation();
             ShowMyWaypoint();
             StartCoroutine(HideWayPointAfterTime());                       
         }
-        // else if (activeWaypoint)
-        // {
-        //     activeWaypoint = false;
-        //     myPos = transform.position;
-        //     SendMyLocation();
-        //     HideMyWaypoint();
-        // }
     }
 
     private void ShowMyWaypoint()
@@ -69,7 +60,7 @@ public class WaypointEvents: MonoBehaviour
 
     IEnumerator HideWayPointAfterTime()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(20);
         HideMyWaypoint();
     }
 
