@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 3497789394112611917}
   - component: {fileID: 5115803315389566829}
   - component: {fileID: 5323688418712589163}
+  - component: {fileID: 7131126965904477205}
   m_Layer: 8
   m_Name: CircusTentTop
   m_TagString: Untagged
@@ -210,6 +211,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7131126965904477205
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683306629716963781}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3814361926686718181, guid: 62350ab2cee98814994bcea6a6b24baf, type: 3}
 --- !u!1 &3236636012338971962
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,6 +561,7 @@ GameObject:
   - component: {fileID: 521821950615670890}
   - component: {fileID: 6834583311288689879}
   - component: {fileID: 532430220850177988}
+  - component: {fileID: 8457356296717003457}
   m_Layer: 8
   m_Name: CircusTentBody
   m_TagString: Untagged
@@ -619,51 +635,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5175721318373535833
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3330648736677008315}
-  - component: {fileID: 9002325336641361934}
-  m_Layer: 0
-  m_Name: Mesh
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3330648736677008315
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5175721318373535833}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.044700004, z: 0}
-  m_LocalScale: {x: 0.95549995, y: 0.9555002, z: 0.95549995}
-  m_Children: []
-  m_Father: {fileID: 5009776572243809054}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &9002325336641361934
+--- !u!64 &8457356296717003457
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5175721318373535833}
+  m_GameObject: {fileID: 5112954116483427129}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 752447653027797191, guid: db2bdb31ff456794b8a682dde1459acb, type: 3}
+  m_Mesh: {fileID: -1388539334438253826, guid: 62350ab2cee98814994bcea6a6b24baf, type: 3}
 --- !u!1 &5678367961918392740
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +683,6 @@ Transform:
   - {fileID: 5745696696066154981}
   - {fileID: 2878547548681701389}
   - {fileID: 7409759934464947393}
-  - {fileID: 3330648736677008315}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
