@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections;
 
 public class WaypointManager : MonoBehaviour, IOnEventCallback
 {
@@ -12,6 +13,10 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
     private static Dictionary<int, GameObject> waypointParentList = new Dictionary<int, GameObject>();
     int requesterID;
     Vector3 requesterPos;
+    public Material[] playerMaterials;
+
+    public int[] playerPVids;
+    private GameObject[] playersInGame;
         
     void Awake()
     {
@@ -21,9 +26,24 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(InitCoroutine());
+    }
+
+    IEnumerator InitCoroutine()
+    {
+        yield return new WaitForSeconds(2);
+
+        playersInGame = GameObject.FindGameObjectsWithTag("Player");  
+        Debug.Log(playersInGame.Length);  
+        playerPVids = new int[playersInGame.Length];
+        for (int p = 0; p < playersInGame.Length; p++)
+        {
+            Debug.Log(playersInGame[p].GetComponent<PhotonView>().ViewID);
+            playerPVids[p] = playersInGame[p].GetComponent<PhotonView>().ViewID;
+        }
         GameObject newWaypointParent = InitialiseWaypoint();
         PhotonView newWaypointParentPV = GetComponent<PhotonView>();
-        waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent;
+        waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
     }
 
     private void OnEnable()
@@ -58,6 +78,17 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
     GameObject InitialiseWaypoint()
     {
         GameObject waypointParent = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerWaypoint"), new Vector3(0,3,0), Quaternion.identity);
+        GameObject waypointCylinderHolder = waypointParent.transform.GetChild(0).gameObject;
+        GameObject waypointCylinder = waypointCylinderHolder.transform.GetChild(1).gameObject;
+        MeshRenderer waypointCylinderMaterial = waypointCylinder.GetComponent<MeshRenderer>();
+        for (int i = 0; i < playerPVids.Length; i++)
+        {
+            if (PV.ViewID == playerPVids[i])
+            {
+                waypointCylinderMaterial.material = playerMaterials[i];
+                break;
+            }
+        }
         return waypointParent;    
     }
 

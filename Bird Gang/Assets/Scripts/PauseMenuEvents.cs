@@ -6,6 +6,16 @@ using UnityEngine;
 public class PauseMenuEvents: MonoBehaviourPunCallbacks, IOnEventCallback
 {
 
+    private new void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    private new void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
