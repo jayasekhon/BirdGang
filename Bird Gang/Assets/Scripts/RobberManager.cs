@@ -31,11 +31,11 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     // Start is called before the first frame update
     void Awake()
     {
-        if (!PhotonNetwork.IsMasterClient) // checks if a RobberManager already exists
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // if (!PhotonNetwork.IsMasterClient) // checks if a RobberManager already exists
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
         DontDestroyOnLoad(gameObject);
         GameEvents.RegisterCallbacks(this, GAME_STAGE.ROBBERY,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
@@ -56,11 +56,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        Debug.Log("stage begins" + PhotonNetwork.NickName);
         cutsceneManagerAnim.Play("OverheadCS");
-        Debug.Log("robber stage has begun");
+        // Debug.Log("robber stage has begun");
         StartCoroutine(ExecuteAfterTime());
-        // this is where we would do the pun RPC call
-        // and then the pun RPC script holds all the timings and camera switches. 
     }
 
     IEnumerator ExecuteAfterTime()
@@ -82,13 +81,17 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         //slight delay for animation and robbers to spawn
         yield return new WaitForSeconds(1.5f);
 
-        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
-        robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
-        robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+        if (PhotonNetwork.IsMasterClient) {
+            robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+            robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+            robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+        }
 
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
         cutsceneManagerAnim.Play("OverheadCS");
-        gatherCrowd();
+        if (PhotonNetwork.IsMasterClient) {
+            gatherCrowd();
+        }
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
         cutsceneManagerAnim.Play("Main");
     }
@@ -119,7 +122,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     void Update()
     {
-        if(startAlarm){
+        if(startAlarm & PhotonNetwork.IsMasterClient){
             if (timePassed < 0.5f) 
             {
                 // gameObject.GetComponent<MeshRenderer>().enabled = true;
@@ -137,27 +140,28 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             }
             timePassed += Time.fixedDeltaTime; //0.02
         }
-
 	}
 
     public void OnStageEnd(GameEvents.Stage stage)
-    {   
-        leftAnim.SetBool("swingDoor", false);
-        rightAnim.SetBool("swingDoor", false);
+    {   if (PhotonNetwork.IsMasterClient) 
+        {
+            leftAnim.SetBool("swingDoor", false);
+            rightAnim.SetBool("swingDoor", false);
 
-        startAlarm = false;
+            startAlarm = false;
 
-        if (robber)
-        {
-            PhotonNetwork.Destroy(robber);
-        } 
-        if (robber1)
-        {
-            PhotonNetwork.Destroy(robber1);
-        }
-        if (robber2)
-        {
-            PhotonNetwork.Destroy(robber2);
+            if (robber)
+            {
+                PhotonNetwork.Destroy(robber);
+            } 
+            if (robber1)
+            {
+                PhotonNetwork.Destroy(robber1);
+            }
+            if (robber2)
+            {
+                PhotonNetwork.Destroy(robber2);
+            }
         }
     }
 
