@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SandDunes
-  m_Shader: {fileID: -6465566751694194690, guid: 07ffc184809002c4a8cac06d9ce4c585, type: 3}
+  m_Name: Grass
+  m_Shader: {fileID: -6465566751694194690, guid: 946a7e1ca0b41084c9e54be294b81d85, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +19,26 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_1f104743f3264eceaa79989b609936e4:
+        m_Texture: {fileID: 2800000, guid: d9fdf36526fcc40599a0ebd83cd5ddc6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_2bb555c02b20417ebcaf6b25ec0744f2:
+        m_Texture: {fileID: 2800000, guid: d9fdf36526fcc40599a0ebd83cd5ddc6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_a68933b26e96492d863a8da635e75533:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_b65d50f36675432a8b7bb6f426100bf3:
+        m_Texture: {fileID: 2800000, guid: d9fdf36526fcc40599a0ebd83cd5ddc6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_f6855fa3ca2c4b9fbb9d6c939376d410:
+        m_Texture: {fileID: 2800000, guid: d9fdf36526fcc40599a0ebd83cd5ddc6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -76,6 +96,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_49d84d19fe3d4186acd96c2a8ac2a576: 2
+    - Vector1_6234472d55684de59a22ea975fe454c9: 15
+    - Vector1_63ea22895fb74042bb8fac0bce22bbba: 0
+    - Vector1_d8aebbb0f57743ee918b638ae1ed3cda: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -103,12 +127,13 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_712f379929274d2c9caaa2f6ca89ff44: {r: 0.11356347, g: 0.8207547, b: 0.22913697, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &8824533458564888625
+--- !u!114 &2823944720961173513
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

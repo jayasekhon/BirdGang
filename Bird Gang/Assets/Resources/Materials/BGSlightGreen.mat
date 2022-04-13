@@ -8,14 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BGSlightGreen
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 16d1b90d9d0b2a74b8dbf8447bc0622f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -106,6 +105,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_a50fdea4b7044c61bb1cd0a5f3c45ab6: {r: 0.12875277, g: 0.6603774, b: 0.12875277, a: 0}
+    - Vector2_7be8fada668a4028b24703d401876fac: {r: 6, g: 6, b: 6, a: 6}
+    - Vector2_e4da566e4c074df482129a6e7fc5a731: {r: 100, g: 50, b: 30, a: 3}
     - _BaseColor: {r: 0.45490196, g: 0.76862746, b: 0.27058825, a: 1}
     - _Color: {r: 0.08957815, g: 0.5754717, b: 0.14433765, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
