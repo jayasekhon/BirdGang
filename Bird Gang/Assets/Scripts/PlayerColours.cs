@@ -29,9 +29,4 @@ public class PlayerColours : MonoBehaviour
             playerPVids[p] = playersInGame[p].GetComponent<PhotonView>().ViewID;
         } 
     }
-
-    void Update()
-    {
-        
-    }
 }
