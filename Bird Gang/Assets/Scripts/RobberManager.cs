@@ -25,8 +25,12 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     float timePassed = 0f;
     bool startAlarm = false;
 
+    PhotonView PV;
+
     AudioSource voiceover;
     public AudioClip RobberIntro;
+
+    CineMachineSwitcher switcher;
 
     // Start is called before the first frame update
     void Awake()
@@ -54,6 +58,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         
         foreach (GameObject c in GameObject.FindGameObjectsWithTag("cutsceneManager"))
         {
+            PV = c.GetComponent<PhotonView>();
             if (!c.GetComponent<PhotonView>().IsMine)
             {
                 Destroy(c.gameObject);
@@ -61,7 +66,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             else
             {
                 cutsceneManagerAnim = c.GetComponent<Animator>();
-                Debug.Log("got animator" + c);
+                Debug.Log(PV.ViewID + "manager");
+                switcher = c.GetComponent<CineMachineSwitcher>();
             }
         }
     }
@@ -69,6 +75,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     public void OnStageBegin(GameEvents.Stage stage)
     {
         Debug.Log("stage begins" + PhotonNetwork.NickName);
+        // switcher.CallMe();
         cutsceneManagerAnim.Play("OverheadCS");
         // Debug.Log("robber stage has begun");
         StartCoroutine(ExecuteAfterTime());

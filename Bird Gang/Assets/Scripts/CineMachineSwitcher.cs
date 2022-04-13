@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CineMachineSwitcher : MonoBehaviour
 {
-
     private Animator animator;
+    PhotonView PV;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
+        PV = GetComponent<PhotonView>();
+        Debug.Log(PV.ViewID + "switcher");
         animator.Play("");
     }
 
@@ -25,5 +28,11 @@ public class CineMachineSwitcher : MonoBehaviour
         {
             animator.Play("CarnivalCS");
         }
+    }
+
+    public void CallMe() 
+    {
+        Debug.Log("hello from CM switcher!");
+        animator.Play("OverheadCS");
     }
 }
