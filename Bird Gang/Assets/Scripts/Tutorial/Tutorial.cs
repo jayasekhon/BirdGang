@@ -98,7 +98,7 @@ public class Tutorial : MonoBehaviour
 			stage3.SetActive(false);
 			stage4.SetActive(false);
 			pc.input_lock_ad = false;
-			pc.wind_disable = false;
+			// pc.wind_disable = false;
 			text.transform.parent.GetComponent<Image>()
 				.CrossFadeAlpha(0f, 5f, false);
 			text
