@@ -35,10 +35,11 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     {
         cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
         fireworks = GameObject.FindGameObjectWithTag("fireworks");
+        fireworks.SetActive(true);
 
         cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
         fireworkEffect = fireworks.GetComponent<VisualEffect>();
-        fireworkEffect.enabled = true;
+        fireworkEffect.Play();
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
@@ -58,7 +59,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-        fireworkEffect.enabled = false;
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
