@@ -50,8 +50,20 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     void Start() 
     {
-        cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
+        // cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
+        
+        foreach (GameObject c in GameObject.FindGameObjectsWithTag("cutsceneManager"))
+        {
+            if (!c.GetComponent<PhotonView>().IsMine)
+            {
+                Destroy(c.gameObject);
+            }
+            else
+            {
+                cutsceneManagerAnim = c.GetComponent<Animator>();
+                Debug.Log("got animator" + c)
+            }
+        }
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
@@ -66,7 +78,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     {
         //gives enough time for camera to pan to sky
         yield return new WaitForSeconds(5.5f);
-
+        
         cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(2f);
         
