@@ -2,6 +2,7 @@ using ExitGames.Client.Photon;
 using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine;
+using System.Collections;
 
 public class WaypointEvents: MonoBehaviour
 {
@@ -31,20 +32,21 @@ public class WaypointEvents: MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(1) && !activeWaypoint)
+        if (Input.GetKeyDown(KeyCode.F)) //&& !activeWaypoint
         {
             activeWaypoint = true;
             myPos = transform.position;
             SendMyLocation();
-            ShowMyWaypoint();                       
+            ShowMyWaypoint();
+            StartCoroutine(HideWayPointAfterTime());                       
         }
-        else if (Input.GetMouseButtonDown(1) && activeWaypoint)
-        {
-            activeWaypoint = false;
-            myPos = transform.position;
-            SendMyLocation();
-            HideMyWaypoint();
-        }
+        // else if (activeWaypoint)
+        // {
+        //     activeWaypoint = false;
+        //     myPos = transform.position;
+        //     SendMyLocation();
+        //     HideMyWaypoint();
+        // }
     }
 
     private void ShowMyWaypoint()
@@ -63,6 +65,12 @@ public class WaypointEvents: MonoBehaviour
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(myPosition, myPos, raiseEventOptions, SendOptions.SendReliable);
+    }
+
+    IEnumerator HideWayPointAfterTime()
+    {
+        yield return new WaitForSeconds(5);
+        HideMyWaypoint();
     }
 
 
