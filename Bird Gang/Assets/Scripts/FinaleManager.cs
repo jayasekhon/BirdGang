@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
+using UnityEngine.VFX;
 
 public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
@@ -11,6 +12,9 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     AudioSource voiceover;
     public AudioClip Congratulations;
+    GameObject fireworks;
+    public VisualEffect fireworkEffect;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -30,7 +34,11 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     void Start() 
     {
         cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
+        fireworks = GameObject.FindGameObjectWithTag("fireworks");
+
         cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
+        fireworkEffect = fireworks.GetComponent<VisualEffect>();
+        fireworkEffect.enabled = true;
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
@@ -50,7 +58,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-
+        fireworkEffect.enabled = false;
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
