@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using System.IO;
 
@@ -12,7 +13,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     GameObject[] CM_managers;
     public List<CineMachineSwitcher> switchers;
 
-    // public GameObject creditsScreen; 
+    public Image creditsScreen; 
 
     // Start is called before the first frame update
     void Awake()
@@ -61,8 +62,8 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Finale");
         yield return new WaitForSeconds(6f);
         voiceover.PlayOneShot(Congratulations, 1f);
-        // yield return new WaitForSeconds(5f);
-        // creditsScreen.enabled = true; //this doesn't work
+        yield return new WaitForSeconds(8f);
+        creditsScreen.enabled = true;
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
