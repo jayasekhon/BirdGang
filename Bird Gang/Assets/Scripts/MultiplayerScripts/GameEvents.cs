@@ -21,7 +21,8 @@ public enum GAME_STAGE
 	POLITICIAN = 4,
 	CARNIVAL = 8,
 	FINALE = 16,
-	FINISH = 32,
+	INTRO = 32,
+	FINISH = 64,
 
 	ALL = 0xFF,
 };
@@ -73,7 +74,8 @@ public class GameEvents : MonoBehaviour
 		// new Stage(GAME_STAGE.ROBBERY, 40f),
 		// new Stage(GAME_STAGE.POLITICIAN, 40f),
 		// new Stage(GAME_STAGE.CARNIVAL, 40f),
-		new Stage(GAME_STAGE.FINALE, 120f),
+		// new Stage(GAME_STAGE.FINALE, 120f),
+		new Stage(GAME_STAGE.INTRO, 120f),
 		new Stage(GAME_STAGE.FINISH, .01f),
 	};
 
