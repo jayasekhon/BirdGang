@@ -131,7 +131,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     void Update()
     {
-        if(startAlarm & PhotonNetwork.IsMasterClient){
+        if(startAlarm){
             if (timePassed < 0.5f) 
             {
                 // gameObject.GetComponent<MeshRenderer>().enabled = true;
