@@ -14,6 +14,8 @@ public class WaypointEvents: MonoBehaviour
     int myPVID;
     Vector3 myPos;
 
+    bool coroutineFinished = false;
+
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -33,11 +35,16 @@ public class WaypointEvents: MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log("F registered");
             myPos = transform.position;
             SendMyLocation();
             ShowMyWaypoint();
-            StartCoroutine(HideWayPointAfterTime());                       
+
+            if (!coroutineFinished)
+                StopCoroutine(HideWayPointAfterTime());
+
+            StartCoroutine(HideWayPointAfterTime()); 
+
+                                  
         }
     }
 
@@ -61,8 +68,10 @@ public class WaypointEvents: MonoBehaviour
 
     IEnumerator HideWayPointAfterTime()
     {
+        coroutineFinished = false;
         yield return new WaitForSeconds(20);
         HideMyWaypoint();
+        coroutineFinished = true;
     }
 
 

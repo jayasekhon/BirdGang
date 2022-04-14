@@ -45,23 +45,6 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
         waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
     }
 
-    public void GetPlayerIDsFromRPC(int[] ids)
-    {
-        // if (PV.IsMine)
-        // {
-        //     Debug.Log("my local waypoint manager");
-        //     playerPVids = ids;
-        //     GameObject newWaypointParent = InitialiseWaypoint();
-        //     PhotonView newWaypointParentPV = GetComponent<PhotonView>();
-        //     waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
-        // }
-        
-        // if (newWaypointParent.GetComponent<PhotonView>().IsMine)
-        // {
-            
-        // }
-    }
-
     private void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
@@ -110,16 +93,12 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
 
     void ShowWaypoint()
     {
-        Debug.Log("Show waypoint");
         foreach (KeyValuePair<int, GameObject> waypointParent in waypointParentList)
         {
-            Debug.Log("WP parent: "+waypointParent.Key);
-            Debug.Log("Reuqester: "+requesterID);
             // Looking to find the local waypoint for the player that has sent the event
             if(waypointParent.Key == requesterID)
             {
-                Debug.Log("Found waypoint");
-                waypointParentList[waypointParent.Key].transform.position = requesterPos;
+                waypointParentList[waypointParent.Key].transform.position = new Vector3(requesterPos.x, 2, requesterPos.z);
                 GameObject waypointParticles = waypointParentList[waypointParent.Key].transform.GetChild(0).gameObject;
                 waypointParticles.SetActive(true);
                 return;
@@ -129,6 +108,7 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
 
     void HideWaypoint()
     {
+        Debug.Log("Hide");
         foreach (KeyValuePair<int, GameObject> waypointParent in waypointParentList)
         {
             // Looking to find the local waypoint for the player that has sent the event
