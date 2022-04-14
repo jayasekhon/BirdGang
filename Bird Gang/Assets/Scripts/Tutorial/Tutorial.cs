@@ -54,7 +54,7 @@ public class Tutorial : MonoBehaviour
 			pc.input_disable_targeting = true;
 			pc.wind_disable = true;
 			pc.SetHoveringGravity(false);
-			text.text = "Hold <b>W</b> to fly forwards through the ring.\n" +
+			text.text = "Hold <b>W</b> to fly through the rings ahead.\n" +
 				"Alternately, press <b>X</b> to escape.";
 
 			FindObjectOfType<AudioManager>().Play("TutorialIntro");
@@ -63,8 +63,8 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(true);
 			pc.input_lock_x = false;
 			text.text =
-				"You can turn with the mouse while holding <b>W</b>.\n" +
-				"Move through the rings ahead.";
+				"Keep hold of <b>W</b> to use your mouse to steer" +
+				"You can also use <b>A</b> and <b>D</b> to turn.\n";
 			
 			FindObjectOfType<AudioManager>().Play("Turning");
 			break;

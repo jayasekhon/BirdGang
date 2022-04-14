@@ -599,11 +599,12 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     void OnCollisionEnter(Collision collision)
     {
+        // change to tag after putting custom bulding tags
         if (collision.gameObject.layer == LayerMask.NameToLayer("SimpleWorldCollisions"))
         {
             rb.AddRelativeForce(Vector3.back * 50, ForceMode.Impulse);
             FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");   
-            Debug.Log("Hit Something");
+            Debug.Log("Hit Building");
         }
     }
 
