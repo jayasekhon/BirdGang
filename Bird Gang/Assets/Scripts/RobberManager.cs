@@ -9,7 +9,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 //    public static RobberManager Instance;
 
     private GameObject robber;
-
     private GameObject robber1;
     private GameObject robber2;
 
@@ -31,6 +30,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     public AudioClip RobberIntro;
 
     CineMachineSwitcher switcher;
+    GameObject[] managers;
 
     // Start is called before the first frame update
     void Awake()
@@ -54,31 +54,50 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     void Start() 
     {
-        // cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
+        StartCoroutine(InitCoroutine());
+    //     // cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
         
-        foreach (GameObject c in GameObject.FindGameObjectsWithTag("cutsceneManager"))
-        {
-            PV = c.GetComponent<PhotonView>();
-            if (!c.GetComponent<PhotonView>().IsMine)
-            {
-                Destroy(c.gameObject);
-            }
-            else
-            {
-                cutsceneManagerAnim = c.GetComponent<Animator>();
-                Debug.Log(PV.ViewID + "manager");
-                switcher = c.GetComponent<CineMachineSwitcher>();
-            }
-        }
+        // foreach (GameObject c in GameObject.FindGameObjectsWithTag("cutsceneManager"))
+        // {
+        //     PV = c.GetComponent<PhotonView>();
+        //     if (!c.GetComponent<PhotonView>().IsMine)
+        //     {
+        //         Debug.Log("destroying" + c);
+        //         Destroy(c);
+        //         Debug.Log("destroyed");
+        //     }
+        //     else
+        //     {
+        //         cutsceneManagerAnim = c.GetComponent<Animator>();
+        //         Debug.Log(PV.ViewID + "manager");
+        //         switcher = c.GetComponent<CineMachineSwitcher>();
+        //     }
+        // }
+    }
+
+    IEnumerator InitCoroutine()
+    {
+        yield return new WaitForSeconds(3);
+        managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+        Debug.Log(managers.Length);
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
         Debug.Log("stage begins" + PhotonNetwork.NickName);
-        // switcher.CallMe();
-        cutsceneManagerAnim.Play("OverheadCS");
+
+        foreach (GameObject m in managers) 
+        {
+            Debug.Log(m.GetComponent<PhotonView>().ViewID + "manager");
+            switcher = m.GetComponent<CineMachineSwitcher>();
+            switcher.CallMe();
+        //     cutsceneManagerAnim = m.GetComponent<Animator>();
+        //     cutsceneManagerAnim.Play("OverheadCS");
+        }
+        
+        // cutsceneManagerAnim.Play("OverheadCS");
         // Debug.Log("robber stage has begun");
-        StartCoroutine(ExecuteAfterTime());
+        // StartCoroutine(ExecuteAfterTime());
     }
 
     IEnumerator ExecuteAfterTime()
