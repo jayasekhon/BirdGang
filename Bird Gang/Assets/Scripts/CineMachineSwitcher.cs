@@ -54,7 +54,7 @@ public class CineMachineSwitcher : MonoBehaviour
         StartCoroutine(MayorCoroutine());
     }
 
-    IEnumerator MayorCoroutine()
+    IEnumerator MayorCoroutine() //approx 20 seconds long
     {
         yield return new WaitForSeconds(5.5f); //wait to pan to the sky
         animator.Play("MayorCS");

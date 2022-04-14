@@ -6,21 +6,20 @@ using System.IO;
 
 public class BalloonManager : MonoBehaviour, GameEventCallbacks
 {
-    GameObject cutsceneManager;
-    Animator cutsceneManagerAnim;
-
     AudioSource voiceover;
     public AudioClip CarnivalIntro;
     public AudioClip StormHowl;
 
+    GameObject cutsceneManager;
+    Animator cutsceneManagerAnim;
     // Start is called before the first frame update
     void Awake()
     {
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // if (!PhotonNetwork.IsMasterClient)
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.CARNIVAL,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
@@ -28,18 +27,28 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         voiceover = GetComponent<AudioSource>(); 
     }
 
-    void Start() 
-    {
-        cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
-    }
+    // void Start() 
+    // {
+    //     // give it enough time to load in all the cutscene managers
+    //     StartCoroutine(InitCoroutine());
+    // }
+
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(3);
+    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+    //     foreach (GameObject m in CM_managers) 
+    //     {
+    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
+    //     }
+    // }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
         voiceover.PlayOneShot(StormHowl, 0.5f);
-        cutsceneManagerAnim.Play("OverheadCS");
+        // cutsceneManagerAnim.Play("OverheadCS");
         Debug.Log("carnival stage has begun");
-        StartCoroutine(ExecuteAfterTime());
+        // StartCoroutine(ExecuteAfterTime());
     }
 
     IEnumerator ExecuteAfterTime()
