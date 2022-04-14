@@ -17,33 +17,45 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
 
     public int[] playerPVids;
     private GameObject[] playersInGame;
+
+    public static WaypointManager instance;
         
     void Awake()
     {
         PV = GetComponent<PhotonView>();
+        instance = this;
     }
+    // void Start()
+    // {
+    //     StartCoroutine(InitCoroutine());
+    // }
 
-    // Start is called before the first frame update
-    void Start()
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(2);
+
+    //     playersInGame = GameObject.FindGameObjectsWithTag("Player");  
+    //     playerPVids = new int[playersInGame.Length];
+    //     for (int p = 0; p < playersInGame.Length; p++)
+    //     {
+    //         playerPVids[p] = playersInGame[p].GetComponent<PhotonView>().ViewID;
+    //     }
+    //     GameObject newWaypointParent = InitialiseWaypoint();
+    //     PhotonView newWaypointParentPV = GetComponent<PhotonView>();
+    //     waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
+    // }
+
+    public void GetPlayerIDsFromRPC(int[] ids)
     {
-        StartCoroutine(InitCoroutine());
-    }
-
-    IEnumerator InitCoroutine()
-    {
-        yield return new WaitForSeconds(2);
-
-        playersInGame = GameObject.FindGameObjectsWithTag("Player");  
-        Debug.Log(playersInGame.Length);  
-        playerPVids = new int[playersInGame.Length];
-        for (int p = 0; p < playersInGame.Length; p++)
+        if (PV.IsMine)
         {
-            Debug.Log(playersInGame[p].GetComponent<PhotonView>().ViewID);
-            playerPVids[p] = playersInGame[p].GetComponent<PhotonView>().ViewID;
+            Debug.Log("Waypoint manager initialise stuff. num ids: "+ids.Length);
         }
+        playerPVids = ids;
         GameObject newWaypointParent = InitialiseWaypoint();
         PhotonView newWaypointParentPV = GetComponent<PhotonView>();
         waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
+
     }
 
     private void OnEnable()
@@ -85,6 +97,7 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
         {
             if (PV.ViewID == playerPVids[i])
             {
+                Debug.Log("materials assigned");
                 waypointCylinderMaterial.material = playerMaterials[i];
                 break;
             }

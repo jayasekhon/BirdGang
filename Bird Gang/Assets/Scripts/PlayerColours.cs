@@ -5,28 +5,21 @@ using UnityEngine;
 
 public class PlayerColours : MonoBehaviour
 {
-    public Material[] playerMaterials;
-    public int[] playerPVids;
-    private GameObject[] playersInGame;
+    PhotonView PV;
 
-
-    void Start()
+    void Awake()
     {
-        StartCoroutine(InitCoroutine());
-        
+        PV = GetComponent<PhotonView>();
+    }
+
+    [PunRPC]
+    public virtual void EmilyRPC(int[] playerPVids, PhotonMessageInfo info)
+    {
+        if (PV.IsMine)
+        {
+            Debug.Log("My local num players: "+playerPVids.Length);
+        }
+        WaypointManager.instance.GetPlayerIDsFromRPC(playerPVids);
     }
     
-    IEnumerator InitCoroutine()
-    {
-        yield return new WaitForSeconds(2);
-
-        playersInGame = GameObject.FindGameObjectsWithTag("Player");  
-        Debug.Log(playersInGame.Length);  
-        playerPVids = new int[playersInGame.Length];
-        for (int p = 0; p < playersInGame.Length; p++)
-        {
-            Debug.Log(playersInGame[p].GetComponent<PhotonView>().ViewID);
-            playerPVids[p] = playersInGame[p].GetComponent<PhotonView>().ViewID;
-        } 
-    }
 }

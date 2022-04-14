@@ -22,8 +22,8 @@ public class HelpMessage : MonoBehaviour
     }
 
     public void Display(string nickname) {
-            message.text = nickname + " needs help!!";
-            Invoke("Hide", time);
+        message.text = nickname + " needs help!!";
+        Invoke("Hide", time);
     }
 
     void Hide(){
@@ -32,6 +32,7 @@ public class HelpMessage : MonoBehaviour
     }
 
     private IEnumerator FadeOutRoutine(Text text){ 
+        Debug.Log("Show text");
         Color originalColor = text.color;
         for (float t = 0.01f; t < fadeOutTime; t += Time.deltaTime) {
             text.color = Color.Lerp(originalColor, Color.clear, Mathf.Min(1, t/fadeOutTime));
