@@ -62,7 +62,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("CarnivalCS");
         yield return new WaitForSeconds(5f); //this means we can pan 
         voiceover.PlayOneShot(CarnivalIntro, 1f);
-        yield return new WaitForSeconds(11.5f); //this means we can watch the carnival happen 
+        yield return new WaitForSeconds(11f); //this means we can watch the carnival happen 
         // cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
