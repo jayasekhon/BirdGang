@@ -23,7 +23,7 @@ public class HelpMessage : MonoBehaviour
     void Start()
     {
         StartCoroutine(InitCoroutine());
-        messageColours = new Color[] {new Color(0f,0.7019608f,1f,1f), new Color(1f, 0f, 0.8518372f, 1f), new Color(1,0,0,1), new Color(0.1010772f,1f,0,1f),
+        messageColours = new Color[] {new Color(1,0,0,1), new Color(1f, 0f, 0.8518372f, 1f), new Color(0f,0.7019608f,1f,1f), new Color(0.1010772f,1f,0,1f),
             new Color(0.9927015f,1f,0f,1f), new Color(0.5912356f,0f,1f,1f)};
     }
 
