@@ -82,4 +82,16 @@ public class CineMachineSwitcher : MonoBehaviour
         yield return new WaitForSeconds(5f); //wait to pan back to the sky
         animator.Play("Main");
     }
+
+    public void Finale()
+    {
+        animator.Play("OverheadCS");
+        StartCoroutine(FinaleCoroutine());       
+    }
+
+    IEnumerator FinaleCoroutine()
+    {
+        yield return new WaitForSeconds(5.5f); //wait to pan to the sky
+        animator.Play("Finale");
+    }
 }

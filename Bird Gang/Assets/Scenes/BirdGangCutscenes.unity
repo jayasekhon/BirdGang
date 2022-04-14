@@ -1015,10 +1015,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 26
       objectReference: {fileID: 0}
-    - target: {fileID: 1884505082919060032, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
-      propertyPath: m_ChildCameras.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
       propertyPath: m_RootOrder
       value: 35
@@ -2954,7 +2950,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-3115634
+  m_Name: pb_Mesh-2521194
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3337,61 +3333,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: InGameCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 4440528138918435796, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-      propertyPath: m_Text
-      value: "Ammo: \u25CF\u25CF\u25CF"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4440528138918435796, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 131
-      objectReference: {fileID: 0}
-    - target: {fileID: 4440528138918435796, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-      propertyPath: m_FontData.m_MinSize
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4440528138918435796, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-      propertyPath: m_FontData.m_FontSize
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522908603025357934, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -145.60999
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522908603025357934, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 22.599976
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
---- !u!1 &212907732 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3302991711920748729, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-  m_PrefabInstance: {fileID: 212907731}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &212907733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 212907732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fd8935e5a9a4586be01b392b97073c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  message: {fileID: 212907734}
---- !u!114 &212907734 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6309413061230397012, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-  m_PrefabInstance: {fileID: 212907731}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &212907735 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3944169801400229799, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
@@ -16547,7 +16490,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-3168084
+  m_Name: pb_Mesh-2573644
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -32715,6 +32658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Congratulations: {fileID: 8300000, guid: 3ef7cfa3599914de98bc44bf5ead189d, type: 3}
+  switchers: []
 --- !u!82 &1852466029
 AudioSource:
   m_ObjectHideFlags: 0
