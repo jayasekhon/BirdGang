@@ -103,7 +103,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             mayorAI.SetChangeGoal(false);
         }
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.5f);
         // cutsceneManagerAnim.Play("OverheadCS");
 
         if (PhotonNetwork.IsMasterClient) 
