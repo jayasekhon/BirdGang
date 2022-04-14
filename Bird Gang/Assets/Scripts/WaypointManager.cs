@@ -49,13 +49,12 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
     {
         if (PV.IsMine)
         {
-            Debug.Log("Waypoint manager initialise stuff. num ids: "+ids.Length);
+            Debug.Log("my local waypoint manager");
         }
         playerPVids = ids;
         GameObject newWaypointParent = InitialiseWaypoint();
-        PhotonView newWaypointParentPV = GetComponent<PhotonView>();
+        PhotonView newWaypointParentPV = newWaypointParent.GetComponent<PhotonView>();
         waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
-
     }
 
     private void OnEnable()

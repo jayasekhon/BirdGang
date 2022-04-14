@@ -17,6 +17,7 @@ public class PlayerColours : MonoBehaviour
     {
         if (PV.IsMine)
         {
+            Debug.Log("Receive RPC");
             Debug.Log("My local num players: "+playerPVids.Length);
         }
         WaypointManager.instance.GetPlayerIDsFromRPC(playerPVids);

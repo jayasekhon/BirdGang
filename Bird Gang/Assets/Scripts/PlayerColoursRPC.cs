@@ -31,6 +31,7 @@ public class PlayerColoursRPC : MonoBehaviour
             int playerPV = playersInGame[p].GetComponent<PhotonView>().ViewID;
             playerPVids[p] = playerPV;
         }
+        Debug.Log("Send RPC");
         PV.RPC("EmilyRPC", RpcTarget.All, playerPVids);
     }
     
