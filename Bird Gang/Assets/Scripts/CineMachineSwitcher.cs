@@ -6,63 +6,45 @@ using Photon.Pun;
 public class CineMachineSwitcher : MonoBehaviour
 {
     private Animator animator;
-    Animator[] animators;
-    PhotonView PV;
-    PhotonView thePV;
-    bool overhead = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(InitCoroutine());
         animator = GetComponent<Animator>();
-        thePV = animator.GetComponentInParent<PhotonView>();
-        Debug.Log("photon id of the animator it acc gets" + thePV.ViewID);
-        PV = GetComponent<PhotonView>();
-        Debug.Log(PV.ViewID + "switcher");
         animator.Play("");
-    }
-
-    IEnumerator InitCoroutine()
-    {
-        yield return new WaitForSeconds(3);
-        animators = GetComponents<Animator>();
-        Debug.Log(animators.Length);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // if(!PV.IsMine) 
-        // {
-        //     return;
-        // }
         if (Input.GetKeyDown(KeyCode.O))
         {
             animator.Play("Main");
-            Debug.Log(animator);
-            Debug.Log("main cam");
-            // Debug.Log(PV.ViewID + "O");
         }
         
         if (Input.GetKeyDown(KeyCode.P))
         {
             animator.Play("CarnivalCS");
-            // Debug.Log("carnival cam");
-            Debug.Log(PV.ViewID + "P");
-        }
-
-        if (overhead)
-        {
-            Debug.Log("overhead");
-            animator.Play("OverheadCS");
-            overhead = false;
         }
     }
 
-    public void CallMe() 
+    public void Robber() 
     {
-        Debug.Log("hello from CM switcher!");
-        overhead = true;
-        Debug.Log(PV.ViewID + "switcherCallMe");
+        animator.Play("OverheadCS");
+        StartCoroutine(RobberCoroutine());
+    }
+
+    IEnumerator RobberCoroutine()
+    {
+        yield return new WaitForSeconds(5.5f); //wait to pan to the sky
+        animator.Play("RobberCS");
+        yield return new WaitForSeconds(6f); //this is time for the camera to pan to the bank
+        //voiceovers etc start
+        yield return new WaitForSeconds(1.5f);
+        //the robbers are instantiated
+        yield return new WaitForSeconds(5f); //watch the robbery happen
+        animator.Play("OverheadCS");
+        yield return new WaitForSeconds(5f); //wait to pan back to the sky
+        animator.Play("Main");
     }
 }
