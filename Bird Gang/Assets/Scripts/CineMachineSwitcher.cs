@@ -60,7 +60,7 @@ public class CineMachineSwitcher : MonoBehaviour
         animator.Play("MayorCS");
         //this is time for the camera to pan to the mayor
         // mayor spawns in and talks
-        yield return new WaitForSeconds(10f); //watch the mayor speak
+        yield return new WaitForSeconds(11f); //watch the mayor speak
         animator.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //wait to pan back to the sky
         animator.Play("Main");
@@ -77,7 +77,7 @@ public class CineMachineSwitcher : MonoBehaviour
         yield return new WaitForSeconds(5.5f); //wait to pan to the sky
         animator.Play("CarnivalCS");
         //this is time for the camera to pan to the carnival
-        yield return new WaitForSeconds(16f); //watch the carnival
+        yield return new WaitForSeconds(17f); //watch the carnival
         animator.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //wait to pan back to the sky
         animator.Play("Main");

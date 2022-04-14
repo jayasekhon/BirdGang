@@ -51,6 +51,10 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         {
             switcher.Carnival();
         }
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+        }
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
@@ -60,7 +64,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         //gives enough time for camera to pan to sky
         yield return new WaitForSeconds(5.5f);
         // cutsceneManagerAnim.Play("CarnivalCS");
-        yield return new WaitForSeconds(5f); //this means we can pan 
+        yield return new WaitForSeconds(6f); //this means we can pan 
         voiceover.PlayOneShot(CarnivalIntro, 1f);
         yield return new WaitForSeconds(11f); //this means we can watch the carnival happen 
         // cutsceneManagerAnim.Play("OverheadCS");
