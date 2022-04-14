@@ -6,30 +6,17 @@ using Photon.Pun;
 public class CineMachineSwitcher : MonoBehaviour
 {
     private Animator animator;
-    PhotonView PV;
-
-    void Awake()
-    {
-        PV = GetComponent<PhotonView>();
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        if (!PV.IsMine) 
-        {
-            animator = GetComponent<Animator>();
-            animator.Play("");
-        }
+        animator = GetComponent<Animator>();
+        animator.Play("");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (PV.IsMine) 
-        {
-            return;
-        }
         if (Input.GetKeyDown(KeyCode.O))
         {
             animator.Play("Main");
