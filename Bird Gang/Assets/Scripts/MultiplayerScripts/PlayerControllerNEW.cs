@@ -597,6 +597,16 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("SimpleWorldCollisions"))
+        {
+            rb.AddRelativeForce(Vector3.back * 50, ForceMode.Impulse);
+            FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");   
+            Debug.Log("Hit Something");
+        }
+    }
+
     public void SetGroundedState(bool grounded)
     {
         this.grounded = grounded;
