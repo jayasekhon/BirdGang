@@ -90,7 +90,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         //slight delay for animation and robbers to spawn
         yield return new WaitForSeconds(1.5f);
 
-        if (PhotonNetwork.IsMasterClient) {
+        if (PhotonNetwork.IsMasterClient) 
+        {
             robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
             robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
             robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
@@ -98,7 +99,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
         // cutsceneManagerAnim.Play("OverheadCS");
-        if (PhotonNetwork.IsMasterClient) {
+        if (PhotonNetwork.IsMasterClient) 
+        {
             gatherCrowd();
         }
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky

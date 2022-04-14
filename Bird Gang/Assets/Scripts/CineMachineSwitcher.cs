@@ -34,7 +34,7 @@ public class CineMachineSwitcher : MonoBehaviour
         StartCoroutine(RobberCoroutine());
     }
 
-    IEnumerator RobberCoroutine()
+    IEnumerator RobberCoroutine() //approx 20-25 seconds long
     {
         yield return new WaitForSeconds(5.5f); //wait to pan to the sky
         animator.Play("RobberCS");
@@ -43,6 +43,24 @@ public class CineMachineSwitcher : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         //the robbers are instantiated
         yield return new WaitForSeconds(5f); //watch the robbery happen
+        animator.Play("OverheadCS");
+        yield return new WaitForSeconds(5f); //wait to pan back to the sky
+        animator.Play("Main");
+    }
+
+    public void Mayor()
+    {
+        animator.Play("OverheadCS");
+        StartCoroutine(MayorCoroutine());
+    }
+
+    IEnumerator MayorCoroutine()
+    {
+        yield return new WaitForSeconds(5.5f); //wait to pan to the sky
+        animator.Play("MayorCS");
+        //this is time for the camera to pan to the mayor
+        // mayor spawns in and talks
+        yield return new WaitForSeconds(10f); //watch the mayor speak
         animator.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //wait to pan back to the sky
         animator.Play("Main");
