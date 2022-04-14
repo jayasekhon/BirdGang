@@ -65,4 +65,21 @@ public class CineMachineSwitcher : MonoBehaviour
         yield return new WaitForSeconds(5f); //wait to pan back to the sky
         animator.Play("Main");
     }
+
+    public void Carnival()
+    {
+        animator.Play("OverheadCS");
+        StartCoroutine(CarnivalCoroutine());
+    }
+
+    IEnumerator CarnivalCoroutine() //approx 30 seconds long
+    {
+        yield return new WaitForSeconds(5.5f); //wait to pan to the sky
+        animator.Play("CarnivalCS");
+        //this is time for the camera to pan to the carnival
+        yield return new WaitForSeconds(16.5f); //watch the carnival
+        animator.Play("OverheadCS");
+        yield return new WaitForSeconds(5f); //wait to pan back to the sky
+        animator.Play("Main");
+    }
 }

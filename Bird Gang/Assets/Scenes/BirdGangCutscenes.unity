@@ -1004,6 +1004,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87a65f370eb7d4a23aa3c2006e8e6d42, type: 3}
+--- !u!1001 &61360865
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1699652856, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: sceneViewId
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060032, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_ChildCameras.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_RootOrder
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060033, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884505082919060037, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: m_Name
+      value: CM CutsceneManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5109977954986602697, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
+      propertyPath: sceneViewId
+      value: 27
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5f8607d202da14bbcbcae2dfcf9c676b, type: 3}
 --- !u!1001 &90148073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7047,6 +7116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RobberIntro: {fileID: 8300000, guid: 65e74ae4669114c6ab5c1748c03a508a, type: 3}
+  switchers: []
 --- !u!4 &439435519
 Transform:
   m_ObjectHideFlags: 0
@@ -15282,6 +15352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarnivalIntro: {fileID: 8300000, guid: c0af5498ef18e4711881957c506b7238, type: 3}
   StormHowl: {fileID: 8300000, guid: 50326c9a642c34f868e4d0b25f016862, type: 3}
+  switchers: []
 --- !u!82 &868036957
 AudioSource:
   m_ObjectHideFlags: 0
@@ -26990,7 +27061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3359488436666720090, guid: 5389472443758c34e84735d22832c9ea, type: 3}
       propertyPath: m_RootOrder
-      value: 35
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 3359488436666720090, guid: 5389472443758c34e84735d22832c9ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -35278,6 +35349,7 @@ MonoBehaviour:
   CarnivalStart: {fileID: 1993329420}
   CarnivalFinish: {fileID: 1407712159}
   MayorIntro: {fileID: 8300000, guid: a08a3d6e5ad7b44e58945173c738d858, type: 3}
+  switchers: []
 --- !u!4 &1937843320
 Transform:
   m_ObjectHideFlags: 0
