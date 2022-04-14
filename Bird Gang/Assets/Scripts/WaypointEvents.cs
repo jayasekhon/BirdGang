@@ -14,7 +14,7 @@ public class WaypointEvents: MonoBehaviour
     int myPVID;
     Vector3 myPos;
 
-    bool coroutineFinished = false;
+    bool coroutineFinished = true;
 
     void Awake()
     {
@@ -40,9 +40,12 @@ public class WaypointEvents: MonoBehaviour
             ShowMyWaypoint();
 
             if (!coroutineFinished)
-                StopCoroutine(HideWayPointAfterTime());
+            {
+                Debug.Log("Stop coroutine");
+                StopCoroutine("HideWayPointAfterTime");
+            }
 
-            StartCoroutine(HideWayPointAfterTime()); 
+            StartCoroutine("HideWayPointAfterTime"); 
 
                                   
         }
