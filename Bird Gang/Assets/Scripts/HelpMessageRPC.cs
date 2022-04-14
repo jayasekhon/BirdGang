@@ -11,6 +11,7 @@ public class HelpMessageRPC : MonoBehaviour
     [PunRPC]
     public virtual void OnKeyPress(PhotonMessageInfo info)
     {
-        HelpMessage.instance.Display(info.Sender.NickName);
+        HelpMessage.instance.Display(info.Sender.NickName, info.photonView.ViewID);
+
     }
 }

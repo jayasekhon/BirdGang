@@ -33,6 +33,7 @@ public class WaypointEvents: MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F))
         {
+            Debug.Log("F registered");
             myPos = transform.position;
             SendMyLocation();
             ShowMyWaypoint();

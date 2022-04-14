@@ -25,36 +25,41 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
         PV = GetComponent<PhotonView>();
         instance = this;
     }
-    // void Start()
-    // {
-    //     StartCoroutine(InitCoroutine());
-    // }
+    void Start()
+    {
+        StartCoroutine(InitCoroutine());
+    }
 
-    // IEnumerator InitCoroutine()
-    // {
-    //     yield return new WaitForSeconds(2);
+    IEnumerator InitCoroutine()
+    {
+        yield return new WaitForSeconds(2);
 
-    //     playersInGame = GameObject.FindGameObjectsWithTag("Player");  
-    //     playerPVids = new int[playersInGame.Length];
-    //     for (int p = 0; p < playersInGame.Length; p++)
-    //     {
-    //         playerPVids[p] = playersInGame[p].GetComponent<PhotonView>().ViewID;
-    //     }
-    //     GameObject newWaypointParent = InitialiseWaypoint();
-    //     PhotonView newWaypointParentPV = GetComponent<PhotonView>();
-    //     waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
-    // }
+        playersInGame = GameObject.FindGameObjectsWithTag("Player");  
+        playerPVids = new int[playersInGame.Length];
+        for (int p = 0; p < playersInGame.Length; p++)
+        {
+            playerPVids[p] = playersInGame[p].GetComponent<PhotonView>().ViewID;
+        }
+        GameObject newWaypointParent = InitialiseWaypoint();
+        PhotonView newWaypointParentPV = GetComponent<PhotonView>();
+        waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
+    }
 
     public void GetPlayerIDsFromRPC(int[] ids)
     {
-        if (PV.IsMine)
-        {
-            Debug.Log("my local waypoint manager");
-        }
-        playerPVids = ids;
-        GameObject newWaypointParent = InitialiseWaypoint();
-        PhotonView newWaypointParentPV = newWaypointParent.GetComponent<PhotonView>();
-        waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
+        // if (PV.IsMine)
+        // {
+        //     Debug.Log("my local waypoint manager");
+        //     playerPVids = ids;
+        //     GameObject newWaypointParent = InitialiseWaypoint();
+        //     PhotonView newWaypointParentPV = GetComponent<PhotonView>();
+        //     waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
+        // }
+        
+        // if (newWaypointParent.GetComponent<PhotonView>().IsMine)
+        // {
+            
+        // }
     }
 
     private void OnEnable()
@@ -96,7 +101,6 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
         {
             if (PV.ViewID == playerPVids[i])
             {
-                Debug.Log("materials assigned");
                 waypointCylinderMaterial.material = playerMaterials[i];
                 break;
             }
@@ -106,11 +110,15 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
 
     void ShowWaypoint()
     {
+        Debug.Log("Show waypoint");
         foreach (KeyValuePair<int, GameObject> waypointParent in waypointParentList)
         {
+            Debug.Log("WP parent: "+waypointParent.Key);
+            Debug.Log("Reuqester: "+requesterID);
             // Looking to find the local waypoint for the player that has sent the event
             if(waypointParent.Key == requesterID)
             {
+                Debug.Log("Found waypoint");
                 waypointParentList[waypointParent.Key].transform.position = requesterPos;
                 GameObject waypointParticles = waypointParentList[waypointParent.Key].transform.GetChild(0).gameObject;
                 waypointParticles.SetActive(true);

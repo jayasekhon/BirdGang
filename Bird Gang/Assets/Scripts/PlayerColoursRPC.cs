@@ -24,14 +24,12 @@ public class PlayerColoursRPC : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         playersInGame = GameObject.FindGameObjectsWithTag("Player");  
-        Debug.Log("players before rpc "+playersInGame.Length); 
         int[] playerPVids = new int[playersInGame.Length];
         for (int p = 0; p < playersInGame.Length; p++)
         {
             int playerPV = playersInGame[p].GetComponent<PhotonView>().ViewID;
             playerPVids[p] = playerPV;
         }
-        Debug.Log("Send RPC");
         PV.RPC("EmilyRPC", RpcTarget.All, playerPVids);
     }
     

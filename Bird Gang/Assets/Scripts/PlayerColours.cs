@@ -15,11 +15,6 @@ public class PlayerColours : MonoBehaviour
     [PunRPC]
     public virtual void EmilyRPC(int[] playerPVids, PhotonMessageInfo info)
     {
-        if (PV.IsMine)
-        {
-            Debug.Log("Receive RPC");
-            Debug.Log("My local num players: "+playerPVids.Length);
-        }
         WaypointManager.instance.GetPlayerIDsFromRPC(playerPVids);
     }
     
