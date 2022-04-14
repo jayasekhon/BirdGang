@@ -425,6 +425,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             if (Input.GetKeyDown(KeyCode.S))
             {
                 rb.AddRelativeForce(Vector3.back * 20, ForceMode.Impulse);
+                FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");
             }
             Hovering();
             /* FIXME: Wind will never reset while moving. */
