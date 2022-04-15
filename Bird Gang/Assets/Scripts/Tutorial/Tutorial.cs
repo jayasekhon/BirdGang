@@ -56,8 +56,6 @@ public class Tutorial : MonoBehaviour
 			pc.SetHoveringGravity(false);
 			text.text = "Hold <b>W</b> to fly through the rings ahead.\n" +
 				"Alternately, press <b>X</b> to escape.";
-
-			FindObjectOfType<AudioManager>().Play("TutorialIntro");
 			break;
 		case 1:
 			stage2.SetActive(true);
