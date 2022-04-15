@@ -20,6 +20,9 @@ public class FlockCEO : MonoBehaviour
     private float attackDelay = 6f;
 
     public int numFlocks;
+
+    public int numFlockModeAvoidance;
+    private int numFlockModeAvodanceCount=0; 
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,8 @@ public class FlockCEO : MonoBehaviour
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "FlockManager"), new Vector3(Random.Range(-worldLimits.x, worldLimits.x),
                                             Random.Range(0, worldLimits.y),                                                            
                                             Random.Range(-worldLimits.z, worldLimits.z)), Quaternion.identity);
+
+
         }
         StartCoroutine(InitCoroutine());
 
@@ -38,6 +43,13 @@ public class FlockCEO : MonoBehaviour
         for (int i = 0; i < flockManagerObjects.Length; i++)
         {
             FlockManager flockManager = flockManagerObjects[i].GetComponent<FlockManager>();
+            if (numFlockModeAvodanceCount < numFlockModeAvoidance) {
+                flockManager.flockMode = true;
+                numFlockModeAvodanceCount++;
+            }
+            else{ flockManager.flockMode = false;
+            }
+            
             flockManagers.Add(flockManager);
             freeflockManagers.Add(flockManager);
             //attackTimes.Add(0f);            

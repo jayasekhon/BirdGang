@@ -1,29 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using System.IO;
 using UnityEngine.VFX;
 
 public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
-    GameObject cutsceneManager;
-    Animator cutsceneManagerAnim;
-
     AudioSource voiceover;
     public AudioClip Congratulations;
     GameObject fireworks;
     public VisualEffect fireworkEffect;
 
 
+    // GameObject[] CM_managers;
+    public List<CineMachineSwitcher> switchers;
+    [SerializeField] GameObject intro;
+
+    public Image creditsScreen; 
+
     // Start is called before the first frame update
     void Awake()
     {
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // if (!PhotonNetwork.IsMasterClient)
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.FINALE,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
@@ -31,30 +35,52 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         voiceover = GetComponent<AudioSource>(); 
     }
 
-    void Start() 
-    {
-        cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        fireworks = GameObject.FindGameObjectWithTag("fireworks");
-        fireworks.SetActive(true);
+    // void Start() 
+    // {
+    //     // give it enough time to load in all the cutscene managers
+    //     StartCoroutine(InitCoroutine());
+    // }
 
-        cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
-        fireworkEffect = fireworks.GetComponent<VisualEffect>();
-        fireworkEffect.Play();
-    }
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(3);
+    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+    //     foreach (GameObject m in CM_managers) 
+    //     {
+    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
+    //     }
+    // }
+
+//     void Start() 
+//     {
+//         cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
+//         fireworks = GameObject.FindGameObjectWithTag("fireworks");
+//         fireworks.SetActive(true);
+
+//         cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
+//         fireworkEffect = fireworks.GetComponent<VisualEffect>();
+//         fireworkEffect.Play();
+//     }
+
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        Debug.Log("finale wooooooooo");
-        cutsceneManagerAnim.Play("OverheadCS");
+        switchers = intro.GetComponent<IntroManager>().switchers;
+        foreach (CineMachineSwitcher switcher in switchers) 
+        {
+            switcher.Finale();
+        }
         StartCoroutine(ExecuteAfterTime());
     }
 
     IEnumerator ExecuteAfterTime()
     {
         yield return new WaitForSeconds(5.5f);
-        cutsceneManagerAnim.Play("Finale");
-        yield return new WaitForSeconds(5f);
+        // cutsceneManagerAnim.Play("Finale");
+        yield return new WaitForSeconds(6f);
         voiceover.PlayOneShot(Congratulations, 1f);
+        yield return new WaitForSeconds(7.5f);
+        creditsScreen.enabled = true;
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
