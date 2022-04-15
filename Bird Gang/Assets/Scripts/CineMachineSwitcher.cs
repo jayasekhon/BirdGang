@@ -17,15 +17,15 @@ public class CineMachineSwitcher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            animator.Play("Main");
-        }
+        // if (Input.GetKeyDown(KeyCode.O))
+        // {
+        //     animator.Play("Main");
+        // }
         
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            animator.Play("CarnivalCS");
-        }
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     animator.Play("CarnivalCS");
+        // }
     }
 
     public void Robber() 

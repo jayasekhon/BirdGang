@@ -10,8 +10,9 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     AudioSource voiceover;
     public AudioClip Congratulations;
 
-    GameObject[] CM_managers;
+    // GameObject[] CM_managers;
     public List<CineMachineSwitcher> switchers;
+    [SerializeField] GameObject intro;
 
     public Image creditsScreen; 
 
@@ -30,25 +31,25 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         voiceover = GetComponent<AudioSource>(); 
     }
 
-    void Start() 
-    {
-        // give it enough time to load in all the cutscene managers
-        StartCoroutine(InitCoroutine());
-    }
+    // void Start() 
+    // {
+    //     // give it enough time to load in all the cutscene managers
+    //     StartCoroutine(InitCoroutine());
+    // }
 
-    IEnumerator InitCoroutine()
-    {
-        yield return new WaitForSeconds(3);
-        CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-        foreach (GameObject m in CM_managers) 
-        {
-            switchers.Add(m.GetComponent<CineMachineSwitcher>());
-        }
-    }
-
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(3);
+    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+    //     foreach (GameObject m in CM_managers) 
+    //     {
+    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
+    //     }
+    // }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        switchers = intro.GetComponent<IntroManager>().switchers;
         foreach (CineMachineSwitcher switcher in switchers) 
         {
             switcher.Finale();
@@ -62,7 +63,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Finale");
         yield return new WaitForSeconds(6f);
         voiceover.PlayOneShot(Congratulations, 1f);
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(7.5f);
         creditsScreen.enabled = true;
     }
 

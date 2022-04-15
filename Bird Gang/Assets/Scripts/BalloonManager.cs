@@ -10,8 +10,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public AudioClip CarnivalIntro;
     public AudioClip StormHowl;
 
-    GameObject[] CM_managers;
+    // GameObject[] CM_managers;
     public List<CineMachineSwitcher> switchers;
+    [SerializeField] GameObject intro;
 
     // Start is called before the first frame update
     void Awake()
@@ -28,24 +29,25 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         voiceover = GetComponent<AudioSource>(); 
     }
 
-    void Start() 
-    {
-        // give it enough time to load in all the cutscene managers
-        StartCoroutine(InitCoroutine());
-    }
+    // void Start() 
+    // {
+    //     // give it enough time to load in all the cutscene managers
+    //     StartCoroutine(InitCoroutine());
+    // }
 
-    IEnumerator InitCoroutine()
-    {
-        yield return new WaitForSeconds(3);
-        CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-        foreach (GameObject m in CM_managers) 
-        {
-            switchers.Add(m.GetComponent<CineMachineSwitcher>());
-        }
-    }
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(3);
+    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+    //     foreach (GameObject m in CM_managers) 
+    //     {
+    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
+    //     }
+    // }
 
     public void OnStageBegin(GameEvents.Stage stage)
-    {
+    {   
+        switchers = intro.GetComponent<IntroManager>().switchers;
         voiceover.PlayOneShot(StormHowl, 0.5f);
         foreach (CineMachineSwitcher switcher in switchers) 
         {
