@@ -91,7 +91,9 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
                 if (i == 2) position = new Vector3(-64, 1, -38);
                 if (i == 3) position = new Vector3(-64, 1, 24);
                 Vector3 start = position;
-                GameObject balloonObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balloon"), start, Quaternion.identity);
+                GameObject balloonParentObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonParent"), start, Quaternion.identity);
+                GameObject balloonObject = balloonParentObject.transform.GetChild(0).gameObject;
+
                 child = balloonObject.transform.GetChild(Random.Range(0, 2));
                 child.gameObject.SetActive(true);
                 BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();

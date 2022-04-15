@@ -33,15 +33,20 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
     private bool clientSide =false;
 
+    private Rigidbody rb;
+    private float floatStrength = 22f;
+    private int hitCount;
+
     // Start is called before the first frame update
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
         currentTime = 0;
-        dettachTime = UnityEngine.Random.Range(10, 30);
+        dettachTime = 30;// UnityEngine.Random.Range(10, 30);
         height = baseHeight;
         currentStage = BALLOON_STAGE.ATTACHED;
         transform.position = new Vector3(transform.position.x,  height, transform.position.z);
+        rb = GetComponent<Rigidbody>();
 
 
 
@@ -54,11 +59,19 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     void Update()
     {
         DrawLines();
-        
-        if (PhotonNetwork.IsMasterClient)
+        Debug.Log(currentStage);
+        if (Input.GetKeyDown(KeyCode.M))
         {
-           
-            switch (currentStage)
+            rb.mass -= 0.05f;
+            rb.AddForce(Vector3.up * -20, ForceMode.Impulse);
+            hitCount += 1;
+        }
+        
+
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+
+        switch (currentStage)
             {
                 case BALLOON_STAGE.ATTACHED:
                     // Debug.Log("Attached");
@@ -78,7 +91,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
                     Lost();
                     break;
             }
-        }
+        //}
        
        
         
@@ -86,60 +99,64 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
     private void Attatched()
     {
+        rb.mass = 1f;
+        rb .AddForce(Vector3.up * floatStrength);
         currentTime += Time.deltaTime;
         if (currentTime > dettachTime)
         {
             currentStage = BALLOON_STAGE.DETACHED;
+            hitCount = 0;
         }
   
     }
     private void Dettached()
     {
-        timePassed += Time.deltaTime;
-        if (timePassed > 1)
-        {
-            height += 1f;
-            
-            timePassed = 0;
-        }
+        floatStrength = 40;
+        rb.AddForce(Vector3.up * floatStrength);
+        
 
-        if (height < baseHeight)
+        if (hitCount > 5)
         {
-            height = baseHeight;
+            
             currentStage = BALLOON_STAGE.REATTACHED;
         }
-        if (height > 150)
+        if (transform.position.y > 150)
         {
-            currentStage = BALLOON_STAGE.REATTACHED;
+            currentStage = BALLOON_STAGE.LOST;
         }
          //agent.baseOffset=Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
-        transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, height, Time.deltaTime), transform.position.z);
+        //transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, height, Time.deltaTime), transform.position.z);
 
     }
 
     private void Rettached()
     {
-        if (transform.position.z - baseHeight<0.2f)
+        rb.mass = 1f;
+        floatStrength = 22;
+        rb.AddForce(Vector3.up * floatStrength);
+        if (transform.position.y <22 && rb.velocity.magnitude <2)
         {
             currentStage = BALLOON_STAGE.ATTACHED;
+            currentTime = 0;
         }
-        else
-        {
-            transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, height, Time.deltaTime), transform.position.z);
-
-        }
+       
     }
     private void Lost()
     {
-
+        floatStrength = 40;
+        rb.AddForce(Vector3.up * floatStrength);
     }
 
 
     [PunRPC]
     public  void OnHit(PhotonMessageInfo info)
     {
-        Debug.Log(height);
-        if (height > baseHeight) height -= 3f;
+        
+        rb.mass -= 0.05f;
+        rb.AddForce(Vector3.up * -30);
+        hitCount += 1;
+        
+        
      
     }
     private void DrawLines()

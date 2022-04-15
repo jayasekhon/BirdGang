@@ -6,7 +6,7 @@ public class Rope : MonoBehaviour
 {
     private float jointSpace = 0.25f;
     private int segmentLength = 35;
-    private float lineWidth = 0.1f;
+    private float lineWidth = 0.3f;
 
 
     private LineRenderer lineRenderer;
