@@ -22,63 +22,108 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     Transform child;
     List<BalloonAgent> balloons;
 
-    GameObject cutsceneManager;
-    Animator cutsceneManagerAnim;
-
     AudioSource voiceover;
     public AudioClip MayorIntro;
     // public AudioClip Crowd;
 
+    // GameObject[] CM_managers;
+    public List<CineMachineSwitcher> switchers;
+    [SerializeField] GameObject intro;
+
     void Awake()
     {
-        
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // if (!PhotonNetwork.IsMasterClient)
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
         GameEvents.RegisterCallbacks(this, GAME_STAGE.POLITICIAN,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
         
         voiceover = GetComponent<AudioSource>();
     }
 
-    IEnumerator ExecuteAfterTime(float time)
+    // void Start() 
+    // {
+    //     // give it enough time to load in all the cutscene managers
+    //     // I think we can change this code to get the switcher list from robberManager 
+    //     StartCoroutine(InitCoroutine());
+    // }
+
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(3);
+    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+    //     foreach (GameObject m in CM_managers) 
+    //     {
+    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
+    //     }
+    // }
+
+    public void OnStageBegin(GameEvents.Stage stage)
+    {
+        switchers = intro.GetComponent<IntroManager>().switchers;
+        foreach (CineMachineSwitcher switcher in switchers) 
+        {
+            switcher.Mayor();
+        }
+        //switcher starts by calling overhead cam.
+        StartCoroutine(ExecuteAfterTime());
+    }
+
+    IEnumerator ExecuteAfterTime()
     {
         yield return new WaitForSeconds(5.5f); //this is the time to wait for it to pan to the sky
-        cutsceneManagerAnim.Play("MayorCS");
-        yield return new WaitForSeconds(4f);        
-        mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(-10.5f, 3.8f, -249), Quaternion.identity);
+        // cutsceneManagerAnim.Play("MayorCS");
+        yield return new WaitForSeconds(4f);    
+
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(-10.5f, 3.8f, -249), Quaternion.identity);
+        }
         // yield return new WaitForSeconds(2f); 
         voiceover.PlayOneShot(MayorIntro, 1f);
 
-        agent = mayor.GetComponent<NavMeshAgent>();
-        mayorAI = mayor.GetComponent<AiController>();
-        agent.speed = 0f;
-        agent.acceleration = 0f;
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            agent = mayor.GetComponent<NavMeshAgent>();
+            mayorAI = mayor.GetComponent<AiController>();
+            agent.speed = 0f;
+            agent.acceleration = 0f;
+        }
 
         yield return new WaitForSeconds(4f);
         
-        agent.speed = 3.5f;
-        agent.acceleration = 8f;
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            agent.speed = 3.5f;
+            agent.acceleration = 8f;
 
-        agent.avoidancePriority = 0;
-        enRoute = true;
-        mayorAI.SetGoal(position);
-        mayorAI.SetChangeGoal(false);
+            agent.avoidancePriority = 0;
+            enRoute = true;
+            mayorAI.SetGoal(position);
+            mayorAI.SetChangeGoal(false);
+        }
 
-        yield return new WaitForSeconds(3f);
-        cutsceneManagerAnim.Play("OverheadCS");
+        yield return new WaitForSeconds(2.5f);
+        // cutsceneManagerAnim.Play("OverheadCS");
 
-        balloons = new List<BalloonAgent>();
-        SpawnBalloons();
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            balloons = new List<BalloonAgent>();
+            SpawnBalloons();
+        }
         yield return new WaitForSeconds(5f);
-        cutsceneManagerAnim.Play("Main");
+        // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f);
        
-        ReleaseCrowd();
-        releasedCrowd = true;
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            ReleaseCrowd();
+            releasedCrowd = true;
+        }
     }
+
     void SpawnBalloons()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -97,27 +142,11 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
                 BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
                 //balloon.SetCurrentID(i);
                 //balloon.SetID(i + 1);
-                
-             
-   
 
                 balloons.Add(balloon);
                 
             }
         }
-    }
-
-    void Start() 
-    {
-        cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
-    }
-
-    public void OnStageBegin(GameEvents.Stage stage)
-    {
-        cutsceneManagerAnim.Play("OverheadCS");
-        Debug.Log("mayor stage has begun");
-        StartCoroutine(ExecuteAfterTime(2f));
     }
 
     void ReleaseCrowd()
@@ -133,9 +162,9 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         }
     }
     
-    void Update(){
-        
-        if(enRoute && !mayor){
+    void Update()
+    {
+        if(enRoute && !mayor && PhotonNetwork.IsMasterClient){
             if(!mayorAI.isFleeing){
 
                 mayorAI.SetGoal(position);
@@ -145,9 +174,14 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-        enRoute = false;
-        if (mayor)
-            PhotonNetwork.Destroy(mayor);
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            enRoute = false;
+            if (mayor)
+            {
+                PhotonNetwork.Destroy(mayor);
+            }
+        }
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)

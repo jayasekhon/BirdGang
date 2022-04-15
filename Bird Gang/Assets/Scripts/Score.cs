@@ -25,20 +25,21 @@ public class Score : MonoBehaviour
     {
         GOOD, BAD, MINIBOSS
     }
-    public void AddScore(HIT type)
+    public void AddScore(HIT type, float fac)
     {
         switch (type)
         {
             case HIT.GOOD:
-                score -= 10;
+                score = UpdateScoreValueGoodPerson(score);
                 streakFlag = 0;
                 break;
             case HIT.BAD:
-                score += 10;
+                score += (int)(10f * fac);
                 streakFlag++;
                 break;
             case HIT.MINIBOSS:
-                score += 50;
+                score += (int)(50f * fac);
+//                 score = UpdateScoreValueBadPerson(score);
                 streakFlag++;
                 targetReached.text = "NICE TEAMWORK";
                 Invoke("Hide", time);
@@ -55,16 +56,6 @@ public class Score : MonoBehaviour
             Invoke("Hide", time);
         }
 
-        /*if (score == 50){  
-            targetReached.text = "KEEP GOING";
-            Invoke("Hide", time);
-        }*/
-
-        /*if (score == -20){
-
-            targetReached.text = "TARGET FAILED";
-            Invoke("Hide", time);
-        }*/
     }
 
     public static int UpdateScoreValueGoodPerson(int scoreToUpdate)
@@ -90,16 +81,6 @@ public class Score : MonoBehaviour
         targetReached.text = "";
     }
     
- 
-   /* public IEnumerator FadeTextToZeroAlpha(float t, Text i)
-    {
-        i.color = new Color(i.color.r, i.color.g, i.color.b, 1);
-        while (i.color.a > 0.0f)
-        {
-            i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a - (Time.deltaTime / t));
-            yield return null;
-        }
-    }*/
 
     private IEnumerator FadeOutRoutine(Text text){ 
         Color originalColor = text.color;

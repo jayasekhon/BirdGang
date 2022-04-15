@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -52,7 +53,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void CreateRoom()
 	{
-		if(string.IsNullOrEmpty(roomNameInputField.text))
+		if(!CheckRoomNameValid(roomNameInputField.text))
 		{
 			return;
 		}
@@ -60,6 +61,20 @@ public class Launcher : MonoBehaviourPunCallbacks
         options.MaxPlayers = 6;
 		PhotonNetwork.CreateRoom(roomNameInputField.text, options);
 		MenuManager.Instance.OpenMenu("loading");
+	}
+
+	public static bool CheckRoomNameValid(string roomName)
+	{
+		if(string.IsNullOrEmpty(roomName))
+		{
+			return false;
+		}
+		else if (roomName.Length > 22)
+		{
+			return false;
+		}
+		else
+			return true;
 	}
 
 	public override void OnJoinedRoom()
@@ -97,8 +112,20 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void StartGame()
 	{
-		PhotonNetwork.LoadLevel(2);
-        PhotonNetwork.CurrentRoom.IsVisible = false;
+		if (RoomMeetsStartGameRequirements(PhotonNetwork.CurrentRoom.PlayerCount))
+		{		
+			startGameButton.GetComponent<Button>().interactable = false; // Stop the button from being clicked twice.
+			PhotonNetwork.LoadLevel(2);
+        	PhotonNetwork.CurrentRoom.IsVisible = false;
+		}
+	}
+
+	public static bool RoomMeetsStartGameRequirements(int numPlayersInRoom)
+	{
+		if (numPlayersInRoom >= 1 && numPlayersInRoom <= 6) // NEEDS TO CHANGE: once we are done doing our work we can make this requirement 3-6 :)
+			return true;
+		else
+			return false; 
 	}
 
 	public void LeaveRoom()
@@ -160,6 +187,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 			Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(cachedRoomList[entry.Key]);
 		}
 	}
+
 	public override void OnPlayerEnteredRoom(Player newPlayer)
 	{
 		Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
