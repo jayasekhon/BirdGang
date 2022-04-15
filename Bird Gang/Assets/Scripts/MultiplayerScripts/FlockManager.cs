@@ -34,9 +34,12 @@ public class FlockManager : MonoBehaviour
     private Transform playerToAttack;
     Transform child;
 
+    public bool flockMode =true;
+
     // Start is called before the first frame update
     void Start()
     {
+
         allBirds = new GameObject[numBirds];
         for(int i=0; i<numBirds; i++)
         {
@@ -63,7 +66,7 @@ public class FlockManager : MonoBehaviour
 
         Vector3 direction = Vector3.zero;
         Vector3 noise = new Vector3(Random.Range(-50, 50), Random.Range(-30, 30), Random.Range(-50, 50));
-        
+
         Bounds b = flockingBorder.bounds;
         if (!b.Contains(transform.position))
         {
@@ -101,7 +104,7 @@ public class FlockManager : MonoBehaviour
         this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, -worldLimits.x, worldLimits.x),
                                             Mathf.Clamp(this.transform.position.y, 0, worldLimits.y),
                                             Mathf.Clamp(this.transform.position.z, -worldLimits.z, worldLimits.z));
-        transform.Translate(0, 0, Time.deltaTime * 20); 
+        transform.Translate(0, 0, Time.deltaTime * 20);
     }
 
     public void AttackPlayer(GameObject player){

@@ -25,20 +25,21 @@ public class Score : MonoBehaviour
     {
         GOOD, BAD, MINIBOSS
     }
-    public void AddScore(HIT type)
+    public void AddScore(HIT type, float fac)
     {
         switch (type)
         {
             case HIT.GOOD:
-                score -= 10;
+                score = UpdateScoreValueGoodPerson(score);
                 streakFlag = 0;
                 break;
             case HIT.BAD:
-                score += 10;
+                score += (int)(10f * fac);
                 streakFlag++;
                 break;
             case HIT.MINIBOSS:
-                score += 50;
+                score += (int)(50f * fac);
+//                 score = UpdateScoreValueBadPerson(score);
                 streakFlag++;
                 targetReached.text = "NICE TEAMWORK";
                 Invoke("Hide", time);

@@ -48,21 +48,25 @@ public class Tutorial : MonoBehaviour
 			stage3.SetActive(false);
 			stage4.SetActive(false);
 			//stage5.SetActive(false); -- This is networked.
-        		pc.input_lock_x = true;
-        		pc.input_lock_y = true;
+        	pc.input_lock_x = true;
+        	pc.input_lock_y = true;
 			pc.input_lock_ad = true;
 			pc.input_disable_targeting = true;
 			pc.wind_disable = true;
 			pc.SetHoveringGravity(false);
-			text.text = "Hold <b>W</b> to fly forwards through the ring.\n" +
+			text.text = "Hold <b>W</b> to fly through the rings ahead.\n" +
 				"Alternately, press <b>X</b> to escape.";
+
+			FindObjectOfType<AudioManager>().Play("TutorialIntro");
 			break;
 		case 1:
 			stage2.SetActive(true);
 			pc.input_lock_x = false;
 			text.text =
-				"You can turn with the mouse while holding <b>W</b>.\n" +
-				"Move through the rings ahead.";
+				"Keep hold of <b>W</b> to use your mouse to steer" +
+				"You can also use <b>A</b> and <b>D</b> to turn.\n";
+			
+			FindObjectOfType<AudioManager>().Play("Turning");
 			break;
 		case 2:
 			stage3.SetActive(true);
@@ -74,18 +78,22 @@ public class Tutorial : MonoBehaviour
 		case 3:
 			stage4.SetActive(true);
 			text.text = "While holding <b>W</b>, you can tap <b>Space</b> to speed up.";
+			FindObjectOfType<AudioManager>().Play("Space");
 			break;
 		case 4:
 			stage5.SetActive(true);
 			pc.input_disable_targeting = false;
-			text.text = "Target with your mouse, and fire with the " +
-			            "primary mouse button.\n" +
-			            "Ammunition will regenerate over time, " +
-			            "and is shown on the top right.\n" +
+			text.text = "Fire poop with the left mouse button.\n" +
+			            "Your poop supply will show on the top right.\n" +
 			            "Hit the targets below, but avoid the innocent OAPs.";
+
+			FindObjectOfType<AudioManager>().Play("FirePoop");
+			
 			break;
 		case 5:
 			text.text = "A thief! Give them their comeuppance.";
+
+			FindObjectOfType<AudioManager>().Play("HitBadPpl");
 			break;
 		case 6:
 			text.text = "Tutorial completed, " +
@@ -97,6 +105,8 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(false);
 			stage3.SetActive(false);
 			stage4.SetActive(false);
+			pc.input_lock_ad = false;
+			// pc.wind_disable = false;
 			text.transform.parent.GetComponent<Image>()
 				.CrossFadeAlpha(0f, 5f, false);
 			text
@@ -132,9 +142,11 @@ public class Tutorial : MonoBehaviour
 				pc.input_lock_ad =
 				pc.input_lock_x =
 				pc.input_lock_y =
-				pc.wind_disable = 
+				// pc.wind_disable = 
 					false;
 			alertText.enabled = false;
+
+			FindObjectOfType<AudioManager>().Stop("TutorialIntro");
 			/* Any excuse not to change the scene... */
 			text.transform.parent.gameObject.SetActive(false);
 			pc.SetHoveringGravity(true);

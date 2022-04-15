@@ -132,11 +132,10 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
 
     [PunRPC]
-    public  void OnHit(PhotonMessageInfo info)
+    public  void OnHit(float distance, PhotonMessageInfo info)
     {
         Debug.Log(height);
         if (height > baseHeight) height -= 3;
-     
     }
     private void DrawLines()
     {

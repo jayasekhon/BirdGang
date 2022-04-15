@@ -6,21 +6,22 @@ using System.IO;
 
 public class BalloonManager : MonoBehaviour, GameEventCallbacks
 {
-    GameObject cutsceneManager;
-    Animator cutsceneManagerAnim;
-
     AudioSource voiceover;
     public AudioClip CarnivalIntro;
     public AudioClip StormHowl;
 
+    // GameObject[] CM_managers;
+    public List<CineMachineSwitcher> switchers;
+    [SerializeField] GameObject intro;
+
     // Start is called before the first frame update
     void Awake()
     {
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // if (!PhotonNetwork.IsMasterClient)
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.CARNIVAL,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
@@ -28,17 +29,35 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         voiceover = GetComponent<AudioSource>(); 
     }
 
-    void Start() 
-    {
-        cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
-    }
+    // void Start() 
+    // {
+    //     // give it enough time to load in all the cutscene managers
+    //     StartCoroutine(InitCoroutine());
+    // }
+
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(3);
+    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+    //     foreach (GameObject m in CM_managers) 
+    //     {
+    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
+    //     }
+    // }
 
     public void OnStageBegin(GameEvents.Stage stage)
-    {
+    {   
+        switchers = intro.GetComponent<IntroManager>().switchers;
         voiceover.PlayOneShot(StormHowl, 0.5f);
-        cutsceneManagerAnim.Play("OverheadCS");
-        Debug.Log("carnival stage has begun");
+        foreach (CineMachineSwitcher switcher in switchers) 
+        {
+            switcher.Carnival();
+        }
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+        }
+        //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
 
@@ -46,13 +65,13 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     {
         //gives enough time for camera to pan to sky
         yield return new WaitForSeconds(5.5f);
-        cutsceneManagerAnim.Play("CarnivalCS");
-        yield return new WaitForSeconds(5f); //this means we can pan 
+        // cutsceneManagerAnim.Play("CarnivalCS");
+        yield return new WaitForSeconds(6f); //this means we can pan 
         voiceover.PlayOneShot(CarnivalIntro, 1f);
-        yield return new WaitForSeconds(13f); //this means we can watch the carnival happen 
-        cutsceneManagerAnim.Play("OverheadCS");
+        yield return new WaitForSeconds(11f); //this means we can watch the carnival happen 
+        // cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
-        cutsceneManagerAnim.Play("Main");
+        // cutsceneManagerAnim.Play("Main");
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
