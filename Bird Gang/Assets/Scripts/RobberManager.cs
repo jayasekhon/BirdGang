@@ -56,7 +56,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        cutsceneManagerAnim.Play("OverheadCS");
+        //cutsceneManagerAnim.Play("OverheadCS");
         Debug.Log("robber stage has begun");
         StartCoroutine(ExecuteAfterTime());
         // this is where we would do the pun RPC call
@@ -68,14 +68,14 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         //gives enough time for camera to pan to sky
         yield return new WaitForSeconds(5.5f);
 
-        cutsceneManagerAnim.Play("RobberCS");
+        //cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(2f);
         
         startAlarm = true;
 
         //let alarm run alone as boss explains round
         yield return new WaitForSeconds(4f);
-        voiceover.PlayOneShot(RobberIntro, 1f);
+        //voiceover.PlayOneShot(RobberIntro, 1f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
         
@@ -87,10 +87,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
 
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
-        cutsceneManagerAnim.Play("OverheadCS");
+        //cutsceneManagerAnim.Play("OverheadCS");
         gatherCrowd();
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
-        cutsceneManagerAnim.Play("Main");
+        //cutsceneManagerAnim.Play("Main");
     }
 
     public void gatherCrowd(){

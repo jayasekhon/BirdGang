@@ -25,7 +25,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
     private float timePassed;
     float height;
-    float baseHeight=3;
+    float baseHeight=18f;
 
     private LineRenderer lineRenderer;
 
@@ -41,8 +41,10 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         dettachTime = UnityEngine.Random.Range(10, 30);
         height = baseHeight;
         currentStage = BALLOON_STAGE.ATTACHED;
-        agent = GetComponent<NavMeshAgent>();
-        agent.baseOffset = height;
+        transform.position = new Vector3(transform.position.x,  height, transform.position.z);
+
+
+
 
     }
 
@@ -94,9 +96,10 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private void Dettached()
     {
         timePassed += Time.deltaTime;
-        if (timePassed > 2)
+        if (timePassed > 1)
         {
-            height += 0.5f;
+            height += 1f;
+            
             timePassed = 0;
         }
 
@@ -109,7 +112,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {
             currentStage = BALLOON_STAGE.REATTACHED;
         }
-         agent.baseOffset=Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
+         //agent.baseOffset=Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
+        transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, height, Time.deltaTime), transform.position.z);
 
     }
 
@@ -121,8 +125,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         }
         else
         {
-            agent.baseOffset = Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
-            
+            transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, height, Time.deltaTime), transform.position.z);
+
         }
     }
     private void Lost()
@@ -135,7 +139,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     public  void OnHit(PhotonMessageInfo info)
     {
         Debug.Log(height);
-        if (height > baseHeight) height -= 3;
+        if (height > baseHeight) height -= 3f;
      
     }
     private void DrawLines()
