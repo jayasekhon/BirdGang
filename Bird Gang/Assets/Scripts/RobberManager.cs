@@ -156,13 +156,14 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 	}
 
     public void OnStageEnd(GameEvents.Stage stage)
-    {   if (PhotonNetwork.IsMasterClient) 
+    {   
+        bankAlarm.GetComponent<Light>().enabled = false;
+        startAlarm = false;
+        leftAnim.SetBool("swingDoor", false);
+        rightAnim.SetBool("swingDoor", false);
+        
+        if (PhotonNetwork.IsMasterClient) 
         {
-            leftAnim.SetBool("swingDoor", false);
-            rightAnim.SetBool("swingDoor", false);
-
-            startAlarm = false;
-
             if (robber)
             {
                 PhotonNetwork.Destroy(robber);
@@ -181,4 +182,5 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     public void OnStageProgress(GameEvents.Stage stage, float progress)
     {
     }
+
 }

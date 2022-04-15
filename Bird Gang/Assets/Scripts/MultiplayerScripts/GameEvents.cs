@@ -70,7 +70,7 @@ public class GameEvents : MonoBehaviour
 
 	public static readonly Stage[] agenda =
 	{
-		new Stage(GAME_STAGE.FINISH, 0.01f),
+		new Stage(GAME_STAGE.FINISH, 3f),
 		new Stage(GAME_STAGE.INTRO, 21f),		
 		new Stage(GAME_STAGE.TUTORIAL, 120f),
 		new Stage(GAME_STAGE.ROBBERY, 120f),

@@ -81,6 +81,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     wind_disable = false;
 
     private bool hoveringGravity;
+    private float coolDownS;
 
     // public void OnPhotonInstantiate(PhotonMessageInfo info) 
     // {
@@ -422,8 +423,9 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.S) & coolDownS > Time.time)
             {
+                coolDownS = Time.time + 0.5f;
                 rb.AddRelativeForce(Vector3.back * 20, ForceMode.Impulse);
                 FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");
             }

@@ -41,7 +41,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         {
             switchers.Add(m.GetComponent<CineMachineSwitcher>());
         }
- 
+        
         foreach (CineMachineSwitcher switcher in switchers) 
         {
             switcher.Intro();
