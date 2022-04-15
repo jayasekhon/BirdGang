@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 	public AudioMixerGroup mixerGroup;
 
 	public Sound[] sounds;
-
+ 
 	void Awake()
 	{
 		if (instance != null)

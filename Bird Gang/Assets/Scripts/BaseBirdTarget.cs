@@ -24,7 +24,6 @@ public class BaseBirdTarget : MonoBehaviour, IBirdTarget
     [PunRPC]
     public virtual void OnHit(float distance, PhotonMessageInfo info)
     {
-        Debug.Log(, info");
         float mul = Mathf.InverseLerp(10f, 100f, distance);
         Score.instance.AddScore(isGood ? Score.HIT.GOOD : Score.HIT.BAD, mul);
 
