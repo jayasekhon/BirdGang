@@ -83,10 +83,8 @@ public class Tutorial : MonoBehaviour
 		case 4:
 			stage5.SetActive(true);
 			pc.input_disable_targeting = false;
-			text.text = "Target with your mouse, and fire with the " +
-			            "primary mouse button.\n" +
-			            "Ammunition will regenerate over time, " +
-			            "and is shown on the top right.\n" +
+			text.text = "Fire poop with the left mouse button.\n" +
+			            "Your poop supply will show on the top right.\n" +
 			            "Hit the targets below, but avoid the innocent OAPs.";
 
 			FindObjectOfType<AudioManager>().Play("FirePoop");
@@ -147,6 +145,8 @@ public class Tutorial : MonoBehaviour
 				// pc.wind_disable = 
 					false;
 			alertText.enabled = false;
+
+			FindObjectOfType<AudioManager>().Stop("TutorialIntro");
 			/* Any excuse not to change the scene... */
 			text.transform.parent.gameObject.SetActive(false);
 			pc.SetHoveringGravity(true);
