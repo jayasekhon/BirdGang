@@ -1,15 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
-using UnityEngine;
 
 public class TutorialGoodPerson : BaseBirdTarget
 {
-        public override void OnHit(PhotonMessageInfo info)
+        public override void OnHit(float fac, PhotonMessageInfo info)
         {
                 if (info.Sender.IsLocal)
                         Tutorial.instance.WarnOfPointLoss();
-                base.OnHit(info);
+                base.OnHit(fac, info);
         }
 }

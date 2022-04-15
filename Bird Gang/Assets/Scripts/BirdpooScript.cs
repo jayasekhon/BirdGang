@@ -21,6 +21,8 @@ public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
 	private Collider worldCollider;
 	private Collider targetCollider;
 
+	private Vector3 startPos;
+
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
@@ -37,7 +39,8 @@ public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
 			}
 		}
 
-	
+		startPos = rb.position;
+
 		endTime = Time.time + Lifetime;
 		/* Don't collide with player who fired us. */
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
@@ -75,7 +78,7 @@ public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
 	{
 		if (!active)
 			return;
-		
+
 //     Debug.Log(collision.collider.gameObject.name);
 		bool flee = false;
 		bool notCarnival = true;
@@ -91,11 +94,12 @@ public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
 			if (pv.IsMine)
 			{
 				IBirdTarget t = tar.GetComponent<IBirdTarget>();
+				float dist = (startPos - rb.position).magnitude;
 				if (t.IsClientSideTarget())
-					t.OnHit(new PhotonMessageInfo());
+					t.OnHit(dist, new PhotonMessageInfo());
 				else
 					tar.GetComponent<PhotonView>()
-						.RPC("OnHit", RpcTarget.All);
+						.RPC("OnHit", RpcTarget.All, dist);
 			}
 
 			if (notCarnival)
@@ -107,7 +111,6 @@ public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
 					Vector3.down, out RaycastHit hit,
 					1.5f, 1 << LAYER_WORLD))
 				{
-					
 					Destroy(rb);
 					Destroy(worldCollider);
 					Destroy(targetCollider);
