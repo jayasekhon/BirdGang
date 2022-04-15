@@ -127,8 +127,8 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
         if (!PV.IsMine)
         {
-            // Destroy(upForce);
-            // Destroy(rb); //Causes issue with constant force component.
+            Destroy(upForce);
+            Destroy(rb); //Causes issue with constant force component.
         }
         else
         {
