@@ -425,6 +425,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             if (Input.GetKeyDown(KeyCode.S))
             {
                 rb.AddRelativeForce(Vector3.back * 20, ForceMode.Impulse);
+                FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");
             }
             Hovering();
             /* FIXME: Wind will never reset while moving. */
@@ -473,7 +474,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
-            windTimePassed = 0; 
+            // windTimePassed = 0; 
         }
             // move = true;
         // }
@@ -593,6 +594,17 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         if (windTimePassed > 4)
         {
             windTimePassed = 0;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // change to tag after putting custom bulding tags
+        if (collision.gameObject.layer == LayerMask.NameToLayer("SimpleWorldCollisions"))
+        {
+            rb.AddRelativeForce(Vector3.back * 50, ForceMode.Impulse);
+            FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");   
+            Debug.Log("Hit Building");
         }
     }
 
