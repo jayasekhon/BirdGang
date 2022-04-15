@@ -53,7 +53,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void CreateRoom()
 	{
-		if(string.IsNullOrEmpty(roomNameInputField.text))
+		if(!CheckRoomNameValid(roomNameInputField.text))
 		{
 			return;
 		}
@@ -61,6 +61,20 @@ public class Launcher : MonoBehaviourPunCallbacks
         options.MaxPlayers = 6;
 		PhotonNetwork.CreateRoom(roomNameInputField.text, options);
 		MenuManager.Instance.OpenMenu("loading");
+	}
+
+	public static bool CheckRoomNameValid(string roomName)
+	{
+		if(string.IsNullOrEmpty(roomName))
+		{
+			return false;
+		}
+		else if (roomName.Length > 22)
+		{
+			return false;
+		}
+		else
+			return true;
 	}
 
 	public override void OnJoinedRoom()
