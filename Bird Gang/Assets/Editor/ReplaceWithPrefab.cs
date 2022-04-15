@@ -3,7 +3,7 @@ using UnityEditor;
 public class ReplaceWithPrefab : EditorWindow
 {
     [SerializeField] private GameObject prefab;
-    [SerializeField] private Vector3 scale = new Vector3(.12f, .2f, .12f);
+    [SerializeField] private Vector3 scale = new Vector3(.007f, .01f, .007f);
     [MenuItem("Tools/Replace With Prefab")]
     static void CreateReplaceWithPrefab()
     {
