@@ -97,13 +97,13 @@ public class CineMachineSwitcher : MonoBehaviour
 
     public void Intro()
     {
-        animator.Play("Finale");
+        // animator.Play("Finale");
         StartCoroutine(IntroCoroutine()); 
     }
 
     IEnumerator IntroCoroutine()
     {
-        yield return new WaitForSeconds(15f); //wait to pan to the sky
+        yield return new WaitForSeconds(16f); //wait to pan to the sky
         animator.Play("Main");
     }
 }

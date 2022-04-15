@@ -46,15 +46,17 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         {
             switcher.Intro();
         }
+
         StartCoroutine(ExecuteAfterTime());
     }
 
     IEnumerator ExecuteAfterTime()
     {
+        yield return new WaitForSeconds(0.01f);
         // yield return new WaitForSeconds(5.5f);
         // cutsceneManagerAnim.Play("Finale");
         voiceover.PlayOneShot(Introduction, 1f);
-        yield return new WaitForSeconds(6f);
+        
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
