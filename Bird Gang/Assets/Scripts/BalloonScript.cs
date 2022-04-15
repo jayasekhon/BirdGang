@@ -34,7 +34,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private bool clientSide =false;
 
     private Rigidbody rb;
-    private float floatStrength = 22f;
+    private float floatStrength = 13f;
     private int hitCount;
 
     // Start is called before the first frame update
@@ -42,28 +42,25 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {
         lineRenderer = GetComponent<LineRenderer>();
         currentTime = 0;
-        dettachTime = 30;// UnityEngine.Random.Range(10, 30);
+        dettachTime = UnityEngine.Random.Range(10, 30);
         height = baseHeight;
         currentStage = BALLOON_STAGE.ATTACHED;
-        transform.position = new Vector3(transform.position.x,  height, transform.position.z);
+        
         rb = GetComponent<Rigidbody>();
-
-
-
 
     }
 
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        DrawLines();
+        
         Debug.Log(currentStage);
         if (Input.GetKeyDown(KeyCode.M))
         {
             rb.mass -= 0.05f;
-            rb.AddForce(Vector3.up * -20, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * -5, ForceMode.Impulse);
             hitCount += 1;
         }
         
@@ -76,7 +73,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
                 case BALLOON_STAGE.ATTACHED:
                     // Debug.Log("Attached");
                     Attatched();
-                    DrawLines();
+                    
                     break;
                 case BALLOON_STAGE.DETACHED:
                     // Debug.Log("Dettached");
@@ -111,7 +108,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     }
     private void Dettached()
     {
-        floatStrength = 40;
+        floatStrength = 22;
         rb.AddForce(Vector3.up * floatStrength);
         
 
@@ -132,7 +129,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private void Rettached()
     {
         rb.mass = 1f;
-        floatStrength = 22;
+        floatStrength = 13;
         rb.AddForce(Vector3.up * floatStrength);
         if (transform.position.y <22 && rb.velocity.magnitude <2)
         {
@@ -143,7 +140,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     }
     private void Lost()
     {
-        floatStrength = 40;
+        floatStrength = 22;
         rb.AddForce(Vector3.up * floatStrength);
     }
 
@@ -159,11 +156,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         
      
     }
-    private void DrawLines()
-    {
-
-
-    }
+   
     public bool IsClientSideTarget()
     {
         return clientSide;

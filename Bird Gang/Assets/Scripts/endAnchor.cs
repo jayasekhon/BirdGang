@@ -14,8 +14,11 @@ public class endAnchor : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        //transform.position = rope.endAnchor;
+        if (transform.position.y < 0)
+        {
+            transform.position = new Vector3(transform.position.x,0, transform.position.z);
+        }
     }
 }
