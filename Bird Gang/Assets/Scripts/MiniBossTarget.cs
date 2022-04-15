@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
@@ -56,7 +55,7 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 	}
 
 	[PunRPC]
-	public void OnHit(PhotonMessageInfo info)
+	public void OnHit(float distance, PhotonMessageInfo info)
 	{
 		Debug.Log("num players needed " + targetNum);
 		// startTimer = true;
@@ -73,7 +72,8 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
  
 		if (attackers.Count == targetNum)
 		{
-			Score.instance.AddScore(Score.HIT.MINIBOSS);
+			var mul = Mathf.InverseLerp(10f, 100f, distance);
+			Score.instance.AddScore(Score.HIT.MINIBOSS, mul);
 			if (PhotonNetwork.IsMasterClient)
 			{
 				PhotonNetwork.Destroy(gameObject);

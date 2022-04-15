@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 469088121737b46eebf662ff75f79907
+guid: c9d7e45fac468e62995a244787462816
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,28 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: BGCream
-    second: {fileID: 2100000, guid: 56a7b2606335e4350bff47e2799d6cd2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: BGSPurple
-    second: {fileID: 2100000, guid: 6a042921f6e794710846249928420c59, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: BGSRed
-    second: {fileID: 2100000, guid: dba8728d427874424ab2332b0d9d219a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: CafeColumn
-    second: {fileID: 2100000, guid: 6fd54552cd1594378a4aa26712762f5d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: CheapWindows
-    second: {fileID: 2100000, guid: f1ec4929b73280dbaa342e2474a8866a, type: 2}
+      name: TowerDoorHandle
+    second: {fileID: 2100000, guid: c14837dfa515883428e5652d93e80c72, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -44,61 +24,6 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Windows
     second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert1
-    second: {fileID: 2100000, guid: 6a042921f6e794710846249928420c59, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shopColumn
-    second: {fileID: 2100000, guid: 6fd54552cd1594378a4aa26712762f5d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shopDoor
-    second: {fileID: 2100000, guid: 4f3bb1fc7ea8848f79c3bd6f9f428faf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shopHighlights
-    second: {fileID: 2100000, guid: 6a042921f6e794710846249928420c59, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shopRedStripe
-    second: {fileID: 2100000, guid: dba8728d427874424ab2332b0d9d219a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shopSign
-    second: {fileID: 2100000, guid: 6fd54552cd1594378a4aa26712762f5d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shopWhiteMaterial
-    second: {fileID: 2100000, guid: 56a7b2606335e4350bff47e2799d6cd2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shopWindow
-    second: {fileID: 2100000, guid: 4f3bb1fc7ea8848f79c3bd6f9f428faf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: skin
-    second: {fileID: 2100000, guid: feb31d992ebab4884ac16f4d4ae123c3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: towerTopParts
-    second: {fileID: 2100000, guid: 4e1a4e79a3548164da24123dbb0f3566, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: typeBlinn
-    second: {fileID: 2100000, guid: feb31d992ebab4884ac16f4d4ae123c3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -128,9 +53,7 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages:
-    - 0.25
-    - 0.01
+    lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
@@ -170,7 +93,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -189,7 +112,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
