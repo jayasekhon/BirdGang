@@ -112,9 +112,20 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void StartGame()
 	{
-		startGameButton.GetComponent<Button>().interactable = false; // Stop the button from being clicked twice.
-		PhotonNetwork.LoadLevel(2);
-        PhotonNetwork.CurrentRoom.IsVisible = false;
+		if (RoomMeetsStartGameRequirements(PhotonNetwork.CurrentRoom.PlayerCount))
+		{		
+			startGameButton.GetComponent<Button>().interactable = false; // Stop the button from being clicked twice.
+			PhotonNetwork.LoadLevel(2);
+        	PhotonNetwork.CurrentRoom.IsVisible = false;
+		}
+	}
+
+	public static bool RoomMeetsStartGameRequirements(int numPlayersInRoom)
+	{
+		if (numPlayersInRoom >= 1 && numPlayersInRoom <= 6) // NEEDS TO CHANGE: once we are done doing our work we can make this requirement 3-6 :)
+			return true;
+		else
+			return false; 
 	}
 
 	public void LeaveRoom()
@@ -176,6 +187,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 			Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(cachedRoomList[entry.Key]);
 		}
 	}
+
 	public override void OnPlayerEnteredRoom(Player newPlayer)
 	{
 		Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
