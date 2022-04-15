@@ -41,7 +41,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         {
             switchers.Add(m.GetComponent<CineMachineSwitcher>());
         }
-
+ 
         foreach (CineMachineSwitcher switcher in switchers) 
         {
             switcher.Intro();
@@ -56,7 +56,8 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         // yield return new WaitForSeconds(5.5f);
         // cutsceneManagerAnim.Play("Finale");
         voiceover.PlayOneShot(Introduction, 1f);
-        
+        yield return new WaitForSeconds(20f);
+        FindObjectOfType<AudioManager>().Play("TutorialIntro");
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
