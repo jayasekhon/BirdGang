@@ -423,7 +423,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.S) & coolDownS > Time.time)
+            if (Input.GetKeyDown(KeyCode.S) & coolDownS < Time.time)
             {
                 coolDownS = Time.time + 0.5f;
                 rb.AddRelativeForce(Vector3.back * 20, ForceMode.Impulse);
