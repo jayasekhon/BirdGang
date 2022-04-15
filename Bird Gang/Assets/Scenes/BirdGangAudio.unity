@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.083085015, g: 0.41510075, b: 0.7426011, a: 1}
+  m_IndirectSpecularColor: {r: 0.004627922, g: 0.023748236, b: 0.18293749, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2919,7 +2919,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-603348
+  m_Name: pb_Mesh-8136
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -13928,6 +13928,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2736991795805399459, guid: 83bee4f3ec06ba39da5ea94c09f0058e, type: 3}
+      propertyPath: sceneViewId
+      value: 26
+      objectReference: {fileID: 0}
     - target: {fileID: 3879996791972504077, guid: 83bee4f3ec06ba39da5ea94c09f0058e, type: 3}
       propertyPath: text
       value: 
@@ -16750,7 +16754,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-657550
+  m_Name: pb_Mesh-62338
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -31575,6 +31579,14 @@ PrefabInstance:
     - target: {fileID: 521309384, guid: a4ce57dca88544ab0a8a98495b8d50de, type: 3}
       propertyPath: m_Name
       value: birdPark
+      objectReference: {fileID: 0}
+    - target: {fileID: 337598418771241982, guid: a4ce57dca88544ab0a8a98495b8d50de, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 44
+      objectReference: {fileID: 0}
+    - target: {fileID: 337598418771241982, guid: a4ce57dca88544ab0a8a98495b8d50de, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 543450653361558242, guid: a4ce57dca88544ab0a8a98495b8d50de, type: 3}
       propertyPath: m_LocalScale.x

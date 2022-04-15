@@ -10,7 +10,7 @@ public class PlayerNameManager : MonoBehaviour
 
     void Start()
     {
-        usernameInput.characterLimit = 22;
+        usernameInput.characterLimit = 15;
     }
 
     public void OnUsernameInputValueChanged()
