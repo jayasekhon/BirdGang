@@ -41,13 +41,10 @@ public class WaypointEvents: MonoBehaviour
 
             if (!coroutineFinished)
             {
-                Debug.Log("Stop coroutine");
                 StopCoroutine("HideWayPointAfterTime");
             }
 
-            StartCoroutine("HideWayPointAfterTime"); 
-
-                                  
+            StartCoroutine("HideWayPointAfterTime");                        
         }
     }
 
