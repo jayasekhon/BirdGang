@@ -7011,8 +7011,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f4e3beab0f641ef815fb9367b70dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftDoor: {fileID: 986076951}
+  rightDoor: {fileID: 986076950}
+  bankAlarm: {fileID: 905656566}
   RobberIntro: {fileID: 8300000, guid: 65e74ae4669114c6ab5c1748c03a508a, type: 3}
   switchers: []
+  intro: {fileID: 1475135619}
 --- !u!4 &439435519
 Transform:
   m_ObjectHideFlags: 0
@@ -17916,6 +17920,16 @@ PrefabInstance:
       objectReference: {fileID: 5302568919011541938, guid: f30abb036338aaf45b075e6629ec9c01, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6b7d09c40880bcd8a05d6472237242a, type: 3}
+--- !u!1 &986076950 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8255651046219877115, guid: a6b7d09c40880bcd8a05d6472237242a, type: 3}
+  m_PrefabInstance: {fileID: 986076949}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &986076951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8255651045299144444, guid: a6b7d09c40880bcd8a05d6472237242a, type: 3}
+  m_PrefabInstance: {fileID: 986076949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &986686122
 PrefabInstance:
   m_ObjectHideFlags: 0

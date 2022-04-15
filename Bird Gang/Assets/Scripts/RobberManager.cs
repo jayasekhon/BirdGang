@@ -10,9 +10,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     private GameObject robber1;
     private GameObject robber2;
 
-    GameObject leftDoor;
-    GameObject rightDoor;
-    GameObject bankAlarm;
+    [SerializeField] GameObject leftDoor;
+    [SerializeField] GameObject rightDoor;
+    [SerializeField] GameObject bankAlarm;
     Animator leftAnim;
     Animator rightAnim;
 
@@ -22,8 +22,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     AudioSource voiceover;
     public AudioClip RobberIntro;
 
-    GameObject[] CM_managers;
+    // GameObject[] CM_managers;
     public List<CineMachineSwitcher> switchers;
+    [SerializeField] GameObject intro;
 
     // Start is called before the first frame update
     void Awake()
@@ -37,32 +38,33 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.ROBBERY,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
-        leftDoor = GameObject.FindGameObjectWithTag("bankDoorL"); //can we just drag these in from the scene rather than finding when the game starts?
-        rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
-        bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
+        // leftDoor = GameObject.FindGameObjectWithTag("bankDoorL"); //can we just drag these in from the scene rather than finding when the game starts?
+        // rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
+        // bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
         voiceover = GetComponent<AudioSource>();
     }
 
-    void Start() 
-    {
-        // give it enough time to load in all the cutscene managers
-        StartCoroutine(InitCoroutine());
-    }
+    // void Start() 
+    // {
+    //     // give it enough time to load in all the cutscene managers
+    //     StartCoroutine(InitCoroutine());
+    // }
 
-    IEnumerator InitCoroutine()
-    {
-        yield return new WaitForSeconds(3);
-        CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-        foreach (GameObject m in CM_managers) 
-        {
-            switchers.Add(m.GetComponent<CineMachineSwitcher>());
-        }
-    }
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(3);
+    //     // CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+    //     // foreach (GameObject m in CM_managers) 
+    //     // {
+    //     //     switchers.Add(m.GetComponent<CineMachineSwitcher>());
+    //     // }
+    // }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        switchers = intro.GetComponent<IntroManager>().switchers;
         foreach (CineMachineSwitcher switcher in switchers) 
         {
             switcher.Robber();
