@@ -36,6 +36,10 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private Rigidbody rb;
     private float floatStrength = 13f;
     private int hitCount;
+    public float groundStrength = 130f;
+    public float airStrength = 210f;
+    public float hitForce = 50;
+    private float successCount;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +52,10 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         
         rb = GetComponent<Rigidbody>();
 
+        successCount = Mathf.Round(3*PhotonNetwork.PlayerList.Length/2);
+
+
+
     }
 
 
@@ -56,11 +64,11 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     void FixedUpdate()
     {
         
-        Debug.Log(currentStage);
+        //Debug.Log(currentStage);
         if (Input.GetKeyDown(KeyCode.M))
         {
-            rb.mass -= 0.05f;
-            rb.AddForce(Vector3.up * -5, ForceMode.Impulse);
+            
+            rb.AddForce(Vector3.up * -hitForce, ForceMode.Impulse);
             hitCount += 1;
         }
         
@@ -96,8 +104,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
     private void Attatched()
     {
-        rb.mass = 1f;
-        rb .AddForce(Vector3.up * floatStrength);
+        
+        rb .AddForce(Vector3.up * groundStrength);
         currentTime += Time.deltaTime;
         if (currentTime > dettachTime)
         {
@@ -108,11 +116,11 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     }
     private void Dettached()
     {
-        floatStrength = 22;
-        rb.AddForce(Vector3.up * floatStrength);
+        
+        rb.AddForce(Vector3.up *  airStrength);
         
 
-        if (hitCount > 5)
+        if (hitCount > successCount)
         {
             
             currentStage = BALLOON_STAGE.REATTACHED;
@@ -121,17 +129,15 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {
             currentStage = BALLOON_STAGE.LOST;
         }
-         //agent.baseOffset=Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
-        //transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, height, Time.deltaTime), transform.position.z);
+   
 
     }
 
     private void Rettached()
     {
-        rb.mass = 1f;
-        floatStrength = 13;
-        rb.AddForce(Vector3.up * floatStrength);
-        if (transform.position.y <22 && rb.velocity.magnitude <2)
+    
+        rb.AddForce(Vector3.up * groundStrength);
+        if (transform.position.y <25 && rb.velocity.magnitude <2)
         {
             currentStage = BALLOON_STAGE.ATTACHED;
             currentTime = 0;
@@ -140,8 +146,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     }
     private void Lost()
     {
-        floatStrength = 22;
-        rb.AddForce(Vector3.up * floatStrength);
+       
+        rb.AddForce(Vector3.up * airStrength);
     }
 
 
@@ -149,8 +155,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     public  void OnHit(PhotonMessageInfo info)
     {
         
-        rb.mass -= 0.05f;
-        rb.AddForce(Vector3.up * -30);
+        
+        rb.AddForce(Vector3.up * -hitForce);
         hitCount += 1;
         
         

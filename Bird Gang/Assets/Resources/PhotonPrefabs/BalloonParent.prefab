@@ -53,6 +53,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e026df01d43c846d7a38eacb022198dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundStrength: 130
+  airStrength: 210
+  hitForce: 50
 --- !u!114 &288160915625749847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,8 +243,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 288160915625749834}
   serializedVersion: 2
-  m_Mass: 0.9
-  m_Drag: 0.1
+  m_Mass: 10
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -371,11 +374,11 @@ GameObject:
   - component: {fileID: 969251584414330994}
   m_Layer: 8
   m_Name: balloonRed
-  m_TagString: Balloon_target
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2105527327677991709
 Transform:
   m_ObjectHideFlags: 0
@@ -2196,7 +2199,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7912896780061692218}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -2217,7 +2220,7 @@ SpringJoint:
   m_AutoConfigureConnectedAnchor: 0
   m_ConnectedAnchor: {x: 0, y: -0.02, z: 0}
   serializedVersion: 2
-  m_Spring: 20
+  m_Spring: 200
   m_Damper: 20
   m_MinDistance: 0
   m_MaxDistance: 10
@@ -2484,7 +2487,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8489776249359524625}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.52, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8489776250200921540}
@@ -2505,7 +2508,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8489776249359524625}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2565,7 +2568,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8489776250200921537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.018, z: 0}
   m_LocalScale: {x: 0.002, y: 0.002, z: 0.002}
   m_Children:
   - {fileID: 8489776249359524626}
@@ -2895,7 +2898,7 @@ GameObject:
   - component: {fileID: 7156975623648247615}
   m_Layer: 8
   m_Name: balloonBlue
-  m_TagString: Balloon_target
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
