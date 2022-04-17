@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6502536029189110459}
+  - component: {fileID: 1355088112218537437}
   m_Layer: 0
   m_Name: Lamppost
   m_TagString: Untagged
@@ -28,9 +29,25 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2894804964603994303}
+  - {fileID: 6810143838842222803}
+  - {fileID: 4276002088480482179}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1355088112218537437
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81769518105428947}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.322937
+  m_Height: 7.404421
+  m_Direction: 1
+  m_Center: {x: 180.60406, y: 4.0631, z: -299.25323}
 --- !u!1 &4818895053634254599
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,12 +72,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818895053634254599}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.025, y: 0.0161, z: 0.0004}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 180.67, y: 6.52, z: -299.18002}
+  m_LocalScale: {x: 200, y: 200, z: 200}
   m_Children: []
-  m_Father: {fileID: 2894804964603994303}
-  m_RootOrder: 2
+  m_Father: {fileID: 6502536029189110459}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &2026233530482382242
 Light:
@@ -148,12 +165,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9031519901472410955}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.024999999, y: 0.0161, z: 0.00039993285}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 180.67, y: 6.52, z: -299.18002}
+  m_LocalScale: {x: 200, y: 200.00002, z: 200.00002}
   m_Children: []
-  m_Father: {fileID: 2894804964603994303}
-  m_RootOrder: 3
+  m_Father: {fileID: 6502536029189110459}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!108 &5230581000623982073
 Light:
@@ -284,29 +301,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: lampPost
       objectReference: {fileID: 0}
+    - target: {fileID: 1909517393617023159, guid: bd963de5cbe094ab3979d018b8719d6a, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 689b3d3a495603f42b02b560ae542c07, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd963de5cbe094ab3979d018b8719d6a, type: 3}
---- !u!1 &2551211586160327173 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bd963de5cbe094ab3979d018b8719d6a, type: 3}
-  m_PrefabInstance: {fileID: 3433661264675424084}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2894804964603994303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bd963de5cbe094ab3979d018b8719d6a, type: 3}
   m_PrefabInstance: {fileID: 3433661264675424084}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &2685070958470761788
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2551211586160327173}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6189775612912353114, guid: bd963de5cbe094ab3979d018b8719d6a, type: 3}
