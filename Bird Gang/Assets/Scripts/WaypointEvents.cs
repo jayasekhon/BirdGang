@@ -35,7 +35,6 @@ public class WaypointEvents: MonoBehaviour
         Player[] playerList = PhotonNetwork.PlayerList;
         for (int p = 0; p < playerList.Length; p++)
         {
-            Debug.Log(playerList[p]);
             if (playerList[p].IsLocal)
             {
                 myIndex = p;

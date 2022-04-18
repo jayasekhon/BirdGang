@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class playerPointer : MonoBehaviour
 {
@@ -21,8 +22,12 @@ public class playerPointer : MonoBehaviour
 
     float minX, maxX, minY, maxY;
 
+    Player[] PhotonListOfPlayers;
+
     void Start()
     {
+        PhotonListOfPlayers = PhotonNetwork.PlayerList;
+
         StartCoroutine(InitCoroutine());
         // Get screen size
         resolution = new Vector2(Screen.width, Screen.height);
@@ -35,7 +40,21 @@ public class playerPointer : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
 
-        playersInGame = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] playersInGameUnsorted = GameObject.FindGameObjectsWithTag("Player");
+        playersInGame = new GameObject[PhotonListOfPlayers.Length];
+        // playersInGame = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int p = 0; p < PhotonListOfPlayers.Length; p++)
+        {
+            for (int i = 0; i < playersInGame.Length; i++)
+            {
+                if (PhotonListOfPlayers[p].ToString() == playersInGameUnsorted[i].GetComponent<PhotonView>().Owner.ToString())
+                {
+                    playersInGame[p] = playersInGameUnsorted[i];
+                }
+                
+            }
+        }
         InstantiateLists();
 
         GetPlayerPhotonViews();
@@ -44,70 +63,11 @@ public class playerPointer : MonoBehaviour
         
     }
     
-    void GetCamera()
-    {
-        // Get the local camera component for targeting
-        foreach (Camera c in Camera.allCameras)
-        {
-            if (!c.GetComponentInParent<PhotonView>().IsMine)
-            {
-                Destroy(c.gameObject);
-            }
-            else
-            {
-                cam = c;
-            }
-        }
-        dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-    }
-
-    bool checkNotNull()
-    {
-        if (playersInGame == null || playerTransforms == null || playerPositions == null || myTransform == null || cam == null || indicatorManager == null)
-        {
-            return false;
-        } else 
-        {
-            return true;
-        }
-    }
-
     void InstantiateLists()
     {
         playerTransforms = new Transform[playersInGame.Length - 1];
         playerPositions = new Vector3[playersInGame.Length - 1];
         playerPVs = new PhotonView[playersInGame.Length];
-    }
-
-    void Update()
-    {
-        if (checkNotNull())
-        {
-            GetPlayerPositons();
-            minX = indicatorManager.GetImageWidth(0); // does not matter which image at the moment since they are all the same size
-            maxX = Screen.width - minX;
-            minY = indicatorManager.GetImageHeight(0);
-            maxY = Screen.height - minY;
-            for (int p = 0; p < playerPositions.Length; p++)
-            {
-                if (!indicatorManager.CheckIfIndicatorIsActive(p))
-                    indicatorManager.ShowIndicator(p);
-
-                Vector2 pos = cam.WorldToScreenPoint(playerPositions[p]);
-                Vector3 viewPos = cam.WorldToViewportPoint(playerPositions[p]);
-                if (viewPos.z < 0)
-                {   
-                    // Target player is behind the local player
-                    if (pos.x < (Screen.width / 2))
-                        pos.x = maxX;
-                    else
-                        pos.x = minX;
-                }
-                pos.x = Mathf.Clamp(pos.x, minX, maxX);
-                pos.y = Mathf.Clamp(pos.y, minY, maxY);
-                indicatorManager.AdjustPositionOfIndicator(p, pos);
-            }
-        }
     }
 
     void GetPlayerPhotonViews()
@@ -148,5 +108,69 @@ public class playerPointer : MonoBehaviour
         }
         myPosition = myTransform.position;
     }
+    
+    void GetCamera()
+    {
+        // Get the local camera component for targeting
+        foreach (Camera c in Camera.allCameras)
+        {
+            if (!c.GetComponentInParent<PhotonView>().IsMine)
+            {
+                Destroy(c.gameObject);
+            }
+            else
+            {
+                cam = c;
+            }
+        }
+        dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+    }
+
+    bool checkNotNull()
+    {
+        if (playersInGame == null || playerTransforms == null || playerPositions == null || myTransform == null || cam == null || indicatorManager == null)
+        {
+            return false;
+        } else 
+        {
+            return true;
+        }
+    }
+
+    void Update()
+    {
+        if (checkNotNull())
+        {
+            GetPlayerPositons();
+            minX = indicatorManager.GetImageWidth(0); // does not matter which image at the moment since they are all the same size
+            maxX = Screen.width - minX;
+            minY = indicatorManager.GetImageHeight(0);
+            maxY = Screen.height - minY;
+            for (int p = 0; p < playerPositions.Length; p++)
+            {
+                if (!indicatorManager.CheckIfIndicatorIsActive(p))
+                    indicatorManager.ShowIndicator(p);
+
+                Vector2 pos = cam.WorldToScreenPoint(playerPositions[p]);
+                Vector3 viewPos = cam.WorldToViewportPoint(playerPositions[p]);
+                if (viewPos.z < 0)
+                {   
+                    // Target player is behind the local player
+                    if (pos.x < (Screen.width / 2))
+                        pos.x = maxX;
+                    else
+                        pos.x = minX;
+                }
+                pos.x = Mathf.Clamp(pos.x, minX, maxX);
+                pos.y = Mathf.Clamp(pos.y, minY, maxY);
+                indicatorManager.AdjustPositionOfIndicator(p, pos);
+            }
+        }
+    }
+
+
+
+
+    
 
 }
