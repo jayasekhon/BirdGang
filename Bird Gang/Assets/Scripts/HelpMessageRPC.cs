@@ -23,7 +23,6 @@ public class HelpMessageRPC : MonoBehaviour
         {
             if (playersInGame[p].ToString() == info.photonView.Owner.ToString())
             {
-                Debug.Log("Match HelpMessageRPC");
                 senderIndex = p;
             }
                 
