@@ -24,6 +24,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 	[SerializeField] GameObject startGameButton;
 	[SerializeField] GameObject readyButton;
 	[SerializeField] GameObject notReadyButton;
+	[SerializeField] GameObject waitingPlayersRdy;
 
 	private int numPlayersRdy = 0;
 
@@ -52,11 +53,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 			
 		if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
 		{
+			waitingPlayersRdy.SetActive(false);
 			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
 		}
 		else 
 		{
 			startGameButton.SetActive(false);
+			waitingPlayersRdy.SetActive(true);
 		}
 	}
 	
@@ -167,6 +170,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 		if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
 		{
 			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+		}
+		else
+		{
+			waitingPlayersRdy.SetActive(true);
 		}
 		photonView.RPC("SendNewMasterReadyList", RpcTarget.All, numPlayersRdy);
 	}
