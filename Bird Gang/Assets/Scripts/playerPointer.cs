@@ -56,7 +56,6 @@ public class playerPointer : MonoBehaviour
             else
             {
                 cam = c;
-                Debug.Log("Got camera");
             }
         }
         dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));

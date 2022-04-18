@@ -41,7 +41,6 @@ public class HelpMessage : MonoBehaviour
     public void Display(string nickname, int requesterID) {
         if (playersInGame != null)
         {
-            Debug.Log(playersInGame.Length);
             for (int p = 0; p < playerPVids.Length; p++)
             {
                 if (requesterID == playerPVids[p])

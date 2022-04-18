@@ -19,30 +19,12 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
     private GameObject[] playersInGame;
 
     public static WaypointManager instance;
+
+    public GameObject[] waypointList;
         
     void Awake()
     {
-        PV = GetComponent<PhotonView>();
         instance = this;
-    }
-    void Start()
-    {
-        StartCoroutine(InitCoroutine());
-    }
-
-    IEnumerator InitCoroutine()
-    {
-        yield return new WaitForSeconds(2);
-
-        playersInGame = GameObject.FindGameObjectsWithTag("Player");  
-        playerPVids = new int[playersInGame.Length];
-        for (int p = 0; p < playersInGame.Length; p++)
-        {
-            playerPVids[p] = playersInGame[p].GetComponent<PhotonView>().ViewID;
-        }
-        GameObject newWaypointParent = InitialiseWaypoint();
-        PhotonView newWaypointParentPV = GetComponent<PhotonView>();
-        waypointParentList[newWaypointParentPV.ViewID] = newWaypointParent; 
     }
 
     private void OnEnable()
@@ -93,17 +75,10 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
 
     void ShowWaypoint()
     {
-        foreach (KeyValuePair<int, GameObject> waypointParent in waypointParentList)
-        {
-            // Looking to find the local waypoint for the player that has sent the event
-            if(waypointParent.Key == requesterID)
-            {
-                waypointParentList[waypointParent.Key].transform.position = new Vector3(requesterPos.x, 2, requesterPos.z);
-                GameObject waypointParticles = waypointParentList[waypointParent.Key].transform.GetChild(0).gameObject;
-                waypointParticles.SetActive(true);
-                return;
-            }
-        }
+        Debug.Log("move waypoint");
+        waypointList[requesterID].transform.position = new Vector3(requesterPos.x, 2, requesterPos.z);
+        GameObject waypointParticles = waypointList[requesterID].transform.GetChild(0).gameObject;
+        waypointParticles.SetActive(true);
     }
 
     void HideWaypoint()
