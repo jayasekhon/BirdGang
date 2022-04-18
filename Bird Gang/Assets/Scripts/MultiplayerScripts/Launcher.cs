@@ -22,7 +22,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 	[SerializeField] Transform playerListContent;
 	[SerializeField] GameObject PlayerListItemPrefab;
 	[SerializeField] GameObject startGameButton;
-	[SerializeField] Button readyButton;
+	[SerializeField] GameObject readyButton;
+	[SerializeField] GameObject notReadyButton;
 
 	private int numPlayersRdy = 0;
 
@@ -149,8 +150,16 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void ConfirmReady()
 	{
-		readyButton.interactable = false;
+		readyButton.SetActive(false);
+		notReadyButton.SetActive(true);
 		photonView.RPC("IncrementPlayersReady", RpcTarget.MasterClient);
+	}
+
+	public void NotReady()
+	{
+		notReadyButton.SetActive(false);
+		readyButton.SetActive(true);
+		photonView.RPC("DecrementPlayersReady", RpcTarget.MasterClient);
 	}
 
 	public override void OnMasterClientSwitched(Player newMasterClient)
@@ -189,10 +198,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void LeaveRoom()
 	{
-		if (!readyButton.interactable)
+		if (!readyButton.activeSelf)
 		{
-			photonView.RPC("DecrementPlayersReady", RpcTarget.MasterClient);
-			readyButton.interactable = true;
+			NotReady();
 		}
 		PhotonNetwork.LeaveRoom();
 		MenuManager.Instance.OpenMenu("loading");
