@@ -53,6 +53,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         rb = GetComponent<Rigidbody>();
 
         successCount = Mathf.Round(3*PhotonNetwork.PlayerList.Length/2);
+        Transform child = transform.GetChild(UnityEngine.Random.Range(0, 2));
+        child.gameObject.SetActive(true);
 
 
 
@@ -65,12 +67,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {
         
         //Debug.Log(currentStage);
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            
-            rb.AddForce(Vector3.up * -hitForce, ForceMode.Impulse);
-            hitCount += 1;
-        }
+     
         
 
         //if (PhotonNetwork.IsMasterClient)
