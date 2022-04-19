@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class PauseMenu : MonoBehaviourPunCallbacks
 {
@@ -11,9 +12,16 @@ public class PauseMenu : MonoBehaviourPunCallbacks
 
     public GameObject pauseMenuUI;
 
+    public const byte ClientLeftRoom = 9;
+
+    PhotonView PV;
+
+    bool ButtonPressed = false;
+
     void Awake()
     {
         Instance = this;
+        PV = GetComponent<PhotonView>();
     }
     // Update is called once per frame
     void Update()
@@ -47,16 +55,40 @@ public class PauseMenu : MonoBehaviourPunCallbacks
 
     public void LoadMenu()
     {
-        PhotonNetwork.LeaveRoom();
+        ButtonPressed = true;
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            ClientLeft();
+        }
+        else
+        {
+            PhotonNetwork.LeaveRoom();
+        }
     }
 
     public override void OnLeftRoom()
     {
-        PhotonNetwork.LoadLevel(1); 
+        if (ButtonPressed)
+        {
+            PhotonNetwork.LoadLevel(1);
+        }
+        else
+        {
+            // This accounts for cases where a player may have disconnected for unintentional reasons such as wifi disconnect.
+            PhotonNetwork.LoadLevel(1);
+            LoadMenu();
+        }
+        
     }
     
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         PhotonNetwork.LeaveRoom();
+    }
+
+    private void ClientLeft()
+    {
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient }; 
+        PhotonNetwork.RaiseEvent(ClientLeftRoom, true, raiseEventOptions, SendOptions.SendReliable);
     }
 }

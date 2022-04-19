@@ -5,7 +5,7 @@ using Photon.Pun;
 public interface IBirdTarget
 {
     [PunRPC]
-    public void OnHit(PhotonMessageInfo info);
+    public void OnHit(float distance, PhotonMessageInfo info);
     /* If true, OnHit should be called as RPC, otherwise just called on client. */
     public bool IsClientSideTarget();
 }
@@ -22,10 +22,10 @@ public class BaseBirdTarget : MonoBehaviour, IBirdTarget
     }
 
     [PunRPC]
-    public virtual void OnHit(PhotonMessageInfo info)
+    public virtual void OnHit(float distance, PhotonMessageInfo info)
     {
-        Debug.Log(isGood ? "Got good cube (i.e. take points)" : "Got bad cube (i.e. give points)");
-        Score.instance.AddScore(isGood ? Score.HIT.GOOD : Score.HIT.BAD);
+        float mul = Mathf.InverseLerp(10f, 100f, distance);
+        Score.instance.AddScore(isGood ? Score.HIT.GOOD : Score.HIT.BAD, mul);
 
         if (clientSide)
             Destroy(gameObject);

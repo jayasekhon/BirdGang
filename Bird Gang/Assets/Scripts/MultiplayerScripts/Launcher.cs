@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -21,6 +22,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 	[SerializeField] Transform playerListContent;
 	[SerializeField] GameObject PlayerListItemPrefab;
 	[SerializeField] GameObject startGameButton;
+	[SerializeField] GameObject readyButton;
+	[SerializeField] GameObject notReadyButton;
+	[SerializeField] GameObject waitingPlayersRdy;
+
+	private int numPlayersRdy = 0;
 
 	void Awake()
 	{
@@ -35,6 +41,56 @@ public class Launcher : MonoBehaviourPunCallbacks
 			PhotonNetwork.ConnectUsingSettings();
 		}
 
+	}
+
+	void Update()
+	{
+		if (!PhotonNetwork.IsMasterClient)
+		{
+			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+			return;
+		}
+			
+		if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
+		{
+			waitingPlayersRdy.SetActive(false);
+			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+		}
+		else 
+		{
+			startGameButton.SetActive(false);
+			waitingPlayersRdy.SetActive(true);
+		}
+	}
+	
+	[PunRPC]
+	public virtual void IncrementPlayersReady()
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			numPlayersRdy += 1;
+		}
+			
+	}
+
+	[PunRPC]
+	public virtual void DecrementPlayersReady()
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			numPlayersRdy -= 1;
+		}
+			
+	}
+
+	[PunRPC]
+	public virtual void SendNewMasterReadyList(int numRdy)
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			numPlayersRdy = numRdy;
+		}
+			
 	}
 
 	public override void OnConnectedToMaster()
@@ -52,7 +108,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void CreateRoom()
 	{
-		if(string.IsNullOrEmpty(roomNameInputField.text))
+		if(!CheckRoomNameValid(roomNameInputField.text))
 		{
 			return;
 		}
@@ -60,6 +116,20 @@ public class Launcher : MonoBehaviourPunCallbacks
         options.MaxPlayers = 6;
 		PhotonNetwork.CreateRoom(roomNameInputField.text, options);
 		MenuManager.Instance.OpenMenu("loading");
+	}
+
+	public static bool CheckRoomNameValid(string roomName)
+	{
+		if(string.IsNullOrEmpty(roomName))
+		{
+			return false;
+		}
+		else if (roomName.Length > 22)
+		{
+			return false;
+		}
+		else
+			return true;
 	}
 
 	public override void OnJoinedRoom()
@@ -79,13 +149,33 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
 		}
+	}
 
-		startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+	public void ConfirmReady()
+	{
+		readyButton.SetActive(false);
+		notReadyButton.SetActive(true);
+		photonView.RPC("IncrementPlayersReady", RpcTarget.MasterClient);
+	}
+
+	public void NotReady()
+	{
+		notReadyButton.SetActive(false);
+		readyButton.SetActive(true);
+		photonView.RPC("DecrementPlayersReady", RpcTarget.MasterClient);
 	}
 
 	public override void OnMasterClientSwitched(Player newMasterClient)
 	{
-		startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+		if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
+		{
+			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+		}
+		else
+		{
+			waitingPlayersRdy.SetActive(true);
+		}
+		photonView.RPC("SendNewMasterReadyList", RpcTarget.All, numPlayersRdy);
 	}
 
 	public override void OnCreateRoomFailed(short returnCode, string message)
@@ -97,12 +187,28 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void StartGame()
 	{
-		PhotonNetwork.LoadLevel(2);
-        PhotonNetwork.CurrentRoom.IsVisible = false;
+		if (RoomMeetsStartGameRequirements(PhotonNetwork.CurrentRoom.PlayerCount))
+		{		
+			startGameButton.GetComponent<Button>().interactable = false; // Stop the button from being clicked twice.
+			PhotonNetwork.LoadLevel(2);
+        	PhotonNetwork.CurrentRoom.IsVisible = false;
+		}
+	}
+
+	public static bool RoomMeetsStartGameRequirements(int numPlayersInRoom)
+	{
+		if (numPlayersInRoom >= 1 && numPlayersInRoom <= 6) // NEEDS TO CHANGE: once we are done doing our work we can make this requirement 3-6 :)
+			return true;
+		else
+			return false; 
 	}
 
 	public void LeaveRoom()
 	{
+		if (!readyButton.activeSelf)
+		{
+			NotReady();
+		}
 		PhotonNetwork.LeaveRoom();
 		MenuManager.Instance.OpenMenu("loading");
 	}
@@ -160,6 +266,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 			Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(cachedRoomList[entry.Key]);
 		}
 	}
+
 	public override void OnPlayerEnteredRoom(Player newPlayer)
 	{
 		Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
