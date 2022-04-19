@@ -9,10 +9,21 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     AudioSource voiceover;
     public AudioClip CarnivalIntro;
     public AudioClip StormHowl;
+    private bool running = false;
+
+    
+    private float windForce = 250f;
+    bool centre = true;
+    private Vector3 direction;
+    public Renderer outRenderer;
+    public Renderer inRenderer;
 
     // GameObject[] CM_managers;
     public List<CineMachineSwitcher> switchers;
     [SerializeField] GameObject intro;
+
+    [SerializeField] GameObject fountain;
+    [SerializeField] GameObject fountainParticles;
 
     // Start is called before the first frame update
     void Awake()
@@ -26,7 +37,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.CARNIVAL,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
         
-        voiceover = GetComponent<AudioSource>(); 
+        voiceover = GetComponent<AudioSource>();
+       
+
     }
 
     // void Start() 
@@ -57,6 +70,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
         }
+        running = true;
+        fountain.SetActive(false);
+        fountainParticles.SetActive(false);
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
@@ -72,6 +88,45 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
+    }
+    void Update()
+    {
+        Wind();
+    }
+    void Wind()
+    {
+        if (running)
+        {
+            direction = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
+
+            Bounds outBounds = outRenderer.bounds;
+            Bounds inBounds = inRenderer.bounds;
+            
+            foreach (GameObject o in GameObject.FindGameObjectsWithTag("Balloon_target"))
+            {
+                if (outBounds.Contains(o.transform.position) && centre)
+                {
+                    o.GetComponent<Rigidbody>().AddForce(direction * windForce);
+                }
+                else
+                {
+                    centre = false;
+                    if (inBounds.Contains(o.transform.position))
+                    {
+                        centre = true;
+                    }
+                    else
+                    {
+                        direction = (inBounds.center - o.transform.position);
+                        direction = new Vector3(direction.x, 0, direction.z);
+                        o.GetComponent<Rigidbody>().AddForce(direction* windForce);
+                    }
+                }
+
+            }
+
+
+        }
     }
 
     public void OnStageEnd(GameEvents.Stage stage)

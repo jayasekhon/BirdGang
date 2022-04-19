@@ -36,13 +36,12 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        Debug.Log("Start onstagebegin");
         CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
         foreach (GameObject m in CM_managers) 
         {
             switchers.Add(m.GetComponent<CineMachineSwitcher>());
         }
-        Debug.Log("switchers "+switchers.Count);
+        // Debug.Log("switchers "+switchers.Count);
         
         foreach (CineMachineSwitcher switcher in switchers) 
         {

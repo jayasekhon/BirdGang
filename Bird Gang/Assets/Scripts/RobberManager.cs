@@ -7,8 +7,6 @@ using Photon.Pun;
 public class RobberManager : MonoBehaviour, GameEventCallbacks
 {
     private GameObject robber;
-    private GameObject robber1;
-    private GameObject robber2;
 
     [SerializeField] GameObject leftDoor;
     [SerializeField] GameObject rightDoor;
@@ -38,9 +36,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.ROBBERY,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
-        // leftDoor = GameObject.FindGameObjectWithTag("bankDoorL"); //can we just drag these in from the scene rather than finding when the game starts?
-        // rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
-        // bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
         voiceover = GetComponent<AudioSource>();
@@ -76,8 +71,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     IEnumerator ExecuteAfterTime()
     {
         //gives enough time for camera to pan to sky
-        yield return new WaitForSeconds(5.5f);
-        
+        yield return new WaitForSeconds(5.5f);        
         // cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(2f);
         
@@ -85,7 +79,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         //let alarm run alone as boss explains round
         yield return new WaitForSeconds(4f);
-        voiceover.PlayOneShot(RobberIntro, 1f);
+        //voiceover.PlayOneShot(RobberIntro, 1f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
         
@@ -95,8 +89,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         if (PhotonNetwork.IsMasterClient) 
         {
             robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
-            robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
-            robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         }
 
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
@@ -116,7 +108,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         {
             if(agent.gameObject.name!= "Robber(Clone)" || agent.gameObject.name!= "Mayor(Clone)" )
             {
-                Debug.Log(agent.gameObject.name);
+                // Debug.Log(agent.gameObject.name);
                 
                 if (Random.Range(0, 100) > 25)
                 {
@@ -138,13 +130,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         if(startAlarm){
             if (timePassed < 0.5f) 
             {
-                // gameObject.GetComponent<MeshRenderer>().enabled = true;
                 bankAlarm.GetComponent<Light>().enabled = true;
             }
             else if (timePassed >= 0.5f && timePassed <= 1f)
             {
-                // gameObject.GetComponent<MeshRenderer>().enabled = false;
-                //bankAlarm.SetActive(false);
                 bankAlarm.GetComponent<Light>().enabled = false;
             }
             else 
@@ -168,14 +157,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             {
                 PhotonNetwork.Destroy(robber);
             } 
-            if (robber1)
-            {
-                PhotonNetwork.Destroy(robber1);
-            }
-            if (robber2)
-            {
-                PhotonNetwork.Destroy(robber2);
-            }
         }
     }
 
