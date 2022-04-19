@@ -12,7 +12,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     private bool running = false;
 
     
-    private float windForce = 250f;
+    private float windForce = 210f;
     bool centre = true;
     private Vector3 direction;
     public Renderer outRenderer;

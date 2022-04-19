@@ -139,16 +139,17 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
                 GameObject balloonParentObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonParent"), start, Quaternion.identity);
                 GameObject balloonObject = balloonParentObject.transform.GetChild(0).gameObject;
 
-                child = balloonObject.transform.GetChild(Random.Range(0, 2));
-                child.gameObject.SetActive(true);
+                
                 BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
                 //balloon.SetCurrentID(i);
                 //balloon.SetID(i + 1);
 
-                balloons.Add(balloon);
+                
                 
             }
         }
+     
+
     }
 
     void ReleaseCrowd()
