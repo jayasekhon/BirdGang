@@ -38,14 +38,14 @@ public class playerPointer : MonoBehaviour
     
     IEnumerator InitCoroutine()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
 
         GameObject[] playersInGameUnsorted = GameObject.FindGameObjectsWithTag("Player");
         playersInGame = new GameObject[PhotonListOfPlayers.Length];
 
         for (int p = 0; p < PhotonListOfPlayers.Length; p++)
         {
-            for (int i = 0; i < playersInGame.Length; i++)
+            for (int i = 0; i < playersInGameUnsorted.Length; i++)
             {
                 if (PhotonListOfPlayers[p].ToString() == playersInGameUnsorted[i].GetComponent<PhotonView>().Owner.ToString())
                 {
