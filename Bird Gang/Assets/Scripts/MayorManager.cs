@@ -131,12 +131,14 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             for (int i = 0; i < numberOfBalloons; i++)
             {
                 Vector3 position = new Vector3(0, 0, 0);
-                if (i == 0) position = new Vector3(60, 1, 60);
-                if (i == 1) position = new Vector3(75, 1, -38); ;
-                if (i == 2) position = new Vector3(-64, 1, -38);
-                if (i == 3) position = new Vector3(-64, 1, 24);
+                if (i == 0) position = new Vector3(-6, 1, -3);
+                if (i == 1) position = new Vector3(-6, 1, -27); ;
+                if (i == 2) position = new Vector3(-30, 1, -14);
+                if (i == 3) position = new Vector3(50, 1, -8);
                 Vector3 start = position;
-                GameObject balloonObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balloon"), start, Quaternion.identity);
+                GameObject balloonParentObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonParent"), start, Quaternion.identity);
+                GameObject balloonObject = balloonParentObject.transform.GetChild(0).gameObject;
+
                 child = balloonObject.transform.GetChild(Random.Range(0, 2));
                 child.gameObject.SetActive(true);
                 BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();

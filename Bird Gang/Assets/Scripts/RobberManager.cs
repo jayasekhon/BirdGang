@@ -71,8 +71,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     IEnumerator ExecuteAfterTime()
     {
         //gives enough time for camera to pan to sky
-        yield return new WaitForSeconds(5.5f);
-        
+        yield return new WaitForSeconds(5.5f);        
         // cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(2f);
         
@@ -80,7 +79,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         //let alarm run alone as boss explains round
         yield return new WaitForSeconds(4f);
-        voiceover.PlayOneShot(RobberIntro, 1f);
+        //voiceover.PlayOneShot(RobberIntro, 1f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
         

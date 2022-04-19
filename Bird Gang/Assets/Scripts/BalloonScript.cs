@@ -25,13 +25,21 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
     private float timePassed;
     float height;
-    float baseHeight=3;
+    float baseHeight=18f;
 
     private LineRenderer lineRenderer;
 
     private NavMeshAgent agent;
 
     private bool clientSide =false;
+
+    private Rigidbody rb;
+    private float floatStrength = 13f;
+    private int hitCount;
+    public float groundStrength = 130f;
+    public float airStrength = 210f;
+    public float hitForce = 50;
+    private float successCount;
 
     // Start is called before the first frame update
     void Start()
@@ -41,27 +49,39 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         dettachTime = 20f+UnityEngine.Random.Range(10, 30);
         height = baseHeight;
         currentStage = BALLOON_STAGE.ATTACHED;
-        agent = GetComponent<NavMeshAgent>();
-        agent.baseOffset = height;
+        
+        rb = GetComponent<Rigidbody>();
+
+        successCount = Mathf.Round(3*PhotonNetwork.PlayerList.Length/2);
+
+
 
     }
 
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        DrawLines();
         
-        if (PhotonNetwork.IsMasterClient)
+        //Debug.Log(currentStage);
+        if (Input.GetKeyDown(KeyCode.M))
         {
-           
-            switch (currentStage)
+            
+            rb.AddForce(Vector3.up * -hitForce, ForceMode.Impulse);
+            hitCount += 1;
+        }
+        
+
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+
+        switch (currentStage)
             {
                 case BALLOON_STAGE.ATTACHED:
                     // Debug.Log("Attached");
                     Attatched();
-                    DrawLines();
+                    
                     break;
                 case BALLOON_STAGE.DETACHED:
                     // Debug.Log("Dettached");
@@ -76,7 +96,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
                     Lost();
                     break;
             }
-        }
+        //}
        
        
         
@@ -84,64 +104,60 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
     private void Attatched()
     {
+        
+        rb .AddForce(Vector3.up * groundStrength);
         currentTime += Time.deltaTime;
         if (currentTime > dettachTime)
         {
             currentStage = BALLOON_STAGE.DETACHED;
+            hitCount = 0;
         }
   
     }
     private void Dettached()
     {
-        timePassed += Time.deltaTime;
-        if (timePassed > 2)
-        {
-            height += 0.5f;
-            timePassed = 0;
-        }
+        
+        rb.AddForce(Vector3.up *  airStrength);
+        
 
-        if (height < baseHeight)
+        if (hitCount > successCount)
         {
-            height = baseHeight;
+            
             currentStage = BALLOON_STAGE.REATTACHED;
         }
-        if (height > 150)
+        if (transform.position.y > 150)
         {
-            currentStage = BALLOON_STAGE.REATTACHED;
+            currentStage = BALLOON_STAGE.LOST;
         }
-         agent.baseOffset=Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
+   
 
     }
 
     private void Rettached()
     {
-        if (transform.position.z - baseHeight<0.2f)
+    
+        rb.AddForce(Vector3.up * groundStrength);
+        if (transform.position.y <25 && rb.velocity.magnitude <2)
         {
             currentStage = BALLOON_STAGE.ATTACHED;
+            currentTime = 0;
         }
-        else
-        {
-            agent.baseOffset = Mathf.Lerp(agent.baseOffset, height, Time.deltaTime);
-            
-        }
+       
     }
     private void Lost()
     {
-
+       
+        rb.AddForce(Vector3.up * airStrength);
     }
 
 
     [PunRPC]
     public  void OnHit(float distance, PhotonMessageInfo info)
-    {
-        Debug.Log(height);
-        if (height > baseHeight) height -= 3;
+    {        
+        rb.AddForce(Vector3.up * -hitForce);
+        hitCount += 1;
     }
-    private void DrawLines()
-    {
-
-
-    }
+   
     public bool IsClientSideTarget()
     {
         return clientSide;
