@@ -105,7 +105,7 @@ public class AiController : MonoBehaviour, IPunObservable
     {
         // Access the agents NavMesh
         agent = GetComponent<NavMeshAgent>();
-        
+
         agent.avoidancePriority = UnityEngine.Random.Range(10, 100);
 
         if (PhotonNetwork.IsMasterClient)
@@ -120,10 +120,7 @@ public class AiController : MonoBehaviour, IPunObservable
 
     private void Update()
     {
-        if (!agent.isActiveAndEnabled || !agent.isOnNavMesh)
-            return;
-
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && agent.isActiveAndEnabled && agent.isOnNavMesh)
         {
             if (changeGoal)
             {

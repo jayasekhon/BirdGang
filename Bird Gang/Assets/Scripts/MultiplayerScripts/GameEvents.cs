@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Assertions;
+using Object = UnityEngine.Object;
 
 [Flags]
 public enum STAGE_CALLBACK
@@ -9,12 +11,11 @@ public enum STAGE_CALLBACK
 	BEGIN = 1,
 	END = 2,
 	PROGRESS = 4,
-
 	ALL = 0xFF,
 }
 
 [Flags]
-public enum GAME_STAGE
+public enum GAME_STAGE : byte
 {
 	TUTORIAL = 1,
 	ROBBERY = 2,
@@ -22,8 +23,6 @@ public enum GAME_STAGE
 	CARNIVAL = 8,
 	FINALE = 16,
 	INTRO = 32,
-	FINISH = 64,
-
 	ALL = 0xFF,
 };
 
@@ -40,16 +39,13 @@ public class GameEvents : MonoBehaviour
 
 	public readonly struct Stage
 	{
-		private static int id_ctr = 0;
 		public Stage(GAME_STAGE gameStage, float duration)
 		{
-			this.GameStage = gameStage;
-			this.maxDuration = duration;
-			this.id = id_ctr++;
+			GameStage = gameStage;
+			Duration = duration;
 		}
 		public readonly GAME_STAGE GameStage;
-		public readonly float maxDuration;
-		public readonly int id;
+		public readonly float Duration;
 	}
 
 	private readonly struct CallbackItem
@@ -66,86 +62,30 @@ public class GameEvents : MonoBehaviour
 		public readonly STAGE_CALLBACK type;
 	};
 
-	private static List<CallbackItem> callbacks = new List<CallbackItem>();
+	// Hack: static.
+	private static readonly List<CallbackItem> callbacks = new List<CallbackItem>();
 
-	public static readonly Stage[] agenda =
+	public static readonly Stage[] serverAgenda =
 	{
-		new Stage(GAME_STAGE.FINISH, 5f),
-		new Stage(GAME_STAGE.INTRO, 21f),		
+		new Stage(GAME_STAGE.INTRO, 21f),
 		new Stage(GAME_STAGE.TUTORIAL, 120f),
 		new Stage(GAME_STAGE.ROBBERY, 120f),
 		new Stage(GAME_STAGE.POLITICIAN, 120f),
 		new Stage(GAME_STAGE.CARNIVAL, 120f),
 		new Stage(GAME_STAGE.FINALE, 25f),
-		new Stage(GAME_STAGE.FINISH, .01f),
 	};
+	private bool serverHasSerialised = false;
 
-	private int stageIndex;
-	private Stage currStage;
-	private bool finished = false;
-	private bool waitOnRPC = false;
+	private List<Stage> ourAgenda;
 
-	private float lastProgress;
-	private double lastProgressTime;
+	private int stageIndex = -1;
 
-	private float nextSyncTime;
+	private int clientCount = 0;
+
+	private float nextProgressLocalTime = float.PositiveInfinity;
+	private float nextStageLocalTime = float.PositiveInfinity;
 
 	private PhotonView pv;
-
-	/* Begin/End called as RPC from master,
-	 * Progress called locally on update */
-	[PunRPC]
-	private void EmitCallback(object[] data)
-	{
-		STAGE_CALLBACK t = (STAGE_CALLBACK)data[0];
-		float p = 0;
-		if (t == STAGE_CALLBACK.PROGRESS)
-		{
-			p = GetProgress();
-		}
-		else
-		{
-			if (t == STAGE_CALLBACK.BEGIN)
-			{
-				stageIndex = (int) data[1];
-				if (stageIndex == agenda.Length)
-				{
-					finished = true;
-					return;
-				}
-				currStage = agenda[stageIndex];
-				lastProgressTime = PhotonNetwork.Time;
-				lastProgress = 0;
-			}
-			// Debug.Log("Event callback: " + t.ToString() + " on " + currStage.GameStage.ToString());
-		}
-
-		foreach (CallbackItem h in callbacks)
-		{
-			if (h.gameStage.HasFlag(currStage.GameStage) && h.type.HasFlag(t))
-			{
-				switch (t)
-				{
-				case STAGE_CALLBACK.END:
-					h.holder.OnStageEnd(currStage);
-					break;
-				case STAGE_CALLBACK.BEGIN:
-					h.holder.OnStageBegin(currStage);
-					break;
-				case STAGE_CALLBACK.PROGRESS:
-					h.holder.OnStageProgress(currStage, p);
-					break;
-				}
-			}
-		}
-
-		waitOnRPC = false;
-	}
-
-	float GetProgress()
-	{
-		return Mathf.Min(1f, lastProgress + ((float)(PhotonNetwork.Time - lastProgressTime) / currStage.maxDuration));
-	}
 
 	/* We can't be sure that event manager exists when these functions are called. */
 	public static void RegisterCallbacks(GameEventCallbacks that, GAME_STAGE gameStageFilter, STAGE_CALLBACK type_filter)
@@ -153,35 +93,10 @@ public class GameEvents : MonoBehaviour
 		callbacks.Add(new CallbackItem(that, gameStageFilter, type_filter));
 	}
 
-	public static void SetStageProgress(float progress)
-	{
-		if (instance)
-			instance.SetStageProgressInternal(progress);
-	}
-
-	void SetStageProgressInternal(float progress)
-	{
-		if (finished)
-			return;
-		pv.RPC("SyncProgressRPC", RpcTarget.AllViaServer, progress);
-		waitOnRPC = true;
-	}
-
 	[PunRPC]
-	private void SyncProgressRPC(object progress, PhotonMessageInfo info)
+	private void SignalClientReady()
 	{
-		lastProgress = (float)progress;
-		lastProgressTime = info.SentServerTime;
-		EmitCallback(new object[]{ STAGE_CALLBACK.PROGRESS });
-	}
-
-	void ToNextStage()
-	{
-		if (finished)
-			return;
-		pv.RPC("EmitCallback", RpcTarget.AllViaServer, new object[]{STAGE_CALLBACK.END, 0});
-		pv.RPC("EmitCallback", RpcTarget.AllViaServer, new object[]{STAGE_CALLBACK.BEGIN, stageIndex + 1});
-		waitOnRPC = true;
+		clientCount++;
 	}
 
 	void Awake()
@@ -195,31 +110,102 @@ public class GameEvents : MonoBehaviour
 
 	void Start()
 	{
-		if (PhotonNetwork.IsMasterClient)
-		{
-			pv.RPC("EmitCallback", RpcTarget.AllViaServer, new object[]{ STAGE_CALLBACK.BEGIN, 0 });
-			waitOnRPC = true;
-		}
+		pv.RPC("SignalClientReady", RpcTarget.MasterClient);
 	}
 
 	void Update()
 	{
-		if (waitOnRPC)
+		if (PhotonNetwork.IsMasterClient && !serverHasSerialised)
+		{
+			if (clientCount == PhotonNetwork.PlayerList.Length)
+			{
+				SendAgenda();
+				serverHasSerialised = true;
+			}
 			return;
+		}
 
-		if (PhotonNetwork.IsMasterClient && GetProgress() == 1f)
+		if (Time.time >= nextStageLocalTime)
 		{
-			ToNextStage();
-			nextSyncTime = Time.time + 10f;
+			Debug.Log("Next stage.");
+		unlikely_loop:
+			bool finished = (stageIndex + 1 == ourAgenda.Count);
+			foreach (CallbackItem h in callbacks)
+			{
+				if (
+					stageIndex != -1 &&
+					h.gameStage.HasFlag(ourAgenda[stageIndex].GameStage) &&
+					h.type.HasFlag(STAGE_CALLBACK.END)
+				)
+					h.holder.OnStageEnd(ourAgenda[stageIndex]);
+
+				if (
+					!finished &&
+					h.gameStage.HasFlag(ourAgenda[stageIndex + 1].GameStage) &&
+					h.type.HasFlag(STAGE_CALLBACK.BEGIN)
+				)
+					h.holder.OnStageBegin(ourAgenda[stageIndex + 1]);
+			}
+			stageIndex++;
+			if (finished)
+			{
+				nextStageLocalTime = float.PositiveInfinity;
+				nextProgressLocalTime = float.PositiveInfinity;
+			}
+			else
+			{
+				nextStageLocalTime += ourAgenda[stageIndex].Duration;
+				nextProgressLocalTime = 0f;
+			}
+			// Quite unlikely loop.
+			if (Time.time >= nextStageLocalTime)
+				goto unlikely_loop;
 		}
-		else if (PhotonNetwork.IsMasterClient && Time.time > nextSyncTime)
+		else if (Time.time >= nextProgressLocalTime)
 		{
-			pv.RPC("SyncProgressRPC", RpcTarget.AllViaServer, new object[]{ GetProgress() });
-			nextSyncTime = Time.time + 10f;
+			Debug.Log("End stage.");
+			float progress = (float)
+				(Time.time - nextStageLocalTime +
+				 ourAgenda[stageIndex].Duration) /
+				ourAgenda[stageIndex].Duration;
+			foreach (CallbackItem h in callbacks)
+			{
+				if (
+					h.gameStage.HasFlag(ourAgenda[stageIndex].GameStage) &&
+					h.type.HasFlag(STAGE_CALLBACK.PROGRESS)
+				)
+					h.holder.OnStageProgress(ourAgenda[stageIndex], progress);
+			}
+			nextProgressLocalTime = Time.time + .5f;
 		}
-		else
+	}
+
+	void SendAgenda()
+	{
+		byte[] stages = new byte[serverAgenda.Length];
+		float[] durations = new float[serverAgenda.Length];
+
+		for (int i = 0; i < serverAgenda.Length; i++)
 		{
-			EmitCallback(new object[] {STAGE_CALLBACK.PROGRESS});
+			stages[i] = (byte) serverAgenda[i].GameStage;
+			durations[i] = serverAgenda[i].Duration;
 		}
+
+		pv.RPC("InitAgenda", RpcTarget.AllBuffered,
+			stages, durations, PhotonNetwork.ServerTimestamp + 5000);
+	}
+
+	[PunRPC]
+	void InitAgenda(byte[] stages, float[] durations, int startAtServerTimestamp)
+	{
+		Assert.AreEqual(stages.Length, durations.Length);
+		ourAgenda = new List<Stage>();
+		for (int i = 0; i < stages.Length; i++)
+		{
+			ourAgenda.Add(new Stage((GAME_STAGE)stages[i], durations[i]));
+		}
+		nextStageLocalTime = Time.time + (float)
+			(startAtServerTimestamp - PhotonNetwork.ServerTimestamp) / 1000f;
+		Debug.Log($"Starting in {nextStageLocalTime - PhotonNetwork.Time}...");
 	}
 }

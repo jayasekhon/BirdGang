@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c27927191be0a3cadb3be80ab7dc9232
+guid: 950cd83d539a199119e2de9cca00a8bd
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,27 +7,52 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: BGSBrown
-    second: {fileID: 2100000, guid: 70000b63d3312438a81dc8f51095cd6b, type: 2}
+      name: B1Pupil
+    second: {fileID: 2100000, guid: b957742c5b9bfd441b9b330c8b55d0c5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: CheapWindows
-    second: {fileID: 2100000, guid: f1ec4929b73280dbaa342e2474a8866a, type: 2}
+      name: b1
+    second: {fileID: 2100000, guid: 5bc6ae160e8d7456e8b5f209fe49b5c7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: TowerInterior
-    second: {fileID: 2100000, guid: 88789a3a3e885031d8dd86e7a9327030, type: 2}
+      name: b1Beak
+    second: {fileID: 2100000, guid: 6ed7ce28db75d40c2a208ee0a8022eeb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Windows
-    second: {fileID: 2100000, guid: db08aeee1d08c478594817945f7b6116, type: 2}
+      name: b1BrowBone
+    second: {fileID: 2100000, guid: b957742c5b9bfd441b9b330c8b55d0c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: b1CapColour
+    second: {fileID: 2100000, guid: 87b501298f7ed4aa98c1d2d6b8870b63, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: 56a7b2606335e4350bff47e2799d6cd2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: legsandfeet
+    second: {fileID: 2100000, guid: 6ed7ce28db75d40c2a208ee0a8022eeb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: legsandfeet.001
+    second: {fileID: 2100000, guid: 6ed7ce28db75d40c2a208ee0a8022eeb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pasted__typeBlinn1
+    second: {fileID: 2100000, guid: dba8728d427874424ab2332b0d9d219a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
-    materialSearch: 2
+    materialSearch: 1
     materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
@@ -53,9 +78,7 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages:
-    - 0.25
-    - 0.01
+    lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
