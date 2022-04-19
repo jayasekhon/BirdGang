@@ -14,6 +14,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public List<CineMachineSwitcher> switchers;
     [SerializeField] GameObject intro;
 
+    [SerializeField] GameObject fountain;
+    [SerializeField] GameObject fountainParticles;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -57,6 +60,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
         }
+        fountain.SetActive(false);
+        fountainParticles.SetActive(false);
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
