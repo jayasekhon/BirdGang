@@ -52,6 +52,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e026df01d43c846d7a38eacb022198dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundStrength: 130
+  airStrength: 210
+  hitForce: 50
 --- !u!114 &7939706922416161007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,7 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PositionModel:
     SynchronizeEnabled: 1
-    TeleportEnabled: 1
+    TeleportEnabled: 0
     TeleportIfDistanceGreaterThan: 3
     InterpolateOption: 4
     InterpolateMoveTowardsSpeed: 1

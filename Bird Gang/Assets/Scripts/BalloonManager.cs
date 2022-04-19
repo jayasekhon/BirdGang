@@ -12,7 +12,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     private bool running = false;
 
     
-    private float windForce = 210f;
+    private float windForce = 100f;
     bool centre = true;
     private Vector3 direction;
     public Renderer outRenderer;
@@ -91,7 +91,10 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     }
     void Update()
     {
-        Wind();
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            Wind();
+        }
     }
     void Wind()
     {

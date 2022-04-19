@@ -70,30 +70,30 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
      
         
 
-        //if (PhotonNetwork.IsMasterClient)
-        //{
+        if (PhotonNetwork.IsMasterClient)
+        {
 
-        switch (currentStage)
-            {
-                case BALLOON_STAGE.ATTACHED:
-                    // Debug.Log("Attached");
-                    Attatched();
-                    
-                    break;
-                case BALLOON_STAGE.DETACHED:
-                    // Debug.Log("Dettached");
-                    Dettached();
-                    break;
-                case BALLOON_STAGE.REATTACHED:
-                    // Debug.Log("Rettached");
-                    Rettached();
-                    break;
-                case BALLOON_STAGE.LOST:
-                    // Debug.Log("Lost");
-                    Lost();
-                    break;
-            }
-        //}
+            switch (currentStage)
+                {
+                    case BALLOON_STAGE.ATTACHED:
+                        // Debug.Log("Attached");
+                        Attatched();
+                        
+                        break;
+                    case BALLOON_STAGE.DETACHED:
+                        // Debug.Log("Dettached");
+                        Dettached();
+                        break;
+                    case BALLOON_STAGE.REATTACHED:
+                        // Debug.Log("Rettached");
+                        Rettached();
+                        break;
+                    case BALLOON_STAGE.LOST:
+                        // Debug.Log("Lost");
+                        Lost();
+                        break;
+                }
+        }
        
        
         
