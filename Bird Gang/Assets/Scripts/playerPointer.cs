@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class playerPointer : MonoBehaviour
 {
@@ -21,8 +22,12 @@ public class playerPointer : MonoBehaviour
 
     float minX, maxX, minY, maxY;
 
+    Player[] PhotonListOfPlayers;
+
     void Start()
     {
+        PhotonListOfPlayers = PhotonNetwork.PlayerList;
+
         StartCoroutine(InitCoroutine());
         // Get screen size
         resolution = new Vector2(Screen.width, Screen.height);
@@ -35,13 +40,73 @@ public class playerPointer : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
 
-        playersInGame = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] playersInGameUnsorted = GameObject.FindGameObjectsWithTag("Player");
+        playersInGame = new GameObject[PhotonListOfPlayers.Length];
+
+        for (int p = 0; p < PhotonListOfPlayers.Length; p++)
+        {
+            for (int i = 0; i < playersInGame.Length; i++)
+            {
+                if (PhotonListOfPlayers[p].ToString() == playersInGameUnsorted[i].GetComponent<PhotonView>().Owner.ToString())
+                {
+                    playersInGame[p] = playersInGameUnsorted[i];
+                }
+                
+            }
+        }
         InstantiateLists();
 
         GetPlayerPhotonViews();
         GetPlayerTransforms();
         GetCamera();
         
+    }
+    
+    void InstantiateLists()
+    {
+        playerTransforms = new Transform[playersInGame.Length];
+        playerPositions = new Vector3[playersInGame.Length];
+        playerPVs = new PhotonView[playersInGame.Length];
+    }
+
+    void GetPlayerPhotonViews()
+    {
+        for (int p = 0; p < playersInGame.Length; p++)
+        {
+            playerPVs[p] = playersInGame[p].GetComponent<PhotonView>();
+        }
+    }
+
+    void GetPlayerTransforms()
+    {
+        // int ctr = 0;
+        for (int p = 0; p < playersInGame.Length; p++)
+        {
+            playerTransforms[p] = playersInGame[p].GetComponent<Transform>();
+            // if (!playerPVs[p].IsMine)
+            // {
+            //     playerTransforms[ctr] = playersInGame[p].GetComponent<Transform>();
+            //     ctr++;
+            // } 
+            // else 
+            // {
+            //     myTransform = playersInGame[p].GetComponent<Transform>();
+            // }
+        }
+    }
+
+    void GetPlayerPositons()
+    {
+        if (!checkNotNull())
+        {
+            return;
+        }
+        for (int p = 0; p < playerTransforms.Length; p++)
+        {
+            playerPositions[p] = playerTransforms[p].position;
+            playerPositions[p].y = playerPositions[p].y + 2; // Move the icon above the player
+        }
+        // myPosition = myTransform.position;
     }
     
     void GetCamera()
@@ -56,7 +121,6 @@ public class playerPointer : MonoBehaviour
             else
             {
                 cam = c;
-                Debug.Log("Got camera");
             }
         }
         dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
@@ -64,20 +128,13 @@ public class playerPointer : MonoBehaviour
 
     bool checkNotNull()
     {
-        if (playersInGame == null || playerTransforms == null || playerPositions == null || myTransform == null || cam == null || indicatorManager == null)
+        if (playersInGame == null || playerTransforms == null || playerPositions == null || cam == null || indicatorManager == null)
         {
             return false;
         } else 
         {
             return true;
         }
-    }
-
-    void InstantiateLists()
-    {
-        playerTransforms = new Transform[playersInGame.Length - 1];
-        playerPositions = new Vector3[playersInGame.Length - 1];
-        playerPVs = new PhotonView[playersInGame.Length];
     }
 
     void Update()
@@ -91,6 +148,13 @@ public class playerPointer : MonoBehaviour
             maxY = Screen.height - minY;
             for (int p = 0; p < playerPositions.Length; p++)
             {
+                if (playerPVs[p].IsMine)
+                {
+                    Debug.Log("dont want to show my icon");
+                    continue;
+                }
+                    
+                    
                 if (!indicatorManager.CheckIfIndicatorIsActive(p))
                     indicatorManager.ShowIndicator(p);
 
@@ -111,43 +175,9 @@ public class playerPointer : MonoBehaviour
         }
     }
 
-    void GetPlayerPhotonViews()
-    {
-        for (int p = 0; p < playersInGame.Length; p++)
-        {
-            playerPVs[p] = playersInGame[p].GetComponent<PhotonView>();
-        }
-    }
 
-    void GetPlayerTransforms()
-    {
-        int ctr = 0;
-        for (int p = 0; p < playersInGame.Length; p++)
-        {
-            if (!playerPVs[p].IsMine)
-            {
-                playerTransforms[ctr] = playersInGame[p].GetComponent<Transform>();
-                ctr++;
-            } 
-            else 
-            {
-                myTransform = playersInGame[p].GetComponent<Transform>();
-            }
-        }
-    }
 
-    void GetPlayerPositons()
-    {
-        if (!checkNotNull())
-        {
-            return;
-        }
-        for (int p = 0; p < playerTransforms.Length; p++)
-        {
-            playerPositions[p] = playerTransforms[p].position;
-            playerPositions[p].y = playerPositions[p].y + 2; // Move the icon above the player
-        }
-        myPosition = myTransform.position;
-    }
+
+    
 
 }
