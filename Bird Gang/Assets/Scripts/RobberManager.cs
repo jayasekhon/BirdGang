@@ -6,19 +6,11 @@ using Photon.Pun;
 
 public class RobberManager : MonoBehaviour, GameEventCallbacks
 {
-//    public static RobberManager Instance;
-
     private GameObject robber;
 
-    private GameObject robber1;
-    private GameObject robber2;
-
-    GameObject cutsceneManager;
-    Animator cutsceneManagerAnim;
-
-    GameObject leftDoor;
-    GameObject rightDoor;
-    GameObject bankAlarm;
+    [SerializeField] GameObject leftDoor;
+    [SerializeField] GameObject rightDoor;
+    [SerializeField] GameObject bankAlarm;
     Animator leftAnim;
     Animator rightAnim;
 
@@ -28,47 +20,59 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     AudioSource voiceover;
     public AudioClip RobberIntro;
 
+    // GameObject[] CM_managers;
+    public List<CineMachineSwitcher> switchers;
+    [SerializeField] GameObject intro;
+
     // Start is called before the first frame update
     void Awake()
     {
-        if (!PhotonNetwork.IsMasterClient) // checks if a RobberManager already exists
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // if (!PhotonNetwork.IsMasterClient) // checks if a RobberManager already exists
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
         DontDestroyOnLoad(gameObject);
         GameEvents.RegisterCallbacks(this, GAME_STAGE.ROBBERY,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
-        leftDoor = GameObject.FindGameObjectWithTag("bankDoorL"); //can we just drag these in from the scene rather than finding when the game starts?
-        rightDoor = GameObject.FindGameObjectWithTag("bankDoorR");
-        bankAlarm = GameObject.FindGameObjectWithTag("bankAlarm");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
         voiceover = GetComponent<AudioSource>();
     }
 
-    void Start() 
-    {
-        cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-        cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
-    }
+    // void Start() 
+    // {
+    //     // give it enough time to load in all the cutscene managers
+    //     StartCoroutine(InitCoroutine());
+    // }
+
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(3);
+    //     // CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
+    //     // foreach (GameObject m in CM_managers) 
+    //     // {
+    //     //     switchers.Add(m.GetComponent<CineMachineSwitcher>());
+    //     // }
+    // }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        //cutsceneManagerAnim.Play("OverheadCS");
-        Debug.Log("robber stage has begun");
+        switchers = intro.GetComponent<IntroManager>().switchers;
+        foreach (CineMachineSwitcher switcher in switchers) 
+        {
+            switcher.Robber();
+        }
+        //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
-        // this is where we would do the pun RPC call
-        // and then the pun RPC script holds all the timings and camera switches. 
     }
 
     IEnumerator ExecuteAfterTime()
     {
         //gives enough time for camera to pan to sky
-        yield return new WaitForSeconds(5.5f);
-
-        //cutsceneManagerAnim.Play("RobberCS");
+        yield return new WaitForSeconds(5.5f);        
+        // cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(2f);
         
         startAlarm = true;
@@ -82,15 +86,19 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         //slight delay for animation and robbers to spawn
         yield return new WaitForSeconds(1.5f);
 
-        robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
-        robber1 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
-        robber2 = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+        }
 
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
-        //cutsceneManagerAnim.Play("OverheadCS");
-        gatherCrowd();
+        // cutsceneManagerAnim.Play("OverheadCS");
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            gatherCrowd();
+        }
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
-        //cutsceneManagerAnim.Play("Main");
+        // cutsceneManagerAnim.Play("Main");
     }
 
     public void gatherCrowd(){
@@ -100,7 +108,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         {
             if(agent.gameObject.name!= "Robber(Clone)" || agent.gameObject.name!= "Mayor(Clone)" )
             {
-                Debug.Log(agent.gameObject.name);
+                // Debug.Log(agent.gameObject.name);
                 
                 if (Random.Range(0, 100) > 25)
                 {
@@ -122,13 +130,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         if(startAlarm){
             if (timePassed < 0.5f) 
             {
-                // gameObject.GetComponent<MeshRenderer>().enabled = true;
                 bankAlarm.GetComponent<Light>().enabled = true;
             }
             else if (timePassed >= 0.5f && timePassed <= 1f)
             {
-                // gameObject.GetComponent<MeshRenderer>().enabled = false;
-                //bankAlarm.SetActive(false);
                 bankAlarm.GetComponent<Light>().enabled = false;
             }
             else 
@@ -137,31 +142,26 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             }
             timePassed += Time.fixedDeltaTime; //0.02
         }
-
 	}
 
     public void OnStageEnd(GameEvents.Stage stage)
     {   
+        bankAlarm.GetComponent<Light>().enabled = false;
+        startAlarm = false;
         leftAnim.SetBool("swingDoor", false);
         rightAnim.SetBool("swingDoor", false);
-
-        startAlarm = false;
-
-        if (robber)
+        
+        if (PhotonNetwork.IsMasterClient) 
         {
-            PhotonNetwork.Destroy(robber);
-        } 
-        if (robber1)
-        {
-            PhotonNetwork.Destroy(robber1);
-        }
-        if (robber2)
-        {
-            PhotonNetwork.Destroy(robber2);
+            if (robber)
+            {
+                PhotonNetwork.Destroy(robber);
+            } 
         }
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
     {
     }
+
 }

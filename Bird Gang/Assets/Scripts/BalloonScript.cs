@@ -46,7 +46,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {
         lineRenderer = GetComponent<LineRenderer>();
         currentTime = 0;
-        dettachTime = UnityEngine.Random.Range(10, 30);
+        dettachTime = 20f+UnityEngine.Random.Range(10, 30);
         height = baseHeight;
         currentStage = BALLOON_STAGE.ATTACHED;
         
@@ -149,15 +149,10 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
 
     [PunRPC]
-    public  void OnHit(PhotonMessageInfo info)
-    {
-        
-        
+    public  void OnHit(float distance, PhotonMessageInfo info)
+    {        
         rb.AddForce(Vector3.up * -hitForce);
         hitCount += 1;
-        
-        
-     
     }
    
     public bool IsClientSideTarget()

@@ -2,6 +2,7 @@ using ExitGames.Client.Photon;
 using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine;
+using System.Collections;
 
 public class WaypointEvents: MonoBehaviour
 {
@@ -9,10 +10,12 @@ public class WaypointEvents: MonoBehaviour
     public const byte ShowWaypoint = 6;
     public const byte HideWaypoint = 7;
     public const byte myPosition = 8;
-    bool activeWaypoint;
     PhotonView PV;
     int myPVID;
     Vector3 myPos;
+
+    bool coroutineFinished = true;
+    private int myIndex;
 
     void Awake()
     {
@@ -23,6 +26,22 @@ public class WaypointEvents: MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        if(!PV.IsMine)
+        {
+            return;      
+        }
+        Player[] playerList = PhotonNetwork.PlayerList;
+        for (int p = 0; p < playerList.Length; p++)
+        {
+            if (playerList[p].IsLocal)
+            {
+                myIndex = p;
+                // return;
+            }
+        }
+    }
 
     void Update()
     {
@@ -31,38 +50,46 @@ public class WaypointEvents: MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(1) && !activeWaypoint)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            activeWaypoint = true;
+            
             myPos = transform.position;
             SendMyLocation();
-            ShowMyWaypoint();                       
-        }
-        else if (Input.GetMouseButtonDown(1) && activeWaypoint)
-        {
-            activeWaypoint = false;
-            myPos = transform.position;
-            SendMyLocation();
-            HideMyWaypoint();
+            ShowMyWaypoint();
+
+            if (!coroutineFinished)
+            {
+                StopCoroutine("HideWayPointAfterTime");
+            }
+
+            StartCoroutine("HideWayPointAfterTime");                        
         }
     }
 
     private void ShowMyWaypoint()
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
-        PhotonNetwork.RaiseEvent(ShowWaypoint, myPVID, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(ShowWaypoint, myIndex, raiseEventOptions, SendOptions.SendReliable);
     }
     
     private void HideMyWaypoint()
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
-        PhotonNetwork.RaiseEvent(HideWaypoint, myPVID, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(HideWaypoint, myIndex, raiseEventOptions, SendOptions.SendReliable);
     }
 
     private void SendMyLocation()
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(myPosition, myPos, raiseEventOptions, SendOptions.SendReliable);
+    }
+
+    IEnumerator HideWayPointAfterTime()
+    {
+        coroutineFinished = false;
+        yield return new WaitForSeconds(20);
+        HideMyWaypoint();
+        coroutineFinished = true;
     }
 
 
