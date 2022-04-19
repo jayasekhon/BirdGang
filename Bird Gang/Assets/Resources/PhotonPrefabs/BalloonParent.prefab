@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 288160915625749847}
   - component: {fileID: 5595760684768933247}
   - component: {fileID: 5662272161945790471}
-  - component: {fileID: 3693008451763697639}
   - component: {fileID: 2982790405344281214}
   - component: {fileID: 3734205616921690668}
   - component: {fileID: 3734205616921690666}
+  - component: {fileID: 2133594319854870274}
   m_Layer: 8
   m_Name: Balloon
   m_TagString: Balloon_target
@@ -75,7 +75,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 3693008451763697639}
+  - {fileID: 2133594319854870274}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -189,39 +189,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adad025bbabe3445aa7d9181f1028435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3693008451763697639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 288160915625749834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PositionModel:
-    SynchronizeEnabled: 1
-    TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 4
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 1
-    ExtrapolateOption: 0
-    ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
-    ExtrapolateNumberOfStoredPositions: 1
-  m_RotationModel:
-    SynchronizeEnabled: 1
-    InterpolateOption: 1
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
-  m_ScaleModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 0
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 0
 --- !u!135 &2982790405344281214
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -263,6 +230,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86d643ae500734bcba195ae1b85ed9e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2133594319854870274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288160915625749834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &1253606820134023159
 GameObject:
   m_ObjectHideFlags: 0
