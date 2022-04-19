@@ -21,7 +21,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     public AudioClip RobberIntro;
 
     // GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
     // Start is called before the first frame update
@@ -59,11 +59,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        switchers = intro.GetComponent<IntroManager>().switchers;
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Robber();
-        }
+        switcher = intro.GetComponent<IntroManager>().switcher;
+        switcher.Robber();
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }

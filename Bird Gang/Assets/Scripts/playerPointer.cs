@@ -111,18 +111,7 @@ public class playerPointer : MonoBehaviour
     
     void GetCamera()
     {
-        // Get the local camera component for targeting
-        foreach (Camera c in Camera.allCameras)
-        {
-            if (!c.GetComponentInParent<PhotonView>().IsMine)
-            {
-                Destroy(c.gameObject);
-            }
-            else
-            {
-                cam = c;
-            }
-        }
+        cam = Camera.main;
         dimensions = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
     }
 
@@ -150,11 +139,9 @@ public class playerPointer : MonoBehaviour
             {
                 if (playerPVs[p].IsMine)
                 {
-                    Debug.Log("dont want to show my icon");
                     continue;
                 }
-                    
-                    
+
                 if (!indicatorManager.CheckIfIndicatorIsActive(p))
                     indicatorManager.ShowIndicator(p);
 

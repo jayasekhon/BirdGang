@@ -117,8 +117,10 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
         else
         {
-            GameObject spawn = GameObject.FindGameObjectsWithTag("PlayerSpawn")
-                [PhotonNetwork.LocalPlayer.ActorNumber];
+            GameObject[] spawns =
+                GameObject.FindGameObjectsWithTag("PlayerSpawn");
+            GameObject spawn = spawns
+                [PhotonNetwork.LocalPlayer.ActorNumber % spawns.Length];
             transform.position = spawn.transform.position;
             transform.rotation = spawn.transform.rotation;
             targetObj = Instantiate(targetObj);
@@ -130,18 +132,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
         // Get the local camera component for targeting
         // see OnPhotonInstantiate function above - does this a nicer way 
-        foreach (GameObject c in GameObject.FindGameObjectsWithTag("MainCamera"))
-        {
-            if (!c.GetComponentInParent<PhotonView>().IsMine)
-            {
-                Destroy(c.gameObject);
-            }
-            else
-            {
-                cam = c.GetComponent<Camera>();
-            }
-        }
-
+        cam = Camera.main;
         if (cam == null)
         {
             Debug.LogError("PlayerController: failed to find main camera.");

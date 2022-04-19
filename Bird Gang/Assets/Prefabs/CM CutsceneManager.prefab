@@ -228,7 +228,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1699652853}
   - component: {fileID: 1699652857}
-  - component: {fileID: 1699652856}
   - component: {fileID: 1699652855}
   - component: {fileID: 1699652854}
   m_Layer: 0
@@ -288,28 +287,6 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1979003513}
---- !u!114 &1699652856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699652852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &1699652855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,8 +622,6 @@ GameObject:
   - component: {fileID: 1884505082919060032}
   - component: {fileID: 1884505082919060035}
   - component: {fileID: 1884505082919060034}
-  - component: {fileID: 5109977954986602697}
-  - component: {fileID: -5665353849807841738}
   m_Layer: 0
   m_Name: CM CutsceneManager
   m_TagString: cutsceneManager
@@ -803,47 +778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31cb439dc9f494316ba2792d3b756a57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5109977954986602697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884505082919060037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: -5665353849807841738}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &-5665353849807841738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884505082919060037}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
 --- !u!1 &2040087492416118032
 GameObject:
   m_ObjectHideFlags: 0
@@ -1184,7 +1118,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3888869341691654614}
-  m_LocalRotation: {x: -0.21373509, y: 0.38057008, z: 0.09087261, w: 0.8951122}
+  m_LocalRotation: {x: -0, y: 0.39126897, z: -0, w: 0.92027634}
   m_LocalPosition: {x: -163.01, y: 60, z: -390.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1536,8 +1470,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5320977173722999930}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.0012125284, y: 0.24069291, z: 0.000300687, w: 0.97060055}
+  m_LocalPosition: {x: -152.89078, y: 59.182423, z: -409.31088}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6249900160653858666}

@@ -7,11 +7,9 @@ public class CineMachineSwitcher : MonoBehaviour
 {
     private Animator animator;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
-        animator.Play("");
     }
 
     // Update is called once per frame
@@ -97,7 +95,6 @@ public class CineMachineSwitcher : MonoBehaviour
 
     public void Intro()
     {
-        // animator.Play("Finale");
         StartCoroutine(IntroCoroutine()); 
     }
 

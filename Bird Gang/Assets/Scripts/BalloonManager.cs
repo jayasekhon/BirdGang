@@ -18,8 +18,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public Renderer outRenderer;
     public Renderer inRenderer;
 
-    // GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
     [SerializeField] GameObject fountain;
@@ -60,12 +59,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {   
-        switchers = intro.GetComponent<IntroManager>().switchers;
+        switcher = intro.GetComponent<IntroManager>().switcher;
         voiceover.PlayOneShot(StormHowl, 0.5f);
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Carnival();
-        }
+        switcher.Carnival();
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
