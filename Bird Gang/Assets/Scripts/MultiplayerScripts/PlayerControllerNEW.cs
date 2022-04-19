@@ -15,7 +15,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     private bool slowDown;
     
     private float lookRateSpeed = 90f;
-    private Vector2 lookInput, screenCenter, mouseDistance;
+    private Vector2 lookInput, mouseDistance;
     private float rollInput;
 
     /* Singleton */
@@ -29,11 +29,9 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     private float pushDirection;
     private bool thing = true;
     private ParticleSystem windParticle;
-    // private ConstantForce windForce;
 
     bool grounded; 
     public bool move;
-    public bool cameraUpdate;
     private float xPos;
     private float zPos;
 
@@ -43,7 +41,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     /* Targeting */
     public GameObject targetObj;
-    
+
     public float targetProfileNear = 150f;
     [Range(-1f, 1f)]
     public float targetProfileNearFac = -0.8f;
@@ -63,32 +61,22 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     public Material projLineMat;
     private LineRenderer projLineRenderer;
-    
+
     private Rigidbody rb;
     private PhotonView PV;
     private Camera cam;
-    // private GameObject mainCam;
     private GameObject[] camerasInGame;
-    // private CameraController cameraController;
     private Animator anim;
-
-    private Vector2 resolution;
 
     public bool input_lock_x = false,
     input_lock_y = false,
     input_lock_ad = false,
     input_disable_targeting = false,
-    wind_disable = false;
+    wind_disable = false,
+    input_lock_all = false;
 
     private bool hoveringGravity;
     private float coolDownS;
-
-    // public void OnPhotonInstantiate(PhotonMessageInfo info) 
-    // {
-    //     object[] instantiationData = info.photonView.InstantiationData;
-    //     mainCam = (GameObject)instantiationData[0];
-    //     cam = mainCam.GetComponent<Camera>();
-    // }
 
     void Awake()
     {
@@ -98,10 +86,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         anim = gameObject.GetComponentInChildren<Animator>();
         anim.enabled = true;
 
-        // Get screen size
-        resolution = new Vector2(Screen.width, Screen.height);
-        screenCenter.x = Screen.width * 0.5f;
-        screenCenter.y = Screen.height * 0.5f;
         /* We simulate gravity in Hovering, and otherwise we don't want it. */
         rb.useGravity = false;
     }
@@ -161,7 +145,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         if (cam == null)
         {
             Debug.LogError("PlayerController: failed to find main camera.");
-            
         }
     }
 
@@ -177,14 +160,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             PV.RPC("OnKeyPress", RpcTarget.All);
         }
 
-        // // Check screen size has not changed
-        // if (resolution.x != Screen.width || resolution.y != Screen.height)
-        // {
-        //             screenCenter.x = Screen.width * 0.5f;
-        //             screenCenter.y = Screen.height * 0.5f;
-        // }
-
-       
         GetInput();
         Targeting(); //why is this not in fixed update? -- Answer: Because it doesn't change the physics world (only reads from it).
     }
@@ -218,33 +193,19 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         {
             if (transform.position.x - xPos < 0.002 || transform.position.z - zPos < 0.002) {
                 // Debug.Log("hovering!!!");
-                // cameraUpdate = false;
             }
             else {
                 xPos = transform.position.x;
                 zPos = transform.position.z;
             }
         }
-        
+
         // Acceleration
         if (Input.GetKeyDown("space"))
         {
             anim.speed = 2f;
             accelerate = true;
         }
-
-        // Slow down
-        // if (Input.GetKeyDown(KeyCode.H))
-        // {
-        //     // slowDown = true;
-        //     Pushback();
-                        
-        // }
-
-        // else
-        // {
-        //     slowDown = false;
-        // }
     }
 
     void Targeting()
@@ -263,7 +224,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         /* Find target pos in terms of world geometry */
         RaycastHit hit;
 
-        if (input_disable_targeting
+        if (input_disable_targeting || input_lock_all
             || !Physics.Raycast(cam.transform.position, mouseRay,
                 out hit, float.MaxValue, 1 << 8)
             || hit.point.y > transform.position.y
@@ -347,9 +308,9 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             Vector3 mouseDistance = cam.ScreenToViewportPoint(Input.mousePosition) * 2f
                 - new Vector3(1f, 1f);
 
-            if (input_lock_x)
+            if (input_lock_x || input_lock_all)
                 mouseDistance.x = 0f;
-            if (input_lock_y)
+            if (input_lock_y || input_lock_all)
                 mouseDistance.y = 0f;
 
             mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
@@ -368,15 +329,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
             float x = -mouseDistance.y * lookRateSpeed * Time.deltaTime + transform.eulerAngles.x;
             float y = mouseDistance.x * lookRateSpeed * Time.deltaTime + transform.eulerAngles.y;
-
-            // if (x > 270) {
-            //     if (transform.position.y < 10f) //change this value of 10 depending on follow offset
-            //     {
-            //         x = Mathf.Clamp(x, 345, 380);
-            //     } else {
-            //         x = Mathf.Clamp(x, 285, 380);
-            //     }
-            // }
 
             if (x > 270)
             {
@@ -423,9 +375,9 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.S) & coolDownS < Time.time)
+            if (Input.GetKeyDown(KeyCode.S) && coolDownS < Time.time && !input_lock_all)
             {
-                coolDownS = Time.time + 0.5f;
+                coolDownS = Time.time + 1f;
                 rb.AddRelativeForce(Vector3.back * 20, ForceMode.Impulse);
                 FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");
             }
@@ -439,7 +391,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     {
         hoveringGravity = enabled;
     }
-   
+
     void Hovering()
     {
         anim.SetBool("flyingDown", false);
@@ -455,11 +407,10 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         if (frac >= 0.98f || frac <= 0.52f)
         {
             //UP
-            if (hoveringGravity)
+            if (hoveringGravity && !input_lock_all)
                 rb.AddForce(new Vector3(0f, 55f + mg, 0f));
             else
                 rb.AddForce(new Vector3(0f, eqUpForce, 0f));
-
         }
         else
         {
@@ -470,17 +421,12 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     void KeyboardTurning()
     {
-        // if (move && !input_lock_ad)
-        // {
-        if (!input_lock_ad)
+        if (!input_lock_ad && !input_lock_all)
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
             rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
             // windTimePassed = 0; 
         }
-            // move = true;
-        // }
-
     }
 
     // void Pushback() 
@@ -556,7 +502,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         windParticle = GetComponentInChildren<ParticleSystem>();
         windParticle.enableEmission = false;
 
-        if (wind_disable)
+        if (wind_disable || input_lock_all)
         {
             upForce.relativeForce = Vector3.zero;
             return;

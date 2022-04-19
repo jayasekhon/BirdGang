@@ -148,7 +148,7 @@ public class Tutorial : MonoBehaviour
 			/* Any excuse not to change the scene... */
 			text.transform.parent.gameObject.SetActive(false);
 			pc.SetHoveringGravity(true);
-			Destroy(gameObject);
+			Destroy(this);
 		}
 		/* PC is spawned by script, might not be available in Start. */
 		else if (!has_init && PlayerControllerNEW.Ours)

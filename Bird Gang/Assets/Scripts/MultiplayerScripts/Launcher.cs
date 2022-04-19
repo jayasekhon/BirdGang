@@ -22,6 +22,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 	[SerializeField] Transform playerListContent;
 	[SerializeField] GameObject PlayerListItemPrefab;
 	[SerializeField] GameObject startGameButton;
+	[SerializeField] GameObject readyButton;
+	[SerializeField] GameObject notReadyButton;
+	[SerializeField] GameObject waitingPlayersRdy;
+
+	private int numPlayersRdy = 0;
 
 	void Awake()
 	{
@@ -36,6 +41,56 @@ public class Launcher : MonoBehaviourPunCallbacks
 			PhotonNetwork.ConnectUsingSettings();
 		}
 
+	}
+
+	void Update()
+	{
+		if (!PhotonNetwork.IsMasterClient)
+		{
+			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+			return;
+		}
+			
+		if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
+		{
+			waitingPlayersRdy.SetActive(false);
+			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+		}
+		else 
+		{
+			startGameButton.SetActive(false);
+			waitingPlayersRdy.SetActive(true);
+		}
+	}
+	
+	[PunRPC]
+	public virtual void IncrementPlayersReady()
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			numPlayersRdy += 1;
+		}
+			
+	}
+
+	[PunRPC]
+	public virtual void DecrementPlayersReady()
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			numPlayersRdy -= 1;
+		}
+			
+	}
+
+	[PunRPC]
+	public virtual void SendNewMasterReadyList(int numRdy)
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			numPlayersRdy = numRdy;
+		}
+			
 	}
 
 	public override void OnConnectedToMaster()
@@ -94,13 +149,33 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
 		}
+	}
 
-		startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+	public void ConfirmReady()
+	{
+		readyButton.SetActive(false);
+		notReadyButton.SetActive(true);
+		photonView.RPC("IncrementPlayersReady", RpcTarget.MasterClient);
+	}
+
+	public void NotReady()
+	{
+		notReadyButton.SetActive(false);
+		readyButton.SetActive(true);
+		photonView.RPC("DecrementPlayersReady", RpcTarget.MasterClient);
 	}
 
 	public override void OnMasterClientSwitched(Player newMasterClient)
 	{
-		startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+		if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
+		{
+			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+		}
+		else
+		{
+			waitingPlayersRdy.SetActive(true);
+		}
+		photonView.RPC("SendNewMasterReadyList", RpcTarget.All, numPlayersRdy);
 	}
 
 	public override void OnCreateRoomFailed(short returnCode, string message)
@@ -130,6 +205,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public void LeaveRoom()
 	{
+		if (!readyButton.activeSelf)
+		{
+			NotReady();
+		}
 		PhotonNetwork.LeaveRoom();
 		MenuManager.Instance.OpenMenu("loading");
 	}

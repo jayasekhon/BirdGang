@@ -31,9 +31,9 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 	{
 		Color32[] pixels = tex.GetPixels32();
 		GameEvents.RegisterCallbacks(this, GAME_STAGE.ALL, STAGE_CALLBACK.ALL);
-		foreach (GameEvents.Stage s in GameEvents.agenda)
+		foreach (GameEvents.Stage s in GameEvents.serverAgenda)
 		{
-			totalTime += s.maxDuration;
+			totalTime += s.Duration;
 		}
 
 		tex.filterMode = FilterMode.Point;
@@ -48,9 +48,9 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 		}
 
 		int currPixel = BORDER_WIDTH;
-		foreach (GameEvents.Stage s in GameEvents.agenda)
+		foreach (GameEvents.Stage s in GameEvents.serverAgenda)
 		{
-			int num = (int)((s.maxDuration / totalTime) *
+			int num = (int)((s.Duration / totalTime) *
 			                (float)(tex.width - 2*BORDER_WIDTH));
 			Color32 col;
 			switch (s.GameStage)
@@ -93,32 +93,23 @@ exit:
 		
 	}
 
-	void Update()
-	{
-	}
-
 	public void OnStageBegin(GameEvents.Stage stage)
 	{
-		timeElapsed = 0;
-		for (int i = 0; GameEvents.agenda[i].id != stage.id; i++)
-		{
-			timeElapsed += GameEvents.agenda[i].maxDuration;
-		}
 	}
 
 	public void OnStageEnd(GameEvents.Stage stage)
 	{
-
+		timeElapsed += stage.Duration;
 	}
 
 	private bool textShown = false;
 
 	public void OnStageProgress(GameEvents.Stage stage, float progress)
 	{
-		float seconds = Mathf.Floor(progress * stage.maxDuration);
-		if (stage.maxDuration - seconds < 5f)
+		float seconds = Mathf.Floor(progress * stage.Duration);
+		if (stage.Duration - seconds < 5f)
 		{
-			text.text = $"Next event in {stage.maxDuration - seconds}...";
+			text.text = $"Next event in {stage.Duration - seconds}...";
 			textShown = true;
 		}
 		/*else if (stage.GameStage != GAME_STAGE.BREAK && seconds < 5f)
@@ -132,7 +123,7 @@ exit:
 			textShown = false;
 		}
 
-		int pixelProg = (int)(((timeElapsed + progress * stage.maxDuration) / totalTime) 
+		int pixelProg = (int)(((timeElapsed + progress * stage.Duration) / totalTime) 
 		                      * (float)(tex.width - 2*BORDER_WIDTH));
 		Color32 col = new Color32(30, 30, 30, 255);
 		while (currPixel < pixelProg)

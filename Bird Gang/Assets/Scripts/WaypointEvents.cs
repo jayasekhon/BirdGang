@@ -15,6 +15,7 @@ public class WaypointEvents: MonoBehaviour
     Vector3 myPos;
 
     bool coroutineFinished = true;
+    private int myIndex;
 
     void Awake()
     {
@@ -25,6 +26,22 @@ public class WaypointEvents: MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        if(!PV.IsMine)
+        {
+            return;      
+        }
+        Player[] playerList = PhotonNetwork.PlayerList;
+        for (int p = 0; p < playerList.Length; p++)
+        {
+            if (playerList[p].IsLocal)
+            {
+                myIndex = p;
+                // return;
+            }
+        }
+    }
 
     void Update()
     {
@@ -35,6 +52,7 @@ public class WaypointEvents: MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F))
         {
+            
             myPos = transform.position;
             SendMyLocation();
             ShowMyWaypoint();
@@ -51,13 +69,13 @@ public class WaypointEvents: MonoBehaviour
     private void ShowMyWaypoint()
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
-        PhotonNetwork.RaiseEvent(ShowWaypoint, myPVID, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(ShowWaypoint, myIndex, raiseEventOptions, SendOptions.SendReliable);
     }
     
     private void HideMyWaypoint()
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
-        PhotonNetwork.RaiseEvent(HideWaypoint, myPVID, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(HideWaypoint, myIndex, raiseEventOptions, SendOptions.SendReliable);
     }
 
     private void SendMyLocation()
