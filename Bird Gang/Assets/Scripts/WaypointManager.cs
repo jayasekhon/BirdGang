@@ -84,15 +84,7 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
     void HideWaypoint()
     {
         Debug.Log("Hide");
-        foreach (KeyValuePair<int, GameObject> waypointParent in waypointParentList)
-        {
-            // Looking to find the local waypoint for the player that has sent the event
-            if(waypointParent.Key == requesterID)
-            {
-                GameObject waypointParticles = waypointParentList[waypointParent.Key].transform.GetChild(0).gameObject;
-                waypointParticles.SetActive(false);
-                return;
-            }
-        }
+        GameObject waypointParticles = waypointList[requesterID].transform.GetChild(0).gameObject;
+        waypointParticles.SetActive(false);
     }
 }
