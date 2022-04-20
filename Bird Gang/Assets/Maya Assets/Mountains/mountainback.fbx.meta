@@ -3,7 +3,17 @@ guid: 62aaec3611a3443178d089b7a7c3956e
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mountainbackConverterShader1
+    second: {fileID: 2100000, guid: bea18576287f7124da17cfc5219d2b54, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mountainbackConverterShader2
+    second: {fileID: 2100000, guid: d8262bfcbdaca0449aca873e4dad98d3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
