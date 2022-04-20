@@ -13,6 +13,8 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
     GameObject CM_manager;
     public CineMachineSwitcher switcher;
 
+    LightingSettings lightingChanges;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,6 +28,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
         voiceover = GetComponent<AudioSource>(); 
+        lightingChanges = GetComponent<LightingSettings>();
     }
 
     void Start() 
@@ -38,6 +41,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
     {
         CM_manager = GameObject.FindGameObjectWithTag("cutsceneManager");
         switcher = CM_manager.GetComponent<CineMachineSwitcher>();
+        lightingChanges.DayLighting();
         switcher.Intro();
 
         StartCoroutine(ExecuteAfterTime());

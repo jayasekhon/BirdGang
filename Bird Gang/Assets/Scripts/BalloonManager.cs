@@ -10,7 +10,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public AudioClip CarnivalIntro;
     public AudioClip StormHowl;
     private bool running = false;
-
     
     private float windForce = 210f;
     bool centre = true;
@@ -23,6 +22,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     [SerializeField] GameObject fountain;
     [SerializeField] GameObject fountainParticles;
+
+    ChangeClouds changeCloudsScript;
 
     // Start is called before the first frame update
     void Awake()
@@ -37,8 +38,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
         
         voiceover = GetComponent<AudioSource>();
-       
-
+        changeCloudsScript = GetComponent<ChangeClouds>();
     }
 
     // void Start() 
@@ -61,6 +61,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     {   
         switcher = intro.GetComponent<IntroManager>().switcher;
         voiceover.PlayOneShot(StormHowl, 0.5f);
+        //call another script to change clouds
+        changeCloudsScript.ColourChange();
+
         switcher.Carnival();
         if (PhotonNetwork.IsMasterClient) 
         {

@@ -30,6 +30,8 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
+    LightingSettings lightingChanges;
+
     void Awake()
     {
         // if (!PhotonNetwork.IsMasterClient)
@@ -41,6 +43,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
         
         voiceover = GetComponent<AudioSource>();
+        lightingChanges = GetComponent<LightingSettings>();
     }
 
     // void Start() 
@@ -119,6 +122,9 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             ReleaseCrowd();
             releasedCrowd = true;
         }
+
+        yield return new WaitForSeconds(84f);
+        lightingChanges.NightLighting();
     }
 
     void SpawnBalloons()
