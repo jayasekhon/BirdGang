@@ -45,6 +45,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     public bool test ;
     public bool start ;
 
+    public float fallingStength = 50f;
+
 
     // private Animator _animator;
     public List<String> attackers = new List<string>();
@@ -170,7 +172,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private void Rettached()
     {
     
-        rb.AddForce(Vector3.up * groundStrength);
+        rb.AddForce(Vector3.up * fallingStength);
         if (transform.position.y <25 && rb.velocity.magnitude <2)
         {
             //currentStage = BALLOON_STAGE.ATTACHED;
