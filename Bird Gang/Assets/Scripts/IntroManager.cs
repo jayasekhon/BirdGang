@@ -41,8 +41,9 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
     {
         CM_manager = GameObject.FindGameObjectWithTag("cutsceneManager");
         switcher = CM_manager.GetComponent<CineMachineSwitcher>();
-        lightingChanges.DayLighting();
         switcher.Intro();
+
+        lightingChanges.DayLighting();
 
         StartCoroutine(ExecuteAfterTime());
     }

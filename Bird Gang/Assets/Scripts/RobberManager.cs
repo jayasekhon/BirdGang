@@ -24,6 +24,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -59,6 +60,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        // playerController.Ours.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Robber();
         //switcher starts by calling overhead cam.
@@ -155,6 +157,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
                 PhotonNetwork.Destroy(robber);
             } 
         }
+        // playerController.Ours.input_lock_all = false;
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)

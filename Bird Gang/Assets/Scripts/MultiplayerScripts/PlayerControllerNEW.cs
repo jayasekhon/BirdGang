@@ -152,7 +152,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
 
         GetInput();
-        Targeting(); //why is this not in fixed update? -- Answer: Because it doesn't change the physics world (only reads from it).
+        Targeting();
     }
 
     void FixedUpdate()
@@ -539,7 +539,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     void OnCollisionEnter(Collision collision)
     {
         // change to tag after putting custom bulding tags
-        if (collision.gameObject.layer == LayerMask.NameToLayer("SimpleWorldCollisions"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("SimpleWorldCollisions") && !input_lock_all)
         {
             rb.AddRelativeForce(Vector3.back * 50, ForceMode.Impulse);
             FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");   
