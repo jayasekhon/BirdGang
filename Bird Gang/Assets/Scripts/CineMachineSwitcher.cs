@@ -95,6 +95,7 @@ public class CineMachineSwitcher : MonoBehaviour
 
     public void Intro()
     {
+        animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
     }
 
