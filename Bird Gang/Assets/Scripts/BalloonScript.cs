@@ -14,6 +14,7 @@ public enum BALLOON_STAGE
     DETACHED = 2,
     REATTACHED = 4,
     LOST = 8,
+    GROUNDED = 16,
 }
 
 public class BalloonScript : MonoBehaviour, IBirdTarget
@@ -126,6 +127,10 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
                         // Debug.Log("Lost");
                         Lost();
                         break;
+                    case BALLOON_STAGE.GROUNDED:
+                        // Debug.Log("Lost");
+                        Grounded();
+                        break;
                 }
         }
        
@@ -175,7 +180,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         rb.AddForce(Vector3.up * fallingStength);
         if (transform.position.y <25 && rb.velocity.magnitude <2)
         {
-            //currentStage = BALLOON_STAGE.ATTACHED;
+            currentStage = BALLOON_STAGE.GROUNDED;
             currentTime = 0;
         }
        
@@ -203,6 +208,10 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
         
     
+    }
+    private void Grounded()
+    {
+        rb.AddForce(Vector3.up * groundStrength);
     }
    
     public bool IsClientSideTarget()
