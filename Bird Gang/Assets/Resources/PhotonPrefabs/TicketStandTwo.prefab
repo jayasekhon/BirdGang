@@ -844,7 +844,6 @@ GameObject:
   - component: {fileID: 8241338881424843496}
   - component: {fileID: 1511978233595207301}
   - component: {fileID: 965819077979833217}
-  - component: {fileID: 430799564154635313}
   m_Layer: 8
   m_Name: TickStandTop
   m_TagString: Untagged
@@ -915,20 +914,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &430799564154635313
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3059900868882700476}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4149440612701519955, guid: e7cbcb1f8b460e04c99b377dd7b14677, type: 3}
 --- !u!1 &3238924979074804913
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,7 +1418,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0fe12532ee468f5418dde06f5abd0d1c, type: 2}
+  - {fileID: 2100000, guid: 5a5578a086ac544fa9b3dfa4fc344443, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1676,7 +1661,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8f5d1537737d9fd4fb776956cca40852, type: 2}
+  - {fileID: 2100000, guid: 2a211aff146491f489a13950f4fdcef0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1790,7 +1775,7 @@ GameObject:
   - component: {fileID: 824426304696483006}
   - component: {fileID: 2225598055393080045}
   - component: {fileID: 8977562900577361810}
-  - component: {fileID: 3782530778271295227}
+  - component: {fileID: 4813753083444966675}
   m_Layer: 8
   m_Name: Tic_ketStandBody
   m_TagString: Untagged
@@ -1861,8 +1846,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3782530778271295227
-MeshCollider:
+--- !u!65 &4813753083444966675
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1871,10 +1856,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6893002924017243459, guid: e7cbcb1f8b460e04c99b377dd7b14677, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.01, y: 0.035, z: 0.012296672}
+  m_Center: {x: 0, y: 0.005, z: 0}
 --- !u!1 &6134031107884908993
 GameObject:
   m_ObjectHideFlags: 0
