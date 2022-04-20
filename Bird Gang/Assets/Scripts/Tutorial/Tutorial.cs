@@ -55,13 +55,14 @@ public class Tutorial : MonoBehaviour
 			pc.wind_disable = true;
 			pc.SetHoveringGravity(false);
 			text.text = "Hold <b>W</b> to fly through the rings ahead.\n" +
-				"Alternately, press <b>X</b> to escape.";
+				"You can press <b>X</b> to exit the tutorial.";
 			break;
 		case 1:
 			stage2.SetActive(true);
 			pc.input_lock_x = false;
+			pc.input_lock_ad = false;
 			text.text =
-				"Keep hold of <b>W</b> to use your mouse to steer" +
+				"Keep hold of <b>W</b> to use your mouse to steer. \n" +
 				"You can also use <b>A</b> and <b>D</b> to turn.\n";
 			
 			FindObjectOfType<AudioManager>().Play("Turning");
@@ -103,7 +104,7 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(false);
 			stage3.SetActive(false);
 			stage4.SetActive(false);
-			pc.input_lock_ad = false;
+			// pc.input_lock_ad = false;
 			// pc.wind_disable = false;
 			text.transform.parent.GetComponent<Image>()
 				.CrossFadeAlpha(0f, 5f, false);
@@ -140,7 +141,7 @@ public class Tutorial : MonoBehaviour
 				pc.input_lock_ad =
 				pc.input_lock_x =
 				pc.input_lock_y =
-				// pc.wind_disable = 
+				pc.wind_disable = 
 					false;
 			alertText.enabled = false;
 
