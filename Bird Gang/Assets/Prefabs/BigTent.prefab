@@ -4904,7 +4904,7 @@ GameObject:
   - component: {fileID: 4176316093394351346}
   - component: {fileID: 7128524214915732700}
   - component: {fileID: 5148717447770715026}
-  - component: {fileID: 2055493320289987406}
+  - component: {fileID: 4101748766268296742}
   m_Layer: 8
   m_Name: Star27
   m_TagString: Untagged
@@ -4975,8 +4975,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2055493320289987406
-MeshCollider:
+--- !u!65 &4101748766268296742
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4985,10 +4985,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 7338996276707374148, guid: 740eb28ecf2fd2845a3912702049afb6, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.021452563, y: 0.010965284, z: 0.022720657}
+  m_Center: {x: -0.000979447, y: 0.0000000530854, z: -0.0000000018626451}
 --- !u!1 &6173914589543277611
 GameObject:
   m_ObjectHideFlags: 0
