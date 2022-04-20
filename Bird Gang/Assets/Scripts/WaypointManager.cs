@@ -75,7 +75,6 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
 
     void ShowWaypoint()
     {
-        Debug.Log("move waypoint");
         waypointList[requesterID].transform.position = new Vector3(requesterPos.x, 2, requesterPos.z);
         GameObject waypointParticles = waypointList[requesterID].transform.GetChild(0).gameObject;
         waypointParticles.SetActive(true);
@@ -83,7 +82,6 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
 
     void HideWaypoint()
     {
-        Debug.Log("Hide");
         GameObject waypointParticles = waypointList[requesterID].transform.GetChild(0).gameObject;
         waypointParticles.SetActive(false);
     }

@@ -38,7 +38,6 @@ public class WaypointEvents: MonoBehaviour
             if (playerList[p].IsLocal)
             {
                 myIndex = p;
-                // return;
             }
         }
     }
@@ -87,7 +86,6 @@ public class WaypointEvents: MonoBehaviour
     IEnumerator HideWayPointAfterTime()
     {
         coroutineFinished = false;
-        Debug.Log("Entered co-routine");
         yield return new WaitForSeconds(20);
         HideMyWaypoint();
         coroutineFinished = true;

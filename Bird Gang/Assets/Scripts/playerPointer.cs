@@ -79,19 +79,9 @@ public class playerPointer : MonoBehaviour
 
     void GetPlayerTransforms()
     {
-        // int ctr = 0;
         for (int p = 0; p < playersInGame.Length; p++)
         {
             playerTransforms[p] = playersInGame[p].GetComponent<Transform>();
-            // if (!playerPVs[p].IsMine)
-            // {
-            //     playerTransforms[ctr] = playersInGame[p].GetComponent<Transform>();
-            //     ctr++;
-            // } 
-            // else 
-            // {
-            //     myTransform = playersInGame[p].GetComponent<Transform>();
-            // }
         }
     }
 
@@ -106,7 +96,6 @@ public class playerPointer : MonoBehaviour
             playerPositions[p] = playerTransforms[p].position;
             playerPositions[p].y = playerPositions[p].y + 2; // Move the icon above the player
         }
-        // myPosition = myTransform.position;
     }
     
     void GetCamera()
@@ -142,7 +131,7 @@ public class playerPointer : MonoBehaviour
         if (checkNotNull())
         {
             GetPlayerPositons();
-            minX = indicatorManager.GetImageWidth(0); // does not matter which image at the moment since they are all the same size
+            minX = indicatorManager.GetImageWidth(0); // does not matter which image since they are all the same size
             maxX = Screen.width - minX;
             minY = indicatorManager.GetImageHeight(0);
             maxY = Screen.height - minY;
@@ -150,7 +139,6 @@ public class playerPointer : MonoBehaviour
             {
                 if (playerPVs[p].IsMine)
                 {
-                    Debug.Log("dont want to show my icon");
                     continue;
                 }
                     
