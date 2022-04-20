@@ -1,3 +1,4 @@
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -128,27 +129,35 @@ public class Tutorial : MonoBehaviour
 		instance = this;
 		cityTrigger.RegisterCallback(OnEnterCity);
 		/* Otherwise player hasn't yet properly spawned. */
-		nextLostCheck = Time.time + 2f;
+		nextLostCheck = Time.time + 8f;
+	}
+
+	private void Escape()
+	{
+		GameObject[] spawns = GameObject.FindGameObjectsWithTag("TutorialEndSpawn");
+		GameObject spawn = spawns
+			[PhotonNetwork.LocalPlayer.ActorNumber % spawns.Length];
+		pc.PutAt(spawn.transform.position, spawn.transform.rotation);
+		pc.input_disable_targeting =
+			pc.input_lock_ad =
+			pc.input_lock_x =
+			pc.input_lock_y =
+			// pc.wind_disable = 
+				false;
+		alertText.enabled = false;
+
+		FindObjectOfType<AudioManager>().Stop("TutorialIntro");
+		/* Any excuse not to change the scene... */
+		text.transform.parent.gameObject.SetActive(false);
+		pc.SetHoveringGravity(true);
+		Destroy(this);
 	}
 
 	public void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.X))
 		{
-			pc.PutAt(new Vector3(0f, 10f, 0f), Quaternion.identity);
-			pc.input_disable_targeting =
-				pc.input_lock_ad =
-				pc.input_lock_x =
-				pc.input_lock_y =
-				// pc.wind_disable = 
-					false;
-			alertText.enabled = false;
-
-			FindObjectOfType<AudioManager>().Stop("TutorialIntro");
-			/* Any excuse not to change the scene... */
-			text.transform.parent.gameObject.SetActive(false);
-			pc.SetHoveringGravity(true);
-			Destroy(this);
+			Escape();
 		}
 		/* PC is spawned by script, might not be available in Start. */
 		else if (!has_init && PlayerControllerNEW.Ours)

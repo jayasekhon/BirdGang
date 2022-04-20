@@ -15,7 +15,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
 
     // GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
     public Image creditsScreen; 
@@ -31,7 +31,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.FINALE,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
-        
+
         voiceover = GetComponent<AudioSource>(); 
     }
 
@@ -65,11 +65,8 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        switchers = intro.GetComponent<IntroManager>().switchers;
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Finale();
-        }
+        switcher = intro.GetComponent<IntroManager>().switcher;
+        switcher.Finale();
         StartCoroutine(ExecuteAfterTime());
     }
 

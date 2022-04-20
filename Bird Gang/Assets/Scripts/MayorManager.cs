@@ -27,7 +27,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     // public AudioClip Crowd;
 
     // GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
     void Awake()
@@ -62,11 +62,8 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        switchers = intro.GetComponent<IntroManager>().switchers;
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Mayor();
-        }
+        switcher = intro.GetComponent<IntroManager>().switcher;
+        switcher.Mayor();
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
