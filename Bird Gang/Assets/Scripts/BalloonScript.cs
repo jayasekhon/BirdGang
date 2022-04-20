@@ -6,6 +6,8 @@ using Photon.Pun;
 using System.IO;
 using System;
 
+using TMPro;
+
 public enum BALLOON_STAGE
 {
     ATTACHED = 1,
@@ -42,6 +44,20 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private float successCount;
     public bool test ;
     public bool start ;
+
+
+    // private Animator _animator;
+    public List<String> attackers = new List<string>();
+    private int targetNum;
+
+    private GameObject[] playersInGame;
+    [SerializeField] TMP_Text healthStatus;
+    private int health;
+
+    string sender;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +73,11 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         successCount = Mathf.Round(3*PhotonNetwork.PlayerList.Length/2);
         Transform child = transform.GetChild(UnityEngine.Random.Range(0, 2));
         child.gameObject.SetActive(true);
+
+        playersInGame = GameObject.FindGameObjectsWithTag("Player");
+        targetNum = playersInGame.Length;
+        health = targetNum;
+        healthStatus.text = new String('+', health);
 
 
 
@@ -131,11 +152,13 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         rb.AddForce(Vector3.up *  airStrength);
         
 
-        if (hitCount > successCount)
+   
+        if (attackers.Count == targetNum)
         {
-            
             currentStage = BALLOON_STAGE.REATTACHED;
         }
+
+
         if (transform.position.y > 150)
         {
             currentStage = BALLOON_STAGE.LOST;
@@ -150,7 +173,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         rb.AddForce(Vector3.up * groundStrength);
         if (transform.position.y <25 && rb.velocity.magnitude <2)
         {
-            currentStage = BALLOON_STAGE.ATTACHED;
+            //currentStage = BALLOON_STAGE.ATTACHED;
             currentTime = 0;
         }
        
@@ -166,7 +189,18 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     public  void OnHit(float distance, PhotonMessageInfo info)
     {        
         rb.AddForce(Vector3.up * -hitForce);
-        hitCount += 1;
+        
+        sender = info.Sender.ToString();
+
+        if (!attackers.Contains(sender))
+        {
+            attackers.Add(sender);
+            health -= 1;
+            healthStatus.text = new String('+', health);
+        }
+
+        
+    
     }
    
     public bool IsClientSideTarget()
