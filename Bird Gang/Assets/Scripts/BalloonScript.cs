@@ -40,15 +40,17 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     public float airStrength = 210f;
     public float hitForce = 50;
     private float successCount;
-
+    public bool test ;
+    public bool start ;
     // Start is called before the first frame update
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
         currentTime = 0;
-        dettachTime = 20f+UnityEngine.Random.Range(10, 30);
+        dettachTime = 20f+UnityEngine.Random.Range(0, 15);
         height = baseHeight;
         currentStage = BALLOON_STAGE.ATTACHED;
+        
         
         rb = GetComponent<Rigidbody>();
 
@@ -59,16 +61,25 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
 
     }
+    void Awake()
+    {
+        //start = false;
+    }
 
 
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        
+
         //Debug.Log(currentStage);
-     
-        
+        if (Input.GetKeyDown(KeyCode.M)&&test)
+        {
+            rb.AddForce(Vector3.up * -hitForce);
+            hitCount += 1;
+
+        }
+
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -103,11 +114,14 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {
         
         rb .AddForce(Vector3.up * groundStrength);
-        currentTime += Time.deltaTime;
-        if (currentTime > dettachTime)
+        if (start)
         {
-            currentStage = BALLOON_STAGE.DETACHED;
-            hitCount = 0;
+            currentTime += Time.deltaTime;
+            if (currentTime > dettachTime)
+            {
+                currentStage = BALLOON_STAGE.DETACHED;
+                hitCount = 0;
+            }
         }
   
     }

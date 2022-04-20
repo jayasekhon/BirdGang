@@ -74,8 +74,10 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         fountain.SetActive(false);
         fountainParticles.SetActive(false);
         //switcher starts by calling overhead cam.
+        
         StartCoroutine(ExecuteAfterTime());
-    }
+       
+        }
 
     IEnumerator ExecuteAfterTime()
     {
@@ -93,13 +95,23 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     {
         if (PhotonNetwork.IsMasterClient) 
         {
-            Wind();
+            //Wind();
+            if (running)
+
+            {
+                foreach (GameObject o in GameObject.FindGameObjectsWithTag("Balloon_target"))
+                {
+                    o.GetComponent<BalloonScript>().start = true;
+                }
+            }
         }
     }
     void Wind()
     {
         if (running)
+
         {
+
             direction = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
             Bounds outBounds = outRenderer.bounds;
