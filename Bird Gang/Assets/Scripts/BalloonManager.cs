@@ -25,6 +25,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     ChangeClouds changeCloudsScript;
 
+    private PlayerControllerNEW pc;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -59,6 +61,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {   
+        pc = PlayerControllerNEW.Ours;
+        pc.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         voiceover.PlayOneShot(StormHowl, 0.5f);
         //call another script to change clouds
@@ -87,11 +91,15 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
+        yield return new WaitForSeconds(5f); //time to pan back to main camera
+        pc.input_lock_all = false;
     }
+
     void Update()
     {
         Wind();
     }
+    
     void Wind()
     {
         if (running)

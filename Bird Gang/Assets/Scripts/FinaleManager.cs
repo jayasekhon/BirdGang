@@ -10,15 +10,17 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
     AudioSource voiceover;
     public AudioClip Congratulations;
+
     GameObject fireworks;
     public VisualEffect fireworkEffect;
-
 
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
     public Image creditsScreen; 
+
+    private PlayerControllerNEW pc;
 
     // Start is called before the first frame update
     void Awake()
@@ -65,6 +67,8 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        pc = PlayerControllerNEW.Ours;
+        pc.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
         StartCoroutine(ExecuteAfterTime());

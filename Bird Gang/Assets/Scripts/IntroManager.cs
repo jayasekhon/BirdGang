@@ -14,7 +14,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
     public CineMachineSwitcher switcher;
 
     LightingSettings lightingChanges;
-
+    
     // Start is called before the first frame update
     void Awake()
     {
