@@ -53,16 +53,12 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     //     }
     // }
 
-//     void Start() 
-//     {
-//         cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-//         fireworks = GameObject.FindGameObjectWithTag("fireworks");
-//         fireworks.SetActive(true);
-
-//         cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
-//         fireworkEffect = fireworks.GetComponent<VisualEffect>();
-//         fireworkEffect.Play();
-//     }
+    void Start() 
+    {
+        fireworks = GameObject.FindGameObjectWithTag("fireworks");
+        fireworks.SetActive(true);
+        fireworkEffect = fireworks.GetComponent<VisualEffect>();
+    }
 
 
     public void OnStageBegin(GameEvents.Stage stage)
@@ -72,6 +68,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
         StartCoroutine(ExecuteAfterTime());
+        fireworkEffect.Play();
     }
 
     IEnumerator ExecuteAfterTime()
