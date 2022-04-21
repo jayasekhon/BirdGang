@@ -13,11 +13,18 @@ public class Score : MonoBehaviour
     int score = 0;
     int streakFlag = 0;
 
-    private void Awake(){
+    private void Awake()
+    {
         instance = this;
     }
 
-    void Start(){
+    public int GetScore()
+    {
+        return score;
+    }
+
+    void Start()
+    {
         scoreText.text = "Score: " + score.ToString();
     }
 
@@ -25,8 +32,10 @@ public class Score : MonoBehaviour
     {
         GOOD, BAD, MINIBOSS
     }
+
     public void AddScore(HIT type, float fac)
     {
+        fac = Mathf.Clamp(fac, 0f, 25f);
         switch (type)
         {
             case HIT.GOOD:
@@ -76,11 +85,11 @@ public class Score : MonoBehaviour
         return scoreToUpdate += 50;
     }
 
-    void Hide(){
+    void Hide()
+    {
         FadeOutRoutine(targetReached);
         targetReached.text = "";
     }
-    
 
     private IEnumerator FadeOutRoutine(Text text){ 
         Color originalColor = text.color;

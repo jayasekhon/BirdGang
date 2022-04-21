@@ -3,7 +3,7 @@ using UnityEngine;
 using System.IO;
 
 public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallback
-{   
+{
     /* New because of testing */
     public IPlayerInput PlayerInput;
 
@@ -13,12 +13,11 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     private float forwardAcceleration = 5f, hoverAcceleration = 2f; //strafeAcceleration = 2f;
     private float increasedAcceleration = 1f;
     private bool slowDown;
-    
+
     private float lookRateSpeed = 90f;
     private Vector2 lookInput, mouseDistance;
     private float rollInput;
 
-    /* Singleton */
     public static PlayerControllerNEW Ours;
 
     float current_x_rot;
@@ -39,43 +38,20 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     private ConstantForce upForce;
     float timePassed = 0f;
 
-    /* Targeting */
-    public GameObject targetObj;
-
-    public float targetProfileNear = 150f;
-    [Range(-1f, 1f)]
-    public float targetProfileNearFac = -0.8f;
-    public float targetProfileFar = 600f;
-    [Range(-1f, 1f)]
-    public float targetProfileFarFac = .6f;
-    [Min(.1f)]
-    public float targetFixedVelocity = 60f;
-    [Range(0, 100)]
-    public int targetLineRes = 20;
-    public bool limitAimAngles = false;
-    const int targetingMaxShots = 3;
-    const float targetingDelay = 2f;
-
-    private int targetingShotCount = 0;
-    private float targetingLastShot = 0;
-
-    public Material projLineMat;
-    private LineRenderer projLineRenderer;
-
     private Rigidbody rb;
     private PhotonView PV;
     private Camera cam;
     private GameObject[] camerasInGame;
     private Animator anim;
 
-    public bool input_lock_x = false,
-    input_lock_y = false,
-    input_lock_ad = false,
-    input_disable_targeting = false,
-    wind_disable = false,
-    input_lock_all = false;
+    public static bool input_lock_x = false,
+        input_lock_y = false,
+        input_lock_ad = false,
+        input_lock_targeting = false,
+        wind_disable = false,
+        hover_gravity_disable = false,
+        input_lock_all = false;
 
-    private bool hoveringGravity;
     private float coolDownS;
 
     void Awake()
@@ -107,9 +83,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             PlayerInput = new PlayerInput();
         }
 
-        AmmoCount.instance.maxAmmo = targetingMaxShots;
-        AmmoCount.instance.SetAmmo(targetingMaxShots);
-
         if (!PV.IsMine)
         {
             Destroy(upForce);
@@ -123,10 +96,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
                 [PhotonNetwork.LocalPlayer.ActorNumber % spawns.Length];
             transform.position = spawn.transform.position;
             transform.rotation = spawn.transform.rotation;
-            targetObj = Instantiate(targetObj);
-            projLineRenderer = gameObject.AddComponent<LineRenderer>();
-            projLineRenderer.endWidth = projLineRenderer.startWidth = .25f;
-            projLineRenderer.material = projLineMat;
+
             Ours = this;
         }
 
@@ -152,7 +122,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
 
         GetInput();
-        Targeting();
     }
 
     void FixedUpdate()
@@ -196,99 +165,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         {
             anim.speed = 2f;
             accelerate = true;
-        }
-    }
-
-    void Targeting()
-    {
-        Vector3 ndc = cam.ScreenToViewportPoint(Input.mousePosition);
-        Vector3 mouseRay = cam.ViewportPointToRay(ndc).direction.normalized;
-
-        if (limitAimAngles)
-        {
-            float d = Mathf.Sqrt(mouseRay.x * mouseRay.x + mouseRay.z * mouseRay.z);
-            if (mouseRay.y / d > -0.1f)
-            {
-                mouseRay.y = d * -0.1f;
-            }
-        }
-        /* Find target pos in terms of world geometry */
-        RaycastHit hit;
-
-        if (input_disable_targeting || input_lock_all
-            || !Physics.Raycast(cam.transform.position, mouseRay,
-                out hit, float.MaxValue, 1 << 8)
-            || hit.point.y > transform.position.y
-        ) {
-            targetObj.transform.position = new Vector3(0, -10, 0);
-            projLineRenderer.positionCount = 0;
-            return;
-        }
-        hit.point += hit.normal * 0.25f;
-        /*
-         * Fix time to hit as (distance to target) / constant,
-         * then assume constant velocity on x, z,
-         * and choose a and u for y axis (as in s = ut + 1/2at^2).
-         * targetParabolaProfile controls balance of u, a.
-         * of 0 gives u = 0 (i.e. z = z0 - 1/2at^2),
-         * of 1 gives u = dist / time, (z = z0 - ut).
-         * Somewhere in-between gives nice parabola with u =/= 0 =/= a.
-         */
-        Vector3 pos = rb.position;
-        Vector3 dist = hit.point - pos;
-        float timeToHit = dist.magnitude / targetFixedVelocity;
-        float v;
-        {
-            Vector3 distFloor = dist * (pos.y / dist.y);
-            distFloor.y = 0f;
-
-            float profile = Mathf.Lerp
-            (
-                targetProfileFarFac, targetProfileNearFac,
-                (distFloor.magnitude - targetProfileNear) / targetProfileFar
-            );
-            v = -(dist.y / timeToHit) * profile;
-        }
-        float g = -(dist.y + (v * timeToHit)) / (0.5f * timeToHit * timeToHit);
-
-        Vector3 step = dist / targetLineRes;
-        step.y = 0f;
-        float timeStep = timeToHit / targetLineRes;
-        projLineRenderer.positionCount = targetLineRes + 1;
-        for (int i = 0; i < targetLineRes; i++)
-        {
-            /* Set y pos with constant acceleration, other axis linearly. */
-            pos.y = (rb.position.y - (0.5f * g * Mathf.Pow(i*timeStep, 2))) - v * (float)(i) * timeStep;
-            projLineRenderer.SetPosition(i, pos);
-            pos += step;
-        }
-
-        projLineRenderer.SetPosition(targetLineRes, hit.point);
-        targetObj.transform.position = hit.point;
-        targetObj.transform.rotation = Quaternion.LookRotation(- hit.normal);
-
-        /* Firing */
-        if (targetingShotCount != 0 && Time.time >= targetingLastShot + targetingDelay)
-        {
-            targetingShotCount = 0;
-            AmmoCount.instance.SetAmmo(targetingMaxShots);
-        }
-
-        if (
-                Input.GetMouseButtonDown(0)
-                && targetingShotCount < targetingMaxShots
-        )
-        {
-            targetingShotCount++;
-            targetingLastShot = Time.time;
-            AmmoCount.instance.SetAmmo(targetingMaxShots - targetingShotCount);
-
-            Vector3 acc = new Vector3(0f, -g, 0f);
-            Vector3 vel = dist / timeToHit;
-            vel.y = -v;
-
-            object[] args = new object[] {acc, vel, Quaternion.LookRotation(-hit.normal), timeToHit};
-            GameObject birdPooObject= PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BirdPoo"), rb.position, Quaternion.identity, 0, args);
         }
     }
 
@@ -381,11 +257,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
     }
 
-    public void SetHoveringGravity(bool enabled)
-    {
-        hoveringGravity = enabled;
-    }
-
     void Hovering()
     {
         anim.SetBool("flyingDown", false);
@@ -401,7 +272,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         if (frac >= 0.98f || frac <= 0.52f)
         {
             //UP
-            if (hoveringGravity && !input_lock_all)
+            if (!hover_gravity_disable && !input_lock_all)
                 rb.AddForce(new Vector3(0f, 55f + mg, 0f));
             else
                 rb.AddForce(new Vector3(0f, eqUpForce, 0f));
@@ -466,7 +337,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             else
             {
                 increasedAcceleration = 1;
-            }        
+            }
         }
 
         // When the bird starts moving it should always start from minimum acceleration
@@ -482,7 +353,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         }
     }
 
-    void HeightControl() 
+    void HeightControl()
     {
         if (transform.position.y < 3f)
         {
@@ -490,7 +361,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             transform.position = new Vector3(transform.position.x, 14f, transform.position.z);
         }
     }
-    
+
     void Wind()
     {
         windParticle = GetComponentInChildren<ParticleSystem>();

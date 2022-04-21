@@ -53,19 +53,19 @@ public class Tutorial : MonoBehaviour
 			stage3.SetActive(false);
 			stage4.SetActive(false);
 			//stage5.SetActive(false); -- This is networked.
-        	pc.input_lock_x = true;
-        	pc.input_lock_y = true;
-			pc.input_lock_ad = true;
-			pc.input_disable_targeting = true;
-			pc.wind_disable = true;
-			pc.SetHoveringGravity(false);
+			PlayerControllerNEW.input_lock_x = true;
+			PlayerControllerNEW.input_lock_y = true;
+			PlayerControllerNEW.input_lock_ad = true;
+			PlayerControllerNEW.input_lock_targeting = true;
+			PlayerControllerNEW.wind_disable = true;
+			PlayerControllerNEW.hover_gravity_disable = true;
 			text.text = "Hold <b>W</b> to fly through the rings ahead.\n" +
 				"You can press <b>X</b> to exit the tutorial.";
 			break;
 		case 1:
 			stage2.SetActive(true);
-			pc.input_lock_x = false;
-			pc.input_lock_ad = false;
+			PlayerControllerNEW.input_lock_x = false;
+			PlayerControllerNEW.input_lock_ad = false;
 			text.text =
 				"Keep hold of <b>W</b> to use your mouse or trackpad to steer.\n" +
 				"You can also use <b>A</b> and <b>D</b> for small turns.\n";
@@ -74,7 +74,7 @@ public class Tutorial : MonoBehaviour
 			break;
 		case 2:
 			stage3.SetActive(true);
-			pc.input_lock_y = false;
+			PlayerControllerNEW.input_lock_y = false;
 			text.text =
 				"You can pitch with the mouse while holding <b>W</b>.\n" +
 				"Continue through the rings ahead.";
@@ -86,13 +86,12 @@ public class Tutorial : MonoBehaviour
 			break;
 		case 4:
 			stage5.SetActive(true);
-			pc.input_disable_targeting = false;
+			PlayerControllerNEW.input_lock_targeting = false;
 			text.text = "Fire poop with the left mouse button.\n" +
 			            "Your poop supply will show on the top right.\n" +
 			            "Hit the blue targets below, but avoid the innocents.";
 
 			audiomng.Play("FirePoop");
-			
 			break;
 		case 5:
 			text.text = "That child is littering! To defeat minibosses like him you must all ruin their day.";
@@ -109,7 +108,6 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(false);
 			stage3.SetActive(false);
 			stage4.SetActive(false);
-			// pc.input_lock_ad = false;
 			// pc.wind_disable = false;
 			text.transform.parent.GetComponent<Image>()
 				.CrossFadeAlpha(0f, 5f, false);
@@ -143,18 +141,17 @@ public class Tutorial : MonoBehaviour
 		GameObject spawn = spawns
 			[PhotonNetwork.LocalPlayer.ActorNumber % spawns.Length];
 		pc.PutAt(spawn.transform.position, spawn.transform.rotation);
-		pc.input_disable_targeting =
-			pc.input_lock_ad =
-			pc.input_lock_x =
-			pc.input_lock_y =
-			// pc.wind_disable = 
+		PlayerControllerNEW.input_lock_targeting =
+			PlayerControllerNEW.input_lock_ad =
+			PlayerControllerNEW.input_lock_x =
+			PlayerControllerNEW.input_lock_y =
+			PlayerControllerNEW.hover_gravity_disable =
 				false;
 		alertText.enabled = false;
 
     audiomng.Stop("TutorialIntro");
 		/* Any excuse not to change the scene... */
 		text.transform.parent.gameObject.SetActive(false);
-		pc.SetHoveringGravity(true);
 		Destroy(this);
 	}
 

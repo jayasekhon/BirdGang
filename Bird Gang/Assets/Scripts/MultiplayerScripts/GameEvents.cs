@@ -64,6 +64,7 @@ public class GameEvents : MonoBehaviour
 
 	// Hack: static.
 	private static readonly List<CallbackItem> callbacks = new List<CallbackItem>();
+	private static readonly List<bool> beginCalled = new List<bool>();
 
 	public static readonly Stage[] serverAgenda =
 	{
@@ -96,6 +97,7 @@ public class GameEvents : MonoBehaviour
 				Debug.LogError("Holder has registered twice for events. This is probably not intended.");
 		}
 		callbacks.Add(new CallbackItem(that, gameStageFilter, type_filter));
+		beginCalled.Add(false);
 	}
 
 	[PunRPC]
@@ -134,24 +136,33 @@ public class GameEvents : MonoBehaviour
 		{
 			Debug.Log("Next stage.");
 		unlikely_loop:
-			bool finished = (stageIndex + 1 == ourAgenda.Count);
-			foreach (CallbackItem h in callbacks)
+			bool started = (stageIndex > 0);
+			bool finished = (stageIndex + 1 >= ourAgenda.Count);
+			Stage s = started ? ourAgenda[stageIndex] : default;
+			Stage spp = finished ? default : ourAgenda[stageIndex + 1];
+			stageIndex++;
+			for (int i = 0; i < callbacks.Count; i++)
 			{
+				CallbackItem h = callbacks[i];
 				if (
-					stageIndex != -1 &&
-					h.gameStage.HasFlag(ourAgenda[stageIndex].GameStage) &&
+					started &&
+					h.gameStage.HasFlag(s.GameStage) &&
 					h.type.HasFlag(STAGE_CALLBACK.END)
 				)
-					h.holder.OnStageEnd(ourAgenda[stageIndex]);
+					h.holder.OnStageEnd(s);
 
 				if (
 					!finished &&
-					h.gameStage.HasFlag(ourAgenda[stageIndex + 1].GameStage) &&
+					h.gameStage.HasFlag(spp.GameStage) &&
 					h.type.HasFlag(STAGE_CALLBACK.BEGIN)
 				)
-					h.holder.OnStageBegin(ourAgenda[stageIndex + 1]);
+				{
+					if (beginCalled[i])
+						Debug.LogError($"Please tell Joe: Begin has been called twice on stage {stageIndex}\nStage: {spp}\nCallback: {h}.");
+					h.holder.OnStageBegin(spp);
+					beginCalled[i] = 0 == (h.gameStage & ~spp.GameStage);
+				}
 			}
-			stageIndex++;
 			if (finished)
 			{
 				nextStageLocalTime = float.PositiveInfinity;
