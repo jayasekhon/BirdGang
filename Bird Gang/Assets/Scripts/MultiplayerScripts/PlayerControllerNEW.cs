@@ -500,6 +500,8 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     void Wind()
     {
         windParticle = GetComponentInChildren<ParticleSystem>();
+        // windParticle.gameObject.SetActive(true);
+        windParticle.Play();
         windParticle.enableEmission = false;
 
         if (wind_disable || input_lock_all)
@@ -550,6 +552,11 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         // change to tag after putting custom bulding tags
         if (collision.gameObject.layer == LayerMask.NameToLayer("SimpleWorldCollisions"))
         {
+            if (collision.gameObject.tag == "noCollision")
+            {
+                Debug.Log("no collision");
+                return;
+            }
             rb.AddRelativeForce(Vector3.back * 50, ForceMode.Impulse);
             FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");   
             Debug.Log("Hit Building");
