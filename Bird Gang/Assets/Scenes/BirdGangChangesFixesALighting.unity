@@ -19296,35 +19296,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4091278170753761138, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -152.89078
+      value: -180
       objectReference: {fileID: 0}
     - target: {fileID: 4091278170753761138, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 59.182423
+      value: 117.5
       objectReference: {fileID: 0}
     - target: {fileID: 4091278170753761138, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -409.31088
+      value: 105.16
       objectReference: {fileID: 0}
     - target: {fileID: 4091278170753761138, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.97060055
+      value: 0.9925076
       objectReference: {fileID: 0}
     - target: {fileID: 4091278170753761138, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0012125284
+      value: 0.12218323
       objectReference: {fileID: 0}
     - target: {fileID: 4091278170753761138, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.24069291
+      value: -0.000000030489364
       objectReference: {fileID: 0}
     - target: {fileID: 4091278170753761138, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000300687
+      value: 0.0000000037534114
       objectReference: {fileID: 0}
     - target: {fileID: 4091278170753761149, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: field of view
-      value: 60.000004
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
@@ -25261,6 +25261,10 @@ PrefabInstance:
     - target: {fileID: 5208736206947037116, guid: a6b7d09c40880bcd8a05d6472237242a, type: 3}
       propertyPath: m_Name
       value: Buildings
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208736206947037116, guid: a6b7d09c40880bcd8a05d6472237242a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5208736206947037116, guid: a6b7d09c40880bcd8a05d6472237242a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -39636,7 +39640,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1591076946}
   - component: {fileID: 1591076945}
-  - component: {fileID: 1591076947}
   m_Layer: 0
   m_Name: NavMesh Surface
   m_TagString: Untagged
@@ -39687,35 +39690,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1591076947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591076944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: -1372625422
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 257
-  m_UseGeometry: 0
-  m_DefaultArea: 3
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 1.3333334
-  m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 457a21f42dd634140b3bc4bb093e3d7a, type: 2}
 --- !u!1 &1591730465
 GameObject:
   m_ObjectHideFlags: 0
@@ -47028,6 +47002,10 @@ PrefabInstance:
       value: Roads
       objectReference: {fileID: 0}
     - target: {fileID: 9134547266429264289, guid: b4c07d2db4e4859feb6304fefd902d05, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9134547266429264289, guid: b4c07d2db4e4859feb6304fefd902d05, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -50805,6 +50783,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Background
       objectReference: {fileID: 0}
+    - target: {fileID: 1607011609652479152, guid: c97aba202982c4a53b33e160edd1ad09, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1607011609652479153, guid: c97aba202982c4a53b33e160edd1ad09, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -52737,6 +52719,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4c85b97d832c2a64789ddd32af9d268f, type: 2}
+    - target: {fileID: 603347457985004130, guid: e03555a28ce690e4c98a6473e9a5d1a5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4694054039930825340, guid: e03555a28ce690e4c98a6473e9a5d1a5, type: 3}
       propertyPath: sceneViewId
       value: 27
@@ -54835,6 +54821,10 @@ PrefabInstance:
     - target: {fileID: 4506305089824986988, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
       propertyPath: m_Name
       value: SpawnManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506305089824986988, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4506305089824986990, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
       propertyPath: m_RootOrder
@@ -61420,6 +61410,10 @@ PrefabInstance:
     - target: {fileID: 3484425176171504328, guid: c6e48f028eba3401d82841be1a613250, type: 3}
       propertyPath: m_Name
       value: allLamposts
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484425176171504328, guid: c6e48f028eba3401d82841be1a613250, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3484425176171504328, guid: c6e48f028eba3401d82841be1a613250, type: 3}
       propertyPath: m_StaticEditorFlags
