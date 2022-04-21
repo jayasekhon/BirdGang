@@ -6946,7 +6946,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Congratulations: {fileID: 8300000, guid: 3ef7cfa3599914de98bc44bf5ead189d, type: 3}
   fireworkEffect: {fileID: 1152886947}
-  switchers: []
   intro: {fileID: 1307188402}
   creditsScreen: {fileID: 212907737}
 --- !u!82 &602647449
@@ -12845,7 +12844,6 @@ MonoBehaviour:
   CarnivalStart: {fileID: 1823482259}
   CarnivalFinish: {fileID: 1699537374}
   MayorIntro: {fileID: 8300000, guid: a08a3d6e5ad7b44e58945173c738d858, type: 3}
-  switchers: []
   intro: {fileID: 1307188402}
 --- !u!4 &943766892
 Transform:
@@ -18952,7 +18950,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Introduction: {fileID: 8300000, guid: dd5f9442c2561465a9cbcd1d831ef461, type: 3}
-  switchers: []
+  switcher: {fileID: 0}
 --- !u!4 &1307188405
 Transform:
   m_ObjectHideFlags: 0
@@ -24106,7 +24104,6 @@ MonoBehaviour:
   rightDoor: {fileID: 986076950}
   bankAlarm: {fileID: 905656566}
   RobberIntro: {fileID: 8300000, guid: 65e74ae4669114c6ab5c1748c03a508a, type: 3}
-  switchers: []
   intro: {fileID: 1307188402}
 --- !u!4 &1609914052
 Transform:
@@ -25204,7 +25201,6 @@ MonoBehaviour:
   StormHowl: {fileID: 8300000, guid: 50326c9a642c34f868e4d0b25f016862, type: 3}
   outRenderer: {fileID: 915343667}
   inRenderer: {fileID: 1101063994}
-  switchers: []
   intro: {fileID: 1307188402}
   fountain: {fileID: 1766975385}
   fountainParticles: {fileID: 1766975384}
@@ -30596,6 +30592,94 @@ PrefabInstance:
     - target: {fileID: 4506305089824986990, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953156616471118, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953156694807120, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157067929844, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157107366334, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157162726197, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157176876609, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 43
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157276787645, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157449431041, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157479247612, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157504037232, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157858658673, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157890491695, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953157990488484, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158006086000, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 44
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158022166650, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158062762622, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158090335375, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 41
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158287384693, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158320513189, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158430621182, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158431450876, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782953158585300685, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
+      propertyPath: sceneViewId
+      value: 54
       objectReference: {fileID: 0}
     - target: {fileID: 8304729922505955443, guid: ae8331b37c1f94954a296e4eb125fb78, type: 3}
       propertyPath: sceneViewId
