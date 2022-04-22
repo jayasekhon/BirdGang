@@ -7,6 +7,7 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 	public RawImage uiImage;
 	private Texture2D tex;
 	public Text text;
+	public Text objective;
 
 	private float totalTime;
 	private float timeElapsed;
@@ -25,6 +26,7 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 			TextureCreationFlags.None);
 		uiImage.texture = tex;
 		text.text = "";
+		objective.text = "";
 	}
 
 	void Start()
@@ -95,6 +97,24 @@ exit:
 
 	public void OnStageBegin(GameEvents.Stage stage)
 	{
+		switch (stage.GameStage)
+		{
+			case GAME_STAGE.TUTORIAL:
+				objective.text = "Objective- Complete the tutorial";
+				break;
+			case GAME_STAGE.ROBBERY:
+				objective.text = "Objective- Shoot the robbers";
+				break;
+			case GAME_STAGE.POLITICIAN:
+				objective.text = "Objective- Shoot the politician";
+				break;
+			case GAME_STAGE.CARNIVAL:
+				objective.text = "Objective- Shoot the balloons";
+				break;
+			default:
+				break;
+
+		}
 	}
 
 	public void OnStageEnd(GameEvents.Stage stage)

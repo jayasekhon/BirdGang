@@ -414,10 +414,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7982333820530878513}
-  - component: {fileID: 4306446069193060577}
+  - component: {fileID: 4226767453348239147}
   m_Layer: 8
   m_Name: spruceTree
-  m_TagString: Untagged
+  m_TagString: noCollision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -444,8 +444,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &4306446069193060577
-MeshCollider:
+--- !u!65 &4226767453348239147
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -454,10 +454,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3786762493694643862, guid: 07f6f2105f064d047971534057f2e0e1, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.065, z: 0.02}
+  m_Center: {x: 0, y: 0.035, z: 0}
 --- !u!1 &2841822362065383000
 GameObject:
   m_ObjectHideFlags: 0

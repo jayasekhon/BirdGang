@@ -10,9 +10,11 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
     AudioSource voiceover;
     public AudioClip Introduction;
 
-    GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    GameObject CM_manager;
+    public CineMachineSwitcher switcher;
 
+    LightingSettings lightingChanges;
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -24,8 +26,9 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.INTRO,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
-        
+
         voiceover = GetComponent<AudioSource>(); 
+        lightingChanges = GetComponent<LightingSettings>();
     }
 
     void Start() 
@@ -36,17 +39,12 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-        foreach (GameObject m in CM_managers) 
-        {
-            switchers.Add(m.GetComponent<CineMachineSwitcher>());
-        }
-        // Debug.Log("switchers "+switchers.Count);
-        
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Intro();
-        }
+        PlayerControllerNEW.input_lock_all = true;
+        CM_manager = GameObject.FindGameObjectWithTag("cutsceneManager");
+        switcher = CM_manager.GetComponent<CineMachineSwitcher>();
+        switcher.Intro();
+
+        lightingChanges.DayLighting();
 
         StartCoroutine(ExecuteAfterTime());
     }
@@ -57,13 +55,13 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         // yield return new WaitForSeconds(5.5f);
         // cutsceneManagerAnim.Play("Finale");
         voiceover.PlayOneShot(Introduction, 1f);
-        yield return new WaitForSeconds(20f);
+        yield return new WaitForSeconds(21f);
+        PlayerControllerNEW.input_lock_all = false;
         FindObjectOfType<AudioManager>().Play("TutorialIntro");
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)

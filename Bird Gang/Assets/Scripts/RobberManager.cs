@@ -8,8 +8,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 {
     private GameObject robber;
 
-    [SerializeField] GameObject leftDoor;
-    [SerializeField] GameObject rightDoor;
+    // [SerializeField]
+    GameObject leftDoor;
+    // [SerializeField] 
+    GameObject rightDoor;
     [SerializeField] GameObject bankAlarm;
     Animator leftAnim;
     Animator rightAnim;
@@ -21,7 +23,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     public AudioClip RobberIntro;
 
     // GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
     // Start is called before the first frame update
@@ -36,6 +38,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.ROBBERY,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
+        leftDoor = GameObject.FindGameObjectWithTag("LeftDoor");
+        rightDoor = GameObject.FindGameObjectWithTag("RightDoor");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
         voiceover = GetComponent<AudioSource>();
@@ -59,11 +63,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        switchers = intro.GetComponent<IntroManager>().switchers;
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Robber();
-        }
+        PlayerControllerNEW.input_lock_all = true;
+        switcher = intro.GetComponent<IntroManager>().switcher;
+        switcher.Robber();
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
@@ -79,7 +81,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         //let alarm run alone as boss explains round
         yield return new WaitForSeconds(4f);
-        //voiceover.PlayOneShot(RobberIntro, 1f);
+        voiceover.PlayOneShot(RobberIntro, 1f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
         
@@ -99,6 +101,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         }
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
+        yield return new WaitForSeconds(5f);
+        PlayerControllerNEW.input_lock_all = false;
     }
 
     public void gatherCrowd(){

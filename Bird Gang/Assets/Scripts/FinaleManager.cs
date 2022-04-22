@@ -10,12 +10,12 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
     AudioSource voiceover;
     public AudioClip Congratulations;
+
     GameObject fireworks;
     public VisualEffect fireworkEffect;
 
-
     // GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
     public Image creditsScreen; 
@@ -31,7 +31,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.FINALE,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
-        
+
         voiceover = GetComponent<AudioSource>(); 
     }
 
@@ -51,26 +51,21 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     //     }
     // }
 
-//     void Start() 
-//     {
-//         cutsceneManager = GameObject.FindGameObjectWithTag("cutsceneManager");
-//         fireworks = GameObject.FindGameObjectWithTag("fireworks");
-//         fireworks.SetActive(true);
-
-//         cutsceneManagerAnim = cutsceneManager.GetComponent<Animator>();
-//         fireworkEffect = fireworks.GetComponent<VisualEffect>();
-//         fireworkEffect.Play();
-//     }
+    void Start() 
+    {
+        fireworks = GameObject.FindGameObjectWithTag("fireworks");
+        fireworks.SetActive(true);
+        fireworkEffect = fireworks.GetComponent<VisualEffect>();
+    }
 
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        switchers = intro.GetComponent<IntroManager>().switchers;
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Finale();
-        }
+        PlayerControllerNEW.input_lock_all = true;
+        switcher = intro.GetComponent<IntroManager>().switcher;
+        switcher.Finale();
         StartCoroutine(ExecuteAfterTime());
+        fireworkEffect.Play();
     }
 
     IEnumerator ExecuteAfterTime()

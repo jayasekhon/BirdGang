@@ -51,26 +51,39 @@ public class Launcher : MonoBehaviourPunCallbacks
 			return;
 		}
 			
-		if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
+		CheckValidNumPlayersRdy();
+	}
+	
+	void CheckValidNumPlayersRdy()
+	{
+		if (PhotonNetwork.IsMasterClient)
 		{
-			waitingPlayersRdy.SetActive(false);
-			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+			if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
+			{
+				waitingPlayersRdy.SetActive(false);
+				startGameButton.SetActive(true);
+			}
+			else 
+			{
+				startGameButton.SetActive(false);
+				waitingPlayersRdy.SetActive(true);
+			}
 		}
 		else 
 		{
 			startGameButton.SetActive(false);
-			waitingPlayersRdy.SetActive(true);
+			waitingPlayersRdy.SetActive(false);
 		}
 	}
-	
+
+
 	[PunRPC]
 	public virtual void IncrementPlayersReady()
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
 			numPlayersRdy += 1;
-		}
-			
+		}			
 	}
 
 	[PunRPC]
@@ -78,9 +91,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
-			numPlayersRdy -= 1;
-		}
-			
+			if (numPlayersRdy > 0)
+				numPlayersRdy -= 1;
+		}			
 	}
 
 	[PunRPC]
@@ -149,6 +162,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
 		}
+		CheckValidNumPlayersRdy(); // If a master leaves a rejoins want to reset the scene so they see it as a client.
 	}
 
 	public void ConfirmReady()
@@ -167,14 +181,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public override void OnMasterClientSwitched(Player newMasterClient)
 	{
-		if (numPlayersRdy == PhotonNetwork.PlayerList.Length)
-		{
-			startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-		}
-		else
-		{
-			waitingPlayersRdy.SetActive(true);
-		}
+		CheckValidNumPlayersRdy();
 		photonView.RPC("SendNewMasterReadyList", RpcTarget.All, numPlayersRdy);
 	}
 

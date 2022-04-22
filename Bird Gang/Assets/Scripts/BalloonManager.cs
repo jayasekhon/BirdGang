@@ -10,20 +10,24 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public AudioClip CarnivalIntro;
     public AudioClip StormHowl;
     private bool running = false;
-
     
-    private float windForce = 210f;
+    private float windForce = 100f;
     bool centre = true;
     private Vector3 direction;
     public Renderer outRenderer;
     public Renderer inRenderer;
 
-    // GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
 
     [SerializeField] GameObject fountain;
     [SerializeField] GameObject fountainParticles;
+
+    ChangeClouds changeCloudsScript;
+
+    public float numberOfBalloons;
+    Transform child;
+    List<BalloonAgent> balloons;
 
     // Start is called before the first frame update
     void Awake()
@@ -38,8 +42,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
         
         voiceover = GetComponent<AudioSource>();
-       
-
+        changeCloudsScript = GetComponent<ChangeClouds>();
     }
 
     // void Start() 
@@ -60,22 +63,27 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {   
-        switchers = intro.GetComponent<IntroManager>().switchers;
+        PlayerControllerNEW.input_lock_all = true;
+        switcher = intro.GetComponent<IntroManager>().switcher;
         voiceover.PlayOneShot(StormHowl, 0.5f);
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Carnival();
-        }
+        //call another script to change clouds
+        changeCloudsScript.ColourChange();
+
+        switcher.Carnival();
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+            balloons = new List<BalloonAgent>();
+            SpawnBalloons();
         }
         running = true;
         fountain.SetActive(false);
         fountainParticles.SetActive(false);
         //switcher starts by calling overhead cam.
+        
         StartCoroutine(ExecuteAfterTime());
-    }
+       
+        }
 
     IEnumerator ExecuteAfterTime()
     {
@@ -88,15 +96,56 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
+        yield return new WaitForSeconds(5f); //time to pan back to main camera
+        PlayerControllerNEW.input_lock_all = false;
+        PlayerControllerNEW.wind_disable = false;
     }
+
+    void SpawnBalloons()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            for (int i = 0; i < numberOfBalloons; i++)
+            {
+                Vector3 position = new Vector3(0, 0, 0);
+                if (i == 0) position = new Vector3(-6, 1, -3);
+                if (i == 1) position = new Vector3(-6, 1, -27); ;
+                if (i == 2) position = new Vector3(-30, 1, -14);
+                if (i == 3) position = new Vector3(50, 1, -8);
+                Vector3 start = position;
+                GameObject balloonParentObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonParent"), start, Quaternion.identity);
+                GameObject balloonObject = balloonParentObject.transform.GetChild(0).gameObject;
+
+                
+                BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
+                //balloon.SetCurrentID(i);
+                //balloon.SetID(i + 1);
+            }
+        }
+    }
+
     void Update()
     {
-        Wind();
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            //Wind();
+            if (running)
+
+            {
+                foreach (GameObject o in GameObject.FindGameObjectsWithTag("Balloon_target"))
+                {
+                    o.GetComponent<BalloonScript>().start = true;
+                }
+            }
+        }
     }
+    
     void Wind()
     {
         if (running)
+
         {
+
             direction = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
             Bounds outBounds = outRenderer.bounds;
