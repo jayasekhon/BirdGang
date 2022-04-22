@@ -424,9 +424,11 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
                 Debug.Log("no collision");
                 return;
             }
-            rb.AddRelativeForce(Vector3.back * 50, ForceMode.Impulse);
-            FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");   
-            Debug.Log("Hit Building");
+            else 
+            {
+                rb.AddRelativeForce(Vector3.back * 50, ForceMode.Impulse);
+                FindObjectOfType<AudioManager>().Play("MoveBackSoundSwoosh");   
+            }
         }
     }
 

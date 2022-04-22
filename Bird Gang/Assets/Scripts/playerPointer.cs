@@ -71,6 +71,7 @@ public class playerPointer : MonoBehaviour
 
     void GetPlayerPhotonViews()
     {
+        // Debug.Log(playersInGame.Length);
         for (int p = 0; p < playersInGame.Length; p++)
         {
             playerPVs[p] = playersInGame[p].GetComponent<PhotonView>();
