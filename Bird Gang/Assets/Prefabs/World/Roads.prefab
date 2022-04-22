@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 9134547266429264288}
   m_Layer: 0
   m_Name: Roads
-  m_TagString: Untagged
+  m_TagString: noCollision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1001,7 +1001,7 @@ GameObject:
   - component: {fileID: 9134547267511664484}
   m_Layer: 0
   m_Name: Streets
-  m_TagString: Untagged
+  m_TagString: noCollision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1053,7 +1053,7 @@ GameObject:
   - component: {fileID: 9134547267593976800}
   m_Layer: 0
   m_Name: Street1
-  m_TagString: Untagged
+  m_TagString: noCollision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4010,6 +4010,10 @@ PrefabInstance:
     - target: {fileID: 4251660000860610003, guid: c4788c17917c140fc8df25ace452dc54, type: 3}
       propertyPath: m_Name
       value: RoadTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 4251660000860610003, guid: c4788c17917c140fc8df25ace452dc54, type: 3}
+      propertyPath: m_TagString
+      value: noCollision
       objectReference: {fileID: 0}
     - target: {fileID: 5326933842714448599, guid: c4788c17917c140fc8df25ace452dc54, type: 3}
       propertyPath: m_RootOrder

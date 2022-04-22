@@ -84,7 +84,7 @@ public class Tutorial : MonoBehaviour
 			pc.input_disable_targeting = false;
 			text.text = "Fire poop with the left mouse button.\n" +
 			            "Your poop supply will show on the top right.\n" +
-			            "Hit the targets below, but avoid the innocent OAPs.";
+			            "Hit the blue targets below, but avoid the innocent OAPs.";
 
 			FindObjectOfType<AudioManager>().Play("FirePoop");
 			
