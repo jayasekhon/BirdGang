@@ -25,8 +25,9 @@ public class TutorialStage5 : MonoBehaviour
 			if (staticTargets.childCount == 0)
 			{
 				tut.AdvanceTutorial();
-				dynamicTargets.gameObject.SetActive(true);
-				ctr++;
+				Destroy(this);
+				// dynamicTargets.gameObject.SetActive(true);
+				// ctr++;
 			}
 			break;
 		case 1:

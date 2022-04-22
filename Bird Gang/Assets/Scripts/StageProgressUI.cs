@@ -100,16 +100,16 @@ exit:
 		switch (stage.GameStage)
 		{
 			case GAME_STAGE.TUTORIAL:
-				objective.text = "Objective- Complete the tutorial";
+				objective.text = "Objective - Complete the tutorial";
 				break;
 			case GAME_STAGE.ROBBERY:
-				objective.text = "Objective- Shoot the robbers";
+				objective.text = "Objective - Stop the robber \nObjective - Keep pooping on those bad people";
 				break;
 			case GAME_STAGE.POLITICIAN:
-				objective.text = "Objective- Shoot the politician";
+				objective.text = "Objective - Poop on the politician \nObjective - Keep pooping on those bad people";
 				break;
 			case GAME_STAGE.CARNIVAL:
-				objective.text = "Objective- Shoot the balloons";
+				objective.text = "Objective - Weigh the balloons down \nObjective - Keep pooping on those bad people";
 				break;
 			default:
 				break;
