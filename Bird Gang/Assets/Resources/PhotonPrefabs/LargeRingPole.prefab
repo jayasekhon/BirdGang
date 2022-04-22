@@ -1582,7 +1582,7 @@ GameObject:
   - component: {fileID: 8596634190014763911}
   - component: {fileID: 396943043982904328}
   - component: {fileID: 1908527440064797297}
-  - component: {fileID: 4802162205255044036}
+  - component: {fileID: 1376149440509169353}
   m_Layer: 8
   m_Name: RingPole
   m_TagString: Untagged
@@ -1653,8 +1653,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4802162205255044036
-MeshCollider:
+--- !u!65 &1376149440509169353
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1663,10 +1663,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2187466711202718155, guid: adaf90ae2f3afdd4881e921d71652820, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 1.3396335, z: 0.019999998}
+  m_Center: {x: -4.656613e-10, y: -0.000000059604645, z: 0}
 --- !u!1 &8025611806892382869
 GameObject:
   m_ObjectHideFlags: 0
