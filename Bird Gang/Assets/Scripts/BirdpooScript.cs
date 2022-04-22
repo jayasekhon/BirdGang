@@ -152,12 +152,12 @@ public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
 			}
 		}
 
-		//foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
-		//{
-		//	meshRenderer.enabled = false;
-		//}
-		//transform.SetParent(tar.transform);
-		var p = gameObject.GetComponentInChildren<ParticleSystem>();
+        foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+        {
+            meshRenderer.enabled = false;
+        }
+        //transform.SetParent(tar.transform);
+        var p = gameObject.GetComponentInChildren<ParticleSystem>();
 		var e = p.emission;
 		e.enabled = false;
 		p.Clear();
