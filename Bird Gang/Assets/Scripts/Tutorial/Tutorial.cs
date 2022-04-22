@@ -62,8 +62,8 @@ public class Tutorial : MonoBehaviour
 			pc.input_lock_x = false;
 			pc.input_lock_ad = false;
 			text.text =
-				"Keep hold of <b>W</b> to use your mouse to steer. \n" +
-				"You can also use <b>A</b> and <b>D</b> to turn.\n";
+				"Keep hold of <b>W</b> to use your mouse or trackpad to steer. \n" +
+				"You can also use <b>A</b> and <b>D</b> for small turns.\n";
 			
 			FindObjectOfType<AudioManager>().Play("Turning");
 			break;
@@ -77,14 +77,14 @@ public class Tutorial : MonoBehaviour
 		case 3:
 			stage4.SetActive(true);
 			text.text = "While holding <b>W</b>, you can tap <b>Space</b> to speed up.";
-			FindObjectOfType<AudioManager>().Play("Space");
+			FindObjectOfType<AudioManager>().Play("Speed");
 			break;
 		case 4:
 			stage5.SetActive(true);
 			pc.input_disable_targeting = false;
 			text.text = "Fire poop with the left mouse button.\n" +
 			            "Your poop supply will show on the top right.\n" +
-			            "Hit the blue targets below, but avoid the innocent OAPs.";
+			            "Hit the blue targets below, but avoid the innocents.";
 
 			FindObjectOfType<AudioManager>().Play("FirePoop");
 			
