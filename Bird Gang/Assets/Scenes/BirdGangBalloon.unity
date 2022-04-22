@@ -7022,7 +7022,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f4e3beab0f641ef815fb9367b70dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftDoor: {fileID: 0}
+  rightDoor: {fileID: 0}
+  bankAlarm: {fileID: 0}
   RobberIntro: {fileID: 8300000, guid: 65e74ae4669114c6ab5c1748c03a508a, type: 3}
+  switchers: []
+  intro: {fileID: 0}
 --- !u!4 &439435519
 Transform:
   m_ObjectHideFlags: 0
@@ -14004,6 +14009,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2736991795805399459, guid: 83bee4f3ec06ba39da5ea94c09f0058e, type: 3}
+      propertyPath: sceneViewId
+      value: 26
+      objectReference: {fileID: 0}
     - target: {fileID: 3879996791972504077, guid: 83bee4f3ec06ba39da5ea94c09f0058e, type: 3}
       propertyPath: text
       value: 
@@ -15338,6 +15347,10 @@ MonoBehaviour:
   StormHowl: {fileID: 8300000, guid: db7c83f705a274d209956a39bba5a543, type: 3}
   outRenderer: {fileID: 1187120641}
   inRenderer: {fileID: 1291807848}
+  switchers: []
+  intro: {fileID: 0}
+  fountain: {fileID: 0}
+  fountainParticles: {fileID: 0}
 --- !u!82 &868036957
 AudioSource:
   m_ObjectHideFlags: 0
@@ -33424,6 +33437,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Congratulations: {fileID: 8300000, guid: 3ef7cfa3599914de98bc44bf5ead189d, type: 3}
+  fireworkEffect: {fileID: 0}
+  switchers: []
+  intro: {fileID: 0}
+  creditsScreen: {fileID: 0}
 --- !u!82 &1852466029
 AudioSource:
   m_ObjectHideFlags: 0
@@ -35412,6 +35429,8 @@ MonoBehaviour:
   CarnivalStart: {fileID: 1993329420}
   CarnivalFinish: {fileID: 1407712159}
   MayorIntro: {fileID: 8300000, guid: a08a3d6e5ad7b44e58945173c738d858, type: 3}
+  switchers: []
+  intro: {fileID: 0}
 --- !u!4 &1937843320
 Transform:
   m_ObjectHideFlags: 0

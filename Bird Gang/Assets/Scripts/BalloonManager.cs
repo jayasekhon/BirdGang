@@ -11,7 +11,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public AudioClip StormHowl;
     private bool running = false;
     
-    private float windForce = 210f;
+    private float windForce = 100f;
     bool centre = true;
     private Vector3 direction;
     public Renderer outRenderer;
@@ -77,8 +77,10 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         fountain.SetActive(false);
         fountainParticles.SetActive(false);
         //switcher starts by calling overhead cam.
+        
         StartCoroutine(ExecuteAfterTime());
-    }
+       
+        }
 
     IEnumerator ExecuteAfterTime()
     {
@@ -97,13 +99,26 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     void Update()
     {
-        Wind();
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            //Wind();
+            if (running)
+
+            {
+                foreach (GameObject o in GameObject.FindGameObjectsWithTag("Balloon_target"))
+                {
+                    o.GetComponent<BalloonScript>().start = true;
+                }
+            }
+        }
     }
     
     void Wind()
     {
         if (running)
+
         {
+
             direction = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
             Bounds outBounds = outRenderer.bounds;
