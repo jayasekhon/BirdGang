@@ -64,7 +64,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public void OnStageBegin(GameEvents.Stage stage)
     {   
         PlayerControllerNEW.input_lock_all = true;
-        PlayerControllerNEW.wind_disable = false;
         switcher = intro.GetComponent<IntroManager>().switcher;
         voiceover.PlayOneShot(StormHowl, 0.5f);
         //call another script to change clouds
@@ -99,6 +98,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
+        PlayerControllerNEW.wind_disable = false;
     }
 
     void SpawnBalloons()
