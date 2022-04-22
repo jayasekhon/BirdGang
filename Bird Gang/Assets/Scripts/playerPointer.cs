@@ -38,7 +38,7 @@ public class playerPointer : MonoBehaviour
     
     IEnumerator InitCoroutine()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
 
         GameObject[] playersInGameUnsorted = GameObject.FindGameObjectsWithTag("Player");
         playersInGame = new GameObject[PhotonListOfPlayers.Length];
