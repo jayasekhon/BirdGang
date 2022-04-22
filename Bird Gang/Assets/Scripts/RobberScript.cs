@@ -18,13 +18,11 @@ public class RobberScript : MonoBehaviour
     {
         if (timePassed < 2f) 
         {
-            // gameObject.GetComponent<MeshRenderer>().enabled = true;
             child.gameObject.SetActive(true);
             gameObject.GetComponentInChildren<Canvas>().enabled = true;
         }
-        else if (timePassed >= 2f && timePassed <= 4f)
+        else if (timePassed >= 2f && timePassed <= 3f)
         {
-            // gameObject.GetComponent<MeshRenderer>().enabled = false;
             child.gameObject.SetActive(false);
             gameObject.GetComponentInChildren<Canvas>().enabled = false;
         }
