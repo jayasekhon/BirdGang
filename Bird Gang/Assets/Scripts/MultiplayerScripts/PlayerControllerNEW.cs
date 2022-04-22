@@ -361,7 +361,10 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             Vector3 position = (transform.forward * activeForwardSpeed * fixedDeltaTime);
             rb.AddForce(position, ForceMode.Impulse); 
 
-            windParticle.enableEmission = false;
+            windParticle = GetComponentInChildren<ParticleSystem>();
+            var emission = windParticle.emission;
+            emission.enabled = false;
+            
             upForce.force = new Vector3(0,0,0);
             upForce.relativeForce = new Vector3(0,0,0);
             windTimePassed = 0;
@@ -500,9 +503,10 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     void Wind()
     {
         windParticle = GetComponentInChildren<ParticleSystem>();
-        // windParticle.gameObject.SetActive(true);
         windParticle.Play();
-        windParticle.enableEmission = false;
+        var emission = windParticle.emission;
+        emission.enabled = false;
+        // windParticle.enableEmission = false;
 
         if (wind_disable || input_lock_all)
         {
@@ -536,7 +540,8 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             windParticle.transform.rotation = Quaternion.Euler(0, -90 * pushDirection, 0);
             // windParticle.transform.position = new Vector3(15 * pushDirection, 0, 0);
 
-            windParticle.enableEmission = true; 
+            emission.enabled = true;
+            // windParticle.enableEmission = true; 
             windTimePassed += Time.fixedDeltaTime;  
             // Debug.Log(pushDirection);
         }
