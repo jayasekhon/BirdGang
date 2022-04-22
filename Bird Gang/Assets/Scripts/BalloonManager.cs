@@ -25,8 +25,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     ChangeClouds changeCloudsScript;
 
-    private PlayerControllerNEW pc;
-
     public float numberOfBalloons;
     Transform child;
     List<BalloonAgent> balloons;
@@ -65,8 +63,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {   
-        pc = PlayerControllerNEW.Ours;
-        pc.input_lock_all = true;
+        PlayerControllerNEW.input_lock_all = true;
+        PlayerControllerNEW.wind_disable = false;
         switcher = intro.GetComponent<IntroManager>().switcher;
         voiceover.PlayOneShot(StormHowl, 0.5f);
         //call another script to change clouds
@@ -100,7 +98,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f); //time to pan back to main camera
-        pc.input_lock_all = false;
+        PlayerControllerNEW.input_lock_all = false;
     }
 
     void SpawnBalloons()

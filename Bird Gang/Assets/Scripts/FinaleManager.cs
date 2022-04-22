@@ -20,8 +20,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     public Image creditsScreen; 
 
-    private PlayerControllerNEW pc;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -63,8 +61,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        pc = PlayerControllerNEW.Ours;
-        pc.input_lock_all = true;
+        PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
         StartCoroutine(ExecuteAfterTime());

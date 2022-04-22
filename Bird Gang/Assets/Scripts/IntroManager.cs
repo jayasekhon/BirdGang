@@ -39,6 +39,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        PlayerControllerNEW.input_lock_all = true;
         CM_manager = GameObject.FindGameObjectWithTag("cutsceneManager");
         switcher = CM_manager.GetComponent<CineMachineSwitcher>();
         switcher.Intro();
@@ -55,6 +56,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Finale");
         voiceover.PlayOneShot(Introduction, 1f);
         yield return new WaitForSeconds(21f);
+        PlayerControllerNEW.input_lock_all = false;
         FindObjectOfType<AudioManager>().Play("TutorialIntro");
     }
 

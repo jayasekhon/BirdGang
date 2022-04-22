@@ -26,8 +26,6 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     LightingSettings lightingChanges;
 
-    private PlayerControllerNEW pc;
-
     void Awake()
     {
         // if (!PhotonNetwork.IsMasterClient)
@@ -61,8 +59,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        pc = PlayerControllerNEW.Ours;
-        pc.input_lock_all = true;
+        PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Mayor();
         //switcher starts by calling overhead cam.
@@ -109,7 +106,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(5f);
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f); //time to pan back to main camera
-        pc.input_lock_all = false;
+        PlayerControllerNEW.input_lock_all = false;
        
         if (PhotonNetwork.IsMasterClient) 
         {
