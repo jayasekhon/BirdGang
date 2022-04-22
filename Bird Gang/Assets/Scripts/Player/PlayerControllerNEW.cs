@@ -416,12 +416,15 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     void OnCollisionEnter(Collision collision)
     {
+        if (!PV.IsMine)
+        {
+            return;
+        }
         // change to tag after putting custom bulding tags
         if (collision.gameObject.layer == LayerMask.NameToLayer("SimpleWorldCollisions") && !input_lock_all)
         {
-            if (collision.gameObject.tag == "noCollision")
+            if (collision.gameObject.tag == "noCollision" || collision.gameObject.tag == "garden")
             {
-                Debug.Log("no collision");
                 return;
             }
             else 
