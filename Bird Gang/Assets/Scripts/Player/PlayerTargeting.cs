@@ -29,6 +29,8 @@ public class PlayerTargeting : MonoBehaviour
 
 	private Camera cam;
 
+	PhotonView PV;
+
 	const string pooPrefab = "PhotonPrefabs/BirdPoo";
 
 	internal void Targeting(Vector3 mouseRay, bool fire)
@@ -162,6 +164,11 @@ public class PlayerTargeting : MonoBehaviour
 
 	void Start()
 	{
+		PV = GetComponent<PhotonView>();
+		if(!PV.IsMine) 
+		{
+			Destroy(this);
+		}
 		cam = Camera.main;
 		AmmoCount.instance.SetAmmo(shotMax, shotMax);
 		targetObj = Instantiate(targetObj);

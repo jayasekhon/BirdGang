@@ -114,7 +114,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             releasedCrowd = true;
         }
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(84f);
         lightingChanges.NightLighting();
     }
 

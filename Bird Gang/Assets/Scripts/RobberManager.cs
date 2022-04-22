@@ -8,8 +8,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 {
     private GameObject robber;
 
-    [SerializeField] GameObject leftDoor;
-    [SerializeField] GameObject rightDoor;
+    // [SerializeField]
+    GameObject leftDoor;
+    // [SerializeField] 
+    GameObject rightDoor;
     [SerializeField] GameObject bankAlarm;
     Animator leftAnim;
     Animator rightAnim;
@@ -36,6 +38,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.ROBBERY,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
+        leftDoor = GameObject.FindGameObjectWithTag("LeftDoor");
+        rightDoor = GameObject.FindGameObjectWithTag("RightDoor");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
         voiceover = GetComponent<AudioSource>();
