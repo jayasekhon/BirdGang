@@ -32,8 +32,12 @@ public class Tutorial : MonoBehaviour
 	// Quick hack.
 	public static Tutorial instance;
 
+	AudioManager audiomng;
+
 	public void AdvanceTutorial()
 	{
+		audiomng = FindObjectOfType<AudioManager>();
+
 		if (stage != 5)
 		{
 			rec_pos = pc.transform.position;
@@ -62,22 +66,22 @@ public class Tutorial : MonoBehaviour
 			pc.input_lock_x = false;
 			pc.input_lock_ad = false;
 			text.text =
-				"Keep hold of <b>W</b> to use your mouse or trackpad to steer. \n" +
+				"Keep hold of <b>W</b> to use your mouse or trackpad to steer.\n" +
 				"You can also use <b>A</b> and <b>D</b> for small turns.\n";
 			
-			FindObjectOfType<AudioManager>().Play("Turning");
+			audiomng.Play("Turning");
 			break;
 		case 2:
 			stage3.SetActive(true);
 			pc.input_lock_y = false;
 			text.text =
-				"You can pitch with the mouse while holding <b>W</b>\n" +
+				"You can pitch with the mouse while holding <b>W</b>.\n" +
 				"Continue through the rings ahead.";
 			break;
 		case 3:
 			stage4.SetActive(true);
 			text.text = "While holding <b>W</b>, you can tap <b>Space</b> to speed up.";
-			FindObjectOfType<AudioManager>().Play("Speed");
+			audiomng.Play("Speed");
 			break;
 		case 4:
 			stage5.SetActive(true);
@@ -86,13 +90,13 @@ public class Tutorial : MonoBehaviour
 			            "Your poop supply will show on the top right.\n" +
 			            "Hit the blue targets below, but avoid the innocents.";
 
-			FindObjectOfType<AudioManager>().Play("FirePoop");
+			audiomng.Play("FirePoop");
 			
 			break;
 		case 5:
 			text.text = "A thief! Give them their comeuppance.";
 
-			FindObjectOfType<AudioManager>().Play("HitBadPpl");
+			audiomng.Play("HitBadPpl");
 			break;
 		case 6:
 			text.text = "Tutorial completed, " +
@@ -145,7 +149,7 @@ public class Tutorial : MonoBehaviour
 					false;
 			alertText.enabled = false;
 
-			FindObjectOfType<AudioManager>().Stop("TutorialIntro");
+			audiomng.Stop("TutorialIntro");
 			/* Any excuse not to change the scene... */
 			text.transform.parent.gameObject.SetActive(false);
 			pc.SetHoveringGravity(true);
