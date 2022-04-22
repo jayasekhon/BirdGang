@@ -4,15 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System.IO;
-using UnityEngine.VFX;
+// using UnityEngine.VFX;
 
 public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
     AudioSource voiceover;
     public AudioClip Congratulations;
 
-    GameObject fireworks;
-    public VisualEffect fireworkEffect;
+    // GameObject fireworks;
+    // public VisualEffect fireworkEffect;
 
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
@@ -53,9 +53,9 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     void Start() 
     {
-        fireworks = GameObject.FindGameObjectWithTag("fireworks");
-        fireworks.SetActive(true);
-        fireworkEffect = fireworks.GetComponent<VisualEffect>();
+        // fireworks = GameObject.FindGameObjectWithTag("fireworks");
+        // fireworks.SetActive(true);
+        // fireworkEffect = fireworks.GetComponent<VisualEffect>();
     }
 
 
@@ -65,7 +65,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
         StartCoroutine(ExecuteAfterTime());
-        fireworkEffect.Play();
+        // fireworkEffect.Play();
     }
 
     IEnumerator ExecuteAfterTime()
