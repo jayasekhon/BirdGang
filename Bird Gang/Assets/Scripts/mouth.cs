@@ -5,11 +5,11 @@ using UnityEngine;
 public class mouth : MonoBehaviour
 {
 
- AudioClip[] sounds ; // set the array size and the sounds in the Inspector    
+  
  private float[] freqData ;
  private int nSamples = 256;
  private int fMax = 24000;
- private AudioSource audio ; // AudioSource attached to this object
+ 
  float  BandVol(float fLow, float fHigh){
      fLow = Mathf.Clamp(fLow, 20, fMax); // limit low...
      fHigh = Mathf.Clamp(fHigh, fLow, fMax); // and high frequencies
@@ -32,14 +32,13 @@ float frqLow = 150;
 float frqHigh = 3000;
 private float y0;
 
-public bool enabled;
+public bool mouth_enabled;
 void Start()
 {
 
-    audio = GetComponent< AudioSource > (); // get AudioSource component
     y0 = mouth_position.transform.position.y;
     freqData = new float[nSamples];
-    audio.Play();
+    
 }
 
 void Update()
@@ -48,10 +47,4 @@ void Update()
     
 }
 
-// A function to play sound N:
-void PlaySoundN(int N){
-
-    audio.clip = sounds[N];
-    audio.Play();
-}
 }

@@ -8,7 +8,7 @@ public class boss : MonoBehaviour
     public GameObject beak;
     public GameObject bottom_beak;
     private mouth mouth;
-    public bool enabled;
+    public bool boss_enabled;
     private bool flag;
     public bool mouth_enabled;
     // Start is called before the first frame update
@@ -20,9 +20,9 @@ public class boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (flag != enabled)
+        if (flag != boss_enabled)
         {
-            if (enabled)
+            if (boss_enabled)
             {
                 body.SetActive(true);
                 beak.SetActive(true);
@@ -37,11 +37,11 @@ public class boss : MonoBehaviour
                 bottom_beak.SetActive(false);
                 
             }
-            flag = enabled;
+            flag = boss_enabled;
         }
-        if(enabled)
+        if(boss_enabled)
         {
-            mouth.enabled = mouth_enabled;
+            mouth.mouth_enabled = mouth_enabled;
             
         }
     }
