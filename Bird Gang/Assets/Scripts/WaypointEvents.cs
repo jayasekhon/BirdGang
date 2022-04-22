@@ -38,7 +38,6 @@ public class WaypointEvents: MonoBehaviour
             if (playerList[p].IsLocal)
             {
                 myIndex = p;
-                // return;
             }
         }
     }

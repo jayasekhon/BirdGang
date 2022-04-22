@@ -27,8 +27,12 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     // public AudioClip Crowd;
 
     // GameObject[] CM_managers;
-    public List<CineMachineSwitcher> switchers;
+    CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
+
+    LightingSettings lightingChanges;
+
+    private PlayerControllerNEW pc;
 
     void Awake()
     {
@@ -41,6 +45,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
         
         voiceover = GetComponent<AudioSource>();
+        lightingChanges = GetComponent<LightingSettings>();
     }
 
     // void Start() 
@@ -62,11 +67,10 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        switchers = intro.GetComponent<IntroManager>().switchers;
-        foreach (CineMachineSwitcher switcher in switchers) 
-        {
-            switcher.Mayor();
-        }
+        pc = PlayerControllerNEW.Ours;
+        pc.input_lock_all = true;
+        switcher = intro.GetComponent<IntroManager>().switcher;
+        switcher.Mayor();
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
@@ -115,13 +119,17 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         }
         yield return new WaitForSeconds(5f);
         // cutsceneManagerAnim.Play("Main");
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(5f); //time to pan back to main camera
+        pc.input_lock_all = false;
        
         if (PhotonNetwork.IsMasterClient) 
         {
             ReleaseCrowd();
             releasedCrowd = true;
         }
+
+        yield return new WaitForSeconds(4f);
+        lightingChanges.NightLighting();
     }
 
     void SpawnBalloons()

@@ -68,10 +68,10 @@ public class GameEvents : MonoBehaviour
 	public static readonly Stage[] serverAgenda =
 	{
 		new Stage(GAME_STAGE.INTRO, 21f),
-		new Stage(GAME_STAGE.TUTORIAL, 120f),
+		new Stage(GAME_STAGE.TUTORIAL, 10f),
 		new Stage(GAME_STAGE.ROBBERY, 120f),
-		new Stage(GAME_STAGE.POLITICIAN, 120f),
-		new Stage(GAME_STAGE.CARNIVAL, 120f),
+		new Stage(GAME_STAGE.POLITICIAN, 40f),
+		new Stage(GAME_STAGE.CARNIVAL, 40f),
 		new Stage(GAME_STAGE.FINALE, 25f),
 	};
 	private bool serverHasSerialised = false;
@@ -90,6 +90,11 @@ public class GameEvents : MonoBehaviour
 	/* We can't be sure that event manager exists when these functions are called. */
 	public static void RegisterCallbacks(GameEventCallbacks that, GAME_STAGE gameStageFilter, STAGE_CALLBACK type_filter)
 	{
+		foreach (CallbackItem c in callbacks)
+		{
+			if (c.holder.Equals(that))
+				Debug.LogError("Holder has registered twice for events. This is probably not intended.");
+		}
 		callbacks.Add(new CallbackItem(that, gameStageFilter, type_filter));
 	}
 
@@ -163,7 +168,6 @@ public class GameEvents : MonoBehaviour
 		}
 		else if (Time.time >= nextProgressLocalTime)
 		{
-			Debug.Log("End stage.");
 			float progress = (float)
 				(Time.time - nextStageLocalTime +
 				 ourAgenda[stageIndex].Duration) /
@@ -206,6 +210,6 @@ public class GameEvents : MonoBehaviour
 		}
 		nextStageLocalTime = Time.time + (float)
 			(startAtServerTimestamp - PhotonNetwork.ServerTimestamp) / 1000f;
-		Debug.Log($"Starting in {nextStageLocalTime - PhotonNetwork.Time}...");
+		Debug.Log($"Starting in {nextStageLocalTime - Time.time}...");
 	}
 }
