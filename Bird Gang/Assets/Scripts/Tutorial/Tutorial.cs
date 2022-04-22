@@ -96,7 +96,7 @@ public class Tutorial : MonoBehaviour
 		case 5:
 			text.text = "That child is littering! To defeat minibosses like him you must all ruin their day.";
 
-			audiomng.Play("HitBadPpl");
+			audiomng.Play("Child");
 			break;
 		case 6:
 			text.text = "Tutorial completed, " +
