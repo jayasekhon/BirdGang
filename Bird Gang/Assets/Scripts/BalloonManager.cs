@@ -27,6 +27,10 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     private PlayerControllerNEW pc;
 
+    public float numberOfBalloons;
+    Transform child;
+    List<BalloonAgent> balloons;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -72,6 +76,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+            balloons = new List<BalloonAgent>();
+            SpawnBalloons();
         }
         running = true;
         fountain.SetActive(false);
@@ -95,6 +101,29 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f); //time to pan back to main camera
         pc.input_lock_all = false;
+    }
+
+    void SpawnBalloons()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            for (int i = 0; i < numberOfBalloons; i++)
+            {
+                Vector3 position = new Vector3(0, 0, 0);
+                if (i == 0) position = new Vector3(-6, 1, -3);
+                if (i == 1) position = new Vector3(-6, 1, -27); ;
+                if (i == 2) position = new Vector3(-30, 1, -14);
+                if (i == 3) position = new Vector3(50, 1, -8);
+                Vector3 start = position;
+                GameObject balloonParentObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonParent"), start, Quaternion.identity);
+                GameObject balloonObject = balloonParentObject.transform.GetChild(0).gameObject;
+
+                
+                BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
+                //balloon.SetCurrentID(i);
+                //balloon.SetID(i + 1);
+            }
+        }
     }
 
     void Update()

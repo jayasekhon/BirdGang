@@ -16,12 +16,6 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     private bool releasedCrowd = false;
     List<List<AiController>> assignedAgents;
 
-    public float numberOfBalloons;
-    public Transform CarnivalStart;
-    public Transform CarnivalFinish;
-    Transform child;
-    List<BalloonAgent> balloons;
-
     AudioSource voiceover;
     public AudioClip MayorIntro;
     // public AudioClip Crowd;
@@ -112,11 +106,6 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(2.5f);
         // cutsceneManagerAnim.Play("OverheadCS");
 
-        if (PhotonNetwork.IsMasterClient) 
-        {
-            balloons = new List<BalloonAgent>();
-            SpawnBalloons();
-        }
         yield return new WaitForSeconds(5f);
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f); //time to pan back to main camera
@@ -130,34 +119,6 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
         yield return new WaitForSeconds(4f);
         lightingChanges.NightLighting();
-    }
-
-    void SpawnBalloons()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            for (int i = 0; i < numberOfBalloons; i++)
-            {
-                Vector3 position = new Vector3(0, 0, 0);
-                if (i == 0) position = new Vector3(-6, 1, -3);
-                if (i == 1) position = new Vector3(-6, 1, -27); ;
-                if (i == 2) position = new Vector3(-30, 1, -14);
-                if (i == 3) position = new Vector3(50, 1, -8);
-                Vector3 start = position;
-                GameObject balloonParentObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonParent"), start, Quaternion.identity);
-                GameObject balloonObject = balloonParentObject.transform.GetChild(0).gameObject;
-
-                
-                BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
-                //balloon.SetCurrentID(i);
-                //balloon.SetID(i + 1);
-
-                
-                
-            }
-        }
-     
-
     }
 
     void ReleaseCrowd()
