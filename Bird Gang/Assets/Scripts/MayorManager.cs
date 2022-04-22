@@ -70,7 +70,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     {
         yield return new WaitForSeconds(5.5f); //this is the time to wait for it to pan to the sky
         // cutsceneManagerAnim.Play("MayorCS");
-        yield return new WaitForSeconds(4f);    
+        yield return new WaitForSeconds(2f);    
 
         if (PhotonNetwork.IsMasterClient) 
         {
@@ -87,7 +87,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             agent.acceleration = 0f;
         }
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(6f);
         
         if (PhotonNetwork.IsMasterClient) 
         {

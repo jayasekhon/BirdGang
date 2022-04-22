@@ -23,12 +23,15 @@ public class playerPointer : MonoBehaviour
     float minX, maxX, minY, maxY;
 
     Player[] PhotonListOfPlayers;
+    GameObject[] playersInGameUnsorted;
+
+    bool foundAllPlayers;
 
     void Start()
     {
         PhotonListOfPlayers = PhotonNetwork.PlayerList;
 
-        StartCoroutine(InitCoroutine());
+        // StartCoroutine(InitCoroutine());
         // Get screen size
         resolution = new Vector2(Screen.width, Screen.height);
         screenCenter.x = Screen.width * 0.5f;
@@ -36,11 +39,34 @@ public class playerPointer : MonoBehaviour
         indicatorManager = GetComponent<IndicatorManager>();
     }
     
-    IEnumerator InitCoroutine()
-    {
-        yield return new WaitForSeconds(5);
+    // IEnumerator InitCoroutine()
+    // {
+    //     yield return new WaitForSeconds(5);
 
-        GameObject[] playersInGameUnsorted = GameObject.FindGameObjectsWithTag("Player");
+    //     GameObject[] playersInGameUnsorted = GameObject.FindGameObjectsWithTag("Player");
+    //     playersInGame = new GameObject[PhotonListOfPlayers.Length];
+
+    //     for (int p = 0; p < PhotonListOfPlayers.Length; p++)
+    //     {
+    //         for (int i = 0; i < playersInGameUnsorted.Length; i++)
+    //         {
+    //             if (PhotonListOfPlayers[p].ToString() == playersInGameUnsorted[i].GetComponent<PhotonView>().Owner.ToString())
+    //             {
+    //                 playersInGame[p] = playersInGameUnsorted[i];
+    //             }
+                
+    //         }
+    //     }
+    //     InstantiateLists();
+
+    //     GetPlayerPhotonViews();
+    //     GetPlayerTransforms();
+    //     GetCamera();
+        
+    // }
+
+    void StartStuff()
+    {
         playersInGame = new GameObject[PhotonListOfPlayers.Length];
 
         for (int p = 0; p < PhotonListOfPlayers.Length; p++)
@@ -59,7 +85,6 @@ public class playerPointer : MonoBehaviour
         GetPlayerPhotonViews();
         GetPlayerTransforms();
         GetCamera();
-        
     }
     
     void InstantiateLists()
@@ -71,7 +96,6 @@ public class playerPointer : MonoBehaviour
 
     void GetPlayerPhotonViews()
     {
-        // Debug.Log(playersInGame.Length);
         for (int p = 0; p < playersInGame.Length; p++)
         {
             playerPVs[p] = playersInGame[p].GetComponent<PhotonView>();
@@ -118,6 +142,17 @@ public class playerPointer : MonoBehaviour
 
     void Update()
     {
+        if (!foundAllPlayers)
+        {
+            playersInGameUnsorted = GameObject.FindGameObjectsWithTag("Player");
+            if (playersInGameUnsorted.Length == PhotonListOfPlayers.Length)
+            {
+                Debug.Log("Found all players");
+                foundAllPlayers = true;
+                StartStuff();
+            }  
+        }
+
         if (checkNotNull())
         {
             GetPlayerPositons();
@@ -151,10 +186,4 @@ public class playerPointer : MonoBehaviour
             }
         }
     }
-
-
-
-
-    
-
 }
