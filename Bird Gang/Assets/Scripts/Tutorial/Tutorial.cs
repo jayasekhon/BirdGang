@@ -33,8 +33,12 @@ public class Tutorial : MonoBehaviour
 	// Quick hack.
 	public static Tutorial instance;
 
+	AudioManager audiomng;
+
 	public void AdvanceTutorial()
 	{
+		audiomng = FindObjectOfType<AudioManager>();
+
 		if (stage != 5)
 		{
 			rec_pos = pc.transform.position;
@@ -56,43 +60,44 @@ public class Tutorial : MonoBehaviour
 			pc.wind_disable = true;
 			pc.SetHoveringGravity(false);
 			text.text = "Hold <b>W</b> to fly through the rings ahead.\n" +
-				"Alternately, press <b>X</b> to escape.";
+				"You can press <b>X</b> to exit the tutorial.";
 			break;
 		case 1:
 			stage2.SetActive(true);
 			pc.input_lock_x = false;
+			pc.input_lock_ad = false;
 			text.text =
-				"Keep hold of <b>W</b> to use your mouse to steer" +
-				"You can also use <b>A</b> and <b>D</b> to turn.\n";
+				"Keep hold of <b>W</b> to use your mouse or trackpad to steer.\n" +
+				"You can also use <b>A</b> and <b>D</b> for small turns.\n";
 			
-			FindObjectOfType<AudioManager>().Play("Turning");
+			audiomng.Play("Turning");
 			break;
 		case 2:
 			stage3.SetActive(true);
 			pc.input_lock_y = false;
 			text.text =
-				"You can pitch with the mouse while holding <b>W</b>\n" +
+				"You can pitch with the mouse while holding <b>W</b>.\n" +
 				"Continue through the rings ahead.";
 			break;
 		case 3:
 			stage4.SetActive(true);
 			text.text = "While holding <b>W</b>, you can tap <b>Space</b> to speed up.";
-			FindObjectOfType<AudioManager>().Play("Space");
+			audiomng.Play("Speed");
 			break;
 		case 4:
 			stage5.SetActive(true);
 			pc.input_disable_targeting = false;
 			text.text = "Fire poop with the left mouse button.\n" +
 			            "Your poop supply will show on the top right.\n" +
-			            "Hit the targets below, but avoid the innocent OAPs.";
+			            "Hit the blue targets below, but avoid the innocents.";
 
-			FindObjectOfType<AudioManager>().Play("FirePoop");
+			audiomng.Play("FirePoop");
 			
 			break;
 		case 5:
-			text.text = "A thief! Give them their comeuppance.";
+			text.text = "That child is littering! To defeat minibosses like him you must all ruin their day.";
 
-			FindObjectOfType<AudioManager>().Play("HitBadPpl");
+			audiomng.Play("HitBadPpl");
 			break;
 		case 6:
 			text.text = "Tutorial completed, " +
@@ -104,7 +109,7 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(false);
 			stage3.SetActive(false);
 			stage4.SetActive(false);
-			pc.input_lock_ad = false;
+			// pc.input_lock_ad = false;
 			// pc.wind_disable = false;
 			text.transform.parent.GetComponent<Image>()
 				.CrossFadeAlpha(0f, 5f, false);
@@ -146,7 +151,7 @@ public class Tutorial : MonoBehaviour
 				false;
 		alertText.enabled = false;
 
-		FindObjectOfType<AudioManager>().Stop("TutorialIntro");
+    audiomng.Stop("TutorialIntro");
 		/* Any excuse not to change the scene... */
 		text.transform.parent.gameObject.SetActive(false);
 		pc.SetHoveringGravity(true);

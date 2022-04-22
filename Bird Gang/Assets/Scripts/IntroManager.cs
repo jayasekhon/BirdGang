@@ -54,7 +54,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         // yield return new WaitForSeconds(5.5f);
         // cutsceneManagerAnim.Play("Finale");
         voiceover.PlayOneShot(Introduction, 1f);
-        yield return new WaitForSeconds(20f);
+        yield return new WaitForSeconds(21f);
         FindObjectOfType<AudioManager>().Play("TutorialIntro");
     }
 
