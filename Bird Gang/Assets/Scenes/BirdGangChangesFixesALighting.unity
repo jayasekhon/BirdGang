@@ -1287,7 +1287,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-946846
+  m_Name: pb_Mesh-13178
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2265,7 +2265,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &350795375
 Transform:
@@ -4378,6 +4378,10 @@ PrefabInstance:
       propertyPath: cityTrigger
       value: 
       objectReference: {fileID: 2002392456}
+    - target: {fileID: 4689356348256071160, guid: 83bee4f3ec06ba39da5ea94c09f0058e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6e5de61d8fcc34f36b3cdc7db64e7784, type: 2}
     - target: {fileID: 5041763830855406117, guid: 83bee4f3ec06ba39da5ea94c09f0058e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -12989,7 +12993,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1701153378
 Transform:
