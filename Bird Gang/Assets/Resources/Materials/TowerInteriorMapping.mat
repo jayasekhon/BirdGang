@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: InteriorMapping
+  m_Name: TowerInteriorMapping
   m_Shader: {fileID: -6465566751694194690, guid: 6eb74f066d1aea56382e9b7e58bdf24d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Cubemap_3c1dbc4cad13454e9f1349c7d2c4cd5a:
-        m_Texture: {fileID: 8900000, guid: 7e1a5d7a4c646ab6d87deeb76feb12dd, type: 3}
+        m_Texture: {fileID: 8900000, guid: 789cc89d6267c9117ab39ac4260582f4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -104,6 +104,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_269b23ea074e478ba7518dd07cc6801f: 0
     - Vector1_9ccaf525041045b3b513a0c852f8c2ab: 1
     - Vector1_ac3cd3f60db74031bc261848313f009e: 0
     - Vector1_cb60f2126f03480c9cecc1b059d61bd8: 0
@@ -135,6 +136,9 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Color_578c8150a6a140eab16cc28240f4f1b5: {r: 0.517647, g: 0.7019608, b: 0.8, a: 1}
+    - Color_5893366ba3e94d339a493adc7295d7af: {r: 0.5176471, g: 0.7019608, b: 0.8, a: 0.8509804}
+    - Color_ab231bf4e9f44a72bb3d3299d78a724e: {r: 0.48180002, g: 0.6886333, b: 0.73, a: 1}
+    - Color_cd0de3158a4a4520b35f69f7db5f90fa: {r: 0.99607843, g: 0.99607843, b: 0.8509804, a: 1}
     - Color_df7886e3ca0c49e4add3e033325af1f8: {r: 0.5176471, g: 0.7019608, b: 0.8, a: 0}
     - Vector3_b56fbc870f4d402e8e7a433fca616645: {r: 0, g: 0, b: 0, a: 0}
     - Vector4_95f9944af0164295be98240f563633f3: {r: 0.08, g: 0.27, b: 0.5, a: -0.2}
