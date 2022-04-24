@@ -44,9 +44,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
                     Path.Combine("PhotonPrefabs", "Bureaucracy"), Vector3.zero,
                     Quaternion.identity);
 
-                PhotonNetwork.Instantiate(
-                    Path.Combine("PhotonPrefabs", "IntroductionRound"), Vector3.zero,
-                    Quaternion.identity);
+                // PhotonNetwork.Instantiate(
+                //     Path.Combine("PhotonPrefabs", "IntroductionRound"), Vector3.zero,
+                //     Quaternion.identity);
             }
         }
     }

@@ -23,7 +23,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2702363789129649610
 Transform:
   m_ObjectHideFlags: 0
@@ -163,12 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMiniboss: 1
   forTutorial: 0
-  disableSerialisation: 0
-  normalSpeed: 2
-  minibossSpeed: 4
-  normalAngularSpeed: 120
-  fleeingSpeed: 20
-  fleeingAngularSpeed: 500
+  isFleeing: 0
 --- !u!1001 &4528597683383819045
 PrefabInstance:
   m_ObjectHideFlags: 0
