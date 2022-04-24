@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.083085015, g: 0.41510075, b: 0.7426011, a: 1}
+  m_IndirectSpecularColor: {r: 0.004635728, g: 0.023735385, b: 0.18309371, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6172,8 +6172,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918c984c69ad546489c2deae06f85627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lamppostParent: {fileID: 3484425176171504328, guid: c6e48f028eba3401d82841be1a613250, type: 3}
+  lamppostParent: {fileID: 5797805233885280080}
   glowLampMat: {fileID: 2100000, guid: 689b3d3a495603f42b02b560ae542c07, type: 2}
+  MainLightObj: {fileID: 350795374}
 --- !u!1 &965831362
 GameObject:
   m_ObjectHideFlags: 0
@@ -16879,6 +16880,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6e48f028eba3401d82841be1a613250, type: 3}
+--- !u!1 &5797805233885280080 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3484425176171504328, guid: c6e48f028eba3401d82841be1a613250, type: 3}
+  m_PrefabInstance: {fileID: 5797805233885280079}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6327086664719003697
 PrefabInstance:
   m_ObjectHideFlags: 0
