@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.84}
+  m_AnchoredPosition: {x: 0, y: 0.83999634}
   m_SizeDelta: {x: 600, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7790126070198711669
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &7402685190641384958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51217cf63ddfb3ef1af1e0abe81ae9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGood: 0
   attackers: []
   healthStatus: {fileID: 3300042059700459483}
 --- !u!1 &4449160917430024139
