@@ -14,6 +14,8 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
     public CineMachineSwitcher switcher;
 
     LightingSettings lightingChanges;
+
+    public Image loadScreen; 
     
     // Start is called before the first frame update
     void Awake()
@@ -39,6 +41,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        loadScreen.enabled = false;
         PlayerControllerNEW.input_lock_all = true;
         CM_manager = GameObject.FindGameObjectWithTag("cutsceneManager");
         switcher = CM_manager.GetComponent<CineMachineSwitcher>();
