@@ -11,7 +11,7 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 	public List<String> attackers = new List<string>();
 	private int targetNum;
 
-	private GameObject[] playersInGame;
+	// private GameObject[] playersInGame;
 	[SerializeField] TMP_Text healthStatus;
 	private int health;
 
@@ -21,11 +21,12 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 
 	void Start() {
 		// StartCoroutine(InitCoroutine());
-		playersInGame = GameObject.FindGameObjectsWithTag("Player");
-		targetNum = playersInGame.Length;
+		// playersInGame = GameObject.FindGameObjectsWithTag("Player");
+		playerList = PhotonNetwork.PlayerList;
+		targetNum = playerList.Length;
 		health = targetNum; 
 		healthStatus.text = new String('+', health);
-		playerList = PhotonNetwork.PlayerList;
+		
 		foreach (Player p in playerList)
 		{
 			if (p.IsLocal)
