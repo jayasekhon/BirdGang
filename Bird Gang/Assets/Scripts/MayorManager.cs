@@ -25,6 +25,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     [SerializeField] GameObject intro;
 
     LightingSettings lightingChanges;
+    LamppostLightUp lampsLight;
 
     void Awake()
     {
@@ -38,6 +39,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         
         voiceover = GetComponent<AudioSource>();
         lightingChanges = GetComponent<LightingSettings>();
+        lampsLight = GetComponent<LamppostLightUp>();
     }
 
     // void Start() 
@@ -116,6 +118,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
         yield return new WaitForSeconds(84f);
         lightingChanges.NightLighting();
+        lampsLight.LightUpLampposts();
     }
 
     void ReleaseCrowd()
