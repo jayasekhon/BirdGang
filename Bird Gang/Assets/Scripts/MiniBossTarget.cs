@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using TMPro;
-// using Photon.Realtime;
+using Photon.Realtime;
 
 public class MiniBossTarget : MonoBehaviour, IBirdTarget
 {
@@ -11,27 +11,29 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 	public List<String> attackers = new List<string>();
 	private int targetNum;
 
-	private GameObject[] playersInGame;
+	// private GameObject[] playersInGame;
 	[SerializeField] TMP_Text healthStatus;
 	private int health;
 
 	string sender;
-	// Player[] playerList;
+	string mySender;
+	private Player[] playerList;
 
 	void Start() {
 		// StartCoroutine(InitCoroutine());
-		playersInGame = GameObject.FindGameObjectsWithTag("Player");
-		targetNum = playersInGame.Length;
+		// playersInGame = GameObject.FindGameObjectsWithTag("Player");
+		playerList = PhotonNetwork.PlayerList;
+		targetNum = playerList.Length;
 		health = targetNum; 
 		healthStatus.text = new String('+', health);
-		// playerList = PhotonNetwork.PlayerList;
-		// foreach (Player p in playerList)
-		// {
-		// 	Debug.Log(p);
-		// }
 		
-		// loop through playersingame - emily's version
-		// do isLocal?
+		foreach (Player p in playerList)
+		{
+			if (p.IsLocal)
+			{
+				mySender = p.ToString();
+			}
+		}
 	}
 
 	// IEnumerator InitCoroutine()
@@ -50,7 +52,6 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 	{
 		Debug.Log("num players needed " + targetNum);
 		sender = info.Sender.ToString();
-		// Debug.Log(sender);
 
 		if (!attackers.Contains(sender)) 
 		{
@@ -58,9 +59,10 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 			health -=1;
 			healthStatus.text = new String('+', health);
 		}
-		// if the sender is me
-		// change colour of the text
-		// healthStatus.color = 
+		if (sender == mySender) 
+		{
+			healthStatus.color = new Color32(119, 215, 40, 255);
+		}
  
 		if (attackers.Count == targetNum)
 		{

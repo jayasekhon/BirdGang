@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 using System.IO;
 using System;
-
+using Photon.Realtime;
 using TMPro;
 
 public enum BALLOON_STAGE
@@ -19,8 +19,6 @@ public enum BALLOON_STAGE
 
 public class BalloonScript : MonoBehaviour, IBirdTarget
 {
-
-
     private BALLOON_STAGE currentStage;
 
     private float currentTime;
@@ -48,18 +46,16 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
     public float fallingStength = 50f;
 
-
-    // private Animator _animator;
     public List<String> attackers = new List<string>();
     private int targetNum;
 
-    private GameObject[] playersInGame;
+    // private GameObject[] playersInGame;
     [SerializeField] TMP_Text healthStatus;
     private int health;
 
     string sender;
-
-
+	string mySender;
+	private Player[] playerList;
 
     // Start is called before the first frame update
     void Start()
@@ -68,8 +64,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         currentTime = 0;
         dettachTime = 20f+UnityEngine.Random.Range(0, 15);
         height = baseHeight;
-        currentStage = BALLOON_STAGE.ATTACHED;
-        
+        currentStage = BALLOON_STAGE.ATTACHED;       
         
         rb = GetComponent<Rigidbody>();
 
@@ -77,20 +72,24 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         Transform child = transform.GetChild(UnityEngine.Random.Range(0, 2));
         child.gameObject.SetActive(true);
 
-        playersInGame = GameObject.FindGameObjectsWithTag("Player");
-        targetNum = playersInGame.Length;
-        health = targetNum;
-        healthStatus.text = new String('+', health);
-
-
-
+		playerList = PhotonNetwork.PlayerList;
+		targetNum = playerList.Length;
+		health = targetNum; 
+		healthStatus.text = new String('+', health);
+		
+		foreach (Player p in playerList)
+		{
+			if (p.IsLocal)
+			{
+				mySender = p.ToString();
+			}
+		}
     }
+
     void Awake()
     {
         //start = false;
     }
-
-
 
     // Update is called once per frame
     void FixedUpdate()
@@ -103,7 +102,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
             hitCount += 1;
 
         }
-
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -193,7 +191,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
 
     [PunRPC]
-    public  void OnHit(float distance, PhotonMessageInfo info)
+    public void OnHit(float distance, PhotonMessageInfo info)
     {        
         rb.AddForce(Vector3.up * -hitForce);
         
@@ -206,9 +204,12 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
             healthStatus.text = new String('+', health);
         }
 
-        
-    
+        if (sender == mySender) 
+		{
+			healthStatus.color = new Color32(119, 215, 40, 255);
+		}
     }
+
     private void Grounded()
     {
         rb.AddForce(Vector3.up * groundStrength);
