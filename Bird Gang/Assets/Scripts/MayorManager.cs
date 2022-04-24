@@ -61,6 +61,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        lampsLight.LightUpLampposts();
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Mayor();
@@ -118,7 +119,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
         yield return new WaitForSeconds(84f);
         lightingChanges.NightLighting();
-        lampsLight.LightUpLampposts();
+        // lampsLight.LightUpLampposts();
     }
 
     void ReleaseCrowd()
