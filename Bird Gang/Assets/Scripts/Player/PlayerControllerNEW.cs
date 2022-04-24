@@ -139,7 +139,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     void GetInput()
     {
         // Forward movement
-        if (Input.GetAxisRaw("Vertical") == 1)
+        if (!input_lock_all && Input.GetAxisRaw("Vertical") == 1)
         {
             move = true;
             xPos = transform.position.x;
