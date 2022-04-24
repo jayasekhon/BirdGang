@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using TMPro;
+// using Photon.Realtime;
 
 public class MiniBossTarget : MonoBehaviour, IBirdTarget
 {
@@ -15,6 +16,7 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 	private int health;
 
 	string sender;
+	// Player[] playerList;
 
 	void Start() {
 		// StartCoroutine(InitCoroutine());
@@ -22,6 +24,14 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 		targetNum = playersInGame.Length;
 		health = targetNum; 
 		healthStatus.text = new String('+', health);
+		// playerList = PhotonNetwork.PlayerList;
+		// foreach (Player p in playerList)
+		// {
+		// 	Debug.Log(p);
+		// }
+		
+		// loop through playersingame - emily's version
+		// do isLocal?
 	}
 
 	// IEnumerator InitCoroutine()
@@ -40,6 +50,7 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 	{
 		Debug.Log("num players needed " + targetNum);
 		sender = info.Sender.ToString();
+		// Debug.Log(sender);
 
 		if (!attackers.Contains(sender)) 
 		{
@@ -47,6 +58,9 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 			health -=1;
 			healthStatus.text = new String('+', health);
 		}
+		// if the sender is me
+		// change colour of the text
+		// healthStatus.color = 
  
 		if (attackers.Count == targetNum)
 		{
