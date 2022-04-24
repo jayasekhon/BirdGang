@@ -25,7 +25,8 @@ public class BaseBirdTarget : MonoBehaviour, IBirdTarget
     public virtual void OnHit(float distance, PhotonMessageInfo info)
     {
         float mul = Mathf.InverseLerp(10f, 100f, distance);
-        Score.instance.AddScore(isGood ? Score.HIT.GOOD : Score.HIT.BAD, mul);
+        if (!clientSide)
+            Score.instance.AddScore(isGood ? Score.HIT.GOOD : Score.HIT.BAD, mul);
 
         if (clientSide)
             Destroy(gameObject);
