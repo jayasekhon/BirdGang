@@ -47,8 +47,8 @@ public class Spawner : MonoBehaviour
     }
 
     private void SpawnGoodPerson()
-    {   
-        Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
+    {
+        Vector3 position = centerPosition;// Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
 
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs","Good Person Cube"),position,Quaternion.identity);
         NumberGoodPeopleSpawned++;
@@ -56,7 +56,7 @@ public class Spawner : MonoBehaviour
 
     private void SpawnBadPerson()
     {
-        Vector3 position = centerPosition;// + new Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
+        Vector3 position = centerPosition;// Vector3(Random.Range(minPosition.x, maxPosition.x), 0, Random.Range(minPosition.z, maxPosition.z));
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bad Person Cube"), position, Quaternion.identity);
         NumberBadPeopleSpawned++;
     }
