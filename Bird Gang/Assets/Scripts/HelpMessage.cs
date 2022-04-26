@@ -29,7 +29,7 @@ public class HelpMessage : MonoBehaviour
 
     public void Display(string nickname, int requesterID) {
         message.color = messageColours[requesterID];
-        message.text = nickname + " needs help!!";
+        message.text = "Miniboss target near " + nickname + "!";
         Invoke("Hide", time);
     }
 
