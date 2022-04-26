@@ -100,40 +100,35 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {
             rb.AddForce(Vector3.up * -hitForce);
             hitCount += 1;
-
         }
 
         if (PhotonNetwork.IsMasterClient)
         {
-
             switch (currentStage)
-                {
-                    case BALLOON_STAGE.ATTACHED:
-                        // Debug.Log("Attached");
-                        Attatched();
-                        
-                        break;
-                    case BALLOON_STAGE.DETACHED:
-                        // Debug.Log("Dettached");
-                        Dettached();
-                        break;
-                    case BALLOON_STAGE.REATTACHED:
-                        // Debug.Log("Rettached");
-                        Rettached();
-                        break;
-                    case BALLOON_STAGE.LOST:
-                        // Debug.Log("Lost");
-                        Lost();
-                        break;
-                    case BALLOON_STAGE.GROUNDED:
-                        // Debug.Log("Lost");
-                        Grounded();
-                        break;
-                }
+            {
+                case BALLOON_STAGE.ATTACHED:
+                    // Debug.Log("Attached");
+                    Attatched();
+                    
+                    break;
+                case BALLOON_STAGE.DETACHED:
+                    // Debug.Log("Dettached");
+                    Dettached();
+                    break;
+                case BALLOON_STAGE.REATTACHED:
+                    // Debug.Log("Rettached");
+                    Rettached();
+                    break;
+                case BALLOON_STAGE.LOST:
+                    // Debug.Log("Lost");
+                    Lost();
+                    break;
+                case BALLOON_STAGE.GROUNDED:
+                    // Debug.Log("Lost");
+                    Grounded();
+                    break;
+            }
         }
-       
-       
-        
     }
 
     private void Attatched()
@@ -152,40 +147,34 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
   
     }
     private void Dettached()
-    {
-        
+    {        
         rb.AddForce(Vector3.up *  airStrength);
         
-
-   
         if (attackers.Count == targetNum)
         {
             currentStage = BALLOON_STAGE.REATTACHED;
+            // var mul = Mathf.InverseLerp(10f, 100f, distance);
+            BalloonManager.instance.balloonHit();
         }
-
 
         if (transform.position.y > 150)
         {
             currentStage = BALLOON_STAGE.LOST;
-        }
-   
-
+        } 
     }
 
     private void Rettached()
-    {
-    
+    {    
         rb.AddForce(Vector3.up * fallingStength);
         if (transform.position.y <25 && rb.velocity.magnitude <2)
         {
             currentStage = BALLOON_STAGE.GROUNDED;
             currentTime = 0;
         }
-       
     }
+
     private void Lost()
-    {
-       
+    {  
         rb.AddForce(Vector3.up * airStrength);
     }
 
@@ -219,7 +208,4 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {
         return clientSide;
     }
-
-
-
 }

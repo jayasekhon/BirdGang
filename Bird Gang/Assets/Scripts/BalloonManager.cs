@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using System.IO;
 
@@ -29,6 +30,9 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     Transform child;
     List<BalloonAgent> balloons;
 
+    public float balloonCounter = 0;
+    public static BalloonManager instance;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -43,6 +47,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         
         voiceover = GetComponent<AudioSource>();
         changeCloudsScript = GetComponent<ChangeClouds>();
+        instance = this;
     }
 
     // void Start() 
@@ -115,7 +120,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
                 Vector3 start = position;
                 GameObject balloonParentObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonParent"), start, Quaternion.identity);
                 GameObject balloonObject = balloonParentObject.transform.GetChild(0).gameObject;
-
                 
                 BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
                 //balloon.SetCurrentID(i);
@@ -139,13 +143,41 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
             }
         }
     }
-    
+
+    public void balloonHit()
+    {
+        balloonCounter++;
+        if (numberOfBalloons - balloonCounter > 0) 
+        {       
+            Score.instance.targetReached.text = "NICE TEAMWORK " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
+        }
+        else 
+        {
+            Score.instance.targetReached.text = "MISSION COMPLETE";
+        }
+        Invoke("Hide", 3f);
+    }   
+
+    void Hide()
+    {
+        FadeOutRoutine(Score.instance.targetReached);
+        Score.instance.targetReached.text = "";
+    }
+
+    private IEnumerator FadeOutRoutine(Text text)
+    { 
+        Color originalColor = text.color;
+        for (float t = 0.01f; t < 3f; t += Time.deltaTime) {
+            text.color = Color.Lerp(originalColor, Color.clear, Mathf.Min(1, t/3f));
+            Debug.Log("fading");
+            yield return null;
+        }
+    }   
+
     void Wind()
     {
         if (running)
-
         {
-
             direction = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
             Bounds outBounds = outRenderer.bounds;
@@ -173,8 +205,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
                 }
 
             }
-
-
         }
     }
 
