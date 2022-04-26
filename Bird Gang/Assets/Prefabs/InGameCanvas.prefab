@@ -684,8 +684,6 @@ GameObject:
   - component: {fileID: 7156982482061963770}
   - component: {fileID: 6922100116640935236}
   - component: {fileID: 1168214180005629865}
-  - component: {fileID: 212907733}
-  - component: {fileID: 6510216244589026679}
   - component: {fileID: 7785840810948052221}
   m_Layer: 5
   m_Name: InGameCanvas
@@ -836,32 +834,6 @@ MonoBehaviour:
   uiImage: {fileID: 7407576532873565509}
   text: {fileID: 4899991445583976964}
   objective: {fileID: 1214115842}
---- !u!114 &212907733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3302991711920748729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fd8935e5a9a4586be01b392b97073c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  message: {fileID: 6309413061230397012}
---- !u!114 &6510216244589026679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3302991711920748729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fd8935e5a9a4586be01b392b97073c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  message: {fileID: 6309413061230397012}
 --- !u!114 &7785840810948052221
 MonoBehaviour:
   m_ObjectHideFlags: 0
