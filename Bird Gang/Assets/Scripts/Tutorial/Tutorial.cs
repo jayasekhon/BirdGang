@@ -28,6 +28,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 	private PlayerControllerNEW pc;
 	private int stage = 0;
 	private bool has_started = false;
+	private bool finished = false;
 
 	private Vector3 rec_pos;
 	private Quaternion rec_rot;
@@ -50,11 +51,6 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 		switch (stage++)
 		{
 		case 0:
-			stage1.SetActive(true);
-			stage2.SetActive(false);
-			stage3.SetActive(false);
-			stage4.SetActive(false);
-			//stage5.SetActive(false); -- This is networked.
 			PlayerControllerNEW.input_lock_all = false;
 			PlayerControllerNEW.input_lock_x = true;
 			PlayerControllerNEW.input_lock_y = true;
@@ -97,36 +93,22 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			audiomng.Play("FirePoop");
 			break;
 		case 5:
-			Escape();
-			// text.text = "That child is littering! To defeat minibosses like him you must all ruin their day.";
-
-			// audiomng.Play("Child");
+			text.text = "That child is littering! To defeat minibosses like him you must all ruin their day.";
+			audiomng.Play("Child");
 			break;
 		case 6:
 			text.text = "Tutorial completed, " +
 			            "descend to the city and nab some baddies.";
-			nextLostCheck = float.PositiveInfinity;
-			break;
-		case 7:
-			stage1.SetActive(false);
-			stage2.SetActive(false);
-			stage3.SetActive(false);
-			stage4.SetActive(false);
-			boss.SetActive(false);
-			// pc.wind_disable = false;
-			text.transform.parent.GetComponent<Image>()
-				.CrossFadeAlpha(0f, 5f, false);
-			text
-				.CrossFadeAlpha(0f, 5f, false);
+			finished = true;
 			break;
 		}
 	}
 
 	private bool OnEnterCity(Collider other)
 	{
-		if (other.gameObject == pc.gameObject && stage == 7)
+		if (other.gameObject == pc.gameObject && finished)
 		{
-			AdvanceTutorial();
+			CleanUp();
 			return true;
 		}
 		return false;
@@ -136,7 +118,13 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 	{
 		instance = this;
 		cityTrigger.RegisterCallback(OnEnterCity);
-		GameEvents.RegisterCallbacks(this, GAME_STAGE.TUTORIAL, STAGE_CALLBACK.BEGIN);
+		GameEvents.RegisterCallbacks(this, GAME_STAGE.TUTORIAL, STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
+		PlayerControllerNEW.input_lock_all = true;
+		stage1.SetActive(true);
+		stage2.SetActive(false);
+		stage3.SetActive(false);
+		stage4.SetActive(false);
+		//stage5.SetActive(false); -- This is networked.
 	}
 
 	private void Escape()
@@ -153,16 +141,36 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 				false;
 		alertText.enabled = false;
 
+		finished = true;
+		nextLostCheck = float.PositiveInfinity;
 		audiomng.Stop("TutorialIntro");
+	}
+
+	private void CleanUp()
+	{
+		stage1.SetActive(false);
+		stage2.SetActive(false);
+		stage3.SetActive(false);
+		stage4.SetActive(false);
+		text.transform.parent.GetComponent<Image>()
+			.CrossFadeAlpha(0f, 5f, false);
+		text
+			.CrossFadeAlpha(0f, 5f, false);
+
+		PlayerControllerNEW.input_lock_targeting =
+			PlayerControllerNEW.input_lock_ad =
+			PlayerControllerNEW.input_lock_x =
+			PlayerControllerNEW.input_lock_y =
+			PlayerControllerNEW.hover_gravity_disable =
+				false;
+
 		boss.SetActive(false);
-		/* Any excuse not to change the scene... */
-		text.transform.parent.gameObject.SetActive(false);
 		Destroy(this);
 	}
 
 	public void Update()
 	{
-		if (!has_started)
+		if (!has_started || finished)
 			return;
 
 		if (Input.GetKeyDown(KeyCode.X))
@@ -264,6 +272,8 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 
 	public void OnStageEnd(GameEvents.Stage stage)
 	{
+		if (!finished)
+			Escape();
 	}
 
 	public void OnStageProgress(GameEvents.Stage stage, float progress)

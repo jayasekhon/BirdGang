@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using Photon.Pun;
 
 public class CineMachineSwitcher : MonoBehaviour
 {
     private Animator animator;
+    public CinemachineDollyCart introDolly;
 
     void Awake()
     {
@@ -95,6 +97,7 @@ public class CineMachineSwitcher : MonoBehaviour
 
     public void Intro()
     {
+        introDolly.m_Position = 0;
         animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
     }
