@@ -20,7 +20,10 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     [SerializeField] GameObject creditsScreenHolder;
     [SerializeField] Text finalScoreText; 
     [SerializeField] GameObject InGameCanvas;
+    [SerializeField] GameObject CreditButtons;
     Score scoreScript;
+
+    [SerializeField] GameObject escPrompt;
 
     // Start is called before the first frame update
     void Awake()
@@ -80,6 +83,11 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(7.5f);
         int score = scoreScript.GetScore();
         finalScoreText.text = "Your team score: " + score.ToString();
+        escPrompt.SetActive(false);
+        
+        if (PhotonNetwork.IsMasterClient)
+            CreditButtons.SetActive(true);
+
         creditsScreenHolder.SetActive(true);
 
     }
