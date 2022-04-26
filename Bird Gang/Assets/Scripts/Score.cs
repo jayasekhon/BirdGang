@@ -50,7 +50,7 @@ public class Score : MonoBehaviour
                 score += (int)(50f * fac);
 //                 score = UpdateScoreValueBadPerson(score);
                 streakFlag++;
-                targetReached.text = "NICE TEAMWORK";
+                targetReached.text = "MISSION COMPLETE";
                 Invoke("Hide", time);
                 break;
         }

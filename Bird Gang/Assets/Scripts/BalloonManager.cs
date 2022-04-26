@@ -147,9 +147,13 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public void balloonHit()
     {
         balloonCounter++;
-        if (numberOfBalloons - balloonCounter > 0) 
+        if (numberOfBalloons - balloonCounter > 1) 
         {       
-            Score.instance.targetReached.text = "NICE TEAMWORK " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
+        }
+        else if (numberOfBalloons - balloonCounter == 1)
+        {
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloon left";
         }
         else 
         {
