@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.08296506, g: 0.41531873, b: 0.7419745, a: 1}
+  m_IndirectSpecularColor: {r: 0.004627922, g: 0.023748236, b: 0.18293749, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1566,17 +1566,6 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &212907734 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3302991712891432719, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-  m_PrefabInstance: {fileID: 212907731}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &212907735 stripped
@@ -13299,7 +13288,6 @@ MonoBehaviour:
   fountainParticles: {fileID: 1766975384}
   numberOfBalloons: 4
   balloonCounter: 0
-  targetReached: {fileID: 212907734}
 --- !u!4 &1674856485
 Transform:
   m_ObjectHideFlags: 0

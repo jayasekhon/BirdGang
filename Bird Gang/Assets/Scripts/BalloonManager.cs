@@ -31,7 +31,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     List<BalloonAgent> balloons;
 
     public float balloonCounter = 0;
-    public Text targetReached;
+    // public Text targetReached;
 
     // Start is called before the first frame update
     void Awake()
@@ -77,6 +77,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonRPC"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
             balloons = new List<BalloonAgent>();
             SpawnBalloons();
         }
@@ -142,42 +143,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
             }
         }
     }
-
-    [PunRPC]
-    public void balloonHit()
-    {
-        Debug.Log("hello");
-        balloonCounter++;
-        if (numberOfBalloons - balloonCounter > 1) 
-        {       
-            targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
-        }
-        else if (numberOfBalloons - balloonCounter == 1)
-        {
-            targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloon left";
-        }
-        else 
-        {
-            targetReached.text = "MISSION COMPLETE";
-        }
-        Invoke("Hide", 3f);
-    }   
-
-    void Hide()
-    {
-        FadeOutRoutine(targetReached);
-        targetReached.text = "";
-    }
-
-    private IEnumerator FadeOutRoutine(Text text)
-    { 
-        Color originalColor = text.color;
-        for (float t = 0.01f; t < 3f; t += Time.deltaTime) {
-            text.color = Color.Lerp(originalColor, Color.clear, Mathf.Min(1, t/3f));
-            Debug.Log("fading");
-            yield return null;
-        }
-    }   
 
     void Wind()
     {
