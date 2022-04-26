@@ -32,6 +32,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public float balloonCounter = 0;
     public static BalloonManager instance;
+    public Text targetReached;
 
     // Start is called before the first frame update
     void Awake()
@@ -149,23 +150,23 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         balloonCounter++;
         if (numberOfBalloons - balloonCounter > 1) 
         {       
-            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
+            targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
         }
         else if (numberOfBalloons - balloonCounter == 1)
         {
-            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloon left";
+            targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloon left";
         }
         else 
         {
-            Score.instance.targetReached.text = "MISSION COMPLETE";
+            targetReached.text = "MISSION COMPLETE";
         }
         Invoke("Hide", 3f);
     }   
 
     void Hide()
     {
-        FadeOutRoutine(Score.instance.targetReached);
-        Score.instance.targetReached.text = "";
+        FadeOutRoutine(targetReached);
+        targetReached.text = "";
     }
 
     private IEnumerator FadeOutRoutine(Text text)
