@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.083085015, g: 0.41510075, b: 0.7426011, a: 1}
+  m_IndirectSpecularColor: {r: 0.004635728, g: 0.023735385, b: 0.18309371, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1452,10 +1452,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1214115842, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
-      propertyPath: m_Text
-      value: 'Objectives:'
-      objectReference: {fileID: 0}
     - target: {fileID: 3302991711920748677, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1559,13 +1555,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &212907733 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 176076468, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7942210061232028445, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
   m_PrefabInstance: {fileID: 212907731}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &212907734 stripped
@@ -1595,6 +1591,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &212907737 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 815626268895201976, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+  m_PrefabInstance: {fileID: 212907731}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &212907738 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3302991711920748729, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+  m_PrefabInstance: {fileID: 212907731}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &219615222
 GameObject:
   m_ObjectHideFlags: 0
@@ -2490,7 +2496,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Congratulations: {fileID: 8300000, guid: 3ef7cfa3599914de98bc44bf5ead189d, type: 3}
   intro: {fileID: 734708941}
-  creditsScreen: {fileID: 212907733}
+  creditsScreenHolder: {fileID: 212907737}
+  finalScoreText: {fileID: 212907733}
+  InGameCanvas: {fileID: 212907738}
 --- !u!82 &363463086
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5049,15 +5057,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 500378077998769384, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.122183256
+      value: 0.12218323
       objectReference: {fileID: 0}
     - target: {fileID: 500378077998769384, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 2.4198927e-15
+      value: -0.000000030489364
       objectReference: {fileID: 0}
     - target: {fileID: 500378077998769384, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -1.6126688e-16
+      value: 0.0000000037534114
       objectReference: {fileID: 0}
     - target: {fileID: 2078033369442271837, guid: 221fb0a16fb90cdd3aa2628010307996, type: 3}
       propertyPath: m_ChildCameras.Array.size
