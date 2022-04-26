@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Photon.Pun;
 using System.IO;
 using System;
@@ -60,6 +61,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private GameObject balloonManagerHolder;
     private BalloonManager balloonManager;
     private PhotonView PV;
+    public float numberOfBalloons = 4;
+    public float balloonCounter = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -185,6 +188,42 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {  
         rb.AddForce(Vector3.up * airStrength);
     }
+
+    [PunRPC]
+    public void balloonHit()
+    {
+        Debug.Log("hello");
+        balloonCounter++;
+        if (numberOfBalloons - balloonCounter > 1) 
+        {       
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
+        }
+        else if (numberOfBalloons - balloonCounter == 1)
+        {
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloon left";
+        }
+        else 
+        {
+            Score.instance.targetReached.text = "MISSION COMPLETE";
+        }
+        // Invoke("Hide", 3f);
+    }   
+
+    // void Hide()
+    // {
+    //     FadeOutRoutine(Score.instance.targetReached);
+    //     Score.instance.targetReached.text = "";
+    // }
+
+    // private IEnumerator FadeOutRoutine(Text text)
+    // { 
+    //     Color originalColor = text.color;
+    //     for (float t = 0.01f; t < 3f; t += Time.deltaTime) {
+    //         text.color = Color.Lerp(originalColor, Color.clear, Mathf.Min(1, t/3f));
+    //         Debug.Log("fading");
+    //         yield return null;
+    //     }
+    // }   
 
     [PunRPC]
     public void OnHit(float distance, PhotonMessageInfo info)
