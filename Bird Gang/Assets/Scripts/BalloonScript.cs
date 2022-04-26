@@ -57,6 +57,9 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 	string mySender;
 	private Player[] playerList;
 
+    private GameObject balloonManagerHolder;
+    private BalloonManager balloonManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -84,6 +87,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 				mySender = p.ToString();
 			}
 		}
+        balloonManagerHolder = GameObject.FindGameObjectWithTag("balloonManager");
+        balloonManager = balloonManagerHolder.GetComponent<BalloonManager>();
     }
 
     void Awake()
@@ -154,7 +159,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {
             currentStage = BALLOON_STAGE.REATTACHED;
             // var mul = Mathf.InverseLerp(10f, 100f, distance);
-            BalloonManager.instance.balloonHit();
+            balloonManager.balloonHit();
         }
 
         if (transform.position.y > 150)

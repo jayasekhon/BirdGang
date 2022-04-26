@@ -31,7 +31,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     List<BalloonAgent> balloons;
 
     public float balloonCounter = 0;
-    public static BalloonManager instance;
     public Text targetReached;
 
     // Start is called before the first frame update
@@ -48,7 +47,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         
         voiceover = GetComponent<AudioSource>();
         changeCloudsScript = GetComponent<ChangeClouds>();
-        instance = this;
     }
 
     // void Start() 
@@ -147,6 +145,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void balloonHit()
     {
+        Debug.Log("hello");
         balloonCounter++;
         if (numberOfBalloons - balloonCounter > 1) 
         {       
