@@ -153,6 +153,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         }
   
     }
+
     private void Dettached()
     {        
         rb.AddForce(Vector3.up *  airStrength);
@@ -160,8 +161,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         if (attackers.Count == targetNum)
         {
             currentStage = BALLOON_STAGE.REATTACHED;
-            // var mul = Mathf.InverseLerp(10f, 100f, distance);
-            PV.RPC("balloonHit", RpcTarget.All);
+            balloonManager.balloonHit();
         }
 
         if (transform.position.y > 150)

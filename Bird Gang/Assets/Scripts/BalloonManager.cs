@@ -143,8 +143,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         }
     }
 
-    [PunRPC]
-    public virtual void balloonHit()
+    public void balloonHit()
     {
         Debug.Log("hello");
         balloonCounter++;
