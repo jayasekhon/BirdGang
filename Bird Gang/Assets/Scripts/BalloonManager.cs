@@ -77,7 +77,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonRPC"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+            // PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonRPC"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
             balloons = new List<BalloonAgent>();
             SpawnBalloons();
         }

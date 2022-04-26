@@ -62,6 +62,8 @@ MonoBehaviour:
   fallingStength: 50
   attackers: []
   healthStatus: {fileID: 8111626636165556475}
+  numberOfBalloons: 4
+  balloonCounter: 0
 --- !u!114 &288160915625749847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2372,7 +2374,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9202831969551246905}
-  - component: {fileID: 4829627995666647899}
   m_Layer: 10
   m_Name: YoungBoy
   m_TagString: Untagged
@@ -2400,25 +2401,6 @@ Transform:
   m_Father: {fileID: 5326016079986170603}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4829627995666647899
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8429848200579759235}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3fd6882bb0f943442ad5ed033471d56d, type: 2}
-  m_CullingMode: 2
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8488952754287378607
 GameObject:
   m_ObjectHideFlags: 0

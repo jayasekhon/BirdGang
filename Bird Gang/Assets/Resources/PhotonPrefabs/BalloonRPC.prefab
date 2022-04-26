@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4899352431794868359}
   - component: {fileID: 1806498508472980105}
-  - component: {fileID: 9200328900029388244}
   m_Layer: 0
   m_Name: BalloonRPC
   m_TagString: Untagged
@@ -54,17 +53,3 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &9200328900029388244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2367919923500263915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6cf95a0b186f4c06873fd1bf7df5994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numberOfBalloons: 4
-  balloonCounter: 0
