@@ -143,6 +143,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         }
     }
 
+    [PunRPC]
     public void balloonHit()
     {
         Debug.Log("hello");

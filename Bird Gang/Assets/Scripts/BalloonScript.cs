@@ -161,7 +161,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         if (attackers.Count == targetNum)
         {
             currentStage = BALLOON_STAGE.REATTACHED;
-            balloonManager.balloonHit();
+            PV.RPC("balloonHit", RpcTarget.All);
+            // balloonManager.balloonHit();
         }
 
         if (transform.position.y > 150)
@@ -184,7 +185,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {  
         rb.AddForce(Vector3.up * airStrength);
     }
-
 
     [PunRPC]
     public void OnHit(float distance, PhotonMessageInfo info)
