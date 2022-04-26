@@ -59,6 +59,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 
     private GameObject balloonManagerHolder;
     private BalloonManager balloonManager;
+    private PhotonView PV;
 
     // Start is called before the first frame update
     void Start()
@@ -94,6 +95,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     void Awake()
     {
         //start = false;
+        PV = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -159,7 +161,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {
             currentStage = BALLOON_STAGE.REATTACHED;
             // var mul = Mathf.InverseLerp(10f, 100f, distance);
-            balloonManager.balloonHit();
+            PV.RPC("balloonHit", RpcTarget.All);
         }
 
         if (transform.position.y > 150)
