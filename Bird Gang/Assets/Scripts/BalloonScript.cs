@@ -50,7 +50,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     public List<String> attackers = new List<string>();
     private int targetNum;
 
-    // private GameObject[] playersInGame;
     [SerializeField] TMP_Text healthStatus;
     private int health;
 
@@ -152,7 +151,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
                 hitCount = 0;
             }
         }
-  
     }
 
     private void Dettached()
@@ -164,7 +162,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
             currentStage = BALLOON_STAGE.REATTACHED;
             balloonManager.balloonCounter++ ;
             PV.RPC("balloonHit", RpcTarget.All, balloonManager.balloonCounter);
-            // balloonManager.balloonHit();
         }
 
         if (transform.position.y > 150)
@@ -204,11 +201,12 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {
             Score.instance.targetReached.text = "MISSION COMPLETE";
         }
-        Invoke("Hide", 3f);
+        StartCoroutine(ExecuteAfterTime());
     }   
 
-    void Hide()
+    IEnumerator ExecuteAfterTime()
     {
+        yield return new WaitForSeconds(3f);
         Score.instance.targetReached.text = "";
     }
 
