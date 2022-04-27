@@ -7,6 +7,9 @@ public class Score : MonoBehaviour
     public Text scoreText;
     public Text targetReached;
     public static Score instance;
+    [SerializeField] 
+    GameObject targetReachedHolder;
+    public Image textBackground;
 
     float time = 3f;
     float fadeOutTime = 3f;
@@ -16,6 +19,7 @@ public class Score : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        textBackground = targetReachedHolder.GetComponent<Image>();
     }
 
     public int GetScore()
@@ -51,6 +55,7 @@ public class Score : MonoBehaviour
 //                 score = UpdateScoreValueBadPerson(score);
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
+                textBackground.enabled = true;
                 Invoke("Hide", time);
                 break;
         }
@@ -58,10 +63,12 @@ public class Score : MonoBehaviour
 
         if (streakFlag == 5){
             targetReached.text = "5 HIT STREAK";
+            textBackground.enabled = true;
             Invoke("Hide", time);
         }
         else if (streakFlag == 10){
             targetReached.text = "10 HIT STREAK";
+            textBackground.enabled = true;
             Invoke("Hide", time);
         }
 
@@ -89,6 +96,7 @@ public class Score : MonoBehaviour
     {
         FadeOutRoutine(targetReached);
         targetReached.text = "";
+        textBackground.enabled = false;
     }
 
     private IEnumerator FadeOutRoutine(Text text)

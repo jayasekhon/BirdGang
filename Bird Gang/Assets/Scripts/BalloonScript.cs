@@ -188,18 +188,20 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     [PunRPC]
     public void balloonHit(float balloonCount)
     {
-        Debug.Log("hello");
         if (numberOfBalloons - balloonCount > 1) 
-        {       
+        {     
+            Score.instance.textBackground.enabled = true;  
             Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloons left";
         }
         else if (numberOfBalloons - balloonCount == 1)
         {
+            Score.instance.textBackground.enabled = true;
             Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloon left";
         }
         else 
         {
-            Score.instance.targetReached.text = "MISSION COMPLETE";
+            Score.instance.textBackground.enabled = true;
+            Score.instance.targetReached.text = "MISSION COMPLETE";          
         }
         StartCoroutine(ExecuteAfterTime());
     }   
@@ -208,6 +210,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {
         yield return new WaitForSeconds(3f);
         Score.instance.targetReached.text = "";
+        Score.instance.textBackground.enabled = false;
     }
 
     [PunRPC]

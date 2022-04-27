@@ -799,6 +799,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 3302991711804485433}
   targetReached: {fileID: 3302991712891432719}
+  targetReachedHolder: {fileID: 4193969801108410477}
+  textBackground: {fileID: 0}
 --- !u!114 &7156982482061963770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -909,7 +911,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0000038146973, y: -0.00000047683716}
-  m_SizeDelta: {x: 500, y: 33.1657}
+  m_SizeDelta: {x: 400, y: 33.1657}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3302991712891432718
 CanvasRenderer:
@@ -1136,7 +1138,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0000038146973, y: -0.00000047683716}
-  m_SizeDelta: {x: 500, y: 33.1657}
+  m_SizeDelta: {x: 400, y: 33.1657}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6149531436132013772
 CanvasRenderer:
