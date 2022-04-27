@@ -68,12 +68,12 @@ public class GameEvents : MonoBehaviour
 
 	public static readonly Stage[] serverAgenda =
 	{
-		new Stage(GAME_STAGE.INTRO, 21f),
-		new Stage(GAME_STAGE.TUTORIAL, 10f),
-		new Stage(GAME_STAGE.ROBBERY, 5f),
-		new Stage(GAME_STAGE.POLITICIAN, 5f),
-		new Stage(GAME_STAGE.CARNIVAL, 120f),
-		new Stage(GAME_STAGE.FINALE, 25f),
+		new Stage(GAME_STAGE.INTRO, 2f),
+		new Stage(GAME_STAGE.TUTORIAL, 2f),
+		new Stage(GAME_STAGE.ROBBERY, 2f),
+		new Stage(GAME_STAGE.POLITICIAN, 2f),
+		new Stage(GAME_STAGE.CARNIVAL, 500f),
+		new Stage(GAME_STAGE.FINALE, 1f),
 	};
 	private bool serverHasSerialised = false;
 

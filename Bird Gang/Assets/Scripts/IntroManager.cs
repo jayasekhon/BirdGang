@@ -31,6 +31,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
         voiceover = GetComponent<AudioSource>(); 
         lightingChanges = GetComponent<LightingSettings>();
+        lightingChanges.DayLighting();
     }
 
     void Start() 
