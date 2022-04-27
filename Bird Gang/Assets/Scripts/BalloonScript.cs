@@ -62,7 +62,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private BalloonManager balloonManager;
     private PhotonView PV;
     public float numberOfBalloons = 4;
-    public float balloonCounter = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -118,8 +117,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
             {
                 case BALLOON_STAGE.ATTACHED:
                     // Debug.Log("Attached");
-                    Attatched();
-                    
+                    Attatched();                    
                     break;
                 case BALLOON_STAGE.DETACHED:
                     // Debug.Log("Dettached");
@@ -164,7 +162,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         if (attackers.Count == targetNum)
         {
             currentStage = BALLOON_STAGE.REATTACHED;
-            PV.RPC("balloonHit", RpcTarget.All);
+            balloonManager.balloonCounter++ ;
+            PV.RPC("balloonHit", RpcTarget.All, balloonManager.balloonCounter);
             // balloonManager.balloonHit();
         }
 
@@ -190,17 +189,16 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     }
 
     [PunRPC]
-    public void balloonHit()
+    public void balloonHit(float balloonCount)
     {
         Debug.Log("hello");
-        balloonCounter++;
-        if (numberOfBalloons - balloonCounter > 1) 
+        if (numberOfBalloons - balloonCount > 1) 
         {       
-            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloons left";
         }
-        else if (numberOfBalloons - balloonCounter == 1)
+        else if (numberOfBalloons - balloonCount == 1)
         {
-            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloon left";
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloon left";
         }
         else 
         {
