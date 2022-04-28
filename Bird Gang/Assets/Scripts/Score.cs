@@ -11,7 +11,10 @@ public class Score : MonoBehaviour
     GameObject targetReachedHolder;
     public Image textBackground;
     [SerializeField] 
-    Text scoreAdded;
+    GameObject goodTextHolder;
+    // [SerializeField] 
+    Text goodText;
+    RectTransform goodPos;
 
     float time = 3f;
     float fadeOutTime = 3f;
@@ -22,7 +25,11 @@ public class Score : MonoBehaviour
     {
         instance = this;
         textBackground = targetReachedHolder.GetComponent<Image>();
+        goodText = goodTextHolder.GetComponent<Text>();
+        goodPos = goodTextHolder.GetComponent<RectTransform>();
     }
+
+// y-val = -40 . Max = 5
 
     public int GetScore()
     {
@@ -32,7 +39,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         scoreText.text = "Score: " + score.ToString();
-        scoreAdded.text = " ";
+        goodText.text = " ";
     }
 
     public enum HIT
@@ -47,12 +54,12 @@ public class Score : MonoBehaviour
         {
             case HIT.GOOD:
                 score = UpdateScoreValueGoodPerson(score);
-                scoreAdded.text = " + 10";
+                goodText.text = " + 10";
                 streakFlag = 0;
                 break;
             case HIT.BAD:
                 score += (int)(10f * fac);
-                scoreAdded.text = " - 10";
+                // scoreAdded.text = " - 10";
                 streakFlag++;
                 break;
             case HIT.MINIBOSS:
@@ -61,7 +68,7 @@ public class Score : MonoBehaviour
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
-                scoreAdded.text = " + 50";
+                // scoreAdded.text = " + 50";
                 Invoke("Hide", time);
                 break;
         }
@@ -102,7 +109,7 @@ public class Score : MonoBehaviour
         FadeOutRoutine(targetReached);
         targetReached.text = "";
         textBackground.enabled = false;
-        scoreAdded.text = "";
+        // scoreAdded.text = "";
     }
 
     private IEnumerator FadeOutRoutine(Text text)
