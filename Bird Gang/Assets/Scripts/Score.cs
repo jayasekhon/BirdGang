@@ -10,6 +10,8 @@ public class Score : MonoBehaviour
     [SerializeField] 
     GameObject targetReachedHolder;
     public Image textBackground;
+    [SerializeField] 
+    Text scoreAdded;
 
     float time = 3f;
     float fadeOutTime = 3f;
@@ -30,6 +32,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         scoreText.text = "Score: " + score.ToString();
+        scoreAdded.text = " ";
     }
 
     public enum HIT
@@ -44,10 +47,12 @@ public class Score : MonoBehaviour
         {
             case HIT.GOOD:
                 score = UpdateScoreValueGoodPerson(score);
+                scoreAdded.text = " + 10";
                 streakFlag = 0;
                 break;
             case HIT.BAD:
                 score += (int)(10f * fac);
+                scoreAdded.text = " - 10";
                 streakFlag++;
                 break;
             case HIT.MINIBOSS:
@@ -56,6 +61,7 @@ public class Score : MonoBehaviour
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
+                scoreAdded.text = " + 50";
                 Invoke("Hide", time);
                 break;
         }
@@ -71,7 +77,6 @@ public class Score : MonoBehaviour
             textBackground.enabled = true;
             Invoke("Hide", time);
         }
-
     }
 
     public static int UpdateScoreValueGoodPerson(int scoreToUpdate)
@@ -97,6 +102,7 @@ public class Score : MonoBehaviour
         FadeOutRoutine(targetReached);
         targetReached.text = "";
         textBackground.enabled = false;
+        scoreAdded.text = "";
     }
 
     private IEnumerator FadeOutRoutine(Text text)
