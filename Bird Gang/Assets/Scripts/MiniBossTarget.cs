@@ -74,8 +74,10 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 				PhotonNetwork.Destroy(gameObject);
 			}
 			else
-			{
-				gameObject.GetComponent<MeshRenderer>().enabled = false;
+			{	
+				if (gameObject.GetComponent<MeshRenderer>() != null) {
+					gameObject.GetComponent<MeshRenderer>().enabled = false;
+				}
 			}
 			attackers.Clear();
 		}
