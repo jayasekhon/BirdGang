@@ -16,7 +16,6 @@ public class LamppostLightUp : MonoBehaviour
         int numLamps = lamppostParent.transform.childCount;
         allLamppostRenderers = new Renderer[numLamps];
         lightCones = new GameObject[numLamps];
-        Debug.Log("num lamps "+numLamps);
         for (int i=0; i < numLamps; i++)
         { 
             allLamppostRenderers[i] = lamppostParent.transform.GetChild(i).GetChild(0).GetChild(1).GetComponent<Renderer>();
