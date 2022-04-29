@@ -5,29 +5,35 @@ using UnityEngine;
 public class CircusAudio : MonoBehaviour
 {
 
-    AudioManager audiomng;
+    AudioSource audiomng;
+    // AudioManager audiomng;
+
 
     void Start() 
     {
 
-        audiomng = FindObjectOfType<AudioManager>();
+        // audiomng = FindObjectOfType<AudioManager>();
+        audiomng = GetComponent<AudioSource>();
     }
 
     void OnTriggerEnter(Collider other) 
     {
+        // Debug.Log(other);
         if (other.tag == "Player") 
         {
-            audiomng.Play("Carnival");
+            audiomng.Play();
             // audiomng.loop = true;
 
         }
     }
 
     void OnTriggerExit(Collider other) {
-        if (other.tag == "Player") 
+        // Debug.Log(other);
+
+        if (other.tag == "MainCamera" || other.tag == "SoundCheck" || other.tag == "Player") 
         {
-            audiomng.Stop("Carnival");
-            // audiomng.loop = false;
+            audiomng.Stop();
+        //     // audiomng.loop = false;
         }
     }
 

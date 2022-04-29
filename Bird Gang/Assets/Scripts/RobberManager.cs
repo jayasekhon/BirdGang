@@ -22,6 +22,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     AudioSource voiceover;
     public AudioClip RobberIntro;
 
+    AudioManager audiomng;
+
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
@@ -43,6 +45,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
         voiceover = GetComponent<AudioSource>();
+        audiomng = FindObjectOfType<AudioManager>();
     }
 
     // void Start() 
@@ -63,6 +66,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        // audiomng.Stop("Carnival");
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Robber();
