@@ -12,6 +12,7 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 	private float totalTime;
 	private float timeElapsed;
 	private int currPixel = 0;
+	private static StageProgressUI instance;
 
 	private static readonly int TEX_WIDTH = 1024;
 	private static readonly int TEX_HEIGHT = 32;
@@ -19,9 +20,16 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 	private static readonly int BORDER_HEIGHT = 4;
 	private static readonly int BORDER_WIDTH = BORDER_HEIGHT * 4;
 
+	public void StageComplete()
+	{
+		objective.text =
+			"Objective: Keep defecating on those bad people.";
+	}
+
 	private void Awake()
 	{
-		tex = new Texture2D(
+		instance = this;
+			tex = new Texture2D(
 			TEX_WIDTH, TEX_HEIGHT, DefaultFormat.LDR, 
 			TextureCreationFlags.None);
 		uiImage.texture = tex;
@@ -96,7 +104,6 @@ exit:
 
 	public void OnStageBegin(GameEvents.Stage stage)
 	{
-
 	}
 
 	public void OnStageEnd(GameEvents.Stage stage)

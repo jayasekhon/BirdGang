@@ -12,6 +12,9 @@ public class TutorialStage5 : MonoBehaviour
 
 	void m(bool x)
 	{
+		if (!evilChild)
+			return;
+
 		foreach (TextMeshProUGUI t in evilChild.GetComponentsInChildren<TextMeshProUGUI>())
 			t.enabled = x;
 		foreach (Animator a in evilChild.GetComponentsInChildren<Animator>())
