@@ -82,23 +82,26 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(2.5f);
         
+        Debug.Log("line 85");
         startAlarm = true;
-
+        Debug.Log("line 87");
         //let alarm run alone as boss explains round
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(4f); //4.5
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
         voiceover.PlayOneShot(RobberIntro, 1f);
         
+        Debug.Log("line 94");
         //slight delay for animation and robbers to spawn
         yield return new WaitForSeconds(0.4f);
-
+        //1,5
+        Debug.Log("line 98");
         if (PhotonNetwork.IsMasterClient) 
         {
           robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
           AiController robberAI = robber.GetComponent<AiController>();
         }
-
+        Debug.Log("line 104");
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
         // cutsceneManagerAnim.Play("OverheadCS");
         if (PhotonNetwork.IsMasterClient) 
@@ -109,6 +112,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(6f);
         PlayerControllerNEW.input_lock_all = false;
+        Debug.Log("line 113");
     }
 
     public void gatherCrowd(){
@@ -140,11 +144,11 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     void Update()
     {
         if (startAlarm) {
-            if (!robber)
-            {
+            // if (!robber)
+            // {
                 
-                OnStageEnd(new GameEvents.Stage());
-            }
+            //     OnStageEnd(new GameEvents.Stage());
+            // }
             if (timePassed < 0.5f) 
             {
                 bankAlarm.GetComponent<Light>().enabled = true;

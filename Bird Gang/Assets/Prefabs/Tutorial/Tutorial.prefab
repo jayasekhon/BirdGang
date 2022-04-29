@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 0}
   alertText: {fileID: 0}
+  boss: {fileID: 0}
   stage1: {fileID: 6405048439138329437}
   stage2: {fileID: 8649279258658833283}
   stage3: {fileID: 8100944133695722858}
@@ -4275,6 +4276,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6836080518438572515}
     m_Modifications:
+    - target: {fileID: 4341752122927872080, guid: ceefeb16b79004a5e9a1e221ca2d7e11, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6165264247739209674, guid: ceefeb16b79004a5e9a1e221ca2d7e11, type: 3}
       propertyPath: m_RootOrder
       value: 3
