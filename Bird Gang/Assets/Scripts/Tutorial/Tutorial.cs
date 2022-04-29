@@ -8,6 +8,8 @@ public class Tutorial : MonoBehaviour
 	public TextMeshProUGUI text;
 	public TextMeshProUGUI alertText;
 
+	public GameObject boss;
+
 	public GameObject stage1,
 		stage2,
 		stage3,
@@ -109,6 +111,7 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(false);
 			stage3.SetActive(false);
 			stage4.SetActive(false);
+			boss.SetActive(false);
 			// pc.wind_disable = false;
 			text.transform.parent.GetComponent<Image>()
 				.CrossFadeAlpha(0f, 5f, false);
@@ -150,7 +153,8 @@ public class Tutorial : MonoBehaviour
 				false;
 		alertText.enabled = false;
 
-    audiomng.Stop("TutorialIntro");
+    	audiomng.Stop("TutorialIntro");
+		boss.SetActive(false);
 		/* Any excuse not to change the scene... */
 		text.transform.parent.gameObject.SetActive(false);
 		Destroy(this);
