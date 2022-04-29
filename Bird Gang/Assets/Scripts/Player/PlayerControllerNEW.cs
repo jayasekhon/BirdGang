@@ -295,10 +295,10 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     void KeyboardTurning()
     {
-        if (!input_lock_ad && !input_lock_all)
+        if (!input_lock_all)
         {
             float h = Input.GetAxis("Horizontal") * 25f * Time.fixedDeltaTime;
-            rb.AddTorque(transform.up * h, ForceMode.VelocityChange);
+            rb.AddTorque((input_lock_ad ? Vector3.up : transform.up) * h, ForceMode.VelocityChange);
             // windTimePassed = 0; 
         }
     }

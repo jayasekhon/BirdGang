@@ -139,7 +139,12 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     void Update()
     {
-        if(startAlarm){
+        if (startAlarm) {
+            if (!robber)
+            {
+                
+                OnStageEnd(new GameEvents.Stage());
+            }
             if (timePassed < 0.5f) 
             {
                 bankAlarm.GetComponent<Light>().enabled = true;
@@ -170,6 +175,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
                 PhotonNetwork.Destroy(robber);
             } 
         }
+
+        Destroy(this);
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)

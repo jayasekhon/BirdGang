@@ -92,9 +92,10 @@ public class Score : MonoBehaviour
         scoreText.text = $"Score: {score}";
 
         if (
+            streakFlag > 0 && (
             (streakFlag <= 20 && (streakFlag % 5) == 0)
-	    || streakFlag % 10 == 0
-	) {
+            || streakFlag % 10 == 0)
+        ) {
             targetReached.text = $"{streakFlag} HIT STREAK";
             Invoke("Hide", time);
             textBackground.enabled = true;

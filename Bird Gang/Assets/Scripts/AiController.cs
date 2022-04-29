@@ -13,8 +13,9 @@ public class AiController : MonoBehaviour, IPunObservable
 
     public bool isMiniboss = false;
     public bool forTutorial;
+    public bool clientSide = false;
 
-    const float normalSpeed = 2f;
+    public float normalSpeed = 2f;
     const float minibossSpeed = 4f;
     const float normalAngularSpeed = 120f;
     public bool isFleeing;
@@ -44,7 +45,7 @@ public class AiController : MonoBehaviour, IPunObservable
 
     public void DetectNewObstacle(Vector3 position)
     {
-        if (!PhotonNetwork.IsMasterClient)
+        if (!PhotonNetwork.IsMasterClient && !clientSide)
         {
             Debug.LogError("DetectNewObstacle should not be called on client.");
             return;
@@ -113,7 +114,7 @@ public class AiController : MonoBehaviour, IPunObservable
 
         agent.avoidancePriority = UnityEngine.Random.Range(10, 100);
 
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient || clientSide)
         {
             goalLocations =
                 GameObject.FindGameObjectsWithTag(forTutorial
@@ -127,7 +128,7 @@ public class AiController : MonoBehaviour, IPunObservable
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        if ((PhotonNetwork.IsMasterClient || clientSide) && agent.isActiveAndEnabled && agent.isOnNavMesh)
         {
           
                 if (!isFleeing && isInCrowd)
