@@ -157,10 +157,13 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			Destroy(stage3);
 			Destroy(stage4);
 		}
-//		text.transform.parent.GetComponent<Image>()
-//			.CrossFadeAlpha(0f, 5f, false);
-//		text
-//			.CrossFadeAlpha(0f, 5f, false);
+		text.transform.parent.GetComponent<Image>()
+			.CrossFadeAlpha(0f, 5f, false);
+		text
+			.CrossFadeAlpha(0f, 5f, false);
+		foreach (Image i in boss.GetComponentsInChildren<Image>()) {
+			i.CrossFadeAlpha(0f, 5f, false);
+		}
 		alertText.enabled = false;
 
 		PlayerControllerNEW.input_lock_targeting =
@@ -170,7 +173,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			PlayerControllerNEW.hover_gravity_disable =
 				false;
 
-		boss.SetActive(false);
+
 		Destroy(this);
 		audiomng.Stop("TutorialIntro");
 	}
