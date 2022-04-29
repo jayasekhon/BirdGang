@@ -31,7 +31,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     List<BalloonAgent> balloons;
 
     public float balloonCounter = 0;
-    // public Text targetReached;
 
     // Start is called before the first frame update
     void Awake()
@@ -49,35 +48,17 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         changeCloudsScript = GetComponent<ChangeClouds>();
     }
 
-    // void Start() 
-    // {
-    //     // give it enough time to load in all the cutscene managers
-    //     StartCoroutine(InitCoroutine());
-    // }
-
-    // IEnumerator InitCoroutine()
-    // {
-    //     yield return new WaitForSeconds(3);
-    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-    //     foreach (GameObject m in CM_managers) 
-    //     {
-    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
-    //     }
-    // }
-
     public void OnStageBegin(GameEvents.Stage stage)
     {   
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         voiceover.PlayOneShot(StormHowl, 0.5f);
-        //call another script to change clouds
         changeCloudsScript.ColourChange();
 
         switcher.Carnival();
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Circus"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-            // PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonRPC"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
             balloons = new List<BalloonAgent>();
             SpawnBalloons();
         }
@@ -87,7 +68,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
-       
         }
 
     IEnumerator ExecuteAfterTime()

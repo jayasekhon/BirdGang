@@ -8,9 +8,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 {
     private GameObject robber;
 
-    // [SerializeField]
+    //[SerializeField] 
     GameObject leftDoor;
-    // [SerializeField] 
+    //[SerializeField]
     GameObject rightDoor;
     [SerializeField] GameObject bankAlarm;
     Animator leftAnim;
@@ -21,6 +21,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     AudioSource voiceover;
     public AudioClip RobberIntro;
+
+    AudioManager audiomng;
 
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
@@ -42,7 +44,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         rightDoor = GameObject.FindGameObjectWithTag("RightDoor");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
+
         voiceover = GetComponent<AudioSource>();
+        audiomng = FindObjectOfType<AudioManager>();
     }
 
     // void Start() 
@@ -63,6 +67,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        // audiomng.Stop("Carnival");
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Robber();
@@ -80,17 +85,18 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         startAlarm = true;
 
         //let alarm run alone as boss explains round
-        yield return new WaitForSeconds(4.5f);
-        voiceover.PlayOneShot(RobberIntro, 1f);
+        yield return new WaitForSeconds(4f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
+        voiceover.PlayOneShot(RobberIntro, 1f);
         
         //slight delay for animation and robbers to spawn
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.4f);
 
         if (PhotonNetwork.IsMasterClient) 
         {
-            robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+          robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+          AiController robberAI = robber.GetComponent<AiController>();
         }
 
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
@@ -112,7 +118,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         {
             if(agent.gameObject.name!= "Robber(Clone)" || agent.gameObject.name!= "Mayor(Clone)" )
             {
-                // Debug.Log(agent.gameObject.name);
+                 Debug.Log(agent.gameObject.name);
                 
                 if (Random.Range(0, 100) > 25)
                 {
@@ -124,6 +130,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
                     agent.SetGoal(position);
                     agent.SetChangeGoal(false);
+                    agent.SetCrowdGoal(position);
+                    agent.isInCrowd = true;
                 }
             }
         }

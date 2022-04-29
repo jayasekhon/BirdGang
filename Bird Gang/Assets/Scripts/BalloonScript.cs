@@ -50,7 +50,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     public List<String> attackers = new List<string>();
     private int targetNum;
 
-    // private GameObject[] playersInGame;
     [SerializeField] TMP_Text healthStatus;
     private int health;
 
@@ -62,7 +61,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private BalloonManager balloonManager;
     private PhotonView PV;
     public float numberOfBalloons = 4;
-    public float balloonCounter = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -118,8 +116,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
             {
                 case BALLOON_STAGE.ATTACHED:
                     // Debug.Log("Attached");
-                    Attatched();
-                    
+                    Attatched();                    
                     break;
                 case BALLOON_STAGE.DETACHED:
                     // Debug.Log("Dettached");
@@ -154,7 +151,6 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
                 hitCount = 0;
             }
         }
-  
     }
 
     private void Dettached()
@@ -164,8 +160,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         if (attackers.Count == targetNum)
         {
             currentStage = BALLOON_STAGE.REATTACHED;
-            PV.RPC("balloonHit", RpcTarget.All);
-            // balloonManager.balloonHit();
+            balloonManager.balloonCounter++ ;
+            PV.RPC("balloonHit", RpcTarget.All, balloonManager.balloonCounter);
         }
 
         if (transform.position.y > 150)
@@ -190,28 +186,31 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     }
 
     [PunRPC]
-    public void balloonHit()
+    public void balloonHit(float balloonCount)
     {
-        Debug.Log("hello");
-        balloonCounter++;
-        if (numberOfBalloons - balloonCounter > 1) 
-        {       
-            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloons left";
+        if (numberOfBalloons - balloonCount > 1) 
+        {     
+            Score.instance.textBackground.enabled = true;  
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloons left";
         }
-        else if (numberOfBalloons - balloonCounter == 1)
+        else if (numberOfBalloons - balloonCount == 1)
         {
-            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCounter).ToString() + " balloon left";
+            Score.instance.textBackground.enabled = true;
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloon left";
         }
         else 
         {
-            Score.instance.targetReached.text = "MISSION COMPLETE";
+            Score.instance.textBackground.enabled = true;
+            Score.instance.targetReached.text = "MISSION COMPLETE";          
         }
-        Invoke("Hide", 3f);
+        StartCoroutine(ExecuteAfterTime());
     }   
 
-    void Hide()
+    IEnumerator ExecuteAfterTime()
     {
+        yield return new WaitForSeconds(3f);
         Score.instance.targetReached.text = "";
+        Score.instance.textBackground.enabled = false;
     }
 
     [PunRPC]

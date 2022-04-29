@@ -3,10 +3,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tutorial : MonoBehaviour
+public class Tutorial : MonoBehaviour, GameEventCallbacks
 {
 	public TextMeshProUGUI text;
 	public TextMeshProUGUI alertText;
+
+	public GameObject boss;
 
 	public GameObject stage1,
 		stage2,
@@ -20,12 +22,12 @@ public class Tutorial : MonoBehaviour
 
 	public TriggerEntity cityTrigger;
 
-	private float nextLostCheck = 0f;
+	private float nextLostCheck = float.PositiveInfinity;
 	private int lostCtr;
 
 	private PlayerControllerNEW pc;
 	private int stage = 0;
-	private bool has_init = false;
+	private bool has_started = false;
 
 	private Vector3 rec_pos;
 	private Quaternion rec_rot;
@@ -53,6 +55,7 @@ public class Tutorial : MonoBehaviour
 			stage3.SetActive(false);
 			stage4.SetActive(false);
 			//stage5.SetActive(false); -- This is networked.
+			PlayerControllerNEW.input_lock_all = false;
 			PlayerControllerNEW.input_lock_x = true;
 			PlayerControllerNEW.input_lock_y = true;
 			PlayerControllerNEW.input_lock_ad = true;
@@ -69,7 +72,7 @@ public class Tutorial : MonoBehaviour
 			text.text =
 				"Keep hold of <b>W</b> to use your mouse or trackpad to steer.\n" +
 				"You can also use <b>A</b> and <b>D</b> for small turns.\n";
-			
+
 			audiomng.Play("Turning");
 			break;
 		case 2:
@@ -109,6 +112,7 @@ public class Tutorial : MonoBehaviour
 			stage2.SetActive(false);
 			stage3.SetActive(false);
 			stage4.SetActive(false);
+			boss.SetActive(false);
 			// pc.wind_disable = false;
 			text.transform.parent.GetComponent<Image>()
 				.CrossFadeAlpha(0f, 5f, false);
@@ -132,8 +136,7 @@ public class Tutorial : MonoBehaviour
 	{
 		instance = this;
 		cityTrigger.RegisterCallback(OnEnterCity);
-		/* Otherwise player hasn't yet properly spawned. */
-		nextLostCheck = Time.time + 8f;
+		GameEvents.RegisterCallbacks(this, GAME_STAGE.TUTORIAL, STAGE_CALLBACK.BEGIN);
 	}
 
 	private void Escape()
@@ -150,7 +153,8 @@ public class Tutorial : MonoBehaviour
 				false;
 		alertText.enabled = false;
 
-    audiomng.Stop("TutorialIntro");
+		audiomng.Stop("TutorialIntro");
+		boss.SetActive(false);
 		/* Any excuse not to change the scene... */
 		text.transform.parent.gameObject.SetActive(false);
 		Destroy(this);
@@ -158,18 +162,14 @@ public class Tutorial : MonoBehaviour
 
 	public void Update()
 	{
+		if (!has_started)
+			return;
+
 		if (Input.GetKeyDown(KeyCode.X))
 		{
 			Escape();
 		}
-		/* PC is spawned by script, might not be available in Start. */
-		else if (!has_init && PlayerControllerNEW.Ours)
-		{
-			pc = PlayerControllerNEW.Ours;
-                        has_init = true;
-			AdvanceTutorial();
-		}
-		else if (pc && Time.time > nextLostCheck)
+		else if (Time.time > nextLostCheck)
 		{
 			/* Find when we exit tutorial area (mesh).
 			 * This is involved because
@@ -247,5 +247,26 @@ public class Tutorial : MonoBehaviour
 			alertText.canvasRenderer.SetAlpha(1f);
 			alertText.CrossFadeAlpha(0f, 4f, false);
 		}
+	}
+
+	public void OnStageBegin(GameEvents.Stage stage)
+	{
+		if (has_started)
+		{
+			Debug.LogError("oops");
+			return;
+		}
+		pc = PlayerControllerNEW.Ours;
+		nextLostCheck = Time.time + 2f;
+		has_started = true;
+		AdvanceTutorial();
+	}
+
+	public void OnStageEnd(GameEvents.Stage stage)
+	{
+	}
+
+	public void OnStageProgress(GameEvents.Stage stage, float progress)
+	{
 	}
 }

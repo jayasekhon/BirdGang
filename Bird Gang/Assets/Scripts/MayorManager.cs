@@ -87,6 +87,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             mayorAI = mayor.GetComponent<AiController>();
             agent.speed = 0f;
             agent.acceleration = 0f;
+            
         }
 
         yield return new WaitForSeconds(7.5f); //time to pan + also watch mayor
@@ -115,7 +116,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             ReleaseCrowd();
             releasedCrowd = true;
         }
-
+        mayorAI.SetGoal(position);
         yield return new WaitForSeconds(84f);
         lightingChanges.NightLighting();
         lampsLight.LightUpLampposts();
@@ -130,6 +131,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             {
                 agent.SetChangeGoal(true);
                 agent.SetGoal(position);
+                agent.isInCrowd = false;
             }
         }
     }

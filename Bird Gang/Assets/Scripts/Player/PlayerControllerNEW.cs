@@ -43,6 +43,9 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     private GameObject[] camerasInGame;
     private Animator anim;
 
+    public TrailRenderer leftTrail;
+    public TrailRenderer rightTrail;
+
     public static bool input_lock_x = false,
         input_lock_y = false,
         input_lock_ad = false,
@@ -115,7 +118,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (!input_lock_all && Input.GetKeyDown(KeyCode.F))
         {
             PV.RPC("OnKeyPress", RpcTarget.All);
         }
@@ -138,7 +141,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     void GetInput()
     {
         // Forward movement
-        if (!input_lock_all && Input.GetAxisRaw("Vertical") == 1)
+        if (Input.GetAxisRaw("Vertical") == 1 && !input_lock_all)
         {
             move = true;
             xPos = transform.position.x;
@@ -237,9 +240,14 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
             if (gameObject.transform.localRotation.eulerAngles.x <= 100 && gameObject.transform.localRotation.eulerAngles.x >= 20) {
                 anim.SetBool("flyingDown", true);
+                
+                leftTrail.emitting = true;
+                rightTrail.emitting = true;
             }
             else {
                 anim.SetBool("flyingDown", false);
+                leftTrail.emitting = false;
+                rightTrail.emitting = false;
             }
         }
         else
@@ -258,6 +266,8 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     void Hovering()
     {
+        leftTrail.emitting = false;
+        rightTrail.emitting = false;
         anim.SetBool("flyingDown", false);
         anim.speed = 3f;
 
