@@ -111,14 +111,6 @@ public class PlayerTargeting : MonoBehaviour
 		targetObj.transform.position = hit.point;
 		targetObj.transform.rotation = Quaternion.LookRotation(-hit.normal);
 
-		/* Firing */
-		if (shotCount != 0 &&
-		    Time.time >= lastShot + shotDelay)
-		{
-			shotCount = 0;
-			AmmoCount.instance.SetAmmo(shotMax, shotMax);
-		}
-
 		if (fire && shotCount != shotMax)
 		{
 			Fire(v, g, timeToHit, dist, hit.normal);
@@ -179,6 +171,13 @@ public class PlayerTargeting : MonoBehaviour
 
 	void Update()
 	{
+		if (shotCount != 0 &&
+		    Time.time >= lastShot + shotDelay)
+		{
+			shotCount = 0;
+			AmmoCount.instance.SetAmmo(shotMax, shotMax);
+		}
+
 		Vector3 ndc = Camera.main.ScreenToViewportPoint(Input.mousePosition);
 		Vector3 mouseRay = cam.ViewportPointToRay(ndc).direction.normalized;
 		Targeting(mouseRay, Input.GetMouseButtonDown(0));
