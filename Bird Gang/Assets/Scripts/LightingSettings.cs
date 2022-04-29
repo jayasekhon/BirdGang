@@ -18,7 +18,7 @@ public class LightingSettings : MonoBehaviour
 
     void Start()
     {
-        mainLight = MainLightObj.GetComponent<Light>();
+        //mainLight = MainLightObj.GetComponent<Light>();
     }
     
     //daylight lighting called when the game begins or ends
@@ -50,8 +50,8 @@ public class LightingSettings : MonoBehaviour
             
             RenderSettings.skybox.SetColor("_Tint", Color.Lerp(new Color (0.5f, 0.5f, 0.5f, 1f), new Color(0.1117391f, 0.1134435f, 0.254717f,1f), step));
             RenderSettings.ambientSkyColor = Color.Lerp(daySkyColour, new Color(0.503293f, 0.5836419f, 0.735849f, 0f), step);
-            mainLight.color=Color.Lerp(directionalLight.color, new Color(0f, 0.09997659f, 0.4811321f, 1f), step);
-            mainLight.intensity = Mathf.Lerp(1.2f, 0.6f, step);
+            directionalLight.color=Color.Lerp(directionalLight.color, new Color(0f, 0.09997659f, 0.4811321f, 1f), step);
+            directionalLight.intensity = Mathf.Lerp(1.2f, 0.6f, step);
             step += Time.deltaTime/6f;
 //             RenderSettings.ambientSkyColor = Color.Lerp(new Color(0.9759529f, 1f, 0.8160377f, 0f), new Color(0.503293f, 0.5836419f, 0.735849f, 0f), step);   
 //             mainLight.color = Color.Lerp(new Color(1f, 1f, 1f, 1f), new Color(0f, 0.09997659f, 0.4811321f, 1f), step);
