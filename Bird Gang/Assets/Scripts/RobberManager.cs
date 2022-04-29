@@ -8,9 +8,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 {
     private GameObject robber;
 
-    // [SerializeField]
+    //[SerializeField] 
     GameObject leftDoor;
-    // [SerializeField] 
+    //[SerializeField]
     GameObject rightDoor;
     [SerializeField] GameObject bankAlarm;
     Animator leftAnim;
@@ -42,6 +42,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         rightDoor = GameObject.FindGameObjectWithTag("RightDoor");
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
+
         voiceover = GetComponent<AudioSource>();
     }
 
@@ -81,16 +82,17 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         //let alarm run alone as boss explains round
         yield return new WaitForSeconds(4f);
-        voiceover.PlayOneShot(RobberIntro, 1f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
+        voiceover.PlayOneShot(RobberIntro, 1f);
+        
         
         //slight delay for animation and robbers to spawn
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.4f);
 
         if (PhotonNetwork.IsMasterClient) 
         {
-            robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(148.8f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+            robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
         }
 
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
