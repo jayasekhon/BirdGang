@@ -59,6 +59,7 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 			health -=1;
 			healthStatus.text = new String('+', health);
 		}
+		
 		if (sender == mySender) 
 		{
 			healthStatus.color = new Color32(119, 215, 40, 255);
@@ -66,8 +67,8 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
  
 		if (attackers.Count == targetNum)
 		{
-			var mul = Mathf.InverseLerp(10f, 100f, distance);
-			Score.instance.AddScore(Score.HIT.MINIBOSS, mul);
+			var mul = Mathf.Pow(Mathf.InverseLerp(30f, 250f, distance), 2);
+			Score.instance.AddScore(Score.HIT.MINIBOSS, mul, false);
 			if (PhotonNetwork.IsMasterClient)
 			{
 				PhotonNetwork.Destroy(gameObject);

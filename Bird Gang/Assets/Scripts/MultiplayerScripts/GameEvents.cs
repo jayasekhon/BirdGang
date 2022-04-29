@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Object = UnityEngine.Object;
 
 [Flags]
 public enum STAGE_CALLBACK
@@ -69,8 +68,9 @@ public class GameEvents : MonoBehaviour
 	public static readonly Stage[] serverAgenda =
 	{
 		new Stage(GAME_STAGE.INTRO, 21f),
-		new Stage(GAME_STAGE.TUTORIAL, 0f),
-		new Stage(GAME_STAGE.ROBBERY, 0f),
+		new Stage(GAME_STAGE.TUTORIAL, 120f),
+		new Stage(GAME_STAGE.ROBBERY, 120f),
+
 		new Stage(GAME_STAGE.POLITICIAN, 120f),
 		new Stage(GAME_STAGE.CARNIVAL, 120f),
 		new Stage(GAME_STAGE.FINALE, 25f),
@@ -84,7 +84,8 @@ public class GameEvents : MonoBehaviour
 	private int clientCount = 0;
 
 	private float nextProgressLocalTime = float.PositiveInfinity;
-	private float nextStageLocalTime = float.PositiveInfinity;
+	private int nextStageNetworkTime = int.MaxValue;
+	private int baseNetworkTime = 0;
 
 	private PhotonView pv;
 
@@ -120,6 +121,11 @@ public class GameEvents : MonoBehaviour
 		pv.RPC("SignalClientReady", RpcTarget.MasterClient);
 	}
 
+	int NetworkTime()
+	{
+		return PhotonNetwork.ServerTimestamp - baseNetworkTime;
+	}
+
 	void Update()
 	{
 		if (PhotonNetwork.IsMasterClient && !serverHasSerialised)
@@ -132,11 +138,9 @@ public class GameEvents : MonoBehaviour
 			return;
 		}
 
-		if (Time.time >= nextStageLocalTime)
+		if (NetworkTime() > nextStageNetworkTime)
 		{
-			Debug.Log("Next stage.");
-		unlikely_loop:
-			bool started = (stageIndex > 0);
+			bool started = (stageIndex >= 0);
 			bool finished = (stageIndex + 1 >= ourAgenda.Count);
 			Stage s = started ? ourAgenda[stageIndex] : default;
 			Stage spp = finished ? default : ourAgenda[stageIndex + 1];
@@ -148,8 +152,9 @@ public class GameEvents : MonoBehaviour
 					started &&
 					h.gameStage.HasFlag(s.GameStage) &&
 					h.type.HasFlag(STAGE_CALLBACK.END)
-				)
+				) {
 					h.holder.OnStageEnd(s);
+				}
 
 				if (
 					!finished &&
@@ -165,24 +170,24 @@ public class GameEvents : MonoBehaviour
 			}
 			if (finished)
 			{
-				nextStageLocalTime = float.PositiveInfinity;
+				nextStageNetworkTime = int.MaxValue;
 				nextProgressLocalTime = float.PositiveInfinity;
 			}
 			else
 			{
-				nextStageLocalTime += ourAgenda[stageIndex].Duration;
+				nextStageNetworkTime += (int)(ourAgenda[stageIndex].Duration * 1000f);
 				nextProgressLocalTime = 0f;
 			}
-			// Quite unlikely loop.
-			if (Time.time >= nextStageLocalTime)
-				goto unlikely_loop;
 		}
 		else if (Time.time >= nextProgressLocalTime)
 		{
 			float progress = (float)
-				(Time.time - nextStageLocalTime +
+				((float)(NetworkTime() - nextStageNetworkTime) / 1000f +
 				 ourAgenda[stageIndex].Duration) /
 				ourAgenda[stageIndex].Duration;
+			if (progress < 0f || progress > 1f) {
+				Debug.LogWarning($"Progress {progress} not in [0,1]");
+			}
 			foreach (CallbackItem h in callbacks)
 			{
 				if (
@@ -207,11 +212,11 @@ public class GameEvents : MonoBehaviour
 		}
 
 		pv.RPC("InitAgenda", RpcTarget.AllBuffered,
-			stages, durations, PhotonNetwork.ServerTimestamp + 5000);
+			stages, durations, PhotonNetwork.ServerTimestamp);
 	}
 
 	[PunRPC]
-	void InitAgenda(byte[] stages, float[] durations, int startAtServerTimestamp)
+	void InitAgenda(byte[] stages, float[] durations, int baseTime)
 	{
 		Assert.AreEqual(stages.Length, durations.Length);
 		ourAgenda = new List<Stage>();
@@ -219,8 +224,8 @@ public class GameEvents : MonoBehaviour
 		{
 			ourAgenda.Add(new Stage((GAME_STAGE)stages[i], durations[i]));
 		}
-		nextStageLocalTime = Time.time + (float)
-			(startAtServerTimestamp - PhotonNetwork.ServerTimestamp) / 1000f;
-		Debug.Log($"Starting in {nextStageLocalTime - Time.time}...");
+		baseNetworkTime = baseTime;
+		nextStageNetworkTime = 5000;
+		Debug.Log($"Starting in {nextStageNetworkTime - NetworkTime()}...");
 	}
 }

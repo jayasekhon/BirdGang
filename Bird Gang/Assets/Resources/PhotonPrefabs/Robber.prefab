@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: -4541662791151438913}
   - component: {fileID: 8731981816797615742}
   - component: {fileID: 8852955915655878227}
-  - component: {fileID: 7353842676869555437}
   m_Layer: 10
   m_Name: Robber
   m_TagString: bird_target
@@ -135,18 +134,6 @@ MonoBehaviour:
   isMiniboss: 1
   forTutorial: 0
   isFleeing: 0
---- !u!114 &7353842676869555437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14679132798053869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be7779bad503547b09414d38c9bc5de5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1012195203373823257
 GameObject:
   m_ObjectHideFlags: 0
@@ -9833,6 +9820,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1485829019725677919, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3300042059700459483, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
+      propertyPath: m_fontSize
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3300042059700459483, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 4449160917430024139, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -9871,11 +9870,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9201605790812863619, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1500
+      value: 4000
       objectReference: {fileID: 0}
     - target: {fileID: 9201605790812863619, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 200
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 9201605790812863619, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9911,7 +9910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9201605790812863619, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 2.29
+      value: 2.73
       objectReference: {fileID: 0}
     - target: {fileID: 9201605790812863619, guid: 42ee228d737344eaca1252cf07b1d5bc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
