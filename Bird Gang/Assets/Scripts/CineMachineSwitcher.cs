@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using Photon.Pun;
 
 public class CineMachineSwitcher : MonoBehaviour
 {
     private Animator animator;
+    public CinemachineDollyCart introDolly;
 
     void Awake()
     {
@@ -34,15 +36,15 @@ public class CineMachineSwitcher : MonoBehaviour
 
     IEnumerator RobberCoroutine() //approx 20-25 seconds long
     {
-        yield return new WaitForSeconds(5.5f); //wait to pan to the sky
+        yield return new WaitForSeconds(4.5f); //wait to pan to the sky
         animator.Play("RobberCS");
-        yield return new WaitForSeconds(6f); //this is time for the camera to pan to the bank
+        yield return new WaitForSeconds(7f); //this is time for the camera to pan to the bank
         //voiceovers etc start
         yield return new WaitForSeconds(1.5f);
         //the robbers are instantiated
         yield return new WaitForSeconds(5f); //watch the robbery happen
         animator.Play("OverheadCS");
-        yield return new WaitForSeconds(5f); //wait to pan back to the sky
+        yield return new WaitForSeconds(4f); //wait to pan back to the sky
         animator.Play("Main");
     }
 
@@ -54,13 +56,13 @@ public class CineMachineSwitcher : MonoBehaviour
 
     IEnumerator MayorCoroutine() //approx 20 seconds long
     {
-        yield return new WaitForSeconds(5.5f); //wait to pan to the sky
+        yield return new WaitForSeconds(4.5f); //wait to pan to the sky
         animator.Play("MayorCS");
         //this is time for the camera to pan to the mayor
         // mayor spawns in and talks
-        yield return new WaitForSeconds(10.5f); //watch the mayor speak
+        yield return new WaitForSeconds(12f); //watch the mayor speak
         animator.Play("OverheadCS");
-        yield return new WaitForSeconds(5f); //wait to pan back to the sky
+        yield return new WaitForSeconds(4f); //wait to pan back to the sky
         animator.Play("Main");
     }
 
@@ -72,12 +74,12 @@ public class CineMachineSwitcher : MonoBehaviour
 
     IEnumerator CarnivalCoroutine() //approx 30 seconds long
     {
-        yield return new WaitForSeconds(5.5f); //wait to pan to the sky
+        yield return new WaitForSeconds(4.5f); //wait to pan to the sky
         animator.Play("CarnivalCS");
         //this is time for the camera to pan to the carnival
-        yield return new WaitForSeconds(17f); //watch the carnival
+        yield return new WaitForSeconds(18f); //watch the carnival
         animator.Play("OverheadCS");
-        yield return new WaitForSeconds(5f); //wait to pan back to the sky
+        yield return new WaitForSeconds(4f); //wait to pan back to the sky
         animator.Play("Main");
     }
 
@@ -89,12 +91,13 @@ public class CineMachineSwitcher : MonoBehaviour
 
     IEnumerator FinaleCoroutine()
     {
-        yield return new WaitForSeconds(5.5f); //wait to pan to the sky
+        yield return new WaitForSeconds(4.5f); //wait to pan to the sky
         animator.Play("Finale");
     }
 
     public void Intro()
     {
+        introDolly.m_Position = 0;
         animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
     }

@@ -165,7 +165,7 @@ public class TargetingAndPooTests
          tmpCube.gameObject.transform.localScale = new Vector3(50f, 1f, 50f);
          var t = tmpCube.AddComponent<BaseBirdTarget>();
          t.clientSide = true;
-         t.isGood = good;
+         t.scoreType = good ? Score.HIT.GOOD : Score.HIT.BAD;
          tmpCube.tag = "bird_target";
          return tmpCube;
     }

@@ -29,7 +29,7 @@ public class HelpMessage : MonoBehaviour
 
     public void Display(string nickname, int requesterID) {
         message.color = messageColours[requesterID];
-        message.text = nickname + " needs help!!";
+        message.text = "Miniboss target near " + nickname + "! Help them!";
         Invoke("Hide", time);
     }
 
@@ -40,7 +40,7 @@ public class HelpMessage : MonoBehaviour
 
     private IEnumerator FadeOutRoutine(Text text){ 
         Color originalColor = text.color;
-        for (float t = 0.01f; t < fadeOutTime; t += Time.deltaTime) {
+        for (float t = 0.01f; t < fadeOutTime; t += (Time.deltaTime/2)) {
             text.color = Color.Lerp(originalColor, Color.clear, Mathf.Min(1, t/fadeOutTime));
             Debug.Log("fading");
             yield return null;

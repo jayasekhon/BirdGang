@@ -12,6 +12,7 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 	private float totalTime;
 	private float timeElapsed;
 	private int currPixel = 0;
+	private static StageProgressUI instance;
 
 	private static readonly int TEX_WIDTH = 1024;
 	private static readonly int TEX_HEIGHT = 32;
@@ -19,9 +20,16 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 	private static readonly int BORDER_HEIGHT = 4;
 	private static readonly int BORDER_WIDTH = BORDER_HEIGHT * 4;
 
+	public void StageComplete()
+	{
+		objective.text =
+			"Objective: Keep defecating on those bad people.";
+	}
+
 	private void Awake()
 	{
-		tex = new Texture2D(
+		instance = this;
+			tex = new Texture2D(
 			TEX_WIDTH, TEX_HEIGHT, DefaultFormat.LDR, 
 			TextureCreationFlags.None);
 		uiImage.texture = tex;
@@ -92,29 +100,10 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 exit:
 		tex.SetPixels32(pixels);
 		tex.Apply();
-		
 	}
 
 	public void OnStageBegin(GameEvents.Stage stage)
 	{
-		switch (stage.GameStage)
-		{
-			case GAME_STAGE.TUTORIAL:
-				objective.text = "Objective - Complete the tutorial";
-				break;
-			case GAME_STAGE.ROBBERY:
-				objective.text = "Objective - Stop the robber \nObjective - Keep pooping on those bad people";
-				break;
-			case GAME_STAGE.POLITICIAN:
-				objective.text = "Objective - Poop on the politician \nObjective - Keep pooping on those bad people";
-				break;
-			case GAME_STAGE.CARNIVAL:
-				objective.text = "Objective - Weigh the balloons down \nObjective - Keep pooping on those bad people";
-				break;
-			default:
-				break;
-
-		}
 	}
 
 	public void OnStageEnd(GameEvents.Stage stage)
@@ -127,9 +116,61 @@ exit:
 	public void OnStageProgress(GameEvents.Stage stage, float progress)
 	{
 		float seconds = Mathf.Floor(progress * stage.Duration);
+
+		switch (stage.GameStage)
+		{
+			case GAME_STAGE.TUTORIAL:
+				// objective.text = "Objective - Complete the tutorial";
+				break;
+
+			case GAME_STAGE.ROBBERY:
+				if (seconds < 20) 
+				{
+					transform.Find("Boss").gameObject.SetActive(true);
+				}
+				else 
+				{
+					transform.Find("Boss").gameObject.SetActive(false);
+					objective.text = "Objective - Stop the robber \nObjective - Keep pooping on those bad people";
+				}
+				break;
+
+			case GAME_STAGE.POLITICIAN:
+				if (seconds < 20) 
+				{
+					transform.Find("Boss").gameObject.SetActive(true);
+				}
+				else 
+				{
+					transform.Find("Boss").gameObject.SetActive(false);
+					objective.text = "Objective - Poop on the politician \nObjective - Keep pooping on those bad people";
+				}
+				break;
+
+			case GAME_STAGE.CARNIVAL:
+				if (seconds < 20) 
+				{
+					transform.Find("Boss").gameObject.SetActive(true);
+				}
+				else 
+				{
+					transform.Find("Boss").gameObject.SetActive(false);
+					objective.text = "Objective - Weigh the balloons down \nObjective - Keep pooping on those bad people";
+				}
+				break;
+
+			case GAME_STAGE.FINALE:
+				transform.Find("Boss").gameObject.SetActive(true);
+				break;
+				
+			default:
+				break;
+		}
+
 		if (stage.Duration - seconds < 5f)
 		{
-			text.text = $"Next event in {stage.Duration - seconds}...";
+			// text.text = $"Next event in {stage.Duration - seconds}...";
+			text.text = " ";
 			textShown = true;
 		}
 		/*else if (stage.GameStage != GAME_STAGE.BREAK && seconds < 5f)
