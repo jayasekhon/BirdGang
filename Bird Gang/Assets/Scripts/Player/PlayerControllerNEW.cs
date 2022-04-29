@@ -36,7 +36,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
 
     private bool accelerate;
     private ConstantForce upForce;
-    float timePassed = 0f;
 
     private Rigidbody rb;
     private PhotonView PV;

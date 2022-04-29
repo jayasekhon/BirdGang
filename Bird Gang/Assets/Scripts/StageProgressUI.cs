@@ -129,7 +129,8 @@ exit:
 		float seconds = Mathf.Floor(progress * stage.Duration);
 		if (stage.Duration - seconds < 5f)
 		{
-			text.text = $"Next event in {stage.Duration - seconds}...";
+			// text.text = $"Next event in {stage.Duration - seconds}...";
+			text.text = " ";
 			textShown = true;
 		}
 		/*else if (stage.GameStage != GAME_STAGE.BREAK && seconds < 5f)

@@ -74,9 +74,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     IEnumerator ExecuteAfterTime()
     {
         //gives enough time for camera to pan to sky
-        yield return new WaitForSeconds(5.5f);        
+        yield return new WaitForSeconds(4.5f);        
         // cutsceneManagerAnim.Play("RobberCS");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.5f);
         
         startAlarm = true;
 
@@ -85,7 +85,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
         voiceover.PlayOneShot(RobberIntro, 1f);
-        
         
         //slight delay for animation and robbers to spawn
         yield return new WaitForSeconds(0.4f);
@@ -101,9 +100,9 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         {
             gatherCrowd();
         }
-        yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
+        yield return new WaitForSeconds(4f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(6f);
         PlayerControllerNEW.input_lock_all = false;
     }
 

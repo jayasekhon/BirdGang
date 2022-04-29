@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Photon.Pun;
 using System.IO;
 using System;
@@ -49,13 +50,17 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     public List<String> attackers = new List<string>();
     private int targetNum;
 
-    // private GameObject[] playersInGame;
     [SerializeField] TMP_Text healthStatus;
     private int health;
 
     string sender;
 	string mySender;
 	private Player[] playerList;
+
+    private GameObject balloonManagerHolder;
+    private BalloonManager balloonManager;
+    private PhotonView PV;
+    public float numberOfBalloons = 4;
 
     // Start is called before the first frame update
     void Start()
@@ -84,11 +89,14 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
 				mySender = p.ToString();
 			}
 		}
+        balloonManagerHolder = GameObject.FindGameObjectWithTag("balloonManager");
+        balloonManager = balloonManagerHolder.GetComponent<BalloonManager>();
     }
 
     void Awake()
     {
         //start = false;
+        PV = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -100,40 +108,34 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {
             rb.AddForce(Vector3.up * -hitForce);
             hitCount += 1;
-
         }
 
         if (PhotonNetwork.IsMasterClient)
         {
-
             switch (currentStage)
-                {
-                    case BALLOON_STAGE.ATTACHED:
-                        // Debug.Log("Attached");
-                        Attatched();
-                        
-                        break;
-                    case BALLOON_STAGE.DETACHED:
-                        // Debug.Log("Dettached");
-                        Dettached();
-                        break;
-                    case BALLOON_STAGE.REATTACHED:
-                        // Debug.Log("Rettached");
-                        Rettached();
-                        break;
-                    case BALLOON_STAGE.LOST:
-                        // Debug.Log("Lost");
-                        Lost();
-                        break;
-                    case BALLOON_STAGE.GROUNDED:
-                        // Debug.Log("Lost");
-                        Grounded();
-                        break;
-                }
+            {
+                case BALLOON_STAGE.ATTACHED:
+                    // Debug.Log("Attached");
+                    Attatched();                    
+                    break;
+                case BALLOON_STAGE.DETACHED:
+                    // Debug.Log("Dettached");
+                    Dettached();
+                    break;
+                case BALLOON_STAGE.REATTACHED:
+                    // Debug.Log("Rettached");
+                    Rettached();
+                    break;
+                case BALLOON_STAGE.LOST:
+                    // Debug.Log("Lost");
+                    Lost();
+                    break;
+                case BALLOON_STAGE.GROUNDED:
+                    // Debug.Log("Lost");
+                    Grounded();
+                    break;
+            }
         }
-       
-       
-        
     }
 
     private void Attatched()
@@ -149,46 +151,67 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
                 hitCount = 0;
             }
         }
-  
     }
+
     private void Dettached()
-    {
-        
+    {        
         rb.AddForce(Vector3.up *  airStrength);
         
-
-   
         if (attackers.Count == targetNum)
         {
             currentStage = BALLOON_STAGE.REATTACHED;
+            balloonManager.balloonCounter++ ;
+            PV.RPC("balloonHit", RpcTarget.All, balloonManager.balloonCounter);
         }
-
 
         if (transform.position.y > 150)
         {
             currentStage = BALLOON_STAGE.LOST;
-        }
-   
-
+        } 
     }
 
     private void Rettached()
-    {
-    
+    {    
         rb.AddForce(Vector3.up * fallingStength);
         if (transform.position.y <25 && rb.velocity.magnitude <2)
         {
             currentStage = BALLOON_STAGE.GROUNDED;
             currentTime = 0;
         }
-       
     }
+
     private void Lost()
-    {
-       
+    {  
         rb.AddForce(Vector3.up * airStrength);
     }
 
+    [PunRPC]
+    public void balloonHit(float balloonCount)
+    {
+        if (numberOfBalloons - balloonCount > 1) 
+        {     
+            Score.instance.textBackground.enabled = true;  
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloons left";
+        }
+        else if (numberOfBalloons - balloonCount == 1)
+        {
+            Score.instance.textBackground.enabled = true;
+            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloon left";
+        }
+        else 
+        {
+            Score.instance.textBackground.enabled = true;
+            Score.instance.targetReached.text = "MISSION COMPLETE";          
+        }
+        StartCoroutine(ExecuteAfterTime());
+    }   
+
+    IEnumerator ExecuteAfterTime()
+    {
+        yield return new WaitForSeconds(3f);
+        Score.instance.targetReached.text = "";
+        Score.instance.textBackground.enabled = false;
+    }
 
     [PunRPC]
     public void OnHit(float distance, PhotonMessageInfo info)
@@ -219,7 +242,4 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     {
         return clientSide;
     }
-
-
-
 }
