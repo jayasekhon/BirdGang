@@ -115,8 +115,9 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         {
             ReleaseCrowd();
             releasedCrowd = true;
+            mayorAI.SetGoal(position);
         }
-        mayorAI.SetGoal(position);
+        
         yield return new WaitForSeconds(84f);
         lightingChanges.NightLighting();
         lampsLight.LightUpLampposts();
