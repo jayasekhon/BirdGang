@@ -86,7 +86,7 @@ public class WaypointEvents: MonoBehaviour
     IEnumerator HideWayPointAfterTime()
     {
         coroutineFinished = false;
-        yield return new WaitForSeconds(20);
+        yield return new WaitForSeconds(10);
         HideMyWaypoint();
         coroutineFinished = true;
     }

@@ -17,8 +17,13 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
+    [SerializeField] GameObject creditsScreenHolder;
+    [SerializeField] Text finalScoreText; 
+    [SerializeField] GameObject InGameCanvas;
+    [SerializeField] GameObject CreditButtons;
+    Score scoreScript;
 
-    public Image creditsScreen; 
+    [SerializeField] GameObject escPrompt;
 
     // Start is called before the first frame update
     void Awake()
@@ -33,6 +38,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
         voiceover = GetComponent<AudioSource>(); 
+        scoreScript = InGameCanvas.GetComponent<Score>();
     }
 
     // void Start() 
@@ -75,7 +81,15 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(7f); // pan to finale shot
         voiceover.PlayOneShot(Congratulations, 1f);
         yield return new WaitForSeconds(7.5f);
-        creditsScreen.enabled = true;
+        int score = scoreScript.GetScore();
+        finalScoreText.text = "Your team score: " + score.ToString();
+        escPrompt.SetActive(false);
+        
+        if (PhotonNetwork.IsMasterClient)
+            CreditButtons.SetActive(true);
+
+        creditsScreenHolder.SetActive(true);
+
     }
 
     public void OnStageEnd(GameEvents.Stage stage)

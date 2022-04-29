@@ -18,6 +18,8 @@ public class PauseMenu : MonoBehaviourPunCallbacks
 
     bool ButtonPressed = false;
 
+    [SerializeField] GameObject escPrompt;
+
     void Awake()
     {
         Instance = this;
@@ -40,6 +42,7 @@ public class PauseMenu : MonoBehaviourPunCallbacks
 
     public void Resume()
     {
+        escPrompt.SetActive(true);
         pauseMenuUI.SetActive(false);
         // Time.timeScale = 1f;
         GameIsPaused = false;
@@ -48,6 +51,7 @@ public class PauseMenu : MonoBehaviourPunCallbacks
 
     void Pause()
     {
+        escPrompt.SetActive(false);
         pauseMenuUI.SetActive(true);
         // Time.timeScale = 0f;
         GameIsPaused = true;
