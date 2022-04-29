@@ -9,8 +9,6 @@ public class LamppostLightUp : MonoBehaviour
     [SerializeField] Material glowLampMat;
     private Renderer[] allLamppostRenderers;
     private GameObject[] lightCones;
-    [SerializeField] GameObject MainLightObj;
-    private Light mainLight;
     private float step = 0;
 
     void Start()
@@ -24,8 +22,7 @@ public class LamppostLightUp : MonoBehaviour
             allLamppostRenderers[i] = lamppostParent.transform.GetChild(i).GetChild(0).GetChild(1).GetComponent<Renderer>();
             lightCones[i] = lamppostParent.transform.GetChild(i).GetChild(0).GetChild(2).gameObject;
         }
-
-        mainLight = MainLightObj.GetComponent<Light>();
+        
     }
 
     
@@ -40,8 +37,7 @@ public class LamppostLightUp : MonoBehaviour
             lightCones[ctr].SetActive(true);
             ctr++;
         }
-        // mainLight.color = Color.Lerp(new Color(1f, 1f, 1f, 1f), new Color(0f, 0.09997659f, 0.4811321f, 1f), step);
-        // step += Time.deltaTime/12f; Needs to go in update!
+
     }
 }
 

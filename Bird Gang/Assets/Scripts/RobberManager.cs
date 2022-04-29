@@ -95,7 +95,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
         if (PhotonNetwork.IsMasterClient) 
         {
-            robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+          robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
+          AiController robberAI = robber.GetComponent<AiController>();
         }
 
         yield return new WaitForSeconds(5f); //this means we can watch the robbery happen
@@ -117,7 +118,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         {
             if(agent.gameObject.name!= "Robber(Clone)" || agent.gameObject.name!= "Mayor(Clone)" )
             {
-                // Debug.Log(agent.gameObject.name);
+                 Debug.Log(agent.gameObject.name);
                 
                 if (Random.Range(0, 100) > 25)
                 {
@@ -129,6 +130,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
 
                     agent.SetGoal(position);
                     agent.SetChangeGoal(false);
+                    agent.SetCrowdGoal(position);
+                    agent.isInCrowd = true;
                 }
             }
         }

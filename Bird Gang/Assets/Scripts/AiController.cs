@@ -20,12 +20,17 @@ public class AiController : MonoBehaviour, IPunObservable
     const float normalAngularSpeed = 120f;
     public bool isFleeing;
 
-    public float fleeingSpeed = 20f;
+    public bool isInCrowd;
+    private Vector3 crowdGoal;
+
+    const float fleeingSpeed = 20f;
     const float fleeingAngularSpeed = 500f;
 
     /* Serialisation stuff. */
     private Vector3 lastSteeringTarget;
     private bool lastIsFleeing;
+
+ 
 
     private bool changeGoal = true;
     private float nextForcedSerialise;
@@ -117,23 +122,33 @@ public class AiController : MonoBehaviour, IPunObservable
                     : "goal");
             ResetAgent();
         }
+        isInCrowd = false;
+        crowdGoal = new Vector3(0, 0, 0);
     }
 
     private void Update()
     {
         if ((PhotonNetwork.IsMasterClient || clientSide) && agent.isActiveAndEnabled && agent.isOnNavMesh)
         {
-            if (changeGoal)
-            {
-                if (agent.remainingDistance < 2f )
+          
+                if (!isFleeing && isInCrowd)
                 {
-                    ResetAgent();
+
+                    agent.SetDestination(crowdGoal);
                 }
-            }
-            else if (agent.remainingDistance < 0.5f)
-            {
-                transform.rotation = Quaternion.Euler(0, 180, 0);
-            }
+                if (changeGoal)
+                {
+                    if (agent.remainingDistance < 2f)
+                    {
+                        ResetAgent();
+                    }
+                }
+                else if (agent.remainingDistance < 0.5f)
+                {
+                    transform.rotation = Quaternion.Euler(0, 180, 0);
+                }
+            
+            
         }
     }
 
@@ -190,4 +205,10 @@ public class AiController : MonoBehaviour, IPunObservable
     {
         changeGoal = val;
     }
+
+    public void SetCrowdGoal(Vector3 goal)
+    {
+        crowdGoal = goal;
+    }
+
 }
