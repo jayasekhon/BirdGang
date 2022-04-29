@@ -55,12 +55,18 @@ public class Score : MonoBehaviour
             case HIT.GOOD:
                 score = UpdateScoreValueGoodPerson(score);
                 goodText.text = " + 10";
+                goodText.color = new Color32(119, 215, 40, 255);
+                // goodPos.position = Vector3.MoveTowards(goodPos.position, new Vector3(-23.55981, -141, 0), Time.deltaTime);
                 streakFlag = 0;
+                Invoke("Hide", time);
                 break;
             case HIT.BAD:
                 score += (int)(10f * fac);
+                goodText.text = " - 10";
+                goodText.color = new Color32(227, 45, 62, 255);
                 // scoreAdded.text = " - 10";
                 streakFlag++;
+                Invoke("Hide", time);
                 break;
             case HIT.MINIBOSS:
                 score += (int)(50f * fac);
