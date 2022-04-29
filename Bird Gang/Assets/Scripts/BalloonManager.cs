@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using System.IO;
 
@@ -29,6 +30,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     Transform child;
     List<BalloonAgent> balloons;
 
+    public float balloonCounter = 0;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -45,28 +48,11 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         changeCloudsScript = GetComponent<ChangeClouds>();
     }
 
-    // void Start() 
-    // {
-    //     // give it enough time to load in all the cutscene managers
-    //     StartCoroutine(InitCoroutine());
-    // }
-
-    // IEnumerator InitCoroutine()
-    // {
-    //     yield return new WaitForSeconds(3);
-    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-    //     foreach (GameObject m in CM_managers) 
-    //     {
-    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
-    //     }
-    // }
-
     public void OnStageBegin(GameEvents.Stage stage)
     {   
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         voiceover.PlayOneShot(StormHowl, 0.5f);
-        //call another script to change clouds
         changeCloudsScript.ColourChange();
 
         switcher.Carnival();
@@ -79,24 +65,23 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         running = true;
         fountain.SetActive(false);
         fountainParticles.SetActive(false);
-        //switcher starts by calling overhead cam.
         
+        //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
-       
         }
 
     IEnumerator ExecuteAfterTime()
     {
         //gives enough time for camera to pan to sky
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(4.5f);
         // cutsceneManagerAnim.Play("CarnivalCS");
-        yield return new WaitForSeconds(6f); //this means we can pan 
+        yield return new WaitForSeconds(7f); //this means we can pan 
         voiceover.PlayOneShot(CarnivalIntro, 1f);
         yield return new WaitForSeconds(11f); //this means we can watch the carnival happen 
         // cutsceneManagerAnim.Play("OverheadCS");
-        yield return new WaitForSeconds(5f); //enough time for the camera to pan back to the sky
+        yield return new WaitForSeconds(4f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
-        yield return new WaitForSeconds(5f); //time to pan back to main camera
+        yield return new WaitForSeconds(6f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
         PlayerControllerNEW.wind_disable = false;
     }
@@ -115,7 +100,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
                 Vector3 start = position;
                 GameObject balloonParentObject = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BalloonParent"), start, Quaternion.identity);
                 GameObject balloonObject = balloonParentObject.transform.GetChild(0).gameObject;
-
                 
                 BalloonAgent balloon = balloonObject.GetComponent<BalloonAgent>();
                 //balloon.SetCurrentID(i);
@@ -139,13 +123,11 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
             }
         }
     }
-    
+
     void Wind()
     {
         if (running)
-
         {
-
             direction = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
             Bounds outBounds = outRenderer.bounds;
@@ -173,8 +155,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
                 }
 
             }
-
-
         }
     }
 

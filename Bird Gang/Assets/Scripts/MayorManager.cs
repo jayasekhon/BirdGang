@@ -70,7 +70,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     IEnumerator ExecuteAfterTime()
     {
-        yield return new WaitForSeconds(5.5f); //this is the time to wait for it to pan to the sky
+        yield return new WaitForSeconds(4.5f); //this is the time to wait for it to pan to the sky
         // cutsceneManagerAnim.Play("MayorCS");
         yield return new WaitForSeconds(2f);    
 
@@ -89,7 +89,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             agent.acceleration = 0f;
         }
 
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(7.5f); //time to pan + also watch mayor
         
         if (PhotonNetwork.IsMasterClient) 
         {
@@ -102,12 +102,12 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             mayorAI.SetChangeGoal(false);
         }
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.5f); //finish watching mayor
         // cutsceneManagerAnim.Play("OverheadCS");
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(4f);
         // cutsceneManagerAnim.Play("Main");
-        yield return new WaitForSeconds(5f); //time to pan back to main camera
+        yield return new WaitForSeconds(6f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
        
         if (PhotonNetwork.IsMasterClient) 
