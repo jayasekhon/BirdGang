@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b9c6b0dfe1fde2d0bbf4f7bcf82fcebc
+guid: 8f78e9c573eef32429d30242bda305fd
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,47 +7,52 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: BGSBrown
-    second: {fileID: 2100000, guid: 70000b63d3312438a81dc8f51095cd6b, type: 2}
+      name: Body1
+    second: {fileID: 2100000, guid: feb31d992ebab4884ac16f4d4ae123c3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: CheapWindows
-    second: {fileID: 2100000, guid: f1ec4929b73280dbaa342e2474a8866a, type: 2}
+      name: Dress
+    second: {fileID: 2100000, guid: 6a042921f6e794710846249928420c59, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Details
-    second: {fileID: 2100000, guid: c310542f2b573446ab42d846c5ca62c0, type: 2}
+      name: Hair
+    second: {fileID: 2100000, guid: b957742c5b9bfd441b9b330c8b55d0c5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: SmallHouse
-    second: {fileID: 2100000, guid: 87b501298f7ed4aa98c1d2d6b8870b63, type: 2}
+      name: Joints
+    second: {fileID: 2100000, guid: 5bc6ae160e8d7456e8b5f209fe49b5c7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: TowerInterior
-    second: {fileID: 2100000, guid: 88789a3a3e885031d8dd86e7a9327030, type: 2}
+      name: brows
+    second: {fileID: 2100000, guid: b957742c5b9bfd441b9b330c8b55d0c5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Windows
-    second: {fileID: 2100000, guid: f1ec4929b73280dbaa342e2474a8866a, type: 2}
+      name: eyez
+    second: {fileID: -8060549771731975437, guid: 6f4ab4086275b45579a0b5ef4dfe3b0c, type: 3}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: door
-    second: {fileID: 2100000, guid: 70000b63d3312438a81dc8f51095cd6b, type: 2}
+      name: eyez1
+    second: {fileID: 2100000, guid: b957742c5b9bfd441b9b330c8b55d0c5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: top1
-    second: {fileID: 2100000, guid: 70000b63d3312438a81dc8f51095cd6b, type: 2}
+      name: nose
+    second: {fileID: 2100000, guid: 87e2f34781fe44c97aa1231e8f6aa3bf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader22
+    second: {fileID: 2100000, guid: b957742c5b9bfd441b9b330c8b55d0c5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
-    materialSearch: 2
+    materialSearch: 1
     materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
@@ -73,9 +78,7 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages:
-    - 0.25
-    - 0.01
+    lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
@@ -115,7 +118,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -134,7 +137,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1

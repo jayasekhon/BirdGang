@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b9c6b0dfe1fde2d0bbf4f7bcf82fcebc
+guid: 248662b7f749a044b8134f63a16fc43d
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,47 +7,47 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: BGSBrown
+      name: eyeWhites
+    second: {fileID: 2100000, guid: 56a7b2606335e4350bff47e2799d6cd2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyebrows
     second: {fileID: 2100000, guid: 70000b63d3312438a81dc8f51095cd6b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: CheapWindows
-    second: {fileID: 2100000, guid: f1ec4929b73280dbaa342e2474a8866a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Details
-    second: {fileID: 2100000, guid: c310542f2b573446ab42d846c5ca62c0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: SmallHouse
-    second: {fileID: 2100000, guid: 87b501298f7ed4aa98c1d2d6b8870b63, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: TowerInterior
-    second: {fileID: 2100000, guid: 88789a3a3e885031d8dd86e7a9327030, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Windows
-    second: {fileID: 2100000, guid: f1ec4929b73280dbaa342e2474a8866a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: door
+      name: hair
     second: {fileID: 2100000, guid: 70000b63d3312438a81dc8f51095cd6b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: b957742c5b9bfd441b9b330c8b55d0c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pupil
+    second: {fileID: 2100000, guid: b957742c5b9bfd441b9b330c8b55d0c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: shorts
+    second: {fileID: 2100000, guid: 9d191333f7e0d0c46a45619932809219, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: skin
+    second: {fileID: 2100000, guid: feb31d992ebab4884ac16f4d4ae123c3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: top1
-    second: {fileID: 2100000, guid: 70000b63d3312438a81dc8f51095cd6b, type: 2}
+    second: {fileID: 2100000, guid: e7e2d619b25524495a1fdc6285c4e648, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
-    materialSearch: 2
+    materialSearch: 1
     materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
@@ -73,9 +73,7 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages:
-    - 0.25
-    - 0.01
+    lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
@@ -115,7 +113,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -134,7 +132,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
