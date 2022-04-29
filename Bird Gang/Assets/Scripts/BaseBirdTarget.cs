@@ -13,7 +13,7 @@ public interface IBirdTarget
 /* Target which destroys itself on hit, and adds/subtracts score. */
 public class BaseBirdTarget : MonoBehaviour, IBirdTarget
 {
-    public bool isGood;
+    public Score.HIT scoreType;
     public bool clientSide = false;
 
     public bool IsClientSideTarget()
@@ -24,15 +24,20 @@ public class BaseBirdTarget : MonoBehaviour, IBirdTarget
     [PunRPC]
     public virtual void OnHit(float distance, PhotonMessageInfo info)
     {
-        float mul = Mathf.InverseLerp(10f, 100f, distance);
-        if (!clientSide)
-            Score.instance.AddScore(isGood ? Score.HIT.GOOD : Score.HIT.BAD, mul);
+        var mul = Mathf.Pow(Mathf.InverseLerp(30f, 250f, distance), 2);
+        Score.instance.AddScore(scoreType, mul, clientSide);
 
         if (clientSide)
+        {
             Destroy(gameObject);
+        }
         else if (PhotonNetwork.IsMasterClient)
+        {
             PhotonNetwork.Destroy(gameObject);
+        }
         else
+        {
             gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 }

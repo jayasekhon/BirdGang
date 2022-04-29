@@ -115,7 +115,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (!input_lock_all && Input.GetKeyDown(KeyCode.F))
         {
             PV.RPC("OnKeyPress", RpcTarget.All);
         }
@@ -138,7 +138,7 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     void GetInput()
     {
         // Forward movement
-        if (!input_lock_all && Input.GetAxisRaw("Vertical") == 1)
+        if (Input.GetAxisRaw("Vertical") == 1 && !input_lock_all)
         {
             move = true;
             xPos = transform.position.x;
