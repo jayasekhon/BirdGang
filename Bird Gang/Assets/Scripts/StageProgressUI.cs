@@ -92,7 +92,6 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 exit:
 		tex.SetPixels32(pixels);
 		tex.Apply();
-		
 	}
 
 	public void OnStageBegin(GameEvents.Stage stage)
