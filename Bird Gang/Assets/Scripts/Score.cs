@@ -9,6 +9,14 @@ public class Score : MonoBehaviour
     public Text targetReached;
     public static Score instance;
     public PhotonView pv;
+    [SerializeField] 
+    GameObject targetReachedHolder;
+    public Image textBackground;
+    [SerializeField] 
+    GameObject goodTextHolder;
+    // [SerializeField] 
+    Text goodText;
+    RectTransform goodPos;
 
     float time = 3f;
     float fadeOutTime = 3f;
@@ -19,6 +27,9 @@ public class Score : MonoBehaviour
     {
         instance = this;
         pv = GetComponent<PhotonView>();
+        textBackground = targetReachedHolder.GetComponent<Image>();
+        goodText = goodTextHolder.GetComponent<Text>();
+        goodPos = goodTextHolder.GetComponent<RectTransform>();
     }
 
     public int GetScore()
@@ -29,6 +40,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         scoreText.text = "Score: " + score.ToString();
+        goodText.text = " ";
     }
 
     public enum HIT : byte
@@ -52,19 +64,28 @@ public class Score : MonoBehaviour
         {
             case HIT.GOOD:
                 score = UpdateScoreValueGoodPerson(score);
+                goodText.text = " + 10";
+                goodText.color = new Color32(119, 215, 40, 255);
+                // goodPos.position = Vector3.MoveTowards(goodPos.position, new Vector3(-23.55981, -141, 0), Time.deltaTime);
                 streakFlag = 0;
+                Invoke("Hide", time);
                 break;
             case HIT.BAD_NOSTREAK:
                 score += 10;
                 break;
             case HIT.BAD:
                 score += (int)(Mathf.Lerp(10f, 50f, fac));
+                goodText.text = " - 10";
+                goodText.color = new Color32(227, 45, 62, 255);
                 streakFlag++;
+                Invoke("Hide", time);
                 break;
             case HIT.MINIBOSS:
                 score = UpdateScoreValueBadPerson(score);
                 streakFlag++;
-                targetReached.text = "NICE TEAMWORK";
+                targetReached.text = "MISSION COMPLETE";
+                textBackground.enabled = true;
+                // scoreAdded.text = " + 50";
                 Invoke("Hide", time);
                 break;
         }
@@ -76,6 +97,7 @@ public class Score : MonoBehaviour
 	) {
             targetReached.text = $"{streakFlag} HIT STREAK";
             Invoke("Hide", time);
+            textBackground.enabled = true;
         }
     }
 
@@ -101,9 +123,12 @@ public class Score : MonoBehaviour
     {
         FadeOutRoutine(targetReached);
         targetReached.text = "";
+        textBackground.enabled = false;
+        // scoreAdded.text = "";
     }
 
-    private IEnumerator FadeOutRoutine(Text text){ 
+    private IEnumerator FadeOutRoutine(Text text)
+    { 
         Color originalColor = text.color;
         for (float t = 0.01f; t < fadeOutTime; t += Time.deltaTime) {
             text.color = Color.Lerp(originalColor, Color.clear, Mathf.Min(1, t/fadeOutTime));

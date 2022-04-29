@@ -70,9 +70,9 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     IEnumerator ExecuteAfterTime()
     {
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(4.5f); //pan to sky
         // cutsceneManagerAnim.Play("Finale");
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(7f); // pan to finale shot
         voiceover.PlayOneShot(Congratulations, 1f);
         yield return new WaitForSeconds(7.5f);
         creditsScreen.enabled = true;

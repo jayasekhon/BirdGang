@@ -59,6 +59,7 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 			health -=1;
 			healthStatus.text = new String('+', health);
 		}
+		
 		if (sender == mySender) 
 		{
 			healthStatus.color = new Color32(119, 215, 40, 255);
