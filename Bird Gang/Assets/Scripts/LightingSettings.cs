@@ -6,7 +6,7 @@ public class LightingSettings : MonoBehaviour
 {
     private float step = 0;
     private bool nightTime = false;
-    private Color daySkyColour = new Color(0.4641776f, 0.5322282f, 0.5471698f, 0f);
+    private Color daySkyColour = new Color(0.7009612f, 0.8066928f, 0.8301887f, 0f);
     private Light directionalLight;
     [SerializeField] GameObject MainLightObj;
     private Light mainLight;
