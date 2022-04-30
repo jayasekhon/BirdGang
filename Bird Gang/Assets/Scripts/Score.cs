@@ -19,10 +19,6 @@ public class Score : MonoBehaviour
     Text scoreAddedText;
     RectTransform scoreAddedPos;
 
-    // private bool good = false;
-    // private bool bad = false;
-    // private bool boss = false;
-
     float time = 3f;
     float fadeOutTime = 3f;
     int score = 0;
@@ -72,7 +68,6 @@ public class Score : MonoBehaviour
         {
             case HIT.GOOD:
                 score = UpdateScoreValueGoodPerson(score);
-                // good = true;
                 streakFlag = 0;
                 scoreAddedText.text = " - 5";
                 scoreAddedText.color = new Color32(227, 45, 62, 255);
@@ -80,11 +75,9 @@ public class Score : MonoBehaviour
                 break;
             case HIT.BAD_NOSTREAK:
                 score += 10;
-                // bad = true; 
                 break;
             case HIT.BAD:
-                score += (int)(Mathf.Lerp(10f, 50f, fac));     
-                // bad = true;        
+                score += (int)(Mathf.Lerp(10f, 50f, fac));             
                 streakFlag++;
                 scoreAddedText.text = " + 10";
                 scoreAddedText.color = new Color32(119, 215, 40, 255);
@@ -110,25 +103,6 @@ public class Score : MonoBehaviour
             textBackground.enabled = true;
         }
     }
-
-    // void Update()
-    // {
-    //     if (good)
-    //     {
-    //         bad = false;
-    //         boss = false;
-    //         scoreAddedText.text = " - 5";
-    //         scoreAddedText.color = new Color32(227, 45, 62, 255);
-    //         // goodPos.position = Vector3.MoveTowards(goodPos.position, new Vector3(-23.55981, -141, 0), Time.deltaTime);
-    //     }
-    //     if (bad)
-    //     {
-    //         good = false;
-    //         boss = false;
-    //         scoreAddedText.text = " + 10";
-    //         scoreAddedText.color = new Color32(119, 215, 40, 255);
-    //     }
-    // }
 
     public static int UpdateScoreValueGoodPerson(int scoreToUpdate)
     {
