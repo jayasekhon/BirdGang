@@ -28,6 +28,9 @@ public class Score : MonoBehaviour
     int score = 0;
     int streakFlag = 0;
 
+    private float colorStep = 0;
+    private bool fade = false;
+
     private void Awake()
     {
         instance = this;
@@ -150,7 +153,25 @@ public class Score : MonoBehaviour
         FadeOutRoutine(targetReached);
         targetReached.text = "";
         textBackground.enabled = false;
-        scoreAddedText.text = "";
+        fade = true;
+        // scoreAddedText.text = "";
+    }
+
+    void Update()
+    {
+        if(fade) 
+        {
+            Color32 original = scoreAddedText.color;
+            scoreAddedText.color = Color.Lerp(original, new Color32(original[0], original[1], original[2], 0), colorStep);
+            colorStep += Time.deltaTime/6f;
+            StartCoroutine(ExecuteAfterTime());
+        }
+    }
+
+    IEnumerator ExecuteAfterTime()
+    {
+        yield return new WaitForSeconds(0.3f);  
+        fade = false;
     }
 
     private IEnumerator FadeOutRoutine(Text text)
