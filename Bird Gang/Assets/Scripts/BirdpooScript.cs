@@ -4,8 +4,6 @@ using System.IO;
 
 public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
-	public GameObject splatPrefab;
-
 	private Rigidbody rb;
 	private PhotonView pv;
 
@@ -145,22 +143,20 @@ public class BirdpooScript : MonoBehaviour, IPunInstantiateMagicCallback
 
 		if (flee && PhotonNetwork.IsMasterClient)
 		{
-			// GameObject[] agents = GameObject.FindGameObjectsWithTag("bird_target");
 			AiController[] agents = GameObject.FindObjectsOfType<AiController>();
 			foreach (AiController a in agents)
 			{
-				if (a != collision.collider.gameObject)
-					// a.GetComponent<AiController>().DetectNewObstacle(rb.position);
+				if (!pv.IsMine || a.gameObject != collision.collider.gameObject)
 					a.DetectNewObstacle(rb.position);
 			}
 		}
 
-        foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
-        {
-            meshRenderer.enabled = false;
-        }
-        //transform.SetParent(tar.transform);
-        var p = gameObject.GetComponentInChildren<ParticleSystem>();
+		foreach (MeshRenderer meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+		{
+			meshRenderer.enabled = false;
+		}
+		//transform.SetParent(tar.transform);
+		var p = gameObject.GetComponentInChildren<ParticleSystem>();
 		var e = p.emission;
 		e.enabled = false;
 		p.Clear();

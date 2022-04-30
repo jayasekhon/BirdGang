@@ -29,6 +29,7 @@ public class BaseBirdTarget : MonoBehaviour, IBirdTarget
 
         if (clientSide)
         {
+            Debug.Log("[Target] Hit clientside target.");
             Destroy(gameObject);
         }
         else if (PhotonNetwork.IsMasterClient)

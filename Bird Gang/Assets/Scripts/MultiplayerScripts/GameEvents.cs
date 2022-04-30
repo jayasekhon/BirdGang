@@ -145,6 +145,11 @@ public class GameEvents : MonoBehaviour
 			Stage s = started ? ourAgenda[stageIndex] : default;
 			Stage spp = finished ? default : ourAgenda[stageIndex + 1];
 			stageIndex++;
+			if (started)
+				Debug.Log($"[gameevents] Fired end on event {s.GameStage}");
+			if (!finished)
+				Debug.Log($"[gameevents] Fired start on event {spp.GameStage}");
+
 			for (int i = 0; i < callbacks.Count; i++)
 			{
 				CallbackItem h = callbacks[i];
