@@ -19,13 +19,14 @@ public class Score : MonoBehaviour
     Text scoreAddedText;
     RectTransform scoreAddedPos;
 
-    float time = 3f;
+    float time = 2f;
     float fadeOutTime = 3f;
     int score = 0;
     int streakFlag = 0;
 
     private float colorStep = 0;
     private bool fade = false;
+    private bool move = false;
 
     private void Awake()
     {
@@ -71,6 +72,8 @@ public class Score : MonoBehaviour
                 streakFlag = 0;
                 scoreAddedText.text = " - 5";
                 scoreAddedText.color = new Color32(227, 45, 62, 255);
+                scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
+                move = true;
                 Invoke("Hide", time);
                 break;
             case HIT.BAD_NOSTREAK:
@@ -81,6 +84,8 @@ public class Score : MonoBehaviour
                 streakFlag++;
                 scoreAddedText.text = " + 10";
                 scoreAddedText.color = new Color32(119, 215, 40, 255);
+                scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
+                move = true;
                 Invoke("Hide", time);
                 break;
             case HIT.MINIBOSS:
@@ -133,6 +138,11 @@ public class Score : MonoBehaviour
 
     void Update()
     {
+        if (move && (scoreAddedPos.anchoredPosition != new Vector2 (-411, -78))) 
+        {
+            scoreAddedPos.anchoredPosition = Vector3.Lerp(scoreAddedPos.anchoredPosition, new Vector3 (-411, -78, 0), Time.deltaTime*3.5f);
+        }
+
         if(fade) 
         {
             Color32 original = scoreAddedText.color;
