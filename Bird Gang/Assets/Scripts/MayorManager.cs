@@ -138,7 +138,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     
     void Update()
     {
-        if(enRoute && !mayor && PhotonNetwork.IsMasterClient){
+        if(enRoute && mayor && PhotonNetwork.IsMasterClient){
             if(!mayorAI.isFleeing){
 
                 mayorAI.SetGoal(position);
