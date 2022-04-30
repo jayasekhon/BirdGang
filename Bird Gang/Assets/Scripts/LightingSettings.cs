@@ -37,7 +37,7 @@ public class LightingSettings : MonoBehaviour
 
     IEnumerator ExecuteAfterTime()
     {
-        yield return new WaitForSeconds(21f);        
+        yield return new WaitForSeconds(21f); //this plus 84 makes 110 seconds total     
         RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
         RenderSettings.ambientEquatorColor = new Color(0.3897294f, 0.4619033f, 0.5471698f, 0f);
         RenderSettings.ambientGroundColor = new Color(0.2016607f, 0.1992257f, 0.3490566f, 0f);
@@ -46,8 +46,7 @@ public class LightingSettings : MonoBehaviour
     void Update() 
     {
         if (nightTime) 
-        {
-            
+        {           
             RenderSettings.skybox.SetColor("_Tint", Color.Lerp(new Color (0.5f, 0.5f, 0.5f, 1f), new Color(0.1117391f, 0.1134435f, 0.254717f,1f), step));
             RenderSettings.ambientSkyColor = Color.Lerp(daySkyColour, new Color(0.503293f, 0.5836419f, 0.735849f, 0f), step);
             directionalLight.color=Color.Lerp(directionalLight.color, new Color(0f, 0.09997659f, 0.4811321f, 1f), step);
