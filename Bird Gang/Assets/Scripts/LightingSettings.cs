@@ -5,6 +5,7 @@ using UnityEngine;
 public class LightingSettings : MonoBehaviour
 {
     private float step = 0;
+    private float colorStep = 0;
     private bool nightTime = false;
     private Color daySkyColour = new Color(0.7009612f, 0.8066928f, 0.8301887f, 0f);
     private Light directionalLight;
@@ -55,6 +56,11 @@ public class LightingSettings : MonoBehaviour
 //             RenderSettings.ambientSkyColor = Color.Lerp(new Color(0.9759529f, 1f, 0.8160377f, 0f), new Color(0.503293f, 0.5836419f, 0.735849f, 0f), step);   
 //             mainLight.color = Color.Lerp(new Color(1f, 1f, 1f, 1f), new Color(0f, 0.09997659f, 0.4811321f, 1f), step);
 //             step += Time.deltaTime/12f;
+
+            //change colour of text
+            Score.instance.scoreText.color = Color.Lerp(new Color32(0, 0, 0, 255), new Color32(237, 241, 235, 255), colorStep); 
+            AmmoCount.instance.text.color =  Color.Lerp(new Color32(0, 0, 0, 255), new Color32(237, 241, 235, 255), colorStep); 
+            colorStep += Time.deltaTime/4f;
         }
     }
 }
