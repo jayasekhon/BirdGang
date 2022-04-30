@@ -9,14 +9,19 @@ public class Score : MonoBehaviour
     public Text targetReached;
     public static Score instance;
     public PhotonView pv;
+
     [SerializeField] 
     GameObject targetReachedHolder;
     public Image textBackground;
+
     [SerializeField] 
-    GameObject goodTextHolder;
-    // [SerializeField] 
-    Text goodText;
-    RectTransform goodPos;
+    GameObject scoreAddedHolder;
+    Text scoreAddedText;
+    RectTransform scoreAddedPos;
+
+    // private bool good = false;
+    // private bool bad = false;
+    // private bool boss = false;
 
     float time = 3f;
     float fadeOutTime = 3f;
@@ -28,8 +33,8 @@ public class Score : MonoBehaviour
         instance = this;
         pv = GetComponent<PhotonView>();
         textBackground = targetReachedHolder.GetComponent<Image>();
-        goodText = goodTextHolder.GetComponent<Text>();
-        goodPos = goodTextHolder.GetComponent<RectTransform>();
+        scoreAddedText = scoreAddedHolder.GetComponent<Text>();
+        scoreAddedPos = scoreAddedHolder.GetComponent<RectTransform>();
     }
 
     public int GetScore()
@@ -40,7 +45,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         scoreText.text = "Score: " + score.ToString();
-        goodText.text = " ";
+        scoreAddedText.text = " ";
     }
 
     public enum HIT : byte
@@ -64,28 +69,29 @@ public class Score : MonoBehaviour
         {
             case HIT.GOOD:
                 score = UpdateScoreValueGoodPerson(score);
-                goodText.text = " + 10";
-                goodText.color = new Color32(119, 215, 40, 255);
-                // goodPos.position = Vector3.MoveTowards(goodPos.position, new Vector3(-23.55981, -141, 0), Time.deltaTime);
+                // good = true;
                 streakFlag = 0;
+                scoreAddedText.text = " - 5";
+                scoreAddedText.color = new Color32(227, 45, 62, 255);
                 Invoke("Hide", time);
                 break;
             case HIT.BAD_NOSTREAK:
                 score += 10;
+                // bad = true; 
                 break;
             case HIT.BAD:
-                score += (int)(Mathf.Lerp(10f, 50f, fac));
-                goodText.text = " - 10";
-                goodText.color = new Color32(227, 45, 62, 255);
+                score += (int)(Mathf.Lerp(10f, 50f, fac));     
+                // bad = true;        
                 streakFlag++;
+                scoreAddedText.text = " + 10";
+                scoreAddedText.color = new Color32(119, 215, 40, 255);
                 Invoke("Hide", time);
                 break;
             case HIT.MINIBOSS:
-                score = UpdateScoreValueBadPerson(score);
+                score = UpdateScoreValueMiniBoss(score);
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
-                // scoreAdded.text = " + 50";
                 Invoke("Hide", time);
                 break;
         }
@@ -101,6 +107,25 @@ public class Score : MonoBehaviour
             textBackground.enabled = true;
         }
     }
+
+    // void Update()
+    // {
+    //     if (good)
+    //     {
+    //         bad = false;
+    //         boss = false;
+    //         scoreAddedText.text = " - 5";
+    //         scoreAddedText.color = new Color32(227, 45, 62, 255);
+    //         // goodPos.position = Vector3.MoveTowards(goodPos.position, new Vector3(-23.55981, -141, 0), Time.deltaTime);
+    //     }
+    //     if (bad)
+    //     {
+    //         good = false;
+    //         boss = false;
+    //         scoreAddedText.text = " + 10";
+    //         scoreAddedText.color = new Color32(119, 215, 40, 255);
+    //     }
+    // }
 
     public static int UpdateScoreValueGoodPerson(int scoreToUpdate)
     {
@@ -125,7 +150,7 @@ public class Score : MonoBehaviour
         FadeOutRoutine(targetReached);
         targetReached.text = "";
         textBackground.enabled = false;
-        // scoreAdded.text = "";
+        scoreAddedText.text = "";
     }
 
     private IEnumerator FadeOutRoutine(Text text)

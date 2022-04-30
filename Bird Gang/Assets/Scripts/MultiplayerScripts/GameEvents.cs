@@ -68,7 +68,7 @@ public class GameEvents : MonoBehaviour
 	public static readonly Stage[] serverAgenda =
 	{
 		new Stage(GAME_STAGE.INTRO, 21f),
-		new Stage(GAME_STAGE.TUTORIAL, 10f),
+		new Stage(GAME_STAGE.TUTORIAL, 300f),
 		new Stage(GAME_STAGE.ROBBERY, 40f),
 		new Stage(GAME_STAGE.POLITICIAN, 40f),
 		new Stage(GAME_STAGE.CARNIVAL, 40f),

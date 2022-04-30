@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 8863341948577102318}
   - component: {fileID: 4670501490305487210}
   m_Layer: 5
-  m_Name: ScoreAddedText
+  m_Name: ScoreAddedHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1234,7 +1234,7 @@ MonoBehaviour:
   pv: {fileID: 0}
   targetReachedHolder: {fileID: 5539362894593285548}
   textBackground: {fileID: 0}
-  goodTextHolder: {fileID: 1386625051888730413}
+  scoreAddedHolder: {fileID: 1386625051888730413}
 --- !u!114 &7156982482061963770
 MonoBehaviour:
   m_ObjectHideFlags: 0
