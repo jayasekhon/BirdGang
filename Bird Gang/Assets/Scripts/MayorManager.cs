@@ -107,7 +107,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
         yield return new WaitForSeconds(4f);
         // cutsceneManagerAnim.Play("Main");
-        yield return new WaitForSeconds(6f); //time to pan back to main camera
+        yield return new WaitForSeconds(5f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
        
         if (PhotonNetwork.IsMasterClient) 
