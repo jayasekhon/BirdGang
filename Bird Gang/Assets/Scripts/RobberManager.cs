@@ -84,14 +84,13 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         
         startAlarm = true;
         //let alarm run alone as boss explains round
-        yield return new WaitForSeconds(4f); //4.5
+        yield return new WaitForSeconds(4f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
         voiceover.PlayOneShot(RobberIntro, 1f);
         
         //slight delay for animation and robbers to spawn
-        yield return new WaitForSeconds(0.4f);
-        //1,5
+        yield return new WaitForSeconds(0.5f);
         if (PhotonNetwork.IsMasterClient) 
         {
           robber = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Robber"), new Vector3(151f, 2.7f, -270f), Quaternion.Euler(0, 270, 0));
