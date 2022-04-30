@@ -117,7 +117,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             mayorAI.SetGoal(position);
         }
         
-        yield return new WaitForSeconds(84f);
+        yield return new WaitForSeconds(4f);
         lightingChanges.NightLighting();
         lampsLight.LightUpLampposts();
     }

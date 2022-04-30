@@ -89,7 +89,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
             CreditButtons.SetActive(true);
 
         creditsScreenHolder.SetActive(true);
-
     }
 
     public void OnStageEnd(GameEvents.Stage stage)

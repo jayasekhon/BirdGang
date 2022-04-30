@@ -97,7 +97,7 @@ public class CineMachineSwitcher : MonoBehaviour
 
     public void Intro()
     {
-        introDolly.m_Position = 0;
+        // introDolly.m_Position = 0;
         animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
     }
@@ -105,6 +105,11 @@ public class CineMachineSwitcher : MonoBehaviour
     IEnumerator IntroCoroutine()
     {
         yield return new WaitForSeconds(16f); //wait to pan to the sky
+        animator.Play("Main");
+    }
+
+    public void Resume()
+    {
         animator.Play("Main");
     }
 }
