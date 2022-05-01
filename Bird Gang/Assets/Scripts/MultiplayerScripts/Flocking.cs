@@ -20,12 +20,13 @@ public class Flocking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (flockManager == null)
+        {
+            return;
+        }
         if (Random.Range(0, 100) < 50)
         {
-            if (flockManager == null)
-            {
-                return;
-            }
+
 
             if (flockManager.flockMode)
             {
@@ -36,6 +37,10 @@ public class Flocking : MonoBehaviour
                 groupMode(); //fly together as a flock. can also attack. goal is always flock manager, so not necessarily as close when attacking
             }
         }
+        if (flockManager.flockMode)
+        {
+            Avoid();
+        }
         transform.Translate(0, 0, Time.deltaTime * speed);
     }
 
@@ -43,7 +48,7 @@ public class Flocking : MonoBehaviour
     {
         Bounds b = new Bounds(flockManager.transform.position, flockManager.flyLimits * 2);
 
-        
+
         Vector3 direction = Vector3.zero;
 
         if (!b.Contains(transform.position))
@@ -80,7 +85,7 @@ public class Flocking : MonoBehaviour
                 ApplyGroupRules();
             }
         }
-        
+
     }
 
     void ApplyGroupRules()
@@ -138,7 +143,7 @@ public class Flocking : MonoBehaviour
             birds = flockManager.allBirds;
 
             Vector3 vAvoid = Vector3.zero;
-            Vector3 oAvoid = Vector3.zero;
+
             float nDistance;
             foreach (GameObject bird in birds)
             {
@@ -151,40 +156,72 @@ public class Flocking : MonoBehaviour
                     }
                 }
             }
-            
-            RaycastHit hit = new RaycastHit();
-            int numRays = 9;
-            Vector3 deltaDirection = Vector3.zero;
-            int layerMask = 1 << 8;
-            for (int i = 0; i < numRays; i++)
-            {
-                var rotation = transform.rotation;
-                var rotationMod = Quaternion.AngleAxis(i / ((float)numRays - 1) * 180 - 90, transform.up);
-                var dir = rotation * rotationMod * Vector3.forward;
-                var ray = new Ray(transform.position, dir * 1);
-            
-                if (Physics.Raycast(ray, out hit, 20f, layerMask))
-                {
-                    deltaDirection -= dir;
-                }
-                else
-                {
-                    deltaDirection += dir;
-                }
-            }
-            oAvoid = deltaDirection;
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerToAttack.position - transform.position + 10 * vAvoid + oAvoid), flockManager.rotationSpeed * Time.deltaTime);
+
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerToAttack.position - transform.position + 10 * vAvoid), flockManager.rotationSpeed * Time.deltaTime);
         }
         else if (Random.Range(0, 100) < 20)
         {
             ApplyRules();
         }
 
+
+        //Avoid();
+
         float distance = Vector3.Distance(flockManager.transform.position, transform.position);
         speed = calculateSpeed(distance);
 
-        
+
+    }
+    void Avoid()
+    {
+        RaycastHit leftHit = new RaycastHit();
+        RaycastHit rightHit = new RaycastHit();
+        Vector3 leftStart = transform.position + 2 * transform.right - 2 * transform.forward;
+        Vector3 rightStart = transform.position - 2 * transform.right - 2 * transform.forward; ;
+        var leftRay = new Ray(leftStart, transform.forward * 20);
+        var rightRay = new Ray(rightStart, transform.forward * 20);
+        //Debug.DrawRay(leftStart, transform.forward * 20);
+        //Debug.DrawRay(rightStart, transform.forward * 20);
+        Physics.Raycast(leftRay, out leftHit, 20f);
+        Physics.Raycast(rightRay, out rightHit, 20f);
+
+        RaycastHit myHit = new RaycastHit();
+        int count = 0;
+        if (rightHit.distance > 0)
+        {
+            myHit = rightHit;
+        }
+        if (leftHit.distance > 0)
+        {
+            myHit = leftHit;
+        }
+        if (leftHit.distance > 0 && rightHit.distance > 0)
+        {
+            if (leftHit.distance < rightHit.distance)
+            {
+                myHit = leftHit;
+            }
+            else
+            {
+                myHit = rightHit;
+            }
+        }
+        if (rightHit.distance > 0)
+        {
+            count++;
+        }
+
+        Vector3 Avoid;
+        float avoidSpeed = 10;
+        if (myHit.distance > 0)
+        {
+            Avoid = Vector3.Reflect(transform.forward, myHit.normal);
+            //Debug.DrawRay(myHit.point, Avoid * 20);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Avoid), avoidSpeed * Time.deltaTime);
+
+        }
     }
 
     void ApplyRules()
@@ -218,7 +255,7 @@ public class Flocking : MonoBehaviour
                 nAngle = Vector3.Angle(this.transform.forward, bird.transform.position - this.transform.position);
                 if (nDistance <= flockManager.neighbourDistance && nAngle < flockManager.neighbourAngle)
                 {
-                    
+
                     vCentre += bird.transform.position;
                     groupSize++;
 
@@ -243,7 +280,7 @@ public class Flocking : MonoBehaviour
             var rotationMod = Quaternion.AngleAxis(i / ((float)numRays - 1) * 180 - 90, transform.up);
             var dir = rotation * rotationMod * Vector3.forward;
             var ray = new Ray(transform.position, dir * 1);
-           
+
             if (Physics.Raycast(ray, out hit, 20f, layerMask))
             {
                 deltaDirection -= dir;
@@ -261,7 +298,7 @@ public class Flocking : MonoBehaviour
             vCentre = vCentre / groupSize;
             //speed = gSpeed / groupSize;
             //Debug.Log(vCentre + "   " + vAvoid + "   " + oAvoid);
-            Vector3 direction = (vCentreWeight * vCentre + vAvoidWeight * vAvoid + oAvoidWeight * oAvoid+vPlayerWeight*vPlayer+ vGoalWeight*vGoal);// - transform.position;
+            Vector3 direction = (vCentreWeight * vCentre + vAvoidWeight * vAvoid + oAvoidWeight * oAvoid + vPlayerWeight * vPlayer + vGoalWeight * vGoal);// - transform.position;
             //Vector3 direction  = (flockManager.transform.position - transform.position);
             if (direction != Vector3.zero)
             {
@@ -276,7 +313,7 @@ public class Flocking : MonoBehaviour
         float maxSpeed = 20;
         float speedUpRate = 0.07f;
         float shift = 5f;
-        return (maxSpeed - minSpeed) / (1 + Mathf.Exp(shift - speedUpRate * distance))+minSpeed;
+        return (maxSpeed - minSpeed) / (1 + Mathf.Exp(shift - speedUpRate * distance)) + minSpeed;
 
     }
     public void AttackPlayer(GameObject player)
