@@ -10,6 +10,8 @@ public class CreditScreen : MonoBehaviourPunCallbacks
     [SerializeField] GameObject escPrompt;
     [SerializeField] GameObject creditScreen;
     public const byte ClientLeftRoom = 9;
+    CineMachineSwitcher switcher;
+    [SerializeField] GameObject intro;
 
     PhotonView PV;
 
@@ -26,6 +28,9 @@ public class CreditScreen : MonoBehaviourPunCallbacks
     [PunRPC]
     public virtual void ResumeRPC()
     {
+        switcher = intro.GetComponent<IntroManager>().switcher;
+        switcher.Resume();
+        PlayerControllerNEW.input_lock_all = false;
         escPrompt.SetActive(true);
         creditScreen.SetActive(false);
     }
@@ -44,5 +49,4 @@ public class CreditScreen : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
     }
-
 }

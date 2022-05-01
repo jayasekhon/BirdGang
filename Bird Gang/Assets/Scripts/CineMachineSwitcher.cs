@@ -38,9 +38,9 @@ public class CineMachineSwitcher : MonoBehaviour
     {
         yield return new WaitForSeconds(4.5f); //wait to pan to the sky
         animator.Play("RobberCS");
-        yield return new WaitForSeconds(7f); //this is time for the camera to pan to the bank
+        yield return new WaitForSeconds(6.5f); //this is time for the camera to pan to the bank
         //voiceovers etc start
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         //the robbers are instantiated
         yield return new WaitForSeconds(5f); //watch the robbery happen
         animator.Play("OverheadCS");
@@ -60,7 +60,7 @@ public class CineMachineSwitcher : MonoBehaviour
         animator.Play("MayorCS");
         //this is time for the camera to pan to the mayor
         // mayor spawns in and talks
-        yield return new WaitForSeconds(12f); //watch the mayor speak
+        yield return new WaitForSeconds(11.5f); //watch the mayor speak
         animator.Play("OverheadCS");
         yield return new WaitForSeconds(4f); //wait to pan back to the sky
         animator.Play("Main");
@@ -97,7 +97,7 @@ public class CineMachineSwitcher : MonoBehaviour
 
     public void Intro()
     {
-        introDolly.m_Position = 0;
+        // introDolly.m_Position = 0;
         animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
     }
@@ -105,6 +105,11 @@ public class CineMachineSwitcher : MonoBehaviour
     IEnumerator IntroCoroutine()
     {
         yield return new WaitForSeconds(16f); //wait to pan to the sky
+        animator.Play("Main");
+    }
+
+    public void Resume()
+    {
         animator.Play("Main");
     }
 }
