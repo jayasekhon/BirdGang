@@ -2,6 +2,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Tutorial : MonoBehaviour, GameEventCallbacks
 {
@@ -31,6 +32,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 	private bool has_started = false;
 	private bool may_descend = false;
 	private bool complete = false;
+	private bool destroyed = false;
 
 	private Vector3 rec_pos;
 	private Quaternion rec_rot;
@@ -112,6 +114,9 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 	{
 		if (other.gameObject == pc.gameObject && may_descend)
 		{
+			foreach (Image i in boss.GetComponentsInChildren<Image>()) {
+				i.CrossFadeAlpha(0f, 5f, false);
+			}
 			complete = true;
 			CleanUp();
 			return true;
@@ -138,32 +143,57 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 
 	private void Escape()
 	{
+		if (complete)
+		{
+			Debug.LogWarning("Please tell Joe: Escape called twice.");
+			return;
+		}
+		complete = true;
 		GameObject[] spawns = GameObject.FindGameObjectsWithTag("TutorialEndSpawn");
-		GameObject spawn = spawns
-			[PhotonNetwork.LocalPlayer.ActorNumber % spawns.Length];
-		pc.PutAt(spawn.transform.position, spawn.transform.rotation);
-		CleanUp();
+		if (spawns.Length != 0)
+		{
+			GameObject spawn = spawns
+				[PhotonNetwork.LocalPlayer.ActorNumber % spawns.Length];
+			pc.PutAt(spawn.transform.position, spawn.transform.rotation);
+		}
+		else
+		{
+			Debug.LogWarning("Please tell Joe: Escape called but couldn't find spawns.");
+		}
+	}
+
+	private void StopSound()
+	{
+		audiomng.Stop("Child");
+		audiomng.Stop("Turning");
+		audiomng.Stop("Speed");
+		audiomng.Stop("FirePoop");
 	}
 
 	private void CleanUp()
 	{
+		if (destroyed)
+		{
+			Debug.LogWarning("Please tell Joe: Cleanup called twice.");
+			return;
+		}
+		destroyed = true;
 		if (PhotonNetwork.IsMasterClient) {
 			if (evilChild)
 				PhotonNetwork.Destroy(evilChild);
 			Destroy(gameObject);
 		} else {
+			Destroy(this);
 			Destroy(stage1);
 			Destroy(stage2);
 			Destroy(stage3);
 			Destroy(stage4);
 		}
+
 		text.transform.parent.GetComponent<Image>()
 			.CrossFadeAlpha(0f, 5f, false);
 		text
 			.CrossFadeAlpha(0f, 5f, false);
-		foreach (Image i in boss.GetComponentsInChildren<Image>()) {
-			i.CrossFadeAlpha(0f, 5f, false);
-		}
 		alertText.enabled = false;
 
 		PlayerControllerNEW.input_lock_targeting =
@@ -172,10 +202,6 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			PlayerControllerNEW.input_lock_y =
 			PlayerControllerNEW.hover_gravity_disable =
 				false;
-
-
-		Destroy(this);
-		audiomng.Stop("TutorialIntro");
 	}
 
 	public void Update()
@@ -186,6 +212,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 		if (Input.GetKeyDown(KeyCode.X))
 		{
 			Escape();
+			StopSound();
 		}
 		else if (Time.time > nextLostCheck && false)
 		{
@@ -264,10 +291,21 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 		AdvanceTutorial();
 	}
 
-	public void OnStageEnd(GameEvents.Stage stage)
+	public void RoundEndCleanup()
 	{
 		if (!complete)
 			Escape();
+		if (!destroyed)
+			CleanUp();
+	}
+
+	public void OnStageEnd(GameEvents.Stage stage)
+	{
+		text.transform.parent.GetComponent<Image>()
+			.CrossFadeAlpha(0f, 5f, false);
+		text
+			.CrossFadeAlpha(0f, 5f, false);
+		StopSound();
 	}
 
 	public void OnStageProgress(GameEvents.Stage stage, float progress)

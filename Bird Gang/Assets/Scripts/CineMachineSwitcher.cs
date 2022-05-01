@@ -38,6 +38,9 @@ public class CineMachineSwitcher : MonoBehaviour
     {
         yield return new WaitForSeconds(4.5f); //wait to pan to the sky
         animator.Play("RobberCS");
+	if (Tutorial.instance) {
+		Tutorial.instance.RoundEndCleanup();
+	}
         yield return new WaitForSeconds(6.5f); //this is time for the camera to pan to the bank
         //voiceovers etc start
         yield return new WaitForSeconds(0.5f);
