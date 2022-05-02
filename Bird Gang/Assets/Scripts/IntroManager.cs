@@ -16,7 +16,8 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
     LightingSettings lightingChanges;
 
-    public Image loadScreen; 
+    public Image loadScreen;
+    public boss boss;
     
     // Start is called before the first frame update
     void Awake()
@@ -61,6 +62,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         // yield return new WaitForSeconds(5.5f);
         // cutsceneManagerAnim.Play("Finale");
         // voiceover.PlayOneShot(Introduction, 1f);
+        
         audiomng.Play("Introduction");
         voiceover.Play(0);
         yield return new WaitForSeconds(21f);
