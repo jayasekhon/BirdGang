@@ -4381,8 +4381,8 @@ AudioSource:
   m_GameObject: {fileID: 734708941}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: dd5f9442c2561465a9cbcd1d831ef461, type: 3}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 3c30d22ceffdd4b8990cbc9e5d13288b, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 5f8b0587c7cd7470e93c1b0ae5eac922, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4480,7 +4480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ee67c839e044765a5f9a61c051c641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Introduction: {fileID: 8300000, guid: dd5f9442c2561465a9cbcd1d831ef461, type: 3}
+  Introduction: {fileID: 8300000, guid: 5f8b0587c7cd7470e93c1b0ae5eac922, type: 3}
   switcher: {fileID: 0}
   loadScreen: {fileID: 212907732}
 --- !u!4 &734708945
@@ -5526,6 +5526,10 @@ PrefabInstance:
       propertyPath: SFXMixer
       value: 
       objectReference: {fileID: 24100000, guid: c738f8e5b7fbb48fa8bb064593be0336, type: 2}
+    - target: {fileID: 1174865938310439543, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: MusicMixer
+      value: 
+      objectReference: {fileID: 24100000, guid: 3c30d22ceffdd4b8990cbc9e5d13288b, type: 2}
     - target: {fileID: 2107441666171092455, guid: 18258622310949647a354e8342b570bb, type: 3}
       propertyPath: m_MinValue
       value: 0.0001

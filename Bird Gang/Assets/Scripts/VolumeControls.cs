@@ -10,6 +10,7 @@ public class VolumeControls : MonoBehaviour
     public GameObject MusicSliderObj;
 
     [SerializeField] AudioMixer SFXMixer;
+    [SerializeField] AudioMixer MusicMixer;
 
     public Slider soundEffectsVolume;
     public Slider musicVolume;
@@ -24,19 +25,17 @@ public class VolumeControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // AudioListener.volume = musicVolume.value;
-        SFXMixer.SetFloat("SFXVolume", Mathf.Log10(musicVolume.value) * 20);
-        Debug.Log(musicVolume);
-        Debug.Log(Mathf.Log10(musicVolume.value) * 20);
+        SFXMixer.SetFloat("SFXVolume", Mathf.Log10(soundEffectsVolume.value) * 20);
+        MusicMixer.SetFloat("MusicVolume", Mathf.Log10(musicVolume.value) * 20);
     }
 
     public void SoundEffectsVolumeChanged()
     {
-        Debug.Log("Sound effects volume: "+soundEffectsVolume.value);
+        // Debug.Log("Sound effects volume: "+soundEffectsVolume.value);
     }
 
     public void MusicVolumeChanged()
     {
-        Debug.Log("Music volume: "+musicVolume.value);
+        // Debug.Log("Music volume: "+musicVolume.value);
     }
 }
