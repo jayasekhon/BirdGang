@@ -158,12 +158,16 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             if (mayor)
             {
                 PhotonNetwork.Destroy(mayor);
-                audiomng.Play("MinibossMissed");
             }
-            else
-            {
-                audiomng.Play("MinibossHit");
-            }
+        }
+
+        if (mayor)
+        {
+            audiomng.Play("MinibossMissed");
+        }
+        else
+        {
+            audiomng.Play("MinibossHit");
         }
     }
 

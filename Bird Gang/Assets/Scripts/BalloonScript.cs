@@ -173,7 +173,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private void Rettached()
     {    
         rb.AddForce(Vector3.up * fallingStength);
-        if (transform.position.y <25 && rb.velocity.magnitude <2)
+        if (transform.position.y <30 && rb.velocity.magnitude <2)
         {
             currentStage = BALLOON_STAGE.GROUNDED;
             currentTime = 0;

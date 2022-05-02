@@ -160,6 +160,12 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 		{
 			Debug.LogWarning("Please tell Joe: Escape called but couldn't find spawns.");
 		}
+		PlayerControllerNEW.input_lock_targeting =
+		PlayerControllerNEW.input_lock_ad =
+		PlayerControllerNEW.input_lock_x =
+		PlayerControllerNEW.input_lock_y =
+		PlayerControllerNEW.hover_gravity_disable =
+			false;
 	}
 
 	private void StopSound()
