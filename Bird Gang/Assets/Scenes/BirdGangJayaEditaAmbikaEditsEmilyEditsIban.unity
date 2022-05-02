@@ -244,7 +244,7 @@ AudioSource:
   m_GameObject: {fileID: 15516821}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c738f8e5b7fbb48fa8bb064593be0336, type: 2}
   m_audioClip: {fileID: 8300000, guid: f44e280a0698349e892b2b853ff196c1, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -5522,6 +5522,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1174865938310439543, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: SFXMixer
+      value: 
+      objectReference: {fileID: 24100000, guid: c738f8e5b7fbb48fa8bb064593be0336, type: 2}
+    - target: {fileID: 2107441666171092455, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: m_MinValue
+      value: 0.0001
+      objectReference: {fileID: 0}
     - target: {fileID: 2607799298819937512, guid: 18258622310949647a354e8342b570bb, type: 3}
       propertyPath: escPrompt
       value: 
@@ -5613,6 +5621,10 @@ PrefabInstance:
     - target: {fileID: 2607799298819937517, guid: 18258622310949647a354e8342b570bb, type: 3}
       propertyPath: m_Name
       value: EscCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4947938101757391829, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: m_MinValue
+      value: 0.0001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18258622310949647a354e8342b570bb, type: 3}
