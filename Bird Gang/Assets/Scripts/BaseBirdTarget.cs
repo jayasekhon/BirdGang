@@ -38,7 +38,10 @@ public class BaseBirdTarget : MonoBehaviour, IBirdTarget
         }
         else
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            foreach (Renderer a in gameObject.GetComponentsInChildren<Renderer>())
+            {
+                a.enabled = false;
+            }
         }
     }
 }

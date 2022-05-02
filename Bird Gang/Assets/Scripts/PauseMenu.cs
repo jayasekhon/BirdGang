@@ -42,6 +42,7 @@ public class PauseMenu : MonoBehaviourPunCallbacks
 
     public void Resume()
     {
+        PlayerControllerNEW.input_lock_all = false;
         escPrompt.SetActive(true);
         pauseMenuUI.SetActive(false);
         // Time.timeScale = 1f;
@@ -51,6 +52,7 @@ public class PauseMenu : MonoBehaviourPunCallbacks
 
     void Pause()
     {
+        PlayerControllerNEW.input_lock_all = true;
         escPrompt.SetActive(false);
         pauseMenuUI.SetActive(true);
         // Time.timeScale = 0f;
