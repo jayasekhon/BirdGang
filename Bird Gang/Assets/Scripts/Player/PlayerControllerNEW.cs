@@ -75,7 +75,6 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
         transform.rotation = rot;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        // cameraController.MoveToTarget(true, true);
     }
 
     void Start()
@@ -115,6 +114,9 @@ public class PlayerControllerNEW : MonoBehaviour //, IPunInstantiateMagicCallbac
     {
         if (!PV.IsMine)
         {
+            bool x = anim.GetBool("flyingDown");
+            leftTrail.emitting = x;
+            rightTrail.emitting = x;
             return;
         }
 

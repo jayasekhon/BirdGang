@@ -49,12 +49,9 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 		tex.filterMode = FilterMode.Point;
 		Color32 grey = new Color32(56, 63, 81, 255);
 
-		for (int y = 0; y < tex.height; y++)
+		for (int i = 0; i < tex.height * tex.width; i++)
 		{
-			for (int x = 0; x < BORDER_WIDTH; x++)
-				pixels[(y * tex.width) + x] = grey;
-			for (int x = tex.width - BORDER_WIDTH; x < tex.width; x++)
-				pixels[(y * tex.width) + x] = grey;
+			pixels[i] = grey;
 		}
 
 		int currPixel = BORDER_WIDTH;
@@ -111,6 +108,18 @@ exit:
 		timeElapsed += stage.Duration;
 	}
 
+
+	bool bossShown = false;
+	private void ShowBoss(bool x)
+	{
+		if (x != bossShown) {
+			foreach (Image i in transform.Find("Boss").GetComponentsInChildren<Image>()) {
+				i.CrossFadeAlpha(x ? 1f : 0f, 2f, false);
+			}
+			bossShown = x;
+		}
+	}
+
 	private bool textShown = false;
 
 	public void OnStageProgress(GameEvents.Stage stage, float progress)
@@ -126,11 +135,11 @@ exit:
 			case GAME_STAGE.ROBBERY:
 				if (seconds < 20) 
 				{
-					transform.Find("Boss").gameObject.SetActive(true);
+					ShowBoss(true);
 				}
 				else 
 				{
-					transform.Find("Boss").gameObject.SetActive(false);
+					ShowBoss(false);
 					objective.text = "Objective - Stop the robber \nObjective - Keep pooping on those bad people";
 				}
 				break;
@@ -138,11 +147,11 @@ exit:
 			case GAME_STAGE.POLITICIAN:
 				if (seconds < 20) 
 				{
-					transform.Find("Boss").gameObject.SetActive(true);
+					ShowBoss(true);
 				}
 				else 
 				{
-					transform.Find("Boss").gameObject.SetActive(false);
+					ShowBoss(false);
 					objective.text = "Objective - Poop on the politician \nObjective - Keep pooping on those bad people";
 				}
 				break;
@@ -150,17 +159,18 @@ exit:
 			case GAME_STAGE.CARNIVAL:
 				if (seconds < 20) 
 				{
-					transform.Find("Boss").gameObject.SetActive(true);
+					ShowBoss(true);
 				}
 				else 
 				{
+					ShowBoss(false);
 					transform.Find("Boss").gameObject.SetActive(false);
 					objective.text = "Objective - Weigh the balloons down \nObjective - Keep pooping on those bad people";
 				}
 				break;
 
 			case GAME_STAGE.FINALE:
-				transform.Find("Boss").gameObject.SetActive(true);
+				ShowBoss(true);
 				break;
 				
 			default:
