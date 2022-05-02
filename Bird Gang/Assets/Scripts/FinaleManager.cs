@@ -72,7 +72,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
-        Fireworks.SetActive(true);
+        
         StartCoroutine(ExecuteAfterTime());
         // fireworkEffect.Play();
     }
@@ -82,6 +82,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(4.5f); //pan to sky
         // cutsceneManagerAnim.Play("Finale");
         yield return new WaitForSeconds(7f); // pan to finale shot
+        Fireworks.SetActive(true);
         voiceover.PlayOneShot(Congratulations, 1f);
         yield return new WaitForSeconds(7.5f);
         int score = scoreScript.GetScore();
