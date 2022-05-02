@@ -21,7 +21,9 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     [SerializeField] Text finalScoreText; 
     [SerializeField] GameObject InGameCanvas;
     [SerializeField] GameObject CreditButtons;
+    [SerializeField] GameObject Fireworks;
     Score scoreScript;
+
 
     [SerializeField] GameObject escPrompt;
 
@@ -70,6 +72,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
+        
         StartCoroutine(ExecuteAfterTime());
         // fireworkEffect.Play();
     }
@@ -79,6 +82,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(4.5f); //pan to sky
         // cutsceneManagerAnim.Play("Finale");
         yield return new WaitForSeconds(7f); // pan to finale shot
+        Fireworks.SetActive(true);
         voiceover.PlayOneShot(Congratulations, 1f);
         yield return new WaitForSeconds(7.5f);
         int score = scoreScript.GetScore();
@@ -89,7 +93,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
             CreditButtons.SetActive(true);
 
         creditsScreenHolder.SetActive(true);
-
     }
 
     public void OnStageEnd(GameEvents.Stage stage)

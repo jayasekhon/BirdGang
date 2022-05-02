@@ -23,7 +23,8 @@ public class AiController : MonoBehaviour, IPunObservable
     public bool isInCrowd;
     private Vector3 crowdGoal;
 
-    const float fleeingSpeed = 20f;
+    [SerializeField]
+    private float fleeingSpeed = 20f;
     const float fleeingAngularSpeed = 500f;
 
     /* Serialisation stuff. */

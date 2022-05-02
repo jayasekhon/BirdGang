@@ -19,6 +19,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     AudioSource voiceover;
     public AudioClip MayorIntro;
     // public AudioClip Crowd;
+    AudioManager audiomng;
 
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
@@ -40,6 +41,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         voiceover = GetComponent<AudioSource>();
         lightingChanges = GetComponent<LightingSettings>();
         lampsLight = GetComponent<LamppostLightUp>();
+        audiomng = FindObjectOfType<AudioManager>();
     }
 
     // void Start() 
@@ -72,13 +74,12 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     {
         yield return new WaitForSeconds(4.5f); //this is the time to wait for it to pan to the sky
         // cutsceneManagerAnim.Play("MayorCS");
-        yield return new WaitForSeconds(2f);    
+        yield return new WaitForSeconds(3f);    
 
         if (PhotonNetwork.IsMasterClient) 
         {
             mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(-10.5f, 3.8f, -249), Quaternion.identity);
         }
-        // yield return new WaitForSeconds(2f); 
         voiceover.PlayOneShot(MayorIntro, 1f);
 
         if (PhotonNetwork.IsMasterClient) 
@@ -107,8 +108,9 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("OverheadCS");
 
         yield return new WaitForSeconds(4f);
+        audiomng.Play("MayorMusic");
         // cutsceneManagerAnim.Play("Main");
-        yield return new WaitForSeconds(6f); //time to pan back to main camera
+        yield return new WaitForSeconds(5f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
        
         if (PhotonNetwork.IsMasterClient) 
@@ -139,7 +141,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     
     void Update()
     {
-        if(enRoute && !mayor && PhotonNetwork.IsMasterClient){
+        if(enRoute && mayor && PhotonNetwork.IsMasterClient){
             if(!mayorAI.isFleeing){
 
                 mayorAI.SetGoal(position);
@@ -149,12 +151,18 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
+        audiomng.Stop("MayorMusic");
         if (PhotonNetwork.IsMasterClient) 
         {
             enRoute = false;
             if (mayor)
             {
                 PhotonNetwork.Destroy(mayor);
+                audiomng.Play("MinibossMissed");
+            }
+            else
+            {
+                audiomng.Play("MinibossHit");
             }
         }
     }

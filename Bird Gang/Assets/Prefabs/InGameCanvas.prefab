@@ -400,8 +400,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 83fa234919d814755974fa533193a308, type: 2}
-  m_Color: {r: 0.9287233, g: 0.9433962, b: 0.9211463, a: 1}
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 8863341948577102318}
   - component: {fileID: 4670501490305487210}
   m_Layer: 5
-  m_Name: ScoreAddedText
+  m_Name: ScoreAddedHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -456,7 +456,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -411, y: -72}
+  m_AnchoredPosition: {x: -411, y: -170}
   m_SizeDelta: {x: 776.84, y: 40.2995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8863341948577102318
@@ -489,18 +489,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 495c9e2a934bcc640a8d7427b13cb680, type: 3}
-    m_FontSize: 18
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 131
+    m_MaxSize: 224
     m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: +10
 --- !u!1 &1583431815275959215
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,8 +1054,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 83fa234919d814755974fa533193a308, type: 2}
-  m_Color: {r: 0.9287233, g: 0.9433962, b: 0.9211463, a: 1}
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1234,7 +1234,7 @@ MonoBehaviour:
   pv: {fileID: 0}
   targetReachedHolder: {fileID: 5539362894593285548}
   textBackground: {fileID: 0}
-  goodTextHolder: {fileID: 1386625051888730413}
+  scoreAddedHolder: {fileID: 1386625051888730413}
 --- !u!114 &7156982482061963770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1298,6 +1298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   escPrompt: {fileID: 3524893015745127335}
   creditScreen: {fileID: 815626268895201976}
+  intro: {fileID: 0}
 --- !u!1 &3302991712891432704
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,7 +2101,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press escape to see options or a recap of the controls
+  m_text: Press esc to see options and controls
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

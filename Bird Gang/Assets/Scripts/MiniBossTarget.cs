@@ -1,71 +1,52 @@
 using System;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using TMPro;
-using Photon.Realtime;
 
-public class MiniBossTarget : MonoBehaviour, IBirdTarget
+public class MiniBossTarget : MonoBehaviourPunCallbacks, IBirdTarget
 {
-	// private Animator _animator;
-	public List<String> attackers = new List<string>();
-	private int targetNum;
+	public List<int> attackers = new List<int>();
 
-	// private GameObject[] playersInGame;
 	[SerializeField] TMP_Text healthStatus;
 	private int health;
 
-	string sender;
-	string mySender;
-	private Player[] playerList;
-
-	void Start() {
-		// StartCoroutine(InitCoroutine());
-		// playersInGame = GameObject.FindGameObjectsWithTag("Player");
-		playerList = PhotonNetwork.PlayerList;
-		targetNum = playerList.Length;
-		health = targetNum; 
+	void Start()
+	{
+		health = PhotonNetwork.PlayerList.Length;
 		healthStatus.text = new String('+', health);
-		
-		foreach (Player p in playerList)
-		{
-			if (p.IsLocal)
-			{
-				mySender = p.ToString();
-			}
-		}
 	}
-
-	// IEnumerator InitCoroutine()
-    // {
-    //     yield return new WaitForSeconds(5);
-	// 	playersInGame = GameObject.FindGameObjectsWithTag("Player");		   
-    // }
 
 	public bool IsClientSideTarget()
 	{
 		return false;
 	}
 
+	/* Not sure that this will be called, but might as well make sure. */
+	public override void OnPlayerEnteredRoom(Player newPlayer)
+	{
+		health = PhotonNetwork.PlayerList.Length - attackers.Count;
+		healthStatus.text = new String('+', health);
+	}
+
 	[PunRPC]
 	public void OnHit(float distance, PhotonMessageInfo info)
 	{
-		Debug.Log("num players needed " + targetNum);
-		sender = info.Sender.ToString();
+		if (attackers.Contains(info.Sender.ActorNumber))
+			return;
 
-		if (!attackers.Contains(sender)) 
-		{
-			attackers.Add(sender);
-			health -=1;
-			healthStatus.text = new String('+', health);
-		}
-		
-		if (sender == mySender) 
+		attackers.Add(info.Sender.ActorNumber);
+		health = PhotonNetwork.PlayerList.Length - attackers.Count;
+		healthStatus.text = new String('+', health);
+		Debug.Log($"[Miniboss] {health} Players left to hit");
+
+		if (info.Sender.IsLocal)
 		{
 			healthStatus.color = new Color32(119, 215, 40, 255);
 		}
- 
-		if (attackers.Count == targetNum)
+
+		if (health == 0)
 		{
 			var mul = Mathf.Pow(Mathf.InverseLerp(30f, 250f, distance), 2);
 			Score.instance.AddScore(Score.HIT.MINIBOSS, mul, false);
@@ -74,12 +55,12 @@ public class MiniBossTarget : MonoBehaviour, IBirdTarget
 				PhotonNetwork.Destroy(gameObject);
 			}
 			else
-			{	
-				if (gameObject.GetComponent<MeshRenderer>() != null) {
-					gameObject.GetComponent<MeshRenderer>().enabled = false;
+			{
+				MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();
+				if (mr) {
+					mr.enabled = false;
 				}
 			}
-			attackers.Clear();
 		}
 	}
 }
