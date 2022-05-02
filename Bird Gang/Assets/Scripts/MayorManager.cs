@@ -19,6 +19,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     AudioSource voiceover;
     public AudioClip MayorIntro;
     // public AudioClip Crowd;
+    AudioManager audiomng;
 
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
@@ -40,6 +41,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         voiceover = GetComponent<AudioSource>();
         lightingChanges = GetComponent<LightingSettings>();
         lampsLight = GetComponent<LamppostLightUp>();
+        audiomng = FindObjectOfType<AudioManager>();
     }
 
     // void Start() 
@@ -106,6 +108,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("OverheadCS");
 
         yield return new WaitForSeconds(4f);
+        audiomng.Play("MayorMusic");
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
@@ -148,12 +151,18 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
+        audiomng.Stop("MayorMusic");
         if (PhotonNetwork.IsMasterClient) 
         {
             enRoute = false;
             if (mayor)
             {
                 PhotonNetwork.Destroy(mayor);
+                audiomng.Play("MinibossMissed");
+            }
+            else
+            {
+                audiomng.Play("MinibossHit");
             }
         }
     }
