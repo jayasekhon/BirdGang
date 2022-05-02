@@ -21,7 +21,9 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     [SerializeField] Text finalScoreText; 
     [SerializeField] GameObject InGameCanvas;
     [SerializeField] GameObject CreditButtons;
+    [SerializeField] GameObject Fireworks;
     Score scoreScript;
+
 
     [SerializeField] GameObject escPrompt;
 
@@ -70,6 +72,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
+        Fireworks.SetActive(true);
         StartCoroutine(ExecuteAfterTime());
         // fireworkEffect.Play();
     }
