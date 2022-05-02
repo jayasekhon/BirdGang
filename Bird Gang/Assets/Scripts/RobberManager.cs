@@ -170,7 +170,13 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             if (robber)
             {
                 PhotonNetwork.Destroy(robber);
+                audiomng.Play("MinibossMissed");
             } 
+
+            else 
+            {
+                audiomng.Play("MinibossHit");
+            }
         }
 
         Destroy(this);

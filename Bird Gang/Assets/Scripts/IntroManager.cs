@@ -33,6 +33,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         voiceover = GetComponent<AudioSource>(); 
         lightingChanges = GetComponent<LightingSettings>();
         lightingChanges.DayLighting();
+        audiomng = FindObjectOfType<AudioManager>();
     }
 
     void Start() 
@@ -43,7 +44,6 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        audiomng = FindObjectOfType<AudioManager>();
         loadScreen.enabled = false;
         PlayerControllerNEW.input_lock_all = true;
         CM_manager = GameObject.FindGameObjectWithTag("cutsceneManager");
@@ -62,9 +62,10 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Finale");
         // voiceover.PlayOneShot(Introduction, 1f);
         audiomng.Play("Introduction");
+        voiceover.Play(0);
         yield return new WaitForSeconds(21f);
         PlayerControllerNEW.input_lock_all = false;
-        FindObjectOfType<AudioManager>().Play("TutorialIntro");
+        audiomng.Play("TutorialIntro");
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
