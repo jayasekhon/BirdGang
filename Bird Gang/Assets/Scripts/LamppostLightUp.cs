@@ -9,7 +9,6 @@ public class LamppostLightUp : MonoBehaviour
     [SerializeField] Material glowLampMat;
     private Renderer[] allLamppostRenderers;
     private GameObject[] lightCones;
-    private float step = 0;
 
     void Start()
     {
