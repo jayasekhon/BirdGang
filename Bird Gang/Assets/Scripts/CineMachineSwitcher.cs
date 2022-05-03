@@ -100,7 +100,9 @@ public class CineMachineSwitcher : MonoBehaviour
 
     public void Intro()
     {
-        // introDolly.m_Position = 0;
+        // Otherwise dolly trundles off before round begins.
+        // Give it a slight head start because that's what we're used to.
+        introDolly.m_Position = 200f;
         animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
     }

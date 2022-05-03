@@ -5,54 +5,83 @@ using UnityEngine.UI;
 
 public class WaitingOverlay : MonoBehaviour, GameEventCallbacks
 {
-    public Image holdscreenA, holdscreenB;
+	[SerializeField]
+	List<float> times;
 
-    public List<Sprite> images;
-    public List<float> times;
+	private void ShowObjs(Transform o, bool x, bool fade)
+	{
+		foreach (Graphic g in o.GetComponentsInChildren<Graphic>())
+		{
+			if (fade)
+				g.CrossFadeAlpha(x ? 1f : 0f, 1f, false); 
+			else
+				g.canvasRenderer.SetAlpha(x ? 1f : 0f);
+		}
+	}
 
-    private int i = 0;
-    private float nextTime = 0f;
-    void Start()
-    {
-        GameEvents.RegisterCallbacks(this, GAME_STAGE.INTRO, STAGE_CALLBACK.BEGIN);
-        holdscreenA.canvasRenderer.SetAlpha(0f);
-        holdscreenB.canvasRenderer.SetAlpha(0f);
-    }
+	private int i = 0;
+	private float nextTime = 0f;
+	private Transform lastChild;
 
-    void Update()
-    {
-        if (Time.time > nextTime)
-        {
-            holdscreenA.CrossFadeAlpha(0f, 1f, false);
-            holdscreenB.sprite = images[i];
-            holdscreenB.CrossFadeAlpha(1f, 1f, false);
-            (holdscreenA, holdscreenB) = (holdscreenB, holdscreenA);
+	void Awake()
+	{
+		i = transform.childCount - 1;
+		foreach (RectTransform r in transform
+			         .GetComponentsInChildren<RectTransform>(true))
+		{
+			r.gameObject.SetActive(true);
+		}
+		foreach (Graphic g in transform.GetComponentsInChildren<Graphic>(true))
+		{
+			g.canvasRenderer.SetAlpha(0f);
+		}
 
-            i = (i + 1) % times.Count;
-            nextTime = Time.time + times[i];
-        }
-    }
+		ShowObjs(transform.GetChild(i), true, false);
+	}
 
-    public void OnStageBegin(GameEvents.Stage stage)
-    {
-        holdscreenA.CrossFadeAlpha(0f, 2f, false);
-        holdscreenB.CrossFadeAlpha(0f, 2f, false);
-        StartCoroutine(EnsureGone());
-    }
+	void Start()
+	{
+		GameEvents.RegisterCallbacks(this, GAME_STAGE.INTRO, STAGE_CALLBACK.BEGIN);
+		if (times.Count == 0)
+			times.Add(4f);
+	}
 
-    IEnumerator EnsureGone()
-    {
-        yield return new WaitForSeconds(3f);
-        Destroy(holdscreenA);
-        Destroy(holdscreenB);
-        Destroy(this);
-    }
+	void Update()
+	{
+		if (Time.time > nextTime)
+		{
+			Debug.Log("[holdscreen] Next.");
+			if (lastChild)
+				ShowObjs(lastChild, false, true);
+			lastChild = transform.GetChild(i);
+			ShowObjs(lastChild, true, false);
 
-    public void OnStageEnd(GameEvents.Stage stage)
-    {
-    }
+			nextTime = Time.time + times[i % times.Count];
+			--i;
+			if (i < 0)
+				i = transform.childCount - 1;
+		}
+	}
 
-    public void OnStageProgress(GameEvents.Stage stage, float progress)
-    {
-    }
+	public void OnStageBegin(GameEvents.Stage stage)
+	{
+		nextTime = float.PositiveInfinity;
+		if (lastChild)
+			ShowObjs(lastChild, false, true);
+		StartCoroutine(EnsureGone());
+	}
+
+	IEnumerator EnsureGone()
+	{
+		yield return new WaitForSeconds(3f);
+		Destroy(gameObject);
+	}
+
+	public void OnStageEnd(GameEvents.Stage stage)
+	{
+	}
+
+	public void OnStageProgress(GameEvents.Stage stage, float progress)
+	{
+	}
 }
