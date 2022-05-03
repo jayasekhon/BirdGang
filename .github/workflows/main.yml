@@ -21,7 +21,9 @@ jobs:
           - EditMode
           - PlayMode
     steps:
-        
+      - name: Echo
+        run: |
+          pwd
       # Checkout repository (required to test local actions)
       - name: Checkout code
         uses: actions/checkout@v2
