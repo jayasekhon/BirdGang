@@ -19,7 +19,7 @@ jobs:
           - PlayMode
     steps:
       - name: Echo
-        run: pwd
+        run: echo ${{ matrix.projectPath }}
       - name: LS
         run: ls
       - name: Moving direcorty 
