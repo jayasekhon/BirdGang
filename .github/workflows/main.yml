@@ -23,7 +23,9 @@ jobs:
       - name: LS
         run: ls
       - name: Moving direcorty 
-        run: cd "~"
+        run: cd ../../../../
+      - name: LS
+        run: ls
       - name: Echo
         run: pwd
       
