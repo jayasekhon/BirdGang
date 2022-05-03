@@ -19,15 +19,14 @@ jobs:
           - PlayMode
     steps:
       - name: Echo
-        run: echo ${{ matrix.projectPath }}
-      - name: LS
-        run: ls
-      - name: Moving direcorty 
-        run: cd ../../../../
-      - name: LS
-        run: ls
-      - name: Echo
-        run: pwd
+        run: |
+          echo ${{ matrix.projectPath }}
+          ls
+          pwd
+          cd ../../../../
+          pwd
+          ls
+
       
         
       # Checkout repository (required to test local actions)
