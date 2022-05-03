@@ -23,8 +23,7 @@ jobs:
           echo ${{ matrix.projectPath }}
           ls
           pwd
-          cd ../../../../../
-          cd root
+          cd ./
           pwd
           ls
 
