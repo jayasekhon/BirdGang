@@ -1583,6 +1583,34 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 33
       objectReference: {fileID: 0}
+    - target: {fileID: 3142866338906609380, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+      propertyPath: introManager
+      value: 
+      objectReference: {fileID: 734708944}
+    - target: {fileID: 3142866338906609380, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+      propertyPath: mayorManager
+      value: 
+      objectReference: {fileID: 943766891}
+    - target: {fileID: 3142866338906609380, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+      propertyPath: subtitleText
+      value: 
+      objectReference: {fileID: 212907742}
+    - target: {fileID: 3142866338906609380, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+      propertyPath: finaleManager
+      value: 
+      objectReference: {fileID: 363463085}
+    - target: {fileID: 3142866338906609380, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+      propertyPath: robberManager
+      value: 
+      objectReference: {fileID: 1609914051}
+    - target: {fileID: 3142866338906609380, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+      propertyPath: balloonManager
+      value: 
+      objectReference: {fileID: 1674856484}
+    - target: {fileID: 3142866338906609380, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+      propertyPath: subtitleTextHolder
+      value: 
+      objectReference: {fileID: 212907743}
     - target: {fileID: 3302991711920748677, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1753,6 +1781,22 @@ GameObject:
 --- !u!1 &212907741 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2471612658851718176, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+  m_PrefabInstance: {fileID: 212907731}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &212907742 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6677776697783125774, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+  m_PrefabInstance: {fileID: 212907731}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &212907743 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3679325130126263368, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
   m_PrefabInstance: {fileID: 212907731}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &219615222
@@ -2643,6 +2687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 338de059d6f2e497b956eba33151b4cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutsceneActive: 0
   Congratulations: {fileID: 8300000, guid: 3ef7cfa3599914de98bc44bf5ead189d, type: 3}
   intro: {fileID: 734708941}
   creditsScreenHolder: {fileID: 212907738}
@@ -6481,6 +6526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 206a0929935b048d8a5d3be24bc2c016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutsceneActive: 0
   MayorIntro: {fileID: 8300000, guid: a08a3d6e5ad7b44e58945173c738d858, type: 3}
   intro: {fileID: 734708941}
   NewMissionTextObject: {fileID: 212907741}
@@ -12554,6 +12600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f4e3beab0f641ef815fb9367b70dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutsceneActive: 0
   bankAlarm: {fileID: 905656566}
   RobberIntro: {fileID: 8300000, guid: 65e74ae4669114c6ab5c1748c03a508a, type: 3}
   intro: {fileID: 734708941}
@@ -13044,6 +13091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a8b790e7f2142db8877c3601693f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutsceneActive: 0
   CarnivalIntro: {fileID: 8300000, guid: c0af5498ef18e4711881957c506b7238, type: 3}
   StormHowl: {fileID: 8300000, guid: 50326c9a642c34f868e4d0b25f016862, type: 3}
   outRenderer: {fileID: 915343667}
