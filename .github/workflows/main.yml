@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Echo
         run: pwd
+      - name: LS
+        run: ls
       - name: Moving direcorty 
         run: cd "~"
       - name: Echo
