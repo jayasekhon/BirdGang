@@ -157,7 +157,7 @@ exit:
 				break;
 
 			case GAME_STAGE.CARNIVAL:
-				if (seconds < 20) 
+				if (seconds < 23f) 
 				{
 					ShowBoss(true);
 				}

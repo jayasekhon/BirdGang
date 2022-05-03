@@ -144,9 +144,4 @@ public class Subtitles : MonoBehaviour
         coroutineStarted = false;
     }
 
-    // wind particles show up too late
-    // activate bg boss image for finale
-    // Audio should start later for mayor.
-    // bg boss icon not around long enough in carnival cutscene (mby 1-1.5sec more)
-
 }
