@@ -64,8 +64,9 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			PlayerControllerNEW.hover_gravity_disable = true;
 			text.transform.parent.GetComponent<Image>()
 				.canvasRenderer.SetAlpha(1f);
-			text.text = "Hold <b>W</b> to fly through the rings ahead.\n" +
-				"You can press <b>X</b> to exit the tutorial.";
+			text.text = "Your first mission: flight training\n"+
+						"Hold <b>W</b> to fly through the rings ahead.\n" +
+						"You can press <b>X</b> to exit the tutorial.";
 			break;
 		case 1:
 			stage2.SetActive(true);
@@ -99,7 +100,8 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			audiomng.Play("FirePoop");
 			break;
 		case 5:
-			text.text = "That child is littering! To defeat minibosses like him you must all ruin their day.";
+			text.text = "That child is littering!\n"+
+						"To defeat minibosses like him you must all ruin their day.";
 			audiomng.Play("Child");
 			break;
 		case 6:

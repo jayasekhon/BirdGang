@@ -164,7 +164,7 @@ exit:
 				else 
 				{
 					ShowBoss(false);
-					transform.Find("Boss").gameObject.SetActive(false);
+					// transform.Find("Boss").gameObject.SetActive(false);
 					objective.text = "Objective - Weigh the balloons down \nObjective - Keep pooping on those bad people";
 				}
 				break;

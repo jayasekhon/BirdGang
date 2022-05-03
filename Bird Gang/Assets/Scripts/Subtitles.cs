@@ -100,7 +100,7 @@ public class Subtitles : MonoBehaviour
         mayorDone = true;
         yield return new WaitForSeconds(8.2f);
         subtitleText.text = ("Look at this guy, he thinks he runs my city... HA!\n"+
-        "He is putting everyone to sleep with him rambling.\n"+
+        "He is putting everyone to sleep with his rambling.\n"+
         "Your third mission: humble him.");
         subtitleTextHolder.SetActive(true);
         yield return new WaitForSeconds(8f);
@@ -146,7 +146,6 @@ public class Subtitles : MonoBehaviour
 
     // wind particles show up too late
     // activate bg boss image for finale
-    // Tutorial subs need to be edited to include "first mission" 
     // Audio should start later for mayor.
     // bg boss icon not around long enough in carnival cutscene (mby 1-1.5sec more)
 
