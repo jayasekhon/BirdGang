@@ -59,9 +59,11 @@ jobs:
             Library-
       # Configure test runner
       - uses: game-ci/unity-test-runner@v2.0-alpha-5
+        
         id: testRunner
         with:
-          projectPath: "./Bird\ Gang"
+          working-directory: "./Bird Gang"
+          projectPath: ""
           testMode: ${{ matrix.testMode }}
           checkName: ${{ matrix.testMode }} test results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
