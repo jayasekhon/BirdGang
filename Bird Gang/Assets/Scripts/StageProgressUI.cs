@@ -170,7 +170,16 @@ exit:
 				break;
 
 			case GAME_STAGE.FINALE:
-				ShowBoss(true);
+				// ShowBoss(true);
+				if (seconds < 20) 
+				{
+					ShowBoss(true);
+				}
+				else 
+				{
+					ShowBoss(false);
+					transform.Find("Boss").gameObject.SetActive(false);
+				}
 				break;
 				
 			default:
