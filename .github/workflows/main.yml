@@ -18,8 +18,11 @@ jobs:
           - EditMode
           - PlayMode
     steps:
+      - name: Echo
+        run: pwd
       - name: Moving direcorty 
         run: cd "Bird Gang"
+      
         
       # Checkout repository (required to test local actions)
       - name: Checkout code
