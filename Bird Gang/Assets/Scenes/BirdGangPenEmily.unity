@@ -1750,6 +1750,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1836170376582815248, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
   m_PrefabInstance: {fileID: 212907731}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &212907741 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2471612658851718176, guid: 315a98b4d3198d3178d6046e4ca6d22c, type: 3}
+  m_PrefabInstance: {fileID: 212907731}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &219615222
 GameObject:
   m_ObjectHideFlags: 0
@@ -4550,6 +4555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ee67c839e044765a5f9a61c051c641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutsceneActive: 0
   Introduction: {fileID: 8300000, guid: 5f8b0587c7cd7470e93c1b0ae5eac922, type: 3}
   switcher: {fileID: 0}
   loadScreen: {fileID: 212907732}
@@ -5608,6 +5614,26 @@ PrefabInstance:
       propertyPath: escPrompt
       value: 
       objectReference: {fileID: 212907733}
+    - target: {fileID: 2607799298819937512, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: introManager
+      value: 
+      objectReference: {fileID: 734708944}
+    - target: {fileID: 2607799298819937512, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: mayorManager
+      value: 
+      objectReference: {fileID: 943766891}
+    - target: {fileID: 2607799298819937512, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: finaleManager
+      value: 
+      objectReference: {fileID: 363463085}
+    - target: {fileID: 2607799298819937512, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: robberManager
+      value: 
+      objectReference: {fileID: 1609914051}
+    - target: {fileID: 2607799298819937512, guid: 18258622310949647a354e8342b570bb, type: 3}
+      propertyPath: balloonManager
+      value: 
+      objectReference: {fileID: 1674856484}
     - target: {fileID: 2607799298819937513, guid: 18258622310949647a354e8342b570bb, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -5977,7 +6003,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-312874
+  m_Name: pb_Mesh-3026790
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6457,6 +6483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MayorIntro: {fileID: 8300000, guid: a08a3d6e5ad7b44e58945173c738d858, type: 3}
   intro: {fileID: 734708941}
+  NewMissionTextObject: {fileID: 212907741}
 --- !u!4 &943766892
 Transform:
   m_ObjectHideFlags: 0
@@ -12530,6 +12557,7 @@ MonoBehaviour:
   bankAlarm: {fileID: 905656566}
   RobberIntro: {fileID: 8300000, guid: 65e74ae4669114c6ab5c1748c03a508a, type: 3}
   intro: {fileID: 734708941}
+  NewMissionTextObject: {fileID: 212907741}
 --- !u!4 &1609914052
 Transform:
   m_ObjectHideFlags: 0
@@ -13025,6 +13053,7 @@ MonoBehaviour:
   fountainParticles: {fileID: 1766975384}
   numberOfBalloons: 4
   balloonCounter: 0
+  NewMissionTextObject: {fileID: 212907741}
 --- !u!4 &1674856485
 Transform:
   m_ObjectHideFlags: 0

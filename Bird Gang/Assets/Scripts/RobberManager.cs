@@ -7,6 +7,7 @@ using Photon.Pun;
 public class RobberManager : MonoBehaviour, GameEventCallbacks
 {
     private GameObject robber;
+    public bool cutsceneActive;
 
     //[SerializeField] 
     GameObject leftDoor;
@@ -27,6 +28,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
+
+    [SerializeField] GameObject NewMissionTextObject;
 
     // Start is called before the first frame update
     void Awake()
@@ -69,8 +72,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     {
         // audiomng.Stop("Carnival");
         PlayerControllerNEW.input_lock_all = true;
+        cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Robber();
+        NewMissionTextObject.SetActive(true);
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
@@ -81,6 +86,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(4.5f);        
         // cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(2.5f);
+        NewMissionTextObject.SetActive(false);
         
         startAlarm = true;
         //let alarm run alone as boss explains round
@@ -106,6 +112,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(6f);
         PlayerControllerNEW.input_lock_all = false;
+        cutsceneActive = false;
     }
 
     public void gatherCrowd(){
