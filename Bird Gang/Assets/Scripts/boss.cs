@@ -20,29 +20,9 @@ public class boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (flag != boss_enabled)
-        {
-            if (boss_enabled)
-            {
-                body.SetActive(true);
-                beak.SetActive(true);
-                bottom_beak.SetActive(true);
-
-
-            }
-            else
-            {
-                body.SetActive(false);
-                beak.SetActive(false);
-                bottom_beak.SetActive(false);
-
-            }
-            flag = boss_enabled;
-        }
         if (boss_enabled)
         {
             mouth.mouth_enabled = mouth_enabled;
-
         }
     }
     public void PlayMouthMove(AudioClip clip)

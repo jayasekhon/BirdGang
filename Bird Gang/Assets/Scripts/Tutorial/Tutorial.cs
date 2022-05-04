@@ -118,11 +118,11 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 	{
 		if (other.gameObject == pc.gameObject && may_descend)
 		{
-			foreach (Image i in boss.GetComponentsInChildren<Image>()) {
-				i.CrossFadeAlpha(0f, 5f, false);
-			}
+			Debug.Log("Tutorial: entered city.");
+			StageProgressUI.instance.ShowBoss(false);
 			complete = true;
-			CleanUp();
+			if (!destroyed)
+				CleanUp();
 			return true;
 		}
 		return false;
@@ -147,12 +147,14 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 
 	private void Escape()
 	{
+		Debug.Log("Tutorial: Escape");
 		if (complete)
 		{
 			Debug.LogWarning("Please tell Joe: Escape called twice.");
 			return;
 		}
 		complete = true;
+		may_descend = true;
 		GameObject[] spawns = GameObject.FindGameObjectsWithTag("TutorialEndSpawn");
 		if (spawns.Length != 0)
 		{
@@ -182,6 +184,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 
 	private void CleanUp()
 	{
+		Debug.Log("Tutorial: Cleanup");
 		if (destroyed)
 		{
 			Debug.LogWarning("Please tell Joe: Cleanup called twice.");
@@ -199,6 +202,8 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			Destroy(stage3);
 			Destroy(stage4);
 		}
+		if (cityTrigger)
+			Destroy(cityTrigger);
 
 		text.transform.parent.GetComponent<Image>()
 			.CrossFadeAlpha(0f, 5f, false);
@@ -223,6 +228,8 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 		{
 			Escape();
 			StopSound();
+			text.text = "Tutorial completed, " +
+				    "descend to the city and nab some baddies.";
 		}
 		else if (Time.time > nextLostCheck && false)
 		{

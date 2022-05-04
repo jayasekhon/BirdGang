@@ -12,7 +12,12 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 	private float totalTime;
 	private float timeElapsed;
 	private int currPixel = 0;
-	private static StageProgressUI instance;
+	public static StageProgressUI instance;
+
+	private float bossLerpStart = 0f;
+	private Vector2 bossStartPos;
+	private bool bossGlideType;
+	RectTransform boss;
 
 	private static readonly int TEX_WIDTH = 1024;
 	private static readonly int TEX_HEIGHT = 32;
@@ -97,6 +102,9 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 exit:
 		tex.SetPixels32(pixels);
 		tex.Apply();
+
+		boss = transform.Find("Boss").GetComponent<RectTransform>();
+		bossStartPos = boss.anchoredPosition;
 	}
 
 	public void OnStageBegin(GameEvents.Stage stage)
@@ -109,14 +117,33 @@ exit:
 	}
 
 
-	bool bossShown = false;
-	private void ShowBoss(bool x)
+	bool bossShown = true;
+	public void ShowBoss(bool x)
 	{
-		if (x != bossShown) {
-			foreach (Image i in transform.Find("Boss").GetComponentsInChildren<Image>()) {
-				i.CrossFadeAlpha(x ? 1f : 0f, 2f, false);
-			}
+		Debug.Log("ABC");
+		if (x != bossShown)
+		{
+			Debug.Log("DEF");
+			bossLerpStart = Time.time;
+			bossGlideType = Random.Range(0, 2) != 0;
 			bossShown = x;
+		}
+	}
+
+	void Update()
+	{
+		if (Time.time - bossLerpStart < 1f)
+		{
+			float t = Mathf.Clamp01(Time.time - bossLerpStart);
+			if (bossShown)
+				t = 1f - t;
+			Vector2 pos = bossStartPos;
+
+			if (bossGlideType)
+				pos.y = bossStartPos.y - t * 220f;
+			else
+				pos.x = bossStartPos.x - t * 220f;
+			boss.anchoredPosition = pos;
 		}
 	}
 
