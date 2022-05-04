@@ -109,7 +109,6 @@ public class Subtitles : MonoBehaviour
 
     }
 
-
     IEnumerator BalloonSubtitles()
     {
         balloonDone = true;
@@ -122,7 +121,7 @@ public class Subtitles : MonoBehaviour
         "Weigh them down.");
         yield return new WaitForSeconds(4.5f);
         subtitleText.text = ("Watch out for wind knocking you off course.\n"+
-        "Your final mission: save the carnvial");
+        "Your final mission: save the carnival!");
         yield return new WaitForSeconds(5.2f);
         subtitleTextHolder.SetActive(false);
         coroutineStarted = false;
