@@ -6,6 +6,7 @@ using UnityEngine;
 public class Sound
 {
     public string name;
+    
 
     public AudioClip clip;
 
@@ -16,7 +17,9 @@ public class Sound
 
 	public AudioMixerGroup mixerGroup;
 
-	[HideInInspector]
+    public bool voiceOver = false;
+
+    [HideInInspector]
 	public AudioSource source;
 
 }

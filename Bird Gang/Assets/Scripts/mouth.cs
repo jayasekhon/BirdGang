@@ -32,19 +32,43 @@ float frqLow = 150;
 float frqHigh = 3000;
 private float y0;
 
+private float time;
+private float length;
+
 public bool mouth_enabled;
 void Start()
 {
 
     y0 = mouth_position.transform.position.y;
     freqData = new float[nSamples];
+    time = 0;
+    length = -1;
     
 }
 
 void Update()
 {
-    if(enabled)mouth_position.transform.position = new Vector3(mouth_position.transform.position.x, y0 - BandVol(frqLow, frqHigh) * volume, mouth_position.transform.position.x);
+       
+        float speed = 0.1f;
+        float scale = 4.9f;
+        double t = Time.timeAsDouble;
+        float postion = Mathf.Sin((float)t / speed)+ Mathf.Sin(2*(float)t / speed)+ Mathf.Sin(3*(float)t / speed)+ Mathf.Sin(4*(float)t / speed)+ Mathf.Sin((float)t / speed);
+        time += Time.deltaTime;
+        if (enabled)
+        {
+            if (time < length)
+            {
+                mouth_position.transform.position = new Vector3(mouth_position.transform.position.x, y0 - scale * postion, mouth_position.transform.position.x);
+            }
+        }
     
+}
+public void PlayMouthMove(AudioClip clip)
+{
+     length=clip.length;
+     
+    time = 0;
+
 }
 
 }
