@@ -120,10 +120,8 @@ exit:
 	bool bossShown = true;
 	public void ShowBoss(bool x)
 	{
-		Debug.Log("ABC");
 		if (x != bossShown)
 		{
-			Debug.Log("DEF");
 			bossLerpStart = Time.time;
 			bossGlideType = Random.Range(0, 2) != 0;
 			bossShown = x;

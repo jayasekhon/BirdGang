@@ -71,7 +71,7 @@ public class Score : MonoBehaviour
                 score = UpdateScoreValueGoodPerson(score);
                 streakFlag = 0;
                 scoreAddedText.text = "-5";
-                scoreAddedText.color = new Color32(119, 215, 40, 255); //green
+                // scoreAddedText.color = new Color32(119, 215, 40, 255); //green
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
                 Invoke("Hide", time);
@@ -83,7 +83,7 @@ public class Score : MonoBehaviour
                 score += (int)(Mathf.Lerp(10f, 50f, fac));
                 streakFlag++;
                 scoreAddedText.text = $"+{(int)(Mathf.Lerp(10f, 50f, fac))}";  
-                scoreAddedText.color = new Color32(227, 45, 62, 255); //red
+                // scoreAddedText.color = new Color32(227, 45, 62, 255); //red
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
                 Invoke("Hide", time);
@@ -94,7 +94,7 @@ public class Score : MonoBehaviour
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
                 scoreAddedText.text = "+100";
-                scoreAddedText.color = new Color32(119, 215, 40, 255);
+                // scoreAddedText.color = new Color32(119, 215, 40, 255);
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
                 Invoke("Hide", time);
@@ -103,7 +103,7 @@ public class Score : MonoBehaviour
                 score = UpdateScoreValueBalloon(score);
                 streakFlag++;
                 scoreAddedText.text = "+25";
-                scoreAddedText.color = new Color32(119, 215, 40, 255);
+                // scoreAddedText.color = new Color32(119, 215, 40, 255);
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
                 Invoke("Hide", time);

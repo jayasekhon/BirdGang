@@ -137,7 +137,7 @@ public class Subtitles : MonoBehaviour
             "You've all proven yourselves to me.\n");
         subtitleTextHolder.SetActive(true);
         yield return new WaitForSeconds(4f);
-        subtitleText.text = ("Welcome to BirdgGang.\n"+
+        subtitleText.text = ("Welcome to BirdGang.\n"+
             "The real fun starts tomorrow.");
         yield return new WaitForSeconds(4.5f);
         subtitleTextHolder.SetActive(false);

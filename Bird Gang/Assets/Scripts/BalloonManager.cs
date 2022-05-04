@@ -14,6 +14,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public AudioClip StormHowl;
     AudioManager audiomng;
     private bool running = false;
+
+    public GameObject carnivalSFX;
     
     private float windForce = 100f;
     bool centre = true;
@@ -96,6 +98,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         PlayerControllerNEW.input_lock_all = false;
         cutsceneActive = false;
         PlayerControllerNEW.wind_disable = false;
+        carnivalSFX.SetActive(true);
     }
 
     void SpawnBalloons()

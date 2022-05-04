@@ -66,7 +66,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			PlayerControllerNEW.hover_gravity_disable = true;
 			text.transform.parent.GetComponent<Image>()
 				.canvasRenderer.SetAlpha(1f);
-			text.text = "Your first mission: flight training\n"+
+			text.text = "Your first mission: Flight Training\n"+
 						"Hold <b>W</b> to fly through the rings ahead.\n" +
 						"You can press <b>X</b> to exit the tutorial.";
 			break;
@@ -83,7 +83,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			stage3.SetActive(true);
 			PlayerControllerNEW.input_lock_y = false;
 			text.text =
-				"You can pitch with the mouse while holding <b>W</b>.\n" +
+				"You can look up and down with the mouse while holding <b>W</b>.\n" +
 				"Continue through the rings ahead.";
 			break;
 		case 3:
@@ -324,7 +324,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 		text
 			.CrossFadeAlpha(0f, 5f, false);
 		StopSound();
-		music.Stop();
+		// music.Stop();
 	}
 
 	public void OnStageProgress(GameEvents.Stage stage, float progress)

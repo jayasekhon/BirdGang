@@ -63,7 +63,7 @@ public class CineMachineSwitcher : MonoBehaviour
         animator.Play("MayorCS");
         //this is time for the camera to pan to the mayor
         // mayor spawns in and talks
-        yield return new WaitForSeconds(11.5f); //watch the mayor speak
+        yield return new WaitForSeconds(12.5f); //watch the mayor speak
         animator.Play("OverheadCS");
         yield return new WaitForSeconds(4f); //wait to pan back to the sky
         animator.Play("Main");
