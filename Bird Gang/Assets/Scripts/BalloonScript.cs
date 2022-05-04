@@ -192,16 +192,19 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {     
             Score.instance.textBackground.enabled = true;  
             Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloons left";
+            Score.instance.AddScore(Score.HIT.BALLOON, 1, false);
         }
         else if (numberOfBalloons - balloonCount == 1)
         {
             Score.instance.textBackground.enabled = true;
             Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloon left";
+            Score.instance.AddScore(Score.HIT.BALLOON, 1, false);
         }
         else 
         {
             Score.instance.textBackground.enabled = true;
             Score.instance.targetReached.text = "MISSION COMPLETE";          
+            Score.instance.AddScore(Score.HIT.BALLOON, 1, false);
         }
         StartCoroutine(ExecuteAfterTime());
     }   
