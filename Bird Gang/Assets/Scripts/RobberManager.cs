@@ -202,7 +202,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
                 PhotonNetwork.Destroy(robber);
             } 
         }
-        Destroy(this);
+        // Destroy(this);
     }
 
     [PunRPC]
