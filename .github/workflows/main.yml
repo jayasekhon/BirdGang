@@ -11,9 +11,7 @@ jobs:
   testRunnerInAllModes:
     name: Test in ${{ matrix.testMode }} ✨
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ""
+ 
     strategy:
       fail-fast: false
       matrix:
