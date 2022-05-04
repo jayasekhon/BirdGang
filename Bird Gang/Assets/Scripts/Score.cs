@@ -30,6 +30,8 @@ public class Score : MonoBehaviour
     private bool fade = false;
     private bool move = false;
 
+    AudioManager audiomng;
+
     private void Awake()
     {
         instance = this;
@@ -42,6 +44,7 @@ public class Score : MonoBehaviour
     public int GetScore()
     {
         return score;
+        audiomng = FindObjectOfType<AudioManager>();
     }
 
     void Start()
@@ -95,6 +98,7 @@ public class Score : MonoBehaviour
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
+                audiomng.Play("MinibossHitFirst");
                 scoreAddedText.text = "+100";
                 scoreAddedText.color = new Color32(255, 136, 39, 255);
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
@@ -110,6 +114,10 @@ public class Score : MonoBehaviour
                 scoreAddedText.color = new Color32(255, 136, 39, 255);
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
+                if (balloonsHit >= 4)
+                {
+                    audiomng.Play("MinibossHitFirst");
+                }
                 Invoke("Hide", time);
                 break;
         }
