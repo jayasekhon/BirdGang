@@ -208,7 +208,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     [PunRPC]
     void robberOutcome(bool exists) 
     {
-        // audiomng.Play("MinibossMissed");
         if (exists)
         {
             audiomng.Play("MinibossMissed");
