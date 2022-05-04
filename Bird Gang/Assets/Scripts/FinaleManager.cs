@@ -8,6 +8,7 @@ using System.IO;
 
 public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
+    public bool cutsceneActive;
     AudioSource voiceover;
     public AudioClip Congratulations;
 
@@ -70,6 +71,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     public void OnStageBegin(GameEvents.Stage stage)
     {
         PlayerControllerNEW.input_lock_all = true;
+        cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
         
@@ -93,6 +95,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
             CreditButtons.SetActive(true);
 
         creditsScreenHolder.SetActive(true);
+        cutsceneActive = false;
     }
 
     public void OnStageEnd(GameEvents.Stage stage)

@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class ChangeClouds : MonoBehaviour
 {
-    public GameObject[] Clouds;
+    [SerializeField] GameObject CloudsParent;
     public Material stormColour;
-    // public static ChangeClouds instance;
-    // Start is called before the first frame update
-    void Awake()
+
+    GameObject[] clouds;
+
+
+    void Start()
     {
-        
+        int numClouds = CloudsParent.transform.childCount;
+        clouds = new GameObject[numClouds];
+        for (int c = 0; c < numClouds; c++)
+        {
+            clouds[c] = CloudsParent.transform.GetChild(c).gameObject;
+        }
     }
 
-    // Update is called once per frame
     public void ColourChange() 
     {
-        foreach (GameObject cloud in Clouds) 
+        Debug.Log("Change colour");
+        foreach (GameObject cloud in clouds)
         {
-            Renderer[] cloudChild = cloud.GetComponentsInChildren<Renderer>();
-            foreach (Renderer r in cloudChild) 
+            for (int i = 0; i < cloud.transform.childCount; i++)
             {
-                r.material = stormColour;
+                Renderer rendererToChange = cloud.transform.GetChild(i).GetComponent<Renderer>();
+                rendererToChange.material = stormColour;
             }
         }
     }
