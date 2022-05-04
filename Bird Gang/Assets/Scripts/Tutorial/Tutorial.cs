@@ -41,10 +41,12 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 	public static Tutorial instance;
 
 	AudioManager audiomng;
+	AudioSource music;
 
 	public void AdvanceTutorial()
 	{
 		audiomng = FindObjectOfType<AudioManager>();
+		music = GetComponent<AudioSource>();
 
 		if (stage != 5)
 		{
@@ -64,8 +66,9 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			PlayerControllerNEW.hover_gravity_disable = true;
 			text.transform.parent.GetComponent<Image>()
 				.canvasRenderer.SetAlpha(1f);
-			text.text = "Hold <b>W</b> to fly through the rings ahead.\n" +
-				"You can press <b>X</b> to exit the tutorial.";
+			text.text = "Your first mission: flight training\n"+
+						"Hold <b>W</b> to fly through the rings ahead.\n" +
+						"You can press <b>X</b> to exit the tutorial.";
 			break;
 		case 1:
 			stage2.SetActive(true);
@@ -99,7 +102,8 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			audiomng.Play("FirePoop");
 			break;
 		case 5:
-			text.text = "That child is littering! To defeat minibosses like him you must all ruin their day.";
+			text.text = "That child is littering!\n"+
+						"To defeat minibosses like him you must all ruin their day.";
 			audiomng.Play("Child");
 			break;
 		case 6:
@@ -302,6 +306,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 //		nextLostCheck = Time.time + 2f;
 		has_started = true;
 		AdvanceTutorial();
+		music.Play();
 	}
 
 	public void RoundEndCleanup()
@@ -319,6 +324,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 		text
 			.CrossFadeAlpha(0f, 5f, false);
 		StopSound();
+		music.Stop();
 	}
 
 	public void OnStageProgress(GameEvents.Stage stage, float progress)

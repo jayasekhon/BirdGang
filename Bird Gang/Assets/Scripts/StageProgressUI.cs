@@ -184,6 +184,20 @@ exit:
 				break;
 
 			case GAME_STAGE.CARNIVAL:
+				if (seconds < 23f) 
+				{
+					ShowBoss(true);
+				}
+				else 
+				{
+					ShowBoss(false);
+					// transform.Find("Boss").gameObject.SetActive(false);
+					objective.text = "Objective - Weigh the balloons down \nObjective - Keep pooping on those bad people";
+				}
+				break;
+
+			case GAME_STAGE.FINALE:
+				// ShowBoss(true);
 				if (seconds < 20) 
 				{
 					ShowBoss(true);
@@ -192,12 +206,7 @@ exit:
 				{
 					ShowBoss(false);
 					transform.Find("Boss").gameObject.SetActive(false);
-					objective.text = "Objective - Weigh the balloons down \nObjective - Keep pooping on those bad people";
 				}
-				break;
-
-			case GAME_STAGE.FINALE:
-				ShowBoss(true);
 				break;
 				
 			default:

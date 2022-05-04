@@ -7,6 +7,7 @@ using System.IO;
 
 public class IntroManager : MonoBehaviour, GameEventCallbacks
 {
+    public bool cutsceneActive = false;
     AudioSource voiceover;
     public AudioClip Introduction;
     AudioManager audiomng;
@@ -45,11 +46,13 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
-        loadScreen.enabled = false;
+        // loadScreen.enabled = false;
         PlayerControllerNEW.input_lock_all = true;
+        cutsceneActive = true;
         CM_manager = GameObject.FindGameObjectWithTag("cutsceneManager");
         switcher = CM_manager.GetComponent<CineMachineSwitcher>();
         switcher.Intro();
+        
 
         lightingChanges.DayLighting();
 
@@ -64,14 +67,16 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         // voiceover.PlayOneShot(Introduction, 1f);
         
         audiomng.Play("Introduction");
-        voiceover.Play(0);
+        voiceover.Play();
         yield return new WaitForSeconds(21f);
         PlayerControllerNEW.input_lock_all = false;
+        cutsceneActive = false;
         audiomng.Play("TutorialIntro");
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
+        voiceover.Stop();
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)

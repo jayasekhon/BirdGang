@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bankAlarm: {fileID: 0}
-  RobberIntro: {fileID: 8300000, guid: 65e74ae4669114c6ab5c1748c03a508a, type: 3}
   intro: {fileID: 0}
 --- !u!82 &1472571760317219237
 AudioSource:
@@ -56,10 +55,10 @@ AudioSource:
   m_GameObject: {fileID: 1472571760317219238}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 65e74ae4669114c6ab5c1748c03a508a, type: 3}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 3c30d22ceffdd4b8990cbc9e5d13288b, type: 2}
+  m_audioClip: {fileID: 8300000, guid: ac8f9f229f400431e823203da2f1a5dd, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
