@@ -50,6 +50,10 @@ jobs:
       - name: Echo
         run: |
           ls
+          cd Bird Gang
+      - name: Echo
+        run: |
+          ls
       # Configure test runner
       - uses: game-ci/unity-test-runner@v2.0-alpha-5
         
