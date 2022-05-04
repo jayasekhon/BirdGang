@@ -51,12 +51,13 @@ jobs:
         run: |
           ls
           cd "Bird Gang"
+          ls
       - name: Echo
         run: |
           ls
       # Configure test runner
-      - uses: game-ci/unity-test-runner@v2.0-alpha-5
-        
+      - name: Test runner
+        uses: game-ci/unity-test-runner@v2.0-alpha-5
         id: testRunner
         with:
           testMode: ${{ matrix.testMode }}
