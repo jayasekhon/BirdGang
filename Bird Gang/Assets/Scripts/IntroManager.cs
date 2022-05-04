@@ -64,7 +64,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
         // voiceover.PlayOneShot(Introduction, 1f);
         
         audiomng.Play("Introduction");
-        voiceover.Play(0);
+        voiceover.Play();
         yield return new WaitForSeconds(21f);
         PlayerControllerNEW.input_lock_all = false;
         audiomng.Play("TutorialIntro");
@@ -72,6 +72,7 @@ public class IntroManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
+        voiceover.Stop();
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)

@@ -7,9 +7,9 @@ using System.IO;
 
 public class BalloonManager : MonoBehaviour, GameEventCallbacks
 {
-    AudioSource voiceover;
-    public AudioClip CarnivalIntro;
+    AudioSource music;
     public AudioClip StormHowl;
+    AudioManager audiomng;
     private bool running = false;
     
     private float windForce = 100f;
@@ -44,15 +44,17 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.CARNIVAL,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
         
-        voiceover = GetComponent<AudioSource>();
+        music = GetComponent<AudioSource>();
         changeCloudsScript = GetComponent<ChangeClouds>();
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {   
+        audiomng = FindObjectOfType<AudioManager>();
         PlayerControllerNEW.input_lock_all = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
-        voiceover.PlayOneShot(StormHowl, 0.5f);
+        music.PlayOneShot(StormHowl, 0.5f);
+        music.Play();
         changeCloudsScript.ColourChange();
 
         switcher.Carnival();
@@ -76,7 +78,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(4.5f);
         // cutsceneManagerAnim.Play("CarnivalCS");
         yield return new WaitForSeconds(7f); //this means we can pan 
-        voiceover.PlayOneShot(CarnivalIntro, 1f);
+        audiomng.Play("CarnivalIntro");
         yield return new WaitForSeconds(11f); //this means we can watch the carnival happen 
         // cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(4f); //enough time for the camera to pan back to the sky
@@ -160,7 +162,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-
+        music.Stop();
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
