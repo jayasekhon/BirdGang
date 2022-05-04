@@ -100,6 +100,7 @@ public class Score : MonoBehaviour
                 Invoke("Hide", time);
                 break;
             case HIT.BALLOON:
+                Debug.Log("hello");
                 score = UpdateScoreValueBalloon(score);
                 streakFlag++;
                 scoreAddedText.text = "+25";
