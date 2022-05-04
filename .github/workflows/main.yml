@@ -62,6 +62,7 @@ jobs:
       - name: Echo
         run: |
           ls
+          cd Bird Gang
       # Upload artifacts
       - uses: actions/upload-artifact@v2
         with:
