@@ -24,6 +24,8 @@ public class Score : MonoBehaviour
     int score = 0;
     int streakFlag = 0;
 
+    public int balloonsHit = 0;
+
     private float colorStep = 0;
     private bool fade = false;
     private bool move = false;
@@ -100,7 +102,8 @@ public class Score : MonoBehaviour
                 Invoke("Hide", time);
                 break;
             case HIT.BALLOON:
-                Debug.Log("hello");
+                // Debug.Log("hello");
+                balloonsHit++;
                 score = UpdateScoreValueBalloon(score);
                 streakFlag++;
                 scoreAddedText.text = "+25";
