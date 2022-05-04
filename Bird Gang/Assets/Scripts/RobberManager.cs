@@ -115,6 +115,23 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(6f);
         PlayerControllerNEW.input_lock_all = false;
         cutsceneActive = false;
+
+        // yield return new WaitForSeconds(90f);
+
+        // if (robber)
+        // {
+        //     audiomng.Play("MinibossMissed");
+        //     Renderer[] robberMesh = robber.GetComponentsInChildren<Renderer>();
+        //     foreach (Renderer r in robberMesh) 
+        //     {
+        //         r.enabled = false;
+        //     }
+        //     // GameObject health = robber.GetComponentsInChildren<
+        // }
+        // else
+        // {
+        //     audiomng.Play("MinibossHit");
+        // }
     }
 
     public void gatherCrowd(){
@@ -178,22 +195,27 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         
         if (PhotonNetwork.IsMasterClient) 
         {
+            PhotonView PV = GetComponent<PhotonView>();
+            PV.RPC("robberOutcome", RpcTarget.All, robber);
             if (robber)
             {
                 PhotonNetwork.Destroy(robber);
             } 
         }
+        Destroy(this);
+    }
 
-        if (robber)
+    [PunRPC]
+    void robberOutcome(bool exists) 
+    {
+        if (exists)
         {
             audiomng.Play("MinibossMissed");
         }
-        else
+        else 
         {
             audiomng.Play("MinibossHit");
         }
-
-        Destroy(this);
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
