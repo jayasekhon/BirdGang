@@ -196,7 +196,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonView PV = GetComponent<PhotonView>();
-            PV.RPC("robberOutcome", RpcTarget.All, robber);
+            PV.RPC("robberOutcome", RpcTarget.All, (bool)robber);
             if (robber)
             {
                 PhotonNetwork.Destroy(robber);
