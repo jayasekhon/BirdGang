@@ -61,7 +61,7 @@ jobs:
         uses: game-ci/unity-test-runner@v2.0-alpha-5
         id: testRunner
         with:
-          projectPath: "/home/runner/work/BirdGang/BirdGang/Bird Gang"
+          projectPath: /home/runner/work/BirdGang/BirdGang/Bird Gang
           testMode: ${{ matrix.testMode }}
           checkName: ${{ matrix.testMode }} test results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
