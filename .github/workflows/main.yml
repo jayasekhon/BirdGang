@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ~/Bird Gang
+        working-directory: 
     strategy:
       fail-fast: false
       matrix:
