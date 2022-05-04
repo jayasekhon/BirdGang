@@ -196,7 +196,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonView PV = GetComponent<PhotonView>();
-            PV.RPC("robberOutcome", RpcTarget.All);
+            PV.RPC("robberOutcome", RpcTarget.All, (bool)robber);
             if (robber)
             {
                 PhotonNetwork.Destroy(robber);
@@ -206,17 +206,17 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     }
 
     [PunRPC]
-    void robberOutcome() 
+    void robberOutcome(bool exists) 
     {
-        audiomng.Play("MinibossMissed");
-        // if (exists)
-        // {
-        //     audiomng.Play("MinibossMissed");
-        // }
-        // else 
-        // {
-        //     audiomng.Play("MinibossHit");
-        // }
+        // audiomng.Play("MinibossMissed");
+        if (exists)
+        {
+            audiomng.Play("MinibossMissed");
+        }
+        else 
+        {
+            audiomng.Play("MinibossHit");
+        }
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
