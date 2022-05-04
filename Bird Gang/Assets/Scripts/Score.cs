@@ -25,6 +25,7 @@ public class Score : MonoBehaviour
     int streakFlag = 0;
 
     public int balloonsHit = 0;
+    public int minibossesHit = 0;
 
     private float colorStep = 0;
     private bool fade = false;
@@ -44,13 +45,13 @@ public class Score : MonoBehaviour
     public int GetScore()
     {
         return score;
-        audiomng = FindObjectOfType<AudioManager>();
     }
 
     void Start()
     {
         scoreText.text = "Score: " + score.ToString();
         scoreAddedText.text = " ";
+        audiomng = FindObjectOfType<AudioManager>();
     }
 
     public enum HIT : byte
@@ -94,6 +95,7 @@ public class Score : MonoBehaviour
                 Invoke("Hide", time);
                 break;
             case HIT.MINIBOSS:
+                minibossesHit++;
                 score = UpdateScoreValueMiniBoss(score);
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";

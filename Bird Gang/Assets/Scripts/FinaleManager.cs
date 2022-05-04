@@ -9,8 +9,7 @@ using System.IO;
 public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
     public bool cutsceneActive;
-    AudioSource voiceover;
-    public AudioClip Congratulations;
+    AudioManager audiomng;
 
     // GameObject fireworks;
     // public VisualEffect fireworkEffect;
@@ -41,7 +40,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
         voiceover = GetComponent<AudioSource>(); 
-        scoreScript = InGameCanvas.GetComponent<Score>();
+        scoreScript = InGameCanvas.GetComponent<Score>();       
     }
 
     // void Start() 
@@ -70,6 +69,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        audiomng = FindObjectOfType<AudioManager>();
         PlayerControllerNEW.input_lock_all = true;
         cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
@@ -85,7 +85,19 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Finale");
         yield return new WaitForSeconds(7f); // pan to finale shot
         Fireworks.SetActive(true);
-        voiceover.PlayOneShot(Congratulations, 1f);
+        if (Score.instance.minibossesHit >= 2 && balloonsHit >= 4)
+        {
+            audiomng.Play("AllMissions"); 
+        }
+        else if (Score.instance.minibossesHit == 0 && balloonsHit == 0)
+        {
+            audiomng.Play("NoMissions"); 
+        }
+        else 
+        {
+            audiomng.Play("SomeMissions"); 
+        }
+
         yield return new WaitForSeconds(7.5f);
         int score = scoreScript.GetScore();
         finalScoreText.text = "Your team score: " + score.ToString();
