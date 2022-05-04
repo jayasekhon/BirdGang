@@ -47,15 +47,6 @@ jobs:
           restore-keys: |
             Library-test-project-
             Library-
-      - name: Echo
-        run: |
-          ls
-          cd "Bird Gang"
-          ls
-          pwd
-      - name: Echo
-        run: |
-          ls
       # Configure test runner
       - name: Test runner
         uses: game-ci/unity-test-runner@v2.0-alpha-5
@@ -66,10 +57,6 @@ jobs:
           checkName: ${{ matrix.testMode }} test results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
     
-      - name: Echo
-        run: |
-          ls
-          cd "Bird Gang"
       # Upload artifacts
       - uses: actions/upload-artifact@v2
         with:
