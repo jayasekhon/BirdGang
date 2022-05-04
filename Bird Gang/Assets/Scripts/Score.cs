@@ -96,6 +96,7 @@ public class Score : MonoBehaviour
                 break;
             case HIT.MINIBOSS:
                 minibossesHit++;
+                Debug.Log(minibossesHit + "minibosses");
                 score = UpdateScoreValueMiniBoss(score);
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
@@ -110,6 +111,7 @@ public class Score : MonoBehaviour
             case HIT.BALLOON:
                 // Debug.Log("hello");
                 balloonsHit++;
+                Debug.Log(balloonsHit + "balloons");
                 score = UpdateScoreValueBalloon(score);
                 streakFlag++;
                 scoreAddedText.text = "+25";

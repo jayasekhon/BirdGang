@@ -39,7 +39,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.FINALE,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
 
-        voiceover = GetComponent<AudioSource>(); 
+        // voiceover = GetComponent<AudioSource>(); 
         scoreScript = InGameCanvas.GetComponent<Score>();       
     }
 
@@ -85,11 +85,11 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Finale");
         yield return new WaitForSeconds(7f); // pan to finale shot
         Fireworks.SetActive(true);
-        if (Score.instance.minibossesHit >= 2 && balloonsHit >= 4)
+        if (Score.instance.minibossesHit >= 2 && Score.instance.balloonsHit >= 4)
         {
             audiomng.Play("AllMissions"); 
         }
-        else if (Score.instance.minibossesHit == 0 && balloonsHit == 0)
+        else if (Score.instance.minibossesHit == 0 && Score.instance.balloonsHit == 0)
         {
             audiomng.Play("NoMissions"); 
         }
