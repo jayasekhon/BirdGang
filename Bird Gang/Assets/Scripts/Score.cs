@@ -19,7 +19,7 @@ public class Score : MonoBehaviour
     Text scoreAddedText;
     RectTransform scoreAddedPos;
 
-    float time = 2f;
+    float time = 3f;
     float fadeOutTime = 3f;
     int score = 0;
     int streakFlag = 0;
@@ -50,7 +50,7 @@ public class Score : MonoBehaviour
 
     public enum HIT : byte
     {
-        GOOD, BAD, MINIBOSS, BAD_NOSTREAK
+        GOOD, BAD, MINIBOSS, BAD_NOSTREAK, BALLOON
     }
 
     public void AddScore(HIT type, float fac, bool fireRPC)
@@ -70,20 +70,20 @@ public class Score : MonoBehaviour
             case HIT.GOOD:
                 score = UpdateScoreValueGoodPerson(score);
                 streakFlag = 0;
-                scoreAddedText.text = " - 5";
-                scoreAddedText.color = new Color32(227, 45, 62, 255);
+                scoreAddedText.text = "-5";
+                scoreAddedText.color = new Color32(119, 215, 40, 255); //green
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
                 Invoke("Hide", time);
                 break;
-            case HIT.BAD_NOSTREAK:
+            case HIT.BAD_NOSTREAK: //where is this ever called??
                 score += 10;
                 break;
             case HIT.BAD:
-                score += (int)(Mathf.Lerp(10f, 50f, fac));             
+                score += (int)(Mathf.Lerp(10f, 50f, fac));
                 streakFlag++;
-                scoreAddedText.text = " + 10";
-                scoreAddedText.color = new Color32(119, 215, 40, 255);
+                scoreAddedText.text = $"+{(int)(Mathf.Lerp(10f, 50f, fac))}";  
+                scoreAddedText.color = new Color32(227, 45, 62, 255); //red
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
                 Invoke("Hide", time);
@@ -93,6 +93,19 @@ public class Score : MonoBehaviour
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
+                scoreAddedText.text = "+100";
+                scoreAddedText.color = new Color32(119, 215, 40, 255);
+                scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
+                move = true;
+                Invoke("Hide", time);
+                break;
+            case HIT.BALLOON:
+                score = UpdateScoreValueBalloon(score);
+                streakFlag++;
+                scoreAddedText.text = "+25";
+                scoreAddedText.color = new Color32(119, 215, 40, 255);
+                scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
+                move = true;
                 Invoke("Hide", time);
                 break;
         }
@@ -102,7 +115,8 @@ public class Score : MonoBehaviour
             streakFlag > 0 && (
             (streakFlag <= 20 && (streakFlag % 5) == 0)
             || streakFlag % 10 == 0)
-        ) {
+        ) 
+        {
             targetReached.text = $"{streakFlag} HIT STREAK";
             Invoke("Hide", time);
             textBackground.enabled = true;
@@ -125,6 +139,12 @@ public class Score : MonoBehaviour
     {
         // Defeating a miniboss results in an extra large increase in points
         return scoreToUpdate + 100;
+    }
+
+    public static int UpdateScoreValueBalloon(int scoreToUpdate)
+    {
+        // Defeating a miniboss results in an extra large increase in points
+        return scoreToUpdate + 25;
     }
 
     void Hide()

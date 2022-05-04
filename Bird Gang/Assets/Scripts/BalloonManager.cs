@@ -8,6 +8,9 @@ using System.IO;
 public class BalloonManager : MonoBehaviour, GameEventCallbacks
 {
     AudioSource music;
+    public bool cutsceneActive;
+    AudioSource voiceover;
+    public AudioClip CarnivalIntro;
     public AudioClip StormHowl;
     AudioManager audiomng;
     private bool running = false;
@@ -31,6 +34,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     List<BalloonAgent> balloons;
 
     public float balloonCounter = 0;
+    [SerializeField] GameObject NewMissionTextObject;
 
     // Start is called before the first frame update
     void Awake()
@@ -52,6 +56,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     {   
         audiomng = FindObjectOfType<AudioManager>();
         PlayerControllerNEW.input_lock_all = true;
+        cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         music.PlayOneShot(StormHowl, 0.5f);
         music.Play();
@@ -68,6 +73,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         fountain.SetActive(false);
         fountainParticles.SetActive(false);
         
+        NewMissionTextObject.SetActive(true);
+        
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
         }
@@ -79,12 +86,15 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("CarnivalCS");
         yield return new WaitForSeconds(7f); //this means we can pan 
         audiomng.Play("CarnivalIntro");
+        NewMissionTextObject.SetActive(false);
+//         voiceover.PlayOneShot(CarnivalIntro, 1f);
         yield return new WaitForSeconds(11f); //this means we can watch the carnival happen 
         // cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(4f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(6f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
+        cutsceneActive = false;
         PlayerControllerNEW.wind_disable = false;
     }
 

@@ -8,6 +8,7 @@ using UnityEngine.AI;
 
 public class MayorManager : MonoBehaviour, GameEventCallbacks
 {
+    public bool cutsceneActive;
     private GameObject mayor;
     private NavMeshAgent agent;
     private AiController mayorAI;
@@ -27,6 +28,8 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     LightingSettings lightingChanges;
     LamppostLightUp lampsLight;
+
+    [SerializeField] GameObject NewMissionTextObject;
 
     void Awake()
     {
@@ -64,8 +67,10 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     public void OnStageBegin(GameEvents.Stage stage)
     {
         PlayerControllerNEW.input_lock_all = true;
+        cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Mayor();
+        NewMissionTextObject.SetActive(true);
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
     }
@@ -74,7 +79,8 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
     {
         yield return new WaitForSeconds(4.5f); //this is the time to wait for it to pan to the sky
         // cutsceneManagerAnim.Play("MayorCS");
-        yield return new WaitForSeconds(3f);    
+        yield return new WaitForSeconds(3f);   
+        NewMissionTextObject.SetActive(false); 
 
         if (PhotonNetwork.IsMasterClient) 
         {
@@ -114,6 +120,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
+        cutsceneActive = false;
        
         if (PhotonNetwork.IsMasterClient) 
         {

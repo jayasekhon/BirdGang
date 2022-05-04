@@ -20,11 +20,21 @@ public class PauseMenu : MonoBehaviourPunCallbacks
 
     [SerializeField] GameObject escPrompt;
 
+    [SerializeField] IntroManager introManager;
+    [SerializeField] RobberManager robberManager;
+    [SerializeField] MayorManager mayorManager;
+    [SerializeField] BalloonManager balloonManager;
+    [SerializeField] FinaleManager finaleManager;
+
+    bool introCutsceneActive, robberCutsceneActive, mayorCutsceneActive, balloonCutsceneActive, finaleCutsceneActive = false;
+
+
     void Awake()
     {
         Instance = this;
         PV = GetComponent<PhotonView>();
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -40,9 +50,25 @@ public class PauseMenu : MonoBehaviourPunCallbacks
         }
     }
 
+    bool CheckIfCutsceneActive()
+    {
+        introCutsceneActive = introManager.cutsceneActive;
+        robberCutsceneActive = robberManager.cutsceneActive;
+        mayorCutsceneActive = mayorManager.cutsceneActive;
+        balloonCutsceneActive = balloonManager.cutsceneActive;
+        finaleCutsceneActive = finaleManager.cutsceneActive;
+        if (introCutsceneActive || robberCutsceneActive || mayorCutsceneActive || balloonCutsceneActive || finaleCutsceneActive)
+            return true;
+        else
+            return false;
+    }
+
     public void Resume()
     {
-        PlayerControllerNEW.input_lock_all = false;
+        // If there is not a cutscene happening can give player back controls
+        if (!CheckIfCutsceneActive())
+            PlayerControllerNEW.input_lock_all = false;
+
         escPrompt.SetActive(true);
         pauseMenuUI.SetActive(false);
         // Time.timeScale = 1f;
