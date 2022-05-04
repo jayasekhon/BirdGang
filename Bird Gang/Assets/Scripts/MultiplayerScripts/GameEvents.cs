@@ -70,7 +70,7 @@ public class GameEvents : MonoBehaviour
 		new Stage(GAME_STAGE.INTRO, 21f),
 		new Stage(GAME_STAGE.TUTORIAL, 40f),
 		new Stage(GAME_STAGE.ROBBERY, 40f),
-		new Stage(GAME_STAGE.POLITICIAN, 120f),
+		new Stage(GAME_STAGE.POLITICIAN, 60f),
 		new Stage(GAME_STAGE.CARNIVAL, 120f),
 		new Stage(GAME_STAGE.FINALE, 25f),
 	};
