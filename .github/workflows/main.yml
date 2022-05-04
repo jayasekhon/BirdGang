@@ -25,10 +25,7 @@ jobs:
       # Checkout repository (required to test local actions)
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Echo
-        run: |
-          pwd
-
+     
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
@@ -60,7 +57,10 @@ jobs:
           testMode: ${{ matrix.testMode }}
           checkName: ${{ matrix.testMode }} test results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-
+    
+      - name: Echo
+        run: |
+          ls
       # Upload artifacts
       - uses: actions/upload-artifact@v2
         with:
