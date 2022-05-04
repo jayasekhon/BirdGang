@@ -86,7 +86,8 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         {
             mayor = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Mayor"), new Vector3(-10.5f, 3.8f, -249), Quaternion.identity);
         }
-        voiceover.PlayOneShot(MayorIntro, 1f);
+        // voiceover.PlayOneShot(MayorIntro, 1f);
+        audiomng.Play("MayorIntro");
 
         if (PhotonNetwork.IsMasterClient) 
         {
@@ -114,7 +115,8 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("OverheadCS");
 
         yield return new WaitForSeconds(4f);
-        audiomng.Play("MayorMusic");
+        // audiomng.Play("MayorMusic");
+        voiceover.Play(0);
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(5f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
@@ -158,7 +160,7 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-        audiomng.Stop("MayorMusic");
+        voiceover.Stop();
         if (PhotonNetwork.IsMasterClient) 
         {
             enRoute = false;

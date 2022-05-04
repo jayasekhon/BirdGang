@@ -20,8 +20,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     float timePassed = 0f;
     bool startAlarm = false;
 
-    AudioSource voiceover;
-    public AudioClip RobberIntro;
+    AudioSource music;
+    // public AudioClip RobberIntro;
 
     AudioManager audiomng;
 
@@ -48,7 +48,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
 
-        voiceover = GetComponent<AudioSource>();
+        music = GetComponent<AudioSource>();
         audiomng = FindObjectOfType<AudioManager>();
     }
 
@@ -78,6 +78,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         NewMissionTextObject.SetActive(true);
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
+        music.Play();
     }
 
     IEnumerator ExecuteAfterTime()
@@ -93,7 +94,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(4f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
-        voiceover.PlayOneShot(RobberIntro, 1f);
+        // voiceover.PlayOneShot(RobberIntro, 1f);
+        audiomng.Play("RobberIntro");
         
         //slight delay for animation and robbers to spawn
         yield return new WaitForSeconds(0.5f);
@@ -171,6 +173,8 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         startAlarm = false;
         leftAnim.SetBool("swingDoor", false);
         rightAnim.SetBool("swingDoor", false);
+
+        music.Stop();
         
         if (PhotonNetwork.IsMasterClient) 
         {

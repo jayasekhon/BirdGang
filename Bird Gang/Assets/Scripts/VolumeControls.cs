@@ -26,7 +26,8 @@ public class VolumeControls : MonoBehaviour
     void Update()
     {
         SFXMixer.SetFloat("SFXVolume", Mathf.Log10(soundEffectsVolume.value) * 20);
-        MusicMixer.SetFloat("MusicVolume", Mathf.Log10(musicVolume.value) * 20);
+        MusicMixer.SetFloat("MusicVolume", (Mathf.Log10(musicVolume.value) * 20) - 10);
+        Debug.Log(Mathf.Log10(musicVolume.value) * 20);
     }
 
     public void SoundEffectsVolumeChanged()
