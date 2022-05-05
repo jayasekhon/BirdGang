@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.08296506, g: 0.41531873, b: 1.1040236, a: 1}
+  m_IndirectSpecularColor: {r: 0.004627922, g: 0.023748236, b: 0.18293749, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2752,6 +2752,7 @@ MonoBehaviour:
   InGameCanvas: {fileID: 212907739}
   CreditButtons: {fileID: 212907734}
   Fireworks: {fileID: 532290974}
+  bossObj: {fileID: 212907740}
   escPrompt: {fileID: 212907733}
 --- !u!82 &363463086
 AudioSource:
