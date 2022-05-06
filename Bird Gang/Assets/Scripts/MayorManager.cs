@@ -164,17 +164,23 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         if (PhotonNetwork.IsMasterClient) 
         {
             enRoute = false;
+            PhotonView PV = GetComponent<PhotonView>();
+            PV.RPC("mayorOutcome", RpcTarget.All, (bool)mayor);
             if (mayor)
             {
                 PhotonNetwork.Destroy(mayor);
             }
         }
+    }
 
-        if (mayor)
+    [PunRPC]
+    void mayorOutcome(bool exists) 
+    {
+        if (exists)
         {
             audiomng.Play("MinibossMissed");
         }
-        else
+        else 
         {
             audiomng.Play("MinibossHit");
         }

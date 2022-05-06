@@ -27,9 +27,14 @@ public class Score : MonoBehaviour
     int score = 0;
     int streakFlag = 0;
 
+    public int balloonsHit = 0;
+    public int minibossesHit = 0;
+
     private float colorStep = 0;
     private bool fade = false;
     private bool move = false;
+
+    AudioManager audiomng;
 
     private void Awake()
     {
@@ -49,6 +54,7 @@ public class Score : MonoBehaviour
         scoreAddedPos = scoreAddedHolder.GetComponent<RectTransform>();
         scoreText.text = "Score: " + score.ToString();
         scoreAddedText.text = " ";
+        audiomng = FindObjectOfType<AudioManager>();
     }
 
     public enum HIT : byte
@@ -92,10 +98,13 @@ public class Score : MonoBehaviour
                 Invoke("Hide", time);
                 break;
             case HIT.MINIBOSS:
+                minibossesHit++;
+                Debug.Log(minibossesHit + "minibosses");
                 score = UpdateScoreValueMiniBoss(score);
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
+                audiomng.Play("MinibossHitFirst");
                 scoreAddedText.text = "+100";
                 scoreAddedText.color = new Color32(255, 136, 39, 255);
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
@@ -103,12 +112,19 @@ public class Score : MonoBehaviour
                 Invoke("Hide", time);
                 break;
             case HIT.BALLOON:
+                // Debug.Log("hello");
+                balloonsHit++;
+                Debug.Log(balloonsHit + "balloons");
                 score = UpdateScoreValueBalloon(score);
                 streakFlag++;
                 scoreAddedText.text = "+25";
                 scoreAddedText.color = new Color32(255, 136, 39, 255);
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
+                if (balloonsHit >= 4)
+                {
+                    audiomng.Play("MinibossHitFirst");
+                }
                 Invoke("Hide", time);
                 break;
         }
