@@ -121,8 +121,8 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			Debug.Log("Tutorial: entered city.");
 			StageProgressUI.instance.ShowBoss(false);
 			complete = true;
-			if (!destroyed)
-				CleanUp();
+			// if (!destroyed)
+			// 	CleanUp();
 			return true;
 		}
 		return false;
@@ -217,7 +217,7 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			PlayerControllerNEW.input_lock_y =
 			PlayerControllerNEW.hover_gravity_disable =
 				false;
-	}
+		}
 
 	public void Update()
 	{

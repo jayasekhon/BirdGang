@@ -62,6 +62,8 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
     private PhotonView PV;
     public float numberOfBalloons = 4;
 
+    public bool complete = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -205,6 +207,7 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
             Score.instance.textBackground.enabled = true;
             Score.instance.targetReached.text = "MISSION COMPLETE";          
             Score.instance.AddScore(Score.HIT.BALLOON, 1, false);
+            complete = true;
         }
         StartCoroutine(ExecuteAfterTime());
     }   

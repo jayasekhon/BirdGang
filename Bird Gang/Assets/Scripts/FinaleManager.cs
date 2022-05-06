@@ -9,8 +9,8 @@ using System.IO;
 public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
     public bool cutsceneActive;
-    AudioSource voiceover;
-    public AudioClip Congratulations;
+    AudioManager audiomng;
+    AudioSource music;
 
     // GameObject fireworks;
     // public VisualEffect fireworkEffect;
@@ -19,11 +19,13 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
     [SerializeField] GameObject creditsScreenHolder;
-    [SerializeField] Text finalScoreText; 
+    [SerializeField] Text finalScoreText;
     [SerializeField] GameObject InGameCanvas;
     [SerializeField] GameObject CreditButtons;
     [SerializeField] GameObject Fireworks;
     Score scoreScript;
+    [SerializeField] GameObject bossObj;
+    private boss boss;
 
 
     [SerializeField] GameObject escPrompt;
@@ -39,9 +41,8 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.FINALE,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
-
-        voiceover = GetComponent<AudioSource>(); 
-        scoreScript = InGameCanvas.GetComponent<Score>();
+        // voiceover = GetComponent<AudioSource>(); 
+        scoreScript = InGameCanvas.GetComponent<Score>();       
     }
 
     // void Start() 
@@ -70,11 +71,14 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageBegin(GameEvents.Stage stage)
     {
+        audiomng = FindObjectOfType<AudioManager>();
+        music = GetComponent<AudioSource>();
+        music.Play();
+
         PlayerControllerNEW.input_lock_all = true;
         cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
-        
         StartCoroutine(ExecuteAfterTime());
         // fireworkEffect.Play();
     }
@@ -85,7 +89,20 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Finale");
         yield return new WaitForSeconds(7f); // pan to finale shot
         Fireworks.SetActive(true);
-        voiceover.PlayOneShot(Congratulations, 1f);
+        if (Score.instance.minibossesHit >= 2 && Score.instance.balloonsHit >= 4)
+        {
+            audiomng.Play("AllMissions"); 
+        }
+        else if (Score.instance.minibossesHit == 0 && Score.instance.balloonsHit == 0)
+        {
+            audiomng.Play("NoMissions"); 
+        }
+        else 
+        {
+            audiomng.Play("SomeMissions"); 
+        }
+//         boss.PlayMouthMove(Congratulations);
+
         yield return new WaitForSeconds(7.5f);
         int score = scoreScript.GetScore();
         finalScoreText.text = "Your team score: " + score.ToString();

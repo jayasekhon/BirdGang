@@ -182,6 +182,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             }
             timePassed += Time.fixedDeltaTime; //0.02
         }
+        // if (Input.GetKeyDown(KeyCode.K))
+        // {
+        //     audiomng.Play("MinibossHitFirst");
+        // }
 	}
 
     public void OnStageEnd(GameEvents.Stage stage)
@@ -208,7 +212,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     [PunRPC]
     void robberOutcome(bool exists) 
     {
-        // audiomng.Play("MinibossMissed");
         if (exists)
         {
             audiomng.Play("MinibossMissed");

@@ -176,6 +176,14 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     public void OnStageEnd(GameEvents.Stage stage)
     {
         music.Stop();
+        if (Score.instance.balloonsHit >= 4) 
+        {
+            audiomng.Play("MinibossHit");
+        }
+        else 
+        {
+            audiomng.Play("MinibossMissed");
+        }
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)
