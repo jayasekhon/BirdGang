@@ -11,7 +11,7 @@ public class balloon_agent
     public void set_and_get_goal()
     {
         // ACT
-        BalloonAgent balloonAgent = new BalloonAgent();
+//        BalloonAgent balloonAgent = new BalloonAgent();
         Vector3 goal = new Vector3(1, 1, 1);
         //balloonAgent.SetGoal(goal);
         
@@ -23,7 +23,7 @@ public class balloon_agent
     public void set_and_get_id()
     {
         // ACT
-        BalloonAgent balloonAgent = new BalloonAgent();
+//        BalloonAgent balloonAgent = new BalloonAgent();
         int id = 10;
         //balloonAgent.SetID(id);
 

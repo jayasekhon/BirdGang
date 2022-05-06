@@ -18,11 +18,13 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
     [SerializeField] GameObject creditsScreenHolder;
-    [SerializeField] Text finalScoreText; 
+    [SerializeField] Text finalScoreText;
     [SerializeField] GameObject InGameCanvas;
     [SerializeField] GameObject CreditButtons;
     [SerializeField] GameObject Fireworks;
     Score scoreScript;
+    [SerializeField] GameObject bossObj;
+    private boss boss;
 
 
     [SerializeField] GameObject escPrompt;
@@ -38,7 +40,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
         GameEvents.RegisterCallbacks(this, GAME_STAGE.FINALE,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
-
         // voiceover = GetComponent<AudioSource>(); 
         scoreScript = InGameCanvas.GetComponent<Score>();       
     }
@@ -97,6 +98,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         {
             audiomng.Play("SomeMissions"); 
         }
+//         boss.PlayMouthMove(Congratulations);
 
         yield return new WaitForSeconds(7.5f);
         int score = scoreScript.GetScore();

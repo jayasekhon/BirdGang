@@ -19,7 +19,8 @@ public class TargetingAndPooTests
         cam_go = new GameObject("cam");
         cam_go.tag = "MainCamera";
         cam_go.AddComponent<Camera>();
-        cam_go.transform.position = new Vector3(0f, 1f, -8f);
+        cam_go.transform.position = new Vector3(0f, 10f, 0f);
+        cam_go.transform.rotation = Quaternion.LookRotation(Vector3.down);
 
         var ammo_go = new GameObject("ammo");
         ammo_go.AddComponent<AmmoCount>();
@@ -39,8 +40,14 @@ public class TargetingAndPooTests
         floor.layer = LayerMask.NameToLayer("SimpleWorldCollisions");
 
         var s = new GameObject("score");
+        var bg = new GameObject("background");
         Text t = s.AddComponent<Text>();
-        s.AddComponent<Score>().scoreText = t;
+        bg.AddComponent<Image>();
+        Score sc = s.AddComponent<Score>();
+        sc.scoreAddedHolder = s;
+        sc.targetReachedHolder = bg;
+        sc.scoreText = t;
+        sc.targetReached = t;
 
         yield return new EnterPlayMode();
     }
@@ -62,7 +69,7 @@ public class TargetingAndPooTests
         tgting.Fire(0f, 2f, 20f, new Vector3(1f, 1f, 1f),
             Vector3.up);
 
-        yield return new WaitForEndOfFrame();
+        yield return null;
 
         // Exactly one.
         BirdpooScript[] poos = Object.FindObjectsOfType<BirdpooScript>();
@@ -162,7 +169,7 @@ public class TargetingAndPooTests
     GameObject SpawnPerson(bool good)
     {
          var tmpCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-         tmpCube.gameObject.transform.localScale = new Vector3(50f, 1f, 50f);
+         tmpCube.gameObject.transform.localScale = new Vector3(50f, 4f, 50f);
          var t = tmpCube.AddComponent<BaseBirdTarget>();
          t.clientSide = true;
          t.scoreType = good ? Score.HIT.GOOD : Score.HIT.BAD;
@@ -186,7 +193,7 @@ public class TargetingAndPooTests
 
         p = SpawnPerson(true);
 
-        tgting.Targeting(Vector3.down, true);
+        tgting.Targeting(Vector3.down + Vector3.forward, true);
         yield return new WaitForSeconds(10f);
 
         Assert.IsFalse(p);

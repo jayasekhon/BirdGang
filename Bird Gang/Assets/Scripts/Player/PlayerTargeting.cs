@@ -157,7 +157,7 @@ public class PlayerTargeting : MonoBehaviour
 	void Start()
 	{
 		PV = GetComponent<PhotonView>();
-		if(!PV.IsMine) 
+		if (PhotonNetwork.InRoom && !PV.IsMine)
 		{
 			Destroy(this);
 		}

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using Photon.Pun;
+using UnityEditor.UIElements;
 
 public class Score : MonoBehaviour
 {
@@ -11,10 +12,12 @@ public class Score : MonoBehaviour
     public PhotonView pv;
 
     [SerializeField] 
+    internal
     GameObject targetReachedHolder;
     public Image textBackground;
 
     [SerializeField] 
+    internal
     GameObject scoreAddedHolder;
     Text scoreAddedText;
     RectTransform scoreAddedPos;
@@ -36,10 +39,6 @@ public class Score : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        pv = GetComponent<PhotonView>();
-        textBackground = targetReachedHolder.GetComponent<Image>();
-        scoreAddedText = scoreAddedHolder.GetComponent<Text>();
-        scoreAddedPos = scoreAddedHolder.GetComponent<RectTransform>();
     }
 
     public int GetScore()
@@ -49,6 +48,10 @@ public class Score : MonoBehaviour
 
     void Start()
     {
+        pv = GetComponent<PhotonView>();
+        textBackground = targetReachedHolder.GetComponent<Image>();
+        scoreAddedText = scoreAddedHolder.GetComponent<Text>();
+        scoreAddedPos = scoreAddedHolder.GetComponent<RectTransform>();
         scoreText.text = "Score: " + score.ToString();
         scoreAddedText.text = " ";
         audiomng = FindObjectOfType<AudioManager>();
@@ -61,7 +64,7 @@ public class Score : MonoBehaviour
 
     public void AddScore(HIT type, float fac, bool fireRPC)
     {
-        if (fireRPC)
+        if (pv && fireRPC)
             pv.RPC("AddScoreInternal", RpcTarget.All, (byte)type, fac);
         else
             AddScoreInternal((byte)type, fac);

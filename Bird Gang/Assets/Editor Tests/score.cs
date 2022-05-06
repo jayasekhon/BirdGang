@@ -18,33 +18,33 @@ public class score
     }
 
     [Test]    
-    public void score_decreased_by_10_when_good_person_hit()
+    public void score_decreased_by_5_when_good_person_hit()
     {
         // ACT
         int newScore = Score.UpdateScoreValueGoodPerson(10);
 
         // ASSERT
-        Assert.AreEqual(0, newScore);
+        Assert.AreEqual(5, newScore);
     }
 
     [Test]
-    public void negative_score_decreased_by_10_when_good_person_hit()
+    public void negative_score_decreased_by_5_when_good_person_hit()
     {
         // ACT
         int newScore = Score.UpdateScoreValueGoodPerson(-10);
 
         // ASSERT
-        Assert.AreEqual(-20, newScore);
+        Assert.AreEqual(-15, newScore);
     }
 
     [Test]
-    public void score_increased_by_50_when_miniboss_down()
+    public void score_increased_by_100_when_miniboss_down()
     {
         // ACT
         int newScore = Score.UpdateScoreValueMiniBoss(10);
 
         // ASSERT
-        Assert.AreEqual(60, newScore);
+        Assert.AreEqual(110, newScore);
     }
 
 
