@@ -8,7 +8,8 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 	private Texture2D tex;
 	public Text text;
 	public Text objective;
-	public Image objectiveHolder;
+	public Image objectiveImage;
+	public GameObject objectiveHolder;
 
 	private float totalTime;
 	private float timeElapsed;
@@ -41,7 +42,7 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 		uiImage.texture = tex;
 		text.text = "";
 		objective.text = "";
-		objectiveHolder.enabled = false;
+
 	}
 
 	void Start()
@@ -148,7 +149,7 @@ exit:
 				pos.x = bossStartPos.x - t * 220f;
 			boss.anchoredPosition = pos;
 		}
-		objectiveHolder.enabled = !bossShown;
+		objectiveHolder.SetActive(!bossShown);
 	}
 
 	private bool textShown = false;
@@ -171,7 +172,7 @@ exit:
 				else 
 				{
 					ShowBoss(false);
-					objective.text = "Objective - Stop the robber \nObjective - Keep pooping on those bad people";
+					objective.text = "Objectives: \nStop the robber \nPoop on bad people";
 				}
 				break;
 
@@ -183,7 +184,7 @@ exit:
 				else 
 				{
 					ShowBoss(false);
-					objective.text = "Objective - Poop on the politician \nObjective - Keep pooping on those bad people";
+					objective.text = "Objectives: \nPoop on the politician \nPoop on bad people";
 				}
 				break;
 
@@ -196,7 +197,7 @@ exit:
 				{
 					ShowBoss(false);
 					// transform.Find("Boss").gameObject.SetActive(false);
-					objective.text = "Objective - Weigh the balloons down \nObjective - Keep pooping on those bad people";
+					objective.text = "Objectives: \nPoop on the balloons \nPoop on bad people";
 				}
 				break;
 

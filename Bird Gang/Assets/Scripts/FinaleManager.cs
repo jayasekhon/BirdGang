@@ -10,6 +10,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 {
     public bool cutsceneActive;
     AudioManager audiomng;
+    AudioSource music;
 
     // GameObject fireworks;
     // public VisualEffect fireworkEffect;
@@ -71,11 +72,13 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     public void OnStageBegin(GameEvents.Stage stage)
     {
         audiomng = FindObjectOfType<AudioManager>();
+        music = GetComponent<AudioSource>();
+        music.Play();
+
         PlayerControllerNEW.input_lock_all = true;
         cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
-        audiomng.Play("LobbyMusic"); 
         StartCoroutine(ExecuteAfterTime());
         // fireworkEffect.Play();
     }
