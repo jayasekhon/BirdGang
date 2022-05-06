@@ -75,7 +75,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
-        
+        audiomng.Play("LobbyMusic"); 
         StartCoroutine(ExecuteAfterTime());
         // fireworkEffect.Play();
     }

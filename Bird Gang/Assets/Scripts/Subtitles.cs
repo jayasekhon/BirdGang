@@ -129,16 +129,37 @@ public class Subtitles : MonoBehaviour
 
     IEnumerator FinaleSubtitles()
     {
-        Debug.Log("Note: Other subtitles for finale endings still need to be done.");
+        // Debug.Log("Note: Other subtitles for finale endings still need to be done.");
         finaleDone = true;
-        yield return new WaitForSeconds(11f);
-        subtitleText.text = ("Fantastic work recruits!\n"+
+        if (Score.instance.minibossesHit >= 2 && Score.instance.balloonsHit >= 4)
+        {
+            yield return new WaitForSeconds(11f);
+            subtitleText.text = ("Fantastic work recruits!\n"+
             "You've all proven yourselves to me.\n");
-        subtitleTextHolder.SetActive(true);
-        yield return new WaitForSeconds(4f);
-        subtitleText.text = ("Welcome to BirdGang.\n"+
+            subtitleTextHolder.SetActive(true);
+            yield return new WaitForSeconds(4f);
+            subtitleText.text = ("Welcome to BirdGang.\n"+
             "The real fun starts tomorrow.");
-        yield return new WaitForSeconds(4.5f);
+            yield return new WaitForSeconds(4.5f);
+        }
+        else if (Score.instance.minibossesHit == 0 && Score.instance.balloonsHit == 0)
+        {
+            yield return new WaitForSeconds(11f);
+            subtitleText.text = ("Today was a failure recruits.\n"+
+            "Come back tomorrow, let's try again.\n");
+            subtitleTextHolder.SetActive(true);
+            yield return new WaitForSeconds(4.5f);
+        }
+        else 
+        {
+            yield return new WaitForSeconds(11f);
+            subtitleText.text = ("Almost there recruits.\n"+
+            "Come back tomorrow, let's try again.\n");
+            subtitleTextHolder.SetActive(true);
+            yield return new WaitForSeconds(4.5f);
+        }
+
+        // yield return new WaitForSeconds(4.5f);
         subtitleTextHolder.SetActive(false);
         coroutineStarted = false;
     }

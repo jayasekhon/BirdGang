@@ -13,7 +13,7 @@ public class WaitingOverlay : MonoBehaviour, GameEventCallbacks
 		foreach (Graphic g in o.GetComponentsInChildren<Graphic>())
 		{
 			if (fade)
-				g.CrossFadeAlpha(x ? 1f : 0f, 1f, false); 
+				g.CrossFadeAlpha(x ? 1f : 0f, 0.01f, false); 
 			else
 				g.canvasRenderer.SetAlpha(x ? 1f : 0f);
 		}
