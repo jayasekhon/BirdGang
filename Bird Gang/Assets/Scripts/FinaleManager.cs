@@ -19,11 +19,13 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
     [SerializeField] GameObject creditsScreenHolder;
-    [SerializeField] Text finalScoreText; 
+    [SerializeField] Text finalScoreText;
     [SerializeField] GameObject InGameCanvas;
     [SerializeField] GameObject CreditButtons;
     [SerializeField] GameObject Fireworks;
     Score scoreScript;
+    [SerializeField] GameObject bossObj;
+    private boss boss;
 
 
     [SerializeField] GameObject escPrompt;
@@ -42,6 +44,7 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
 
         voiceover = GetComponent<AudioSource>(); 
         scoreScript = InGameCanvas.GetComponent<Score>();
+        boss = bossObj.GetComponent<boss>();
     }
 
     // void Start() 
@@ -86,6 +89,8 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(7f); // pan to finale shot
         Fireworks.SetActive(true);
         voiceover.PlayOneShot(Congratulations, 1f);
+        boss.PlayMouthMove(Congratulations);
+
         yield return new WaitForSeconds(7.5f);
         int score = scoreScript.GetScore();
         finalScoreText.text = "Your team score: " + score.ToString();
