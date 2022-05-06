@@ -39,14 +39,16 @@ public class TutorialStage5 : MonoBehaviour
 			if (firstTargets.childCount == 0)
 			{
 				m(true);
-				tut.AdvanceTutorial();
+				if (tut)
+					tut.AdvanceTutorial();
 				ctr++;
 			}
 			break;
 		case 1:
 			if (!evilChild)
 			{
-				tut.AdvanceTutorial();
+				if (tut)
+					tut.AdvanceTutorial();
 				Destroy(this);
 			}
 			break;
