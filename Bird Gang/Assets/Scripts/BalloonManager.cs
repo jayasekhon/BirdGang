@@ -7,10 +7,15 @@ using System.IO;
 
 public class BalloonManager : MonoBehaviour, GameEventCallbacks
 {
+    AudioSource music;
+    public bool cutsceneActive;
     AudioSource voiceover;
     public AudioClip CarnivalIntro;
     public AudioClip StormHowl;
+    AudioManager audiomng;
     private bool running = false;
+
+    public GameObject carnivalSFX;
     
     private float windForce = 100f;
     bool centre = true;
@@ -31,6 +36,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
     List<BalloonAgent> balloons;
 
     public float balloonCounter = 0;
+    [SerializeField] GameObject NewMissionTextObject;
 
     // Start is called before the first frame update
     void Awake()
@@ -44,15 +50,18 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         GameEvents.RegisterCallbacks(this, GAME_STAGE.CARNIVAL,
              STAGE_CALLBACK.BEGIN | STAGE_CALLBACK.END);
         
-        voiceover = GetComponent<AudioSource>();
+        music = GetComponent<AudioSource>();
         changeCloudsScript = GetComponent<ChangeClouds>();
     }
 
     public void OnStageBegin(GameEvents.Stage stage)
     {   
+        audiomng = FindObjectOfType<AudioManager>();
         PlayerControllerNEW.input_lock_all = true;
+        cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
-        voiceover.PlayOneShot(StormHowl, 0.5f);
+        music.PlayOneShot(StormHowl, 0.5f);
+        music.Play();
         changeCloudsScript.ColourChange();
 
         switcher.Carnival();
@@ -66,6 +75,8 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         fountain.SetActive(false);
         fountainParticles.SetActive(false);
         
+        NewMissionTextObject.SetActive(true);
+        
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
         }
@@ -76,14 +87,18 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(4.5f);
         // cutsceneManagerAnim.Play("CarnivalCS");
         yield return new WaitForSeconds(7f); //this means we can pan 
-        voiceover.PlayOneShot(CarnivalIntro, 1f);
+        audiomng.Play("CarnivalIntro");
+        NewMissionTextObject.SetActive(false);
+//         voiceover.PlayOneShot(CarnivalIntro, 1f);
         yield return new WaitForSeconds(11f); //this means we can watch the carnival happen 
         // cutsceneManagerAnim.Play("OverheadCS");
         yield return new WaitForSeconds(4f); //enough time for the camera to pan back to the sky
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(6f); //time to pan back to main camera
         PlayerControllerNEW.input_lock_all = false;
+        cutsceneActive = false;
         PlayerControllerNEW.wind_disable = false;
+        carnivalSFX.SetActive(true);
     }
 
     void SpawnBalloons()
@@ -160,7 +175,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
 
     public void OnStageEnd(GameEvents.Stage stage)
     {
-
+        music.Stop();
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)

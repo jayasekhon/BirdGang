@@ -7,6 +7,7 @@ using Photon.Pun;
 public class RobberManager : MonoBehaviour, GameEventCallbacks
 {
     private GameObject robber;
+    public bool cutsceneActive;
 
     //[SerializeField] 
     GameObject leftDoor;
@@ -19,14 +20,16 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     float timePassed = 0f;
     bool startAlarm = false;
 
-    AudioSource voiceover;
-    public AudioClip RobberIntro;
+    AudioSource music;
+    // public AudioClip RobberIntro;
 
     AudioManager audiomng;
 
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
+
+    [SerializeField] GameObject NewMissionTextObject;
 
     // Start is called before the first frame update
     void Awake()
@@ -45,7 +48,7 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         leftAnim = leftDoor.GetComponent<Animator>();
         rightAnim = rightDoor.GetComponent<Animator>();
 
-        voiceover = GetComponent<AudioSource>();
+        music = GetComponent<AudioSource>();
         audiomng = FindObjectOfType<AudioManager>();
     }
 
@@ -69,10 +72,13 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     {
         // audiomng.Stop("Carnival");
         PlayerControllerNEW.input_lock_all = true;
+        cutsceneActive = true;
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Robber();
+        NewMissionTextObject.SetActive(true);
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
+        music.Play();
     }
 
     IEnumerator ExecuteAfterTime()
@@ -81,13 +87,15 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(4.5f);        
         // cutsceneManagerAnim.Play("RobberCS");
         yield return new WaitForSeconds(2.5f);
+        NewMissionTextObject.SetActive(false);
         
         startAlarm = true;
         //let alarm run alone as boss explains round
         yield return new WaitForSeconds(4f);
         leftAnim.SetBool("swingDoor", true);
         rightAnim.SetBool("swingDoor", true);
-        voiceover.PlayOneShot(RobberIntro, 1f);
+        // voiceover.PlayOneShot(RobberIntro, 1f);
+        audiomng.Play("RobberIntro");
         
         //slight delay for animation and robbers to spawn
         yield return new WaitForSeconds(0.5f);
@@ -106,6 +114,24 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         // cutsceneManagerAnim.Play("Main");
         yield return new WaitForSeconds(6f);
         PlayerControllerNEW.input_lock_all = false;
+        cutsceneActive = false;
+
+        // yield return new WaitForSeconds(90f);
+
+        // if (robber)
+        // {
+        //     audiomng.Play("MinibossMissed");
+        //     Renderer[] robberMesh = robber.GetComponentsInChildren<Renderer>();
+        //     foreach (Renderer r in robberMesh) 
+        //     {
+        //         r.enabled = false;
+        //     }
+        //     // GameObject health = robber.GetComponentsInChildren<
+        // }
+        // else
+        // {
+        //     audiomng.Play("MinibossHit");
+        // }
     }
 
     public void gatherCrowd(){
@@ -164,25 +190,33 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         startAlarm = false;
         leftAnim.SetBool("swingDoor", false);
         rightAnim.SetBool("swingDoor", false);
+
+        music.Stop();
         
         if (PhotonNetwork.IsMasterClient) 
         {
+            PhotonView PV = GetComponent<PhotonView>();
+            PV.RPC("robberOutcome", RpcTarget.All, (bool)robber);
             if (robber)
             {
                 PhotonNetwork.Destroy(robber);
             } 
         }
+        // Destroy(this);
+    }
 
-        if (robber)
+    [PunRPC]
+    void robberOutcome(bool exists) 
+    {
+        // audiomng.Play("MinibossMissed");
+        if (exists)
         {
             audiomng.Play("MinibossMissed");
         }
-        else
+        else 
         {
             audiomng.Play("MinibossHit");
         }
-
-        Destroy(this);
     }
 
     public void OnStageProgress(GameEvents.Stage stage, float progress)

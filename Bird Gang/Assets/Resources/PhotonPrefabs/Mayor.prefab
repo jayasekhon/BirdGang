@@ -144,6 +144,7 @@ MonoBehaviour:
   normalSpeed: 2
   isFleeing: 0
   isInCrowd: 0
+  fleeingSpeed: 20
 --- !u!195 &-12645679936514643
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -178,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51217cf63ddfb3ef1af1e0abe81ae9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackers: []
+  attackers: 
   healthStatus: {fileID: 7367814655472673095}
 --- !u!114 &7975291070371576094
 MonoBehaviour:

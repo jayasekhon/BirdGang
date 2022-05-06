@@ -38,9 +38,9 @@ public class CineMachineSwitcher : MonoBehaviour
     {
         yield return new WaitForSeconds(4.5f); //wait to pan to the sky
         animator.Play("RobberCS");
-	if (Tutorial.instance) {
-		Tutorial.instance.RoundEndCleanup();
-	}
+        if (Tutorial.instance) {
+            Tutorial.instance.RoundEndCleanup();
+        }
         yield return new WaitForSeconds(6.5f); //this is time for the camera to pan to the bank
         //voiceovers etc start
         yield return new WaitForSeconds(0.5f);
@@ -63,7 +63,7 @@ public class CineMachineSwitcher : MonoBehaviour
         animator.Play("MayorCS");
         //this is time for the camera to pan to the mayor
         // mayor spawns in and talks
-        yield return new WaitForSeconds(11.5f); //watch the mayor speak
+        yield return new WaitForSeconds(12.5f); //watch the mayor speak
         animator.Play("OverheadCS");
         yield return new WaitForSeconds(4f); //wait to pan back to the sky
         animator.Play("Main");
@@ -100,7 +100,9 @@ public class CineMachineSwitcher : MonoBehaviour
 
     public void Intro()
     {
-        // introDolly.m_Position = 0;
+        // Otherwise dolly trundles off before round begins.
+        // Give it a slight head start because that's what we're used to.
+        introDolly.m_Position = 200f;
         animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
     }

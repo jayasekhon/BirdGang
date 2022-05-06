@@ -10,7 +10,11 @@ public class AudioManager : MonoBehaviour
 	public AudioMixerGroup mixerGroup;
 
 	public Sound[] sounds;
-  
+
+	public GameObject bossObject;
+	private boss boss;
+
+
 	void Awake()
 	{
 		if (instance != null)
@@ -22,6 +26,7 @@ public class AudioManager : MonoBehaviour
 			instance = this;
 			DontDestroyOnLoad(gameObject);
 		}
+		boss =bossObject.GetComponent<boss>();
 
 		foreach (Sound s in sounds)
 		{
@@ -47,6 +52,7 @@ public class AudioManager : MonoBehaviour
 			return;
 		}
 
+		if(s.voiceOver)boss.PlayMouthMove(s.clip);
 		s.source.volume = s.volume;
 		s.source.Play();
 	}

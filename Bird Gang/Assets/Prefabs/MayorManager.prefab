@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 206a0929935b048d8a5d3be24bc2c016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MayorIntro: {fileID: 8300000, guid: a08a3d6e5ad7b44e58945173c738d858, type: 3}
+  MayorIntro: {fileID: 8300000, guid: c57eeee28da8849cfa329cb1ffbdad6b, type: 3}
   intro: {fileID: 0}
 --- !u!82 &7772751453225613954
 AudioSource:
@@ -57,10 +57,10 @@ AudioSource:
   m_GameObject: {fileID: 7772751453225613952}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a08a3d6e5ad7b44e58945173c738d858, type: 3}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 3c30d22ceffdd4b8990cbc9e5d13288b, type: 2}
+  m_audioClip: {fileID: 8300000, guid: b395029e158da4882bcc30f01ab86957, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -252,3 +252,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858ac9440e05d4678bd575547278adeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MainLightObj: {fileID: 0}
