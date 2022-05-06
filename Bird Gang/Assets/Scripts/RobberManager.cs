@@ -182,6 +182,10 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             }
             timePassed += Time.fixedDeltaTime; //0.02
         }
+        if (Input.GetKeyDown("K"))
+        {
+            audiomng.Play("MinibossHitFirst");
+        }
 	}
 
     public void OnStageEnd(GameEvents.Stage stage)

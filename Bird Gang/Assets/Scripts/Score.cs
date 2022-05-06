@@ -104,7 +104,7 @@ public class Score : MonoBehaviour
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
-                audiomng.Play("MinibossHitFirst");
+                // audiomng.Play("MinibossHitFirst");
                 scoreAddedText.text = "+100";
                 scoreAddedText.color = new Color32(255, 136, 39, 255);
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
@@ -121,10 +121,10 @@ public class Score : MonoBehaviour
                 scoreAddedText.color = new Color32(255, 136, 39, 255);
                 scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
                 move = true;
-                if (balloonsHit >= 4)
-                {
-                    audiomng.Play("MinibossHitFirst");
-                }
+                // if (balloonsHit >= 4)
+                // {
+                //     audiomng.Play("MinibossHitFirst");
+                // }
                 Invoke("Hide", time);
                 break;
         }

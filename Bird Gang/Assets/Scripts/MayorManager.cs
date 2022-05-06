@@ -156,6 +156,10 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
                 mayorAI.SetGoal(position);
             }
         }
+        if (Input.GetKeyDown("K"))
+        {
+            audiomng.Play("MinibossHitFirst");
+        }
     }
 
     public void OnStageEnd(GameEvents.Stage stage)
