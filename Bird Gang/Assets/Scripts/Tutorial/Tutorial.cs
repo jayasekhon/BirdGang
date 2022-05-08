@@ -126,9 +126,9 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			if (text)
 			{
 				text.transform.parent.GetComponent<Image>()
-					.CrossFadeAlpha(0f, 5f, false);
+					.CrossFadeAlpha(0f, 2.5f, false);
 				text
-					.CrossFadeAlpha(0f, 5f, false);			
+					.CrossFadeAlpha(0f, 2.5f, false);			
 			}
 			return true;
 		}
