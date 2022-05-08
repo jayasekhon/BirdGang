@@ -123,6 +123,13 @@ public class Tutorial : MonoBehaviour, GameEventCallbacks
 			complete = true;
 			// if (!destroyed)
 			// 	CleanUp();
+			if (text)
+			{
+				text.transform.parent.GetComponent<Image>()
+					.CrossFadeAlpha(0f, 5f, false);
+				text
+					.CrossFadeAlpha(0f, 5f, false);			
+			}
 			return true;
 		}
 		return false;

@@ -42,7 +42,6 @@ public class StageProgressUI : MonoBehaviour, GameEventCallbacks
 		uiImage.texture = tex;
 		text.text = "";
 		objective.text = "";
-
 	}
 
 	void Start()
@@ -161,7 +160,7 @@ exit:
 		switch (stage.GameStage)
 		{
 			case GAME_STAGE.TUTORIAL:
-				// objective.text = "Objective - Complete the tutorial";
+				objective.text = "Objectives: \nPoop on bad people";
 				break;
 
 			case GAME_STAGE.ROBBERY:
