@@ -61,7 +61,7 @@ public class WaypointEvents: MonoBehaviour
                 StopCoroutine("HideWayPointAfterTime");
             }
 
-            StartCoroutine("HideWayPointAfterTime");                        
+            StartCoroutine("HideWayPointAfterTime");                   
         }
     }
 
@@ -69,18 +69,21 @@ public class WaypointEvents: MonoBehaviour
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(ShowWaypoint, myIndex, raiseEventOptions, SendOptions.SendReliable);
+        waypointEventSent(true);
     }
     
     private void HideMyWaypoint()
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(HideWaypoint, myIndex, raiseEventOptions, SendOptions.SendReliable);
+        waypointEventSent(true);
     }
 
     private void SendMyLocation()
     {
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(myPosition, myPos, raiseEventOptions, SendOptions.SendReliable);
+        waypointEventSent(true);
     }
 
     IEnumerator HideWayPointAfterTime()
@@ -89,6 +92,12 @@ public class WaypointEvents: MonoBehaviour
         yield return new WaitForSeconds(10);
         HideMyWaypoint();
         coroutineFinished = true;
+    }
+
+    public static bool waypointEventSent(bool eventSent)
+    {
+        bool check = eventSent;
+        return check;
     }
 
 

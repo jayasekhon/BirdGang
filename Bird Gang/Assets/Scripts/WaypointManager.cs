@@ -56,12 +56,21 @@ public class WaypointManager : MonoBehaviour, IOnEventCallback
         }
     }
 
-    GameObject InitialiseWaypoint()
+    public static bool checkEnoughMaterials(int numMaterials, int numPlayers)
     {
+        if (numMaterials == numPlayers)
+            return true;
+        else
+            return false;
+    }
+
+    GameObject InitialiseWaypoint()
+    {   
         GameObject waypointParent = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerWaypoint"), new Vector3(0,3,0), Quaternion.identity);
         GameObject waypointCylinderHolder = waypointParent.transform.GetChild(0).gameObject;
         GameObject waypointCylinder = waypointCylinderHolder.transform.GetChild(1).gameObject;
         MeshRenderer waypointCylinderMaterial = waypointCylinder.GetComponent<MeshRenderer>();
+        checkEnoughMaterials(playerMaterials.Length, playerPVids.Length);
         for (int i = 0; i < playerPVids.Length; i++)
         {
             if (PV.ViewID == playerPVids[i])
