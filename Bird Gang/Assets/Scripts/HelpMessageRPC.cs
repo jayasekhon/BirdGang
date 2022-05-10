@@ -7,7 +7,6 @@ using Photon.Realtime;
 
 public class HelpMessageRPC : MonoBehaviour
 {
-
     int senderIndex = 0;
     Player[] playersInGame;
 
@@ -24,8 +23,7 @@ public class HelpMessageRPC : MonoBehaviour
             if (playersInGame[p].ToString() == info.photonView.Owner.ToString())
             {
                 senderIndex = p;
-            }
-                
+            }               
         }
         HelpMessage.instance.Display(info.Sender.NickName, senderIndex);
     }

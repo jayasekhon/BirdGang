@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PauseMenuEvents: MonoBehaviourPunCallbacks, IOnEventCallback
 {
-
     private new void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);

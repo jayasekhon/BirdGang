@@ -10,7 +10,7 @@ public class endAnchor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rope =GetComponentInParent<Rope>();
+        rope = GetComponentInParent<Rope>();
     }
 
     // Update is called once per frame

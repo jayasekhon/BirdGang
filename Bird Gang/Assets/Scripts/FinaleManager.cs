@@ -12,9 +12,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     AudioManager audiomng;
     AudioSource music;
 
-    // GameObject fireworks;
-    // public VisualEffect fireworkEffect;
-
     // GameObject[] CM_managers;
     CineMachineSwitcher switcher;
     [SerializeField] GameObject intro;
@@ -26,7 +23,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
     Score scoreScript;
     [SerializeField] GameObject bossObj;
     private boss boss;
-
 
     [SerializeField] GameObject escPrompt;
 
@@ -45,30 +41,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         scoreScript = InGameCanvas.GetComponent<Score>();       
     }
 
-    // void Start() 
-    // {
-    //     // give it enough time to load in all the cutscene managers
-    //     StartCoroutine(InitCoroutine());
-    // }
-
-    // IEnumerator InitCoroutine()
-    // {
-    //     yield return new WaitForSeconds(3);
-    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-    //     foreach (GameObject m in CM_managers) 
-    //     {
-    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
-    //     }
-    // }
-
-    void Start() 
-    {
-        // fireworks = GameObject.FindGameObjectWithTag("fireworks");
-        // fireworks.SetActive(true);
-        // fireworkEffect = fireworks.GetComponent<VisualEffect>();
-    }
-
-
     public void OnStageBegin(GameEvents.Stage stage)
     {
         audiomng = FindObjectOfType<AudioManager>();
@@ -80,7 +52,6 @@ public class FinaleManager : MonoBehaviour, GameEventCallbacks
         switcher = intro.GetComponent<IntroManager>().switcher;
         switcher.Finale();
         StartCoroutine(ExecuteAfterTime());
-        // fireworkEffect.Play();
     }
 
     IEnumerator ExecuteAfterTime()

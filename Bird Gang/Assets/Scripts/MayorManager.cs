@@ -47,23 +47,6 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
         audiomng = FindObjectOfType<AudioManager>();
     }
 
-    // void Start() 
-    // {
-    //     // give it enough time to load in all the cutscene managers
-    //     // I think we can change this code to get the switcher list from robberManager 
-    //     StartCoroutine(InitCoroutine());
-    // }
-
-    // IEnumerator InitCoroutine()
-    // {
-    //     yield return new WaitForSeconds(3);
-    //     CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-    //     foreach (GameObject m in CM_managers) 
-    //     {
-    //         switchers.Add(m.GetComponent<CineMachineSwitcher>());
-    //     }
-    // }
-
     public void OnStageBegin(GameEvents.Stage stage)
     {
         PlayerControllerNEW.input_lock_all = true;
@@ -95,7 +78,6 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
             mayorAI = mayor.GetComponent<AiController>();
             agent.speed = 0f;
             agent.acceleration = 0f;
-            
         }
 
         yield return new WaitForSeconds(7.5f); //time to pan + also watch mayor
@@ -156,10 +138,6 @@ public class MayorManager : MonoBehaviour, GameEventCallbacks
                 mayorAI.SetGoal(position);
             }
         }
-        // if (Input.GetKeyDown(KeyCode.K))
-        // {
-        //     audiomng.Play("MinibossHitFirst");
-        // }
     }
 
     public void OnStageEnd(GameEvents.Stage stage)

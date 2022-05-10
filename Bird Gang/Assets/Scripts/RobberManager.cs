@@ -52,22 +52,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         audiomng = FindObjectOfType<AudioManager>();
     }
 
-    // void Start() 
-    // {
-    //     // give it enough time to load in all the cutscene managers
-    //     StartCoroutine(InitCoroutine());
-    // }
-
-    // IEnumerator InitCoroutine()
-    // {
-    //     yield return new WaitForSeconds(3);
-    //     // CM_managers = GameObject.FindGameObjectsWithTag("cutsceneManager");
-    //     // foreach (GameObject m in CM_managers) 
-    //     // {
-    //     //     switchers.Add(m.GetComponent<CineMachineSwitcher>());
-    //     // }
-    // }
-
     public void OnStageBegin(GameEvents.Stage stage)
     {
         // audiomng.Stop("Carnival");
@@ -115,23 +99,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
         yield return new WaitForSeconds(6f);
         PlayerControllerNEW.input_lock_all = false;
         cutsceneActive = false;
-
-        // yield return new WaitForSeconds(90f);
-
-        // if (robber)
-        // {
-        //     audiomng.Play("MinibossMissed");
-        //     Renderer[] robberMesh = robber.GetComponentsInChildren<Renderer>();
-        //     foreach (Renderer r in robberMesh) 
-        //     {
-        //         r.enabled = false;
-        //     }
-        //     // GameObject health = robber.GetComponentsInChildren<
-        // }
-        // else
-        // {
-        //     audiomng.Play("MinibossHit");
-        // }
     }
 
     public void gatherCrowd(){
@@ -182,10 +149,6 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
             }
             timePassed += Time.fixedDeltaTime; //0.02
         }
-        // if (Input.GetKeyDown(KeyCode.K))
-        // {
-        //     audiomng.Play("MinibossHitFirst");
-        // }
 	}
 
     public void OnStageEnd(GameEvents.Stage stage)
@@ -225,5 +188,4 @@ public class RobberManager : MonoBehaviour, GameEventCallbacks
     public void OnStageProgress(GameEvents.Stage stage, float progress)
     {
     }
-
 }

@@ -22,7 +22,7 @@ public class ChangeClouds : MonoBehaviour
 
     public void ColourChange() 
     {
-        Debug.Log("Change colour");
+        // Debug.Log("Change colour");
         foreach (GameObject cloud in clouds)
         {
             for (int i = 0; i < cloud.transform.childCount; i++)
