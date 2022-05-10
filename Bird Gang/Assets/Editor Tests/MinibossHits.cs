@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NUnit.Framework;
 
-public class MinibossHits 
+public class minibossHits 
 {
     [Test]
     public void health_status_is_correct()
