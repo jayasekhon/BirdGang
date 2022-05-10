@@ -39,7 +39,7 @@ public class MiniBossTarget : MonoBehaviourPunCallbacks, IBirdTarget
 		attackers.Add(info.Sender.ActorNumber);
 		health = PhotonNetwork.PlayerList.Length - attackers.Count;
 		healthStatus.text = new String('+', health);
-		Debug.Log($"[Miniboss] {health} Players left to hit");
+		// Debug.Log($"[Miniboss] {health} Players left to hit");
 
 		if (info.Sender.IsLocal)
 		{

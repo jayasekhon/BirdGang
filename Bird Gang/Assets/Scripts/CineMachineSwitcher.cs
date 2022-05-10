@@ -8,9 +8,11 @@ public class CineMachineSwitcher : MonoBehaviour
 {
     private Animator animator;
     public CinemachineDollyCart introDolly;
+    // public static CineMachineSwitcher instance;
 
     void Awake()
     {
+        // instance = this;
         animator = GetComponent<Animator>();
     }
 
@@ -105,6 +107,8 @@ public class CineMachineSwitcher : MonoBehaviour
         introDolly.m_Position = 200f;
         animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
+        // Debug.Log("intro1:" + animator.GetCurrentAnimatorStateInfo(0).IsName("Intro"));
+        // return animator.GetCurrentAnimatorStateInfo(0).IsName("Intro");
     }
 
     IEnumerator IntroCoroutine()
@@ -116,5 +120,6 @@ public class CineMachineSwitcher : MonoBehaviour
     public void Resume()
     {
         animator.Play("Main");
+
     }
 }
