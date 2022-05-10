@@ -79,7 +79,7 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
         
         //switcher starts by calling overhead cam.
         StartCoroutine(ExecuteAfterTime());
-        }
+    }
 
     IEnumerator ExecuteAfterTime()
     {
@@ -168,7 +168,6 @@ public class BalloonManager : MonoBehaviour, GameEventCallbacks
                         o.GetComponent<Rigidbody>().AddForce(direction* windForce);
                     }
                 }
-
             }
         }
     }

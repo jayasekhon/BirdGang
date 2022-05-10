@@ -193,24 +193,40 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         if (numberOfBalloons - balloonCount > 1) 
         {     
             Score.instance.textBackground.enabled = true;  
-            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloons left";
+            Score.instance.targetReached.text = UpdateTargetReachedText(numberOfBalloons, balloonCount);
             Score.instance.AddScore(Score.HIT.BALLOON, 1, false);
         }
         else if (numberOfBalloons - balloonCount == 1)
         {
             Score.instance.textBackground.enabled = true;
-            Score.instance.targetReached.text = "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloon left";
+            Score.instance.targetReached.text = UpdateTargetReachedText(numberOfBalloons, balloonCount);
             Score.instance.AddScore(Score.HIT.BALLOON, 1, false);
         }
         else 
         {
             Score.instance.textBackground.enabled = true;
-            Score.instance.targetReached.text = "MISSION COMPLETE";          
+            Score.instance.targetReached.text = UpdateTargetReachedText(numberOfBalloons, balloonCount);         
             Score.instance.AddScore(Score.HIT.BALLOON, 1, false);
             complete = true;
         }
         StartCoroutine(ExecuteAfterTime());
     }   
+
+    public static string UpdateTargetReachedText(float numberOfBalloons, float balloonCount)
+    {
+        if(numberOfBalloons - balloonCount > 1)
+        {
+            return "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloons left";
+        }
+        else if (numberOfBalloons - balloonCount == 1)
+        {
+            return "Nice teamwork, " + (numberOfBalloons - balloonCount).ToString() + " balloon left";
+        }
+        else 
+        {
+            return "MISSION COMPLETE"; 
+        }
+    }
 
     IEnumerator ExecuteAfterTime()
     {
@@ -230,12 +246,12 @@ public class BalloonScript : MonoBehaviour, IBirdTarget
         {
             attackers.Add(sender);
             health -= 1;
-            healthStatus.text = new String('+', health);
+            healthStatus.text = MiniBossTarget.correctNumHealth(health);
         }
 
         if (sender == mySender) 
 		{
-			healthStatus.color = new Color32(119, 215, 40, 255);
+			healthStatus.color = MiniBossTarget.changeHealthColour();
 		}
     }
 
