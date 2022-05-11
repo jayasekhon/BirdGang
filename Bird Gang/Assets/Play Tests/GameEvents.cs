@@ -58,42 +58,6 @@ public class GameEventsTests : MonoBehaviour, GameEventCallbacks
 		yield return new ExitPlayMode();
 	}
 
-	// Test that start and end are called for each event in order.
-	[UnityTest]
-	public IEnumerator TestEventsOrder()
-	{
-		GameEvents.Stage lastStage = default;
-		for (int i = 0; i < ge.ourAgenda.Count; i++)
-		{
-			GameEvents.Stage s = ge.ourAgenda[i];
-			yield return new WaitUntil(() => changed);
-			changed = false;
-			endedChanged = false;
-			Debug.Log($"Are now expecting: {s}...");
-			Assert.AreEqual(s, lastStarted);
-			if (i != 0)
-				Assert.AreEqual(lastStage, lastEnded);
-			lastStage = s;
-			Debug.Log("Correct.");
-		}
-		yield return new WaitUntil(() => endedChanged);
-		Assert.AreEqual(lastEnded, lastStage);
-	}
-
-	// Test that begin is called directly after any end.
-	[UnityTest]
-	public IEnumerator TestEventsContiguous()
-	{
-		for (int i = 1; i < ge.ourAgenda.Count - 1; i++)
-		{
-			yield return new WaitUntil(() => endedChanged);
-			yield return null;
-			Assert.True(changed);
-			endedChanged = false;
-			changed = false;
-		}
-	}
-
 	// Test that end is called n seconds after start.
 	[UnityTest]
 	public IEnumerator TestEventDurations()
