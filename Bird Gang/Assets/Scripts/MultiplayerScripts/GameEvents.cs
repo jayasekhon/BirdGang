@@ -45,6 +45,10 @@ public class GameEvents : MonoBehaviour
 		}
 		public readonly GAME_STAGE GameStage;
 		public readonly float Duration;
+		public override string ToString()
+		{
+			return $"Stage: {GameStage}, Duration: {Duration}";
+		}
 	}
 
 	private readonly struct CallbackItem
@@ -65,6 +69,8 @@ public class GameEvents : MonoBehaviour
 	private static readonly List<CallbackItem> callbacks = new List<CallbackItem>();
 	private static readonly List<bool> beginCalled = new List<bool>();
 
+	internal const int START_TIME_DELAY = 5000;
+
 	public static readonly Stage[] serverAgenda =
 	{
 		new Stage(GAME_STAGE.INTRO, 21f),
@@ -74,10 +80,10 @@ public class GameEvents : MonoBehaviour
 		new Stage(GAME_STAGE.CARNIVAL, 120f),
 		new Stage(GAME_STAGE.FINALE, 25f),
 	};
-  
+
 	private bool serverHasSerialised = false;
 
-	private List<Stage> ourAgenda;
+	internal List<Stage> ourAgenda;
 
 	private int stageIndex = -1;
 
@@ -118,17 +124,30 @@ public class GameEvents : MonoBehaviour
 
 	void Start()
 	{
-		pv.RPC("SignalClientReady", RpcTarget.MasterClient);
+		if (pv)
+		{
+			pv.RPC("SignalClientReady", RpcTarget.MasterClient);
+		}
+		else
+		{
+			Debug.LogWarning("GameEvents running without networking.");
+			baseNetworkTime = (int)(Time.time * 1000f);
+			nextStageNetworkTime = START_TIME_DELAY;
+			ourAgenda = new List<Stage>(serverAgenda);
+		}
 	}
 
 	int NetworkTime()
 	{
-		return PhotonNetwork.ServerTimestamp - baseNetworkTime;
+		if (pv)
+			return PhotonNetwork.ServerTimestamp - baseNetworkTime;
+		else
+			return (int) (Time.time * 10000f) - baseNetworkTime;
 	}
 
 	void Update()
 	{
-		if (PhotonNetwork.IsMasterClient && !serverHasSerialised)
+		if (pv && PhotonNetwork.IsMasterClient && !serverHasSerialised)
 		{
 			if (clientCount == PhotonNetwork.PlayerList.Length)
 			{
@@ -230,7 +249,7 @@ public class GameEvents : MonoBehaviour
 			ourAgenda.Add(new Stage((GAME_STAGE)stages[i], durations[i]));
 		}
 		baseNetworkTime = baseTime;
-		nextStageNetworkTime = 5000;
+		nextStageNetworkTime = START_TIME_DELAY;
 		Debug.Log($"Starting in {nextStageNetworkTime - NetworkTime()}...");
 	}
 }
