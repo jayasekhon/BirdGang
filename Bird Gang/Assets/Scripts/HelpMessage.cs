@@ -10,7 +10,6 @@ public class HelpMessage : MonoBehaviour
     public Text message;
     public static HelpMessage instance;
 
-
     float time = 3f;
     float fadeOutTime = 3f;
     private Player[] playersInGame;

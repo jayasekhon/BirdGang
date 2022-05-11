@@ -6,11 +6,15 @@ using Photon.Pun;
 
 public class CineMachineSwitcher : MonoBehaviour
 {
-    private Animator animator;
+    public Animator animator;
     public CinemachineDollyCart introDolly;
+    // public static CineMachineSwitcher instance;
+
+    public bool introResult = true;
 
     void Awake()
     {
+        // instance = this;
         animator = GetComponent<Animator>();
     }
 
@@ -105,6 +109,18 @@ public class CineMachineSwitcher : MonoBehaviour
         introDolly.m_Position = 200f;
         animator.Play("IntroPan");
         StartCoroutine(IntroCoroutine()); 
+        introResult = animator.GetCurrentAnimatorStateInfo(0).IsName("Intro");
+        returnCam("intro");
+    }
+
+    public static bool returnCam(string round)
+    {
+        CineMachineSwitcher cms = new CineMachineSwitcher();
+        if (round == "intro")
+        {
+            return cms.introResult;
+        }
+        else return false;
     }
 
     IEnumerator IntroCoroutine()

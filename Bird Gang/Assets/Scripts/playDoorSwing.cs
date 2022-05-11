@@ -8,6 +8,5 @@ public class playDoorSwing : MonoBehaviour
 
     void Start(){
         anim.SetBool("swingDoor",  true);
-        
     }
 }

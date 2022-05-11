@@ -6,7 +6,6 @@ using TMPro;
 
 public class Subtitles : MonoBehaviour
 {
-
     [SerializeField] IntroManager introManager;
     [SerializeField] RobberManager robberManager;
     [SerializeField] MayorManager mayorManager;
@@ -163,5 +162,4 @@ public class Subtitles : MonoBehaviour
         subtitleTextHolder.SetActive(false);
         coroutineStarted = false;
     }
-
 }

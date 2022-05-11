@@ -8,11 +8,9 @@ public class Rope : MonoBehaviour
     private int segmentLength = 35;
     private float lineWidth = 0.3f;
 
-
     private LineRenderer lineRenderer;
     private List<Joint> joints = new List<Joint>();
     
-
     public Transform startAnchor;
     public Vector3 endAnchor;
     public Transform end_anchor;
@@ -82,7 +80,6 @@ public class Rope : MonoBehaviour
         firstJoint.positionAfter = startAnchor.position;
         this.joints[0] = firstJoint;
 
-
         //Constrant to Second Point 
         Joint endJoint = joints[joints.Count - 1];
         //endAnchor = endJoint.positionAfter;
@@ -96,7 +93,6 @@ public class Rope : MonoBehaviour
 
             float dist = (first.positionAfter - second.positionAfter).magnitude;
             float error = Mathf.Abs(dist - jointSpace);
-
 
             Vector3 dir = Vector2.zero;
 
@@ -121,13 +117,11 @@ public class Rope : MonoBehaviour
                 second.positionAfter += amount;
                 joints[i + 1] = second;
             }
-
         }
     }
 
     private void DrawRope()
-    {
-        
+    { 
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
 
@@ -140,6 +134,4 @@ public class Rope : MonoBehaviour
         lineRenderer.positionCount = ropePositions.Length;
         lineRenderer.SetPositions(ropePositions);
     }
-
-    
 }

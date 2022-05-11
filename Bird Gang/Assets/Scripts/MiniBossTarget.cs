@@ -15,7 +15,12 @@ public class MiniBossTarget : MonoBehaviourPunCallbacks, IBirdTarget
 	void Start()
 	{
 		health = PhotonNetwork.PlayerList.Length;
-		healthStatus.text = new String('+', health);
+		healthStatus.text = correctNumHealth(health);
+	}
+
+	public static string correctNumHealth(int healthStat)
+	{
+		return new String('+', healthStat);
 	}
 
 	public bool IsClientSideTarget()
@@ -27,7 +32,7 @@ public class MiniBossTarget : MonoBehaviourPunCallbacks, IBirdTarget
 	public override void OnPlayerEnteredRoom(Player newPlayer)
 	{
 		health = PhotonNetwork.PlayerList.Length - attackers.Count;
-		healthStatus.text = new String('+', health);
+		healthStatus.text = correctNumHealth(health);
 	}
 
 	[PunRPC]
@@ -38,12 +43,12 @@ public class MiniBossTarget : MonoBehaviourPunCallbacks, IBirdTarget
 
 		attackers.Add(info.Sender.ActorNumber);
 		health = PhotonNetwork.PlayerList.Length - attackers.Count;
-		healthStatus.text = new String('+', health);
-		Debug.Log($"[Miniboss] {health} Players left to hit");
+		healthStatus.text = correctNumHealth(health);
+		// Debug.Log($"[Miniboss] {health} Players left to hit");
 
 		if (info.Sender.IsLocal)
 		{
-			healthStatus.color = new Color32(119, 215, 40, 255);
+			healthStatus.color = changeHealthColour();
 		}
 
 		if (health == 0)
@@ -62,5 +67,10 @@ public class MiniBossTarget : MonoBehaviourPunCallbacks, IBirdTarget
 				}
 			}
 		}
+	}
+
+	public static Color32 changeHealthColour()
+	{
+		return new Color32(119, 215, 40, 255);
 	}
 }
