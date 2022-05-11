@@ -17,15 +17,14 @@ public class AiController : MonoBehaviour, IPunObservable
 
     public float normalSpeed = 2f;
     const float minibossSpeed = 4f;
-    const float normalAngularSpeed = 120f;
+    public float normalAngularSpeed = 120f;
     public bool isFleeing;
 
     public bool isInCrowd;
     private Vector3 crowdGoal;
 
-    [SerializeField]
-    private float fleeingSpeed = 20f;
-    const float fleeingAngularSpeed = 500f;
+    public float fleeingSpeed = 20f;
+    public float fleeingAngularSpeed = 500f;
 
     /* Serialisation stuff. */
     private Vector3 lastSteeringTarget;
@@ -93,7 +92,7 @@ public class AiController : MonoBehaviour, IPunObservable
         }
     }
 
-    void SetFleeing(bool fleeing)
+    public void SetFleeing(bool fleeing)
     {
         isFleeing = fleeing;
         if (isFleeing)
@@ -206,10 +205,26 @@ public class AiController : MonoBehaviour, IPunObservable
     {
         changeGoal = val;
     }
-
+    public bool GetChangeGoal()
+    {
+        return changeGoal;
+    }
     public void SetCrowdGoal(Vector3 goal)
     {
         crowdGoal = goal;
+    }
+    public Vector3 GetCrowdGoal()
+    {
+        return crowdGoal ;
+    }
+
+    public NavMeshAgent GetAgent()
+    {
+        return agent;
+    }
+    public void SetAgent(NavMeshAgent newAgent)
+    {
+        agent = newAgent;
     }
 
 }
