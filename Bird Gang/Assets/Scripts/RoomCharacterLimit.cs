@@ -9,5 +9,4 @@ public class RoomCharacterLimit : MonoBehaviour
     {   
         roomNameInput.characterLimit = 22;
     }
-    
 }

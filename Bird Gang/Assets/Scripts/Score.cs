@@ -79,9 +79,9 @@ public class Score : MonoBehaviour
             case HIT.GOOD:
                 score = UpdateScoreValueGoodPerson(score);
                 streakFlag = 0;
-                scoreAddedText.text = "-5";
-                scoreAddedText.color = new Color32(255, 136, 39, 255);
-                scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
+                scoreAddedText.text = UpdateScoreTextGoodPerson();
+                scoreAddedText.color = resetColour();
+                scoreAddedPos.anchoredPosition = resetPosition();
                 move = true;
                 Invoke("Hide", time);
                 break;
@@ -91,35 +91,36 @@ public class Score : MonoBehaviour
             case HIT.BAD:
                 score += (int)(Mathf.Lerp(10f, 50f, fac));
                 streakFlag++;
-                scoreAddedText.text = $"+{(int)(Mathf.Lerp(10f, 50f, fac))}";  
-                scoreAddedText.color = new Color32(255, 136, 39, 255);
-                scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
+                // scoreAddedText.text = $"+{(int)(Mathf.Lerp(10f, 50f, fac))}"; 
+                scoreAddedText.text = UpdateScoreTextBadPerson();
+                scoreAddedText.color = resetColour();
+                scoreAddedPos.anchoredPosition = resetPosition();
                 move = true;
                 Invoke("Hide", time);
                 break;
             case HIT.MINIBOSS:
                 minibossesHit++;
-                Debug.Log(minibossesHit + "minibosses");
+                // Debug.Log(minibossesHit + "minibosses");
                 score = UpdateScoreValueMiniBoss(score);
                 streakFlag++;
                 targetReached.text = "MISSION COMPLETE";
                 textBackground.enabled = true;
                 audiomng.Play("MinibossHitFirst");
-                scoreAddedText.text = "+100";
-                scoreAddedText.color = new Color32(255, 136, 39, 255);
-                scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
+                scoreAddedText.text = UpdateScoreTextMiniBoss();
+                scoreAddedText.color = resetColour();
+                scoreAddedPos.anchoredPosition = resetPosition();
                 move = true;
                 Invoke("Hide", time);
                 break;
             case HIT.BALLOON:
                 // Debug.Log("hello");
                 balloonsHit++;
-                Debug.Log(balloonsHit + "balloons");
+                // Debug.Log(balloonsHit + "balloons");
                 score = UpdateScoreValueBalloon(score);
                 streakFlag++;
-                scoreAddedText.text = "+25";
-                scoreAddedText.color = new Color32(255, 136, 39, 255);
-                scoreAddedPos.anchoredPosition = new Vector3 (-411, -170, 0);
+                scoreAddedText.text = UpdateScoreTextBalloon();
+                scoreAddedText.color = resetColour();
+                scoreAddedPos.anchoredPosition = resetPosition();
                 move = true;
                 if (balloonsHit >= 4)
                 {
@@ -166,13 +167,42 @@ public class Score : MonoBehaviour
         return scoreToUpdate + 25;
     }
 
+    public static string UpdateScoreTextGoodPerson()
+    {
+        return "-5";
+    }
+
+    public static string UpdateScoreTextBadPerson()
+    {
+        return "+10";
+    }
+
+    public static string UpdateScoreTextMiniBoss()
+    {
+        return "+100";
+    }
+
+    public static string UpdateScoreTextBalloon()
+    {
+        return "+25";
+    }
+
+    public static Color32 resetColour()
+    {
+        return new Color32(255, 136, 39, 255);
+    }
+
+    public static Vector3 resetPosition()
+    {
+        return new Vector3(-411, -170, 0);
+    }
+
     void Hide()
     {
         FadeOutRoutine(targetReached);
         targetReached.text = "";
         textBackground.enabled = false;
         fade = true;
-        // scoreAddedText.text = "";
     }
 
     void Update()

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LamppostLightUp : MonoBehaviour
 {
-    
     [SerializeField] GameObject lamppostParent;
     [SerializeField] Material glowLampMat;
     private Renderer[] allLamppostRenderers;
@@ -19,10 +18,8 @@ public class LamppostLightUp : MonoBehaviour
         { 
             allLamppostRenderers[i] = lamppostParent.transform.GetChild(i).GetChild(0).GetChild(1).GetComponent<Renderer>();
             lightCones[i] = lamppostParent.transform.GetChild(i).GetChild(0).GetChild(2).gameObject;
-        }
-        
+        }       
     }
-
     
     public void LightUpLampposts()
     {
@@ -35,7 +32,6 @@ public class LamppostLightUp : MonoBehaviour
             lightCones[ctr].SetActive(true);
             ctr++;
         }
-
     }
 }
 

@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1667501129242547585}
   - component: {fileID: -12645679936514643}
   - component: {fileID: 7519845895761546338}
-  - component: {fileID: 7975291070371576094}
   m_Layer: 10
   m_Name: Mayor
   m_TagString: bird_target
@@ -142,9 +141,11 @@ MonoBehaviour:
   forTutorial: 0
   clientSide: 0
   normalSpeed: 2
+  normalAngularSpeed: 120
   isFleeing: 0
   isInCrowd: 0
   fleeingSpeed: 20
+  fleeingAngularSpeed: 500
 --- !u!195 &-12645679936514643
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -181,18 +182,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackers: 
   healthStatus: {fileID: 7367814655472673095}
---- !u!114 &7975291070371576094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712611798460633024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 950c2dedb614b4ea69891772304cdfcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7226690112413134487
 GameObject:
   m_ObjectHideFlags: 0
